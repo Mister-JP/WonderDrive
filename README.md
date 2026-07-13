@@ -4,6 +4,8 @@ WonderDrive is an audience-directed curiosity performance. A visitor chooses a p
 
 This repository is the public implementation for the 2026 OpenAI Build Week hackathon. It is currently at **Phase 0: foundation**. The public shell, supported Sites runtime, D1 contract, identity seam, CI, and documentation are present. Live model research is intentionally not represented as complete yet.
 
+**Live Phase 0:** [wonderdrive.jigs.chatgpt.site](https://wonderdrive.jigs.chatgpt.site)
+
 ## Product contract
 
 - One selected model researches and performs each turn.
