@@ -3,6 +3,7 @@ import type {
   AnswerBlock,
   AnswerDensity,
   ImagePreference,
+  ModelId,
   PerformerId,
   ResearchHandoff,
   ResearchEvent,
@@ -27,7 +28,7 @@ export type PreparedLiveResearch = {
   seed: string;
   depth: number;
   performerId: PerformerId;
-  modelId: "gpt-5.6-luna";
+  modelId: ModelId;
   researchPreset: ResearchPreset;
   answerDensity: AnswerDensity;
   imagePreference: ImagePreference;
@@ -46,7 +47,7 @@ export type LiveTurnDraft = {
   topicLabel: string;
   answer: string;
   answerBlocks: AnswerBlock[];
-  media: TurnMedia | null;
+  media: TurnMedia[];
   transition: string;
   researchSummary: string;
   researchHandoff: ResearchHandoff;
@@ -77,16 +78,16 @@ type ProviderSource = {
   publisher: string;
 };
 
+type ProviderImage = {
+  imageUrl: string;
+  thumbnailUrl?: string;
+  sourcePageUrl: string;
+  caption: string;
+};
+
 type ModelTurn = {
   topicLabel: string;
   answerBlocks: Array<{ text: string; citationUrls: string[] }>;
-  media: {
-    available: boolean;
-    imageUrl: string;
-    sourcePageUrl: string;
-    caption: string;
-    alt: string;
-  };
   transition: string;
   researchSummary: string;
   researchHandoff: ResearchHandoff;
@@ -126,7 +127,6 @@ const TURN_SCHEMA = {
   required: [
     "topicLabel",
     "answerBlocks",
-    "media",
     "transition",
     "researchSummary",
     "researchHandoff",
@@ -157,18 +157,6 @@ const TURN_SCHEMA = {
         },
       },
     },
-    media: {
-      type: "object",
-      additionalProperties: false,
-      required: ["available", "imageUrl", "sourcePageUrl", "caption", "alt"],
-      properties: {
-        available: { type: "boolean" },
-        imageUrl: { type: "string", maxLength: 2_458 },
-        sourcePageUrl: { type: "string", maxLength: 2_458 },
-        caption: { type: "string", maxLength: 384 },
-        alt: { type: "string", maxLength: 288 },
-      },
-    },
     transition: { type: "string", minLength: 28, maxLength: 504 },
     researchSummary: { type: "string", minLength: 36, maxLength: 624 },
     researchHandoff: {
@@ -192,7 +180,7 @@ const TURN_SCHEMA = {
         additionalProperties: false,
         required: ["question", "angle"],
         properties: {
-          question: { type: "string", minLength: 9, maxLength: 264 },
+          question: { type: "string", minLength: 9, maxLength: 132 },
           angle: { type: "string", minLength: 1, maxLength: 39 },
         },
       },
@@ -238,9 +226,17 @@ export async function runLiveResearch(
         model: prepared.modelId,
         instructions: buildInstructions(performer),
         input: buildResearchInput(prepared),
-        tools: [{ type: "web_search" }],
+        tools: [prepared.imagePreference === "avoid"
+          ? { type: "web_search" }
+          : {
+              type: "web_search",
+              search_content_types: ["image", "text"],
+              image_settings: { max_results: 10, caption: true },
+            }],
         tool_choice: "auto",
-        include: ["web_search_call.action.sources"],
+        include: prepared.imagePreference === "avoid"
+          ? ["web_search_call.action.sources"]
+          : ["web_search_call.action.sources", "web_search_call.results"],
         max_tool_calls: limits.maxToolCalls,
         max_output_tokens: limits.maxOutputTokens,
         reasoning: { effort: limits.reasoning },
@@ -254,8 +250,7 @@ export async function runLiveResearch(
         stream: true,
       }, {
       signal: controller.signal,
-      unavailableMessage:
-        "Live research is not configured on this deployment. You can still use the free demo model.",
+      unavailableMessage: "Live research is not configured on this deployment.",
     });
 
     if (!response.ok) {
@@ -353,11 +348,12 @@ export async function runLiveResearch(
   });
   addActivity("check", "Checked that citations resolve to sources consulted in this run");
 
+  const providerImages = prepared.imagePreference === "avoid" ? [] : extractImages(completedResponse);
   let modelTurn = parseModelTurn(outputText);
   const supplementalResponses: OpenAIResponse[] = [];
   let draft;
   try {
-    draft = validateAndMapTurn(modelTurn, providerSources, prepared.imagePreference);
+    draft = validateAndMapTurn(modelTurn, providerSources, prepared.imagePreference, providerImages);
   } catch (error) {
     if (!(error instanceof RepositoryError) || error.code !== "CITATION_INVALID") throw error;
     addActivity("check", "A citation pointer did not match the consulted source set; repairing pointers once");
@@ -406,7 +402,7 @@ export async function runLiveResearch(
         modelTurn = pruneUnsupportedBlocks(modelTurn, repairResult.unsupportedIndexes);
       }
     }
-    draft = validateAndMapTurn(modelTurn, providerSources, prepared.imagePreference);
+    draft = validateAndMapTurn(modelTurn, providerSources, prepared.imagePreference, providerImages);
     addActivity("check", "Revalidated the answer against the final consulted source set");
   }
   addActivity("synthesis", "Validated the sourced answer and exactly two distinct next paths");
@@ -476,8 +472,11 @@ function buildInstructions(performer: (typeof PERFORMERS)[number]): string {
     "Write a clear, vivid, intellectually honest answer for a general audience. Separate evidence from metaphor and flag uncertainty in the prose when it matters.",
     "Write each answer block as complete prose of roughly 100 to 750 characters. Do not put Markdown headings, bold markers, or raw list syntax inside answer blocks.",
     "For every answer block, copy one or more exact source URLs that the web search actually consulted into citationUrls.",
-    "When a stable, factual image is genuinely useful, return its direct HTTPS image URL, the consulted source page URL, a concise caption, and useful alt text. Otherwise set media.available to false and leave the media strings empty. Never invent or return decorative imagery.",
-    "Return exactly two genuinely different next questions. Derive them from the answer the learner will read and, when present, the image they will see. They should continue curiosity, not restate each other or merely ask for more detail.",
+    "When factual images are requested, use image search alongside text research. WonderDrive reads image results directly; do not place image URLs in the answer JSON.",
+    "Return exactly two genuinely different next questions. Each must hook into one concrete fact, object, creature, place, event, or surprising detail in the visible answer—not just the broad topic.",
+    "Make each question feel like a playable rabbit hole: 5–12 words, plain everyday language, one idea at a time, and fun to say out loud. Aim for a question a curious kid can understand instantly and an adult still wants to click.",
+    "Prefer concrete wonder, odd comparisons, hidden abilities, vivid cause-and-effect, and small mysteries. For example: 'Could this frog freeze and wake up?', 'Why doesn't this bridge wobble apart?', or 'What else can navigate without eyes?'",
+    "Avoid academic framing, stacked clauses, jargon, vague abstraction, quiz-like recall, and prompts that merely ask for more detail. Do not use formulations like 'How does X reflect broader Y?' or 'What are the implications of X for Y?'",
     "Return a compact researchHandoff with confirmed discoveries, uncertainties, unresolved threads, and source URLs as leads—not source bodies or hidden reasoning.",
   ].join("\n");
 }
@@ -808,6 +807,7 @@ function validateAndMapTurn(
   modelTurn: ModelTurn,
   providerSources: ProviderSource[],
   imagePreference: ImagePreference = "when-useful",
+  providerImages: ProviderImage[] = [],
 ) {
   const topicLabel = boundedString(modelTurn.topicLabel, 2, 56, "topic label");
   const transition = boundedString(modelTurn.transition, 35, 420, "transition");
@@ -818,7 +818,7 @@ function validateAndMapTurn(
     "research summary",
   );
   const researchHandoff = validateHandoff(modelTurn.researchHandoff, providerSources);
-  const media = imagePreference === "avoid" ? null : validateMedia(modelTurn.media, providerSources);
+  const media = imagePreference === "avoid" ? [] : validateMediaGallery(providerImages, topicLabel);
   if (modelTurn.preferredPosition !== 0 && modelTurn.preferredPosition !== 1) {
     throw validationFailure("The preferred path was invalid.");
   }
@@ -828,7 +828,7 @@ function validateAndMapTurn(
   const options = modelTurn.options.map((option, index) => {
     if (!isObject(option)) throw validationFailure(`Path ${index + 1} was invalid.`);
     return {
-      question: boundedString(option.question, 12, 220, `path ${index + 1}`),
+      question: boundedString(option.question, 12, 110, `path ${index + 1}`),
       angle: boundedString(option.angle, 2, 32, `path ${index + 1} angle`),
     };
   });
@@ -871,6 +871,19 @@ function validateAndMapTurn(
     url: source.url,
     relation: citedSourceIds.has(stableKey(source.url)) ? "cited" : "consulted",
   }));
+  for (const image of media) {
+    if (sources.some((source) => citationComparableUrl(source.url) === citationComparableUrl(image.sourcePageUrl))) {
+      continue;
+    }
+    const host = new URL(image.sourcePageUrl).hostname.replace(/^www\./, "");
+    sources.push({
+      id: stableKey(image.sourcePageUrl),
+      title: image.caption,
+      publisher: host,
+      url: image.sourcePageUrl,
+      relation: "image",
+    });
+  }
 
   return {
     topicLabel,
@@ -975,6 +988,32 @@ function extractSources(response: OpenAIResponse): ProviderSource[] {
   return dedupeSources(candidates).slice(0, 16);
 }
 
+function extractImages(response: OpenAIResponse): ProviderImage[] {
+  if (!Array.isArray(response.output)) return [];
+  const images: ProviderImage[] = [];
+  for (const item of response.output) {
+    if (!isObject(item) || item.type !== "web_search_call") continue;
+    const results = Array.isArray(item.results)
+      ? item.results
+      : isObject(item.action) && Array.isArray(item.action.results)
+        ? item.action.results
+        : [];
+    for (const result of results) {
+      if (!isObject(result) || result.type !== "image_result") continue;
+      const imageUrl = canonicalUrl(stringValue(result.image_url));
+      const sourcePageUrl = canonicalUrl(stringValue(result.source_website_url));
+      if (!imageUrl || !sourcePageUrl) continue;
+      images.push({
+        imageUrl,
+        sourcePageUrl,
+        thumbnailUrl: canonicalUrl(stringValue(result.thumbnail_url)) ?? undefined,
+        caption: stringValue(result.caption),
+      });
+    }
+  }
+  return images;
+}
+
 function addProviderSource(target: ProviderSource[], value: unknown) {
   if (!isObject(value)) return;
   const canonical = canonicalUrl(stringValue(value.url));
@@ -1064,15 +1103,27 @@ function normalizeGeneratedProse(value: string) {
     .replace(/\s+/g, " ");
 }
 
-function validateMedia(value: ModelTurn["media"], sources: ProviderSource[]): TurnMedia | null {
-  if (!isObject(value) || value.available !== true) return null;
-  const imageUrl = canonicalUrl(stringValue(value.imageUrl));
-  const source = matchSource(stringValue(value.sourcePageUrl), sources);
-  const caption = normalizeGeneratedProse(stringValue(value.caption));
-  const alt = normalizeGeneratedProse(stringValue(value.alt));
-  if (!imageUrl || !source || !isSafePublicImageUrl(imageUrl)) return null;
-  if (caption.length < 8 || caption.length > 384 || alt.length < 4 || alt.length > 288) return null;
-  return { imageUrl, sourcePageUrl: source.url, caption, alt };
+function validateMediaGallery(values: ProviderImage[], topicLabel: string): TurnMedia[] {
+  const seen = new Set<string>();
+  const gallery: TurnMedia[] = [];
+  for (const value of values) {
+    const imageUrl = canonicalUrl(value.imageUrl);
+    const sourcePageUrl = canonicalUrl(value.sourcePageUrl);
+    const thumbnailUrl = canonicalUrl(value.thumbnailUrl ?? "");
+    if (!imageUrl || !sourcePageUrl || !isSafePublicImageUrl(imageUrl) || seen.has(imageUrl)) continue;
+    if (thumbnailUrl && !isSafePublicImageUrl(thumbnailUrl)) continue;
+    seen.add(imageUrl);
+    const caption = normalizeGeneratedProse(value.caption).slice(0, 384) || `Visual reference for ${topicLabel}`;
+    gallery.push({
+      imageUrl,
+      ...(thumbnailUrl ? { thumbnailUrl } : {}),
+      sourcePageUrl,
+      caption,
+      alt: caption.slice(0, 288),
+    });
+    if (gallery.length === 10) break;
+  }
+  return gallery;
 }
 
 function isSafePublicImageUrl(value: string) {
@@ -1116,6 +1167,7 @@ export const liveResearchTestHooks = {
   applyCitationRepair,
   applyCitationRecovery,
   buildResearchInput,
+  extractImages,
   extractSources,
   pruneUnsupportedBlocks,
   validateAndMapTurn,

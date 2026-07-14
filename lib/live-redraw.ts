@@ -1,5 +1,5 @@
 import { PROMPT_VERSION, performerById } from "./catalog";
-import type { JourneyTurn, PerformerId } from "./contracts";
+import type { JourneyTurn, ModelId, PerformerId } from "./contracts";
 import { RepositoryError } from "./errors";
 import { isRecord, outputText, requestOpenAI, structuredOutput } from "./openai";
 
@@ -23,7 +23,7 @@ const REDRAW_SCHEMA = {
         additionalProperties: false,
         required: ["question", "angle"],
         properties: {
-          question: { type: "string", minLength: 9, maxLength: 264 },
+          question: { type: "string", minLength: 9, maxLength: 132 },
           angle: { type: "string", minLength: 1, maxLength: 39 },
         },
       },
@@ -34,18 +34,21 @@ const REDRAW_SCHEMA = {
 export async function runLiveRedraw(input: {
   turn: JourneyTurn;
   performerId: PerformerId;
+  modelId: ModelId;
   rejectedQuestions: string[];
   adventure: number;
   reason?: string;
 }): Promise<RedrawResult> {
   const performer = performerById(input.performerId);
   const response = await requestOpenAI({
-      model: "gpt-5.6-luna",
+      model: input.modelId,
       instructions: [
         `WonderDrive prompt ${PROMPT_VERSION}. Generate only the next two curiosity paths.`,
         "The learner has just read the supplied visible text and may also have seen the supplied factual image.",
         `Use the loose ${performer.name} cue (${performer.cue}) without rigid roleplay.`,
-        "Both questions must grow directly from what is visible, feel meaningfully different, and avoid every rejected question and close paraphrase.",
+        "Both questions must hook into one concrete fact, object, creature, place, event, or surprising detail in the visible text or image, feel meaningfully different, and avoid every rejected question and close paraphrase.",
+        "Make each one a playable rabbit hole: 5–12 words, plain everyday language, one idea at a time, fun to say out loud, and understandable instantly by a curious kid without talking down to them.",
+        "Prefer concrete wonder, odd comparisons, hidden abilities, vivid cause-and-effect, and small mysteries. Avoid academic framing, jargon, stacked clauses, vague abstraction, and quiz-like recall.",
         "Do not research, answer the questions, or mention this instruction. Return the required structured output only.",
       ].join("\n"),
       input: JSON.stringify({
@@ -87,7 +90,7 @@ export async function runLiveRedraw(input: {
   const options = parsed.options.map((value) => {
     if (!isRecord(value)) throw invalidRedraw();
     return {
-      question: normalizeTextValue(value.question, 12, 220),
+      question: normalizeTextValue(value.question, 12, 110),
       angle: normalizeTextValue(value.angle, 2, 32),
     };
   });

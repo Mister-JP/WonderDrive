@@ -160,42 +160,26 @@ export function WonderDriveExperience() {
     imagePreference: ImagePreference;
   }) {
     await runMutation("create", async () => {
-      if (config.modelId === "gpt-5.6-luna") {
-        setView("journey");
-        setLiveResearch({
-          question: config.seed,
-          performerId: config.performerId,
-          message: "Connecting to live foreground research…",
-          events: [],
-          status: "running",
-          result: null,
-          error: null,
-        });
-        const complete = await streamLiveResearch(
-          {
-            kind: "create",
-            ...config,
-            modelId: "gpt-5.6-luna",
-            idempotencyKey: crypto.randomUUID(),
-          },
-          setLiveResearch,
-        );
-        presentJourney(complete.data, complete.viewer);
-        setLiveResearch((current) =>
-          current
-            ? { ...current, status: "complete", result: complete.data, message: "Research committed" }
-            : current,
-        );
-        return;
-      }
-      const payload = await api<JourneyDetail>("/api/journeys", {
-        method: "POST",
-        body: JSON.stringify({
-          ...config,
-          idempotencyKey: crypto.randomUUID(),
-        }),
+      setView("journey");
+      setLiveResearch({
+        question: config.seed,
+        performerId: config.performerId,
+        message: "Connecting to live foreground research…",
+        events: [],
+        status: "running",
+        result: null,
+        error: null,
       });
-        presentJourney(payload.data, payload.viewer);
+      const complete = await streamLiveResearch(
+        { kind: "create", ...config, idempotencyKey: crypto.randomUUID() },
+        setLiveResearch,
+      );
+      presentJourney(complete.data, complete.viewer);
+      setLiveResearch((current) =>
+        current
+          ? { ...current, status: "complete", result: complete.data, message: "Research committed" }
+          : current,
+      );
     }, (message) => {
       setLiveResearch((current) =>
         current ? { ...current, status: "error", error: message, message: "Research stopped" } : null,
@@ -209,7 +193,7 @@ export function WonderDriveExperience() {
   ) {
     if (!activeJourney) return;
     await runMutation(action, async () => {
-      if (activeJourney.modelId === "gpt-5.6-luna" && action !== "reject") {
+      if (action !== "reject") {
         const fromTurn = activeJourney.turns.find((turn) => turn.id === input.turnId);
         const selected =
           action === "delegate"
@@ -724,7 +708,9 @@ function StartStage({
             <span className="start-select-wrap model-select-wrap">
               <select value={modelId} onChange={(event) => setModelId(event.target.value as ModelId)}>
                 {catalog.models.map((item) => (
-                  <option value={item.id} key={item.id}>{item.name} — {item.mode === "live" ? item.speedBand : "free demo"}</option>
+                  <option value={item.id} key={item.id}>
+                    {item.name} — {item.speedBand} · ${item.inputUsdPerMillion}/$${item.outputUsdPerMillion}
+                  </option>
                 ))}
               </select>
             </span>
@@ -738,14 +724,12 @@ function StartStage({
         </div>
 
         <button className="launch-button launch-button-simple" type="submit" disabled={creating || seed.trim().length < 3}>
-          <span>{creating ? "Researching in the foreground…" : model.mode === "live" ? "Begin the wonder" : "Begin the free demo"}</span>
+          <span>{creating ? "Researching in the foreground…" : "Begin the wonder"}</span>
           <i aria-hidden="true">→</i>
         </button>
         <p className="honesty-note">
           <span aria-hidden="true">◉</span>
-          {model.mode === "live"
-            ? "Live web research · sources included · you’ll watch it unfold"
-            : "Reviewed material · no provider request or charge"}
+          {model.disclosure} Input/output prices shown per 1M tokens; search is metered separately.
         </p>
       </form>
     </section>
@@ -977,11 +961,11 @@ function PerformanceStage({
         </div>
       )}
 
-      <article className="contained-answer-card has-media">
+      <article className={`contained-answer-card ${turn.media.length ? "has-media" : "without-media"}`}>
         <div className="contained-answer-topline">
           <div className="answer-byline compact-byline">
             <span className={`performer-mark ${performer.accent}`}>{performer.mark}</span>
-            <div><strong>{performer.name}</strong><small>{turn.research.mode === "live" ? "performed from live web research" : "performed from a reviewed fixture"}</small></div>
+            <div><strong>{performer.name}</strong><small>performed from live web research</small></div>
             <span className="ready-stamp">COMPOSED</span>
           </div>
           <div className="contained-answer-tools">
@@ -1006,17 +990,17 @@ function PerformanceStage({
             <div className="answer-tags" aria-label="Answer characteristics">
               <span>{turn.topicLabel}</span>
               <span>{turn.sources.length} checked sources</span>
-              <span>{turn.research.mode === "live" ? "live research" : "reviewed demo"}</span>
+              <span>live research</span>
             </div>
           </div>
 
-          <AnswerVisual media={turn.media} topic={turn.topicLabel} performerMark={performer.mark} />
+          <AnswerVisual media={turn.media} />
         </div>
 
         <button ref={deepDiveTriggerRef} className="evidence-research-row" type="button" onClick={() => setDeepDiveOpen(true)}>
           <span><strong>Evidence &amp; research details</strong><small>Sources, activity, cost, model, and metadata</small></span>
           <span className="evidence-row-metrics">
-            {turn.sources.length} sources · {turn.research.mode === "live" ? `${turn.research.usage.webSearchCalls} searches · $${turn.research.usage.estimatedCostUsd.toFixed(3)} · ${Math.round(turn.research.usage.latencyMs / 1000)}s` : "reviewed fixture"} · {turn.metadata.modelId}
+            {turn.sources.length} sources · {turn.research.usage.webSearchCalls} searches · ${turn.research.usage.estimatedCostUsd.toFixed(3)} · {Math.round(turn.research.usage.latencyMs / 1000)}s · {turn.metadata.modelId}
           </span>
           <span className="deep-dive-cta">Deeper dive ↗</span>
         </button>
@@ -1069,7 +1053,7 @@ function PerformanceStage({
                 {turn.answerBlocks.map((block, blockIndex) => <p key={`${turn.id}-deep-${blockIndex}`}>{block.text} {citations(block.sourceIds)}</p>)}
               </div>
               <aside className="deep-dive-evidence">
-                <AnswerVisual media={turn.media} topic={turn.topicLabel} performerMark={performer.mark} compact />
+                <AnswerVisual media={turn.media} compact />
                 <h3>Sources</h3>
                 <ol>{turn.sources.map((source, index) => <li key={source.id}><span>{index + 1}</span><div><strong>{source.title}</strong><small>{source.publisher} · {source.relation}</small></div><a href={source.url} target="_blank" rel="noreferrer">Open ↗</a></li>)}</ol>
               </aside>
@@ -1093,36 +1077,39 @@ function PerformanceStage({
 
 function AnswerVisual({
   media,
-  topic,
-  performerMark,
   compact = false,
 }: {
   media: JourneyTurn["media"];
-  topic: string;
-  performerMark: string;
   compact?: boolean;
 }) {
-  const [failedUrl, setFailedUrl] = useState<string | null>(null);
-  const showFallback = !media || failedUrl === media.imageUrl;
+  const [failedUrls, setFailedUrls] = useState<string[]>([]);
+  const visible = media.filter((item) => !failedUrls.includes(item.imageUrl)).slice(0, compact ? 4 : 8);
+  if (!visible.length) return null;
   return (
-    <figure className={`contained-answer-media ${showFallback ? "visual-fallback" : ""} ${compact ? "compact-visual" : ""}`}>
-      <div className="answer-visual-stage">
-        <div className="fallback-art" role="img" aria-label={`Abstract illustration for ${topic}`}>
-          <span className="fallback-orbit" aria-hidden="true" />
-          <span className="fallback-mark" aria-hidden="true">{performerMark}</span>
-          <strong>{topic}</strong>
-          <small>WonderDrive field note</small>
-        </div>
-        {!showFallback && <a className="answer-visual-source" href={media.sourcePageUrl} target="_blank" rel="noreferrer">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={media.imageUrl} alt={media.alt} loading="eager" referrerPolicy="no-referrer" onError={() => setFailedUrl(media.imageUrl)} />
-        </a>}
+    <section className={`answer-gallery ${compact ? "compact-visual" : ""}`} aria-label={`${visible.length} visual references`}>
+      <div className="answer-gallery-heading">
+        <span>Visual field notes</span>
+        <small>{visible.length} sourced image{visible.length === 1 ? "" : "s"}</small>
       </div>
-      <figcaption>
-        <span>{showFallback ? `A visual marker for ${topic}` : media.caption}</span>
-        {!showFallback && <a href={media.sourcePageUrl} target="_blank" rel="noreferrer">Source ↗</a>}
-      </figcaption>
-    </figure>
+      <div className="answer-gallery-grid">
+        {visible.map((item, index) => (
+          <figure className="answer-gallery-item" key={`${item.imageUrl}-${index}`}>
+            <a href={item.sourcePageUrl} target="_blank" rel="noreferrer" aria-label={`${item.caption}. Open source.`}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={item.thumbnailUrl || item.imageUrl}
+                alt={item.alt}
+                loading={index === 0 ? "eager" : "lazy"}
+                referrerPolicy="no-referrer"
+                onError={() => setFailedUrls((current) => current.includes(item.imageUrl) ? current : [...current, item.imageUrl])}
+              />
+              <span>{String(index + 1).padStart(2, "0")}</span>
+            </a>
+            <figcaption>{item.caption}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -1140,54 +1127,140 @@ function JourneyMap({
   onChoose: (turnId: string, optionId: string) => void;
 }) {
   const activeTurn = journey.turns.find((turn) => turn.id === activeTurnId) ?? journey.turns[0];
-  const childCount = journey.turns.filter((turn) => turn.parentTurnId === activeTurn.id).length;
+  const turnNumber = (turnId: string) => journey.turns.findIndex((turn) => turn.id === turnId) + 1;
+  const activePath = useMemo(() => {
+    const turnsById = new Map(journey.turns.map((turn) => [turn.id, turn]));
+    const path: JourneyTurn[] = [];
+    let cursor = turnsById.get(journey.currentTurnId);
+    while (cursor) {
+      path.push(cursor);
+      cursor = cursor.parentTurnId ? turnsById.get(cursor.parentTurnId) : undefined;
+    }
+    return path.reverse();
+  }, [journey.currentTurnId, journey.turns]);
+  const activePathIds = new Set(activePath.map((turn) => turn.id));
+  const branchTurns = journey.turns.filter((turn) => !activePathIds.has(turn.id));
+  const otherOpenPaths = journey.turns.flatMap((turn) =>
+    turn.id === activeTurn.id
+      ? []
+      : turn.options
+          .filter((option) => option.state === "proposed")
+          .map((option) => ({ option, turn })),
+  );
+  const selectedIsOffPath = !activePathIds.has(activeTurn.id);
+
   return (
     <section className="map-view" aria-labelledby="map-title">
-      <header className="view-heading">
-        <div><p className="eyebrow"><span /> Saved journey / version {journey.version}</p><h1 id="map-title">The path is<br /><em>part of the answer.</em></h1></div>
-        <div><p>{journey.title}</p><span>{journey.turnCount} turns · {journey.sourceCount} sources</span></div>
+      <header className="map-header">
+        <div>
+          <p className="eyebrow"><span /> Your journey</p>
+          <h1 id="map-title">{journey.title}</h1>
+          <p>Follow the path you took, revisit a turn, or open a question you left behind.</p>
+        </div>
+        <dl aria-label="Journey overview">
+          <div><dt>Current</dt><dd>{activePath.length} of {journey.turnCount}</dd></div>
+          <div><dt>Open paths</dt><dd>{journey.openBranchCount}</dd></div>
+          <div><dt>Sources</dt><dd>{journey.sourceCount}</dd></div>
+        </dl>
       </header>
-      <div className="map-layout">
-        <div className="turn-tree" role="tree" aria-label="Journey turns">
-          <div className="map-legend"><span><i className="current" /> current</span><span><i className="visited" /> visited</span><span><i className="selected" /> selected</span></div>
-          {journey.turns.map((turn, index) => {
+
+      <section className="active-path" aria-labelledby="active-path-title">
+        <div className="map-section-heading">
+          <div><span>Active path</span><h2 id="active-path-title">How you got here</h2></div>
+          <p>Choose any turn to see its two directions.</p>
+        </div>
+        <ol className="active-path-list">
+          {activePath.map((turn) => {
             const current = turn.id === journey.currentTurnId;
-            const selected = turn.id === activeTurnId;
+            const selected = turn.id === activeTurn.id;
             return (
+              <li key={turn.id} className={selected ? "selected" : ""}>
+                <button
+                  type="button"
+                  className="path-turn"
+                  aria-pressed={selected}
+                  aria-current={current ? "step" : undefined}
+                  onClick={() => onSelect(turn.id)}
+                >
+                  <span className="path-turn-number">{turnNumber(turn.id)}</span>
+                  <span className="path-turn-copy">
+                    <small>{turn.topicLabel}</small>
+                    <strong>{turn.question}</strong>
+                  </span>
+                  <span className={`path-turn-status ${current ? "current" : "explored"}`}>
+                    {current ? "You are here" : "Explored"}
+                  </span>
+                </button>
+              </li>
+            );
+          })}
+        </ol>
+      </section>
+
+      {selectedIsOffPath && (
+        <div className="off-path-notice" role="status">
+          <span>Earlier branch</span>
+          <p>This turn is outside your current path. Exploring an open question here creates a new visible branch.</p>
+        </div>
+      )}
+
+      <section className="selected-turn-paths" aria-labelledby="selected-paths-title">
+        <div className="selected-turn-heading">
+          <div>
+            <span>Turn {turnNumber(activeTurn.id)} selected</span>
+            <h2 id="selected-paths-title">Where could this turn go?</h2>
+          </div>
+        </div>
+        <div className="selected-path-grid">
+          {activeTurn.options.map((option) => {
+            const open = option.state === "proposed";
+            return open ? (
               <button
                 type="button"
-                role="treeitem"
-                aria-selected={selected}
-                key={turn.id}
-                className={`turn-node ${current ? "current" : "visited"} ${selected ? "selected" : ""}`}
-                style={{ marginInlineStart: `${Math.min(turn.depth, 6) * 46}px` }}
-                onClick={() => onSelect(turn.id)}
+                className="selected-path-card open"
+                key={option.id}
+                onClick={() => onChoose(activeTurn.id, option.id)}
               >
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <i aria-hidden="true" />
-                <div><small>{turn.topicLabel}{current ? " · current" : ""}</small><strong>{turn.question}</strong></div>
-                <b aria-hidden="true">→</b>
+                <span>Option {option.position === 0 ? "A" : "B"} · open</span>
+                <strong>{option.question}</strong>
+                <small>Explore this question</small>
               </button>
+            ) : (
+              <div className={`selected-path-card ${option.state}`} key={option.id}>
+                <span>Option {option.position === 0 ? "A" : "B"} · {option.state === "chosen" ? "path taken" : option.state}</span>
+                <strong>{option.question}</strong>
+                <small>{option.state === "chosen" ? "This answer continues in the map above." : "This direction is no longer active."}</small>
+              </div>
             );
           })}
         </div>
-        <aside className="map-inspector">
-          <span>Selected turn / {activeTurn.depth + 1}</span>
-          <h2>{activeTurn.question}</h2>
-          <p>{activeTurn.researchSummary}</p>
-          <dl><div><dt>Topic</dt><dd>{activeTurn.topicLabel}</dd></div><div><dt>Branches from here</dt><dd>{childCount}</dd></div><div><dt>Sources</dt><dd>{activeTurn.sources.length}</dd></div></dl>
-          <div className="map-options" aria-label="Turn paths">
-            {activeTurn.options.map((option) => (
-              <button type="button" key={option.id} disabled={option.state !== "proposed"} onClick={() => onChoose(activeTurn.id, option.id)}>
-                <span>{option.position === 0 ? "A" : "B"} · {option.state}</span>
+        <button type="button" className="open-turn-answer" onClick={() => onContinue(activeTurn.id)}>
+          {activeTurn.id === journey.currentTurnId ? "Open full answer" : "Revisit this answer"}
+        </button>
+      </section>
+
+      {(otherOpenPaths.length > 0 || branchTurns.length > 0) && (
+        <details className="other-paths">
+          <summary>
+            <span>Other paths</span>
+            <strong>{otherOpenPaths.length} open question{otherOpenPaths.length === 1 ? "" : "s"}{branchTurns.length ? ` · ${branchTurns.length} earlier branch${branchTurns.length === 1 ? "" : "es"}` : ""}</strong>
+          </summary>
+          <div className="other-path-groups">
+            {branchTurns.map((turn) => (
+              <button type="button" className="other-branch-turn" key={turn.id} onClick={() => onSelect(turn.id)}>
+                <span>Earlier branch · turn {turnNumber(turn.id)}</span>
+                <strong>{turn.question}</strong>
+              </button>
+            ))}
+            {otherOpenPaths.map(({ option, turn }) => (
+              <button type="button" className="other-open-path" key={option.id} onClick={() => onChoose(turn.id, option.id)}>
+                <span>Open from turn {turnNumber(turn.id)} · {turn.topicLabel}</span>
                 <strong>{option.question}</strong>
               </button>
             ))}
           </div>
-          <button type="button" onClick={() => onContinue(activeTurn.id)}>{activeTurn.id === journey.currentTurnId ? "Return to this turn" : "Revisit & branch"} <span>↗</span></button>
-          <small>Earlier turns remain saved even when you choose a new direction.</small>
-        </aside>
-      </div>
+        </details>
+      )}
     </section>
   );
 }

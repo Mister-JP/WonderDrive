@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { MODELS } from "../lib/catalog.ts";
 import { buildFixtureTurn } from "../lib/fixtures.ts";
 
 const input = {
@@ -7,6 +8,13 @@ const input = {
   depth: 0,
   performerId: "sage",
 };
+
+test("publishes only selectable live OpenAI research models", () => {
+  assert.equal(MODELS.length, 7);
+  assert.ok(MODELS.every((model) => model.provider === "OpenAI" && model.mode === "live"));
+  assert.ok(MODELS.some((model) => model.id === "gpt-5.4-nano"));
+  assert.ok(!MODELS.some((model) => model.id === "fixture-terra"));
+});
 
 test("fixture turn is deterministic and returns exactly two distinct paths", () => {
   const first = buildFixtureTurn(input);

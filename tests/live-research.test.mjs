@@ -70,6 +70,40 @@ test("normalizes and deduplicates provider-returned web sources", () => {
   assert.equal(sources[1].publisher, "research.example.net");
 });
 
+test("extracts image search results into a graceful media gallery", () => {
+  const response = {
+    output: [{
+      type: "web_search_call",
+      results: [
+        {
+          type: "image_result",
+          image_url: "https://images.example.org/bridge.jpg",
+          thumbnail_url: "https://images.example.org/bridge-thumb.jpg",
+          source_website_url: "https://example.org/bridge",
+          caption: "A suspension bridge showing its main cables.",
+        },
+        {
+          type: "image_result",
+          image_url: "https://images.example.org/joint.jpg",
+          source_website_url: "https://example.org/joints",
+          caption: "A close view of an expansion joint.",
+        },
+      ],
+    }],
+  };
+  const images = liveResearchTestHooks.extractImages(response);
+  const mapped = liveResearchTestHooks.validateAndMapTurn(
+    validTurn,
+    liveResearchTestHooks.extractSources(providerResponse),
+    "prefer",
+    images,
+  );
+
+  assert.equal(mapped.media.length, 2);
+  assert.equal(mapped.media[0].thumbnailUrl, "https://images.example.org/bridge-thumb.jpg");
+  assert.ok(mapped.sources.some((source) => source.relation === "image"));
+});
+
 test("accepts only citations that belong to the provider source set", () => {
   const sources = liveResearchTestHooks.extractSources(providerResponse);
   const mapped = liveResearchTestHooks.validateAndMapTurn(validTurn, sources);
@@ -79,6 +113,22 @@ test("accepts only citations that belong to the provider source set", () => {
   assert.equal(mapped.answerBlocks.length, 2);
   assert.ok(mapped.answerBlocks.every((block) => block.sourceIds.length === 1));
   assert.equal(mapped.sources.filter((source) => source.relation === "cited").length, 2);
+});
+
+test("rejects an overlong next-question rabbit hole", () => {
+  const sources = liveResearchTestHooks.extractSources(providerResponse);
+  const overlong = structuredClone(validTurn);
+  overlong.options[0].question = `${"Why does this surprising detail need another complicated explanation ".repeat(3)}?`;
+  const originalError = console.error;
+  console.error = () => {};
+  try {
+    assert.throws(
+      () => liveResearchTestHooks.validateAndMapTurn(overlong, sources),
+      (error) => error?.code === "SCHEMA_INVALID",
+    );
+  } finally {
+    console.error = originalError;
+  }
 });
 
 test("accepts harmless citation URL aliases without using domain-only matching", () => {
@@ -278,7 +328,11 @@ test("runs exactly one no-search repair after an initial citation mismatch", asy
     }, (event) => events.push(event));
 
     assert.equal(requests.length, 2);
-    assert.deepEqual(requests[0].tools, [{ type: "web_search" }]);
+    assert.deepEqual(requests[0].tools, [{
+      type: "web_search",
+      search_content_types: ["image", "text"],
+      image_settings: { max_results: 10, caption: true },
+    }]);
     assert.equal(requests[1].tools, undefined);
     assert.equal(draft.answerBlocks[0].sourceIds.length, 1);
     assert.equal(draft.usage.inputTokens, 120);

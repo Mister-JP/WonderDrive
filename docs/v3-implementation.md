@@ -5,7 +5,7 @@ This release closes the implementation gaps identified against the final researc
 ## Turn contract
 
 - Sage, Spark, and Mechanist are versioned performer contracts with visible samples, values, voice traits, failure boundaries, and research posture.
-- The model registry discloses provider, snapshot, capabilities, speed, quality, cost band, price-effective date, and recommendation state. GPT-5.6 Luna is the selected live model; Reviewed free demo is an explicit zero-cost fixture.
+- The model registry discloses provider, snapshot, capabilities, speed, quality, cost band, price-effective date, and recommendation state. Visitors can select any current general-purpose OpenAI model compatible with WonderDrive's Responses, web-search, and structured-output contract; GPT-5.6 Luna remains the recommended default.
 - Research preset, answer density, and factual-image preference are independent inputs.
 - The same selected model researches and performs each live turn. It receives a bounded context packet with ancestor handoffs and audience signals.
 - A validated turn contains two to five cited answer blocks and exactly two distinct next paths. Unchosen paths stay open and can create visible branches later.

@@ -425,7 +425,7 @@ export type FixtureTurnDraft = {
   topicLabel: string;
   answer: string;
   answerBlocks: AnswerBlock[];
-  media: TurnMedia | null;
+  media: TurnMedia[];
   transition: string;
   researchSummary: string;
   researchHandoff: {
@@ -470,7 +470,7 @@ export function buildFixtureTurn(input: {
     topicLabel: theme.label,
     answer: blocks.map((block) => block.text).join("\n\n"),
     answerBlocks: blocks,
-    media: theme.media ?? null,
+    media: theme.media ? [theme.media] : [],
     transition: theme.transition,
     researchSummary: theme.researchSummary,
     researchHandoff: {

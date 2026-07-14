@@ -1,5 +1,12 @@
 export type PerformerId = "sage" | "spark" | "mechanist";
-export type ModelId = "gpt-5.6-luna" | "fixture-terra";
+export type ModelId =
+  | "gpt-5.6-sol"
+  | "gpt-5.6-terra"
+  | "gpt-5.6-luna"
+  | "gpt-5.5"
+  | "gpt-5.4"
+  | "gpt-5.4-mini"
+  | "gpt-5.4-nano";
 export type ResearchPreset = "spark" | "standard" | "deep";
 export type AnswerDensity = "brief" | "balanced" | "rich";
 export type TextSize = "s" | "m" | "l" | "xl";
@@ -114,6 +121,7 @@ export type AnswerBlock = {
 
 export type TurnMedia = {
   imageUrl: string;
+  thumbnailUrl?: string;
   sourcePageUrl: string;
   caption: string;
   alt: string;
@@ -152,7 +160,7 @@ export type JourneyTurn = {
   question: string;
   answer: string;
   answerBlocks: AnswerBlock[];
-  media: TurnMedia | null;
+  media: TurnMedia[];
   transition: string;
   topicLabel: string;
   researchSummary: string;
@@ -253,7 +261,7 @@ export type LiveResearchRequest =
       kind: "create";
       seed: string;
       performerId: PerformerId;
-      modelId: "gpt-5.6-luna";
+      modelId: ModelId;
       researchPreset: ResearchPreset;
       answerDensity: AnswerDensity;
       imagePreference: ImagePreference;

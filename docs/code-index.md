@@ -57,7 +57,7 @@ Read [architecture.md](architecture.md) for system boundaries and change rules. 
 | [`scripts/generate-simple-progressive-journey-board.mjs`](../scripts/generate-simple-progressive-journey-board.mjs) | — |
 | [`scripts/generate-unified-information-loading-board.mjs`](../scripts/generate-unified-information-loading-board.mjs) | — |
 | [`tests/cloudflare-loader.mjs`](../tests/cloudflare-loader.mjs) | — |
-| [`tests/fixtures.test.mjs`](../tests/fixtures.test.mjs) | [`lib/fixtures.ts`](../lib/fixtures.ts) |
+| [`tests/fixtures.test.mjs`](../tests/fixtures.test.mjs) | [`lib/catalog.ts`](../lib/catalog.ts)<br>[`lib/fixtures.ts`](../lib/fixtures.ts) |
 | [`tests/live-research.test.mjs`](../tests/live-research.test.mjs) | [`lib/live-research.ts`](../lib/live-research.ts) |
 | [`tests/rendered-html.test.mjs`](../tests/rendered-html.test.mjs) | — |
 | [`vite.config.ts`](../vite.config.ts) | [`build/sites-vite-plugin.ts`](../build/sites-vite-plugin.ts) |

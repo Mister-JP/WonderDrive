@@ -113,7 +113,7 @@ export async function prepareLiveResearch(
   if ((spend?.project_spend ?? 0) >= projectBudgetUsd * 1_000_000) {
     throw new RepositoryError(
       "BUDGET_EXCEEDED",
-      "WonderDrive’s live research budget is paused for this 24-hour window. The reviewed free demo remains available.",
+      "WonderDrive’s live research budget is paused for this 24-hour window.",
       429,
       true,
     );
@@ -139,7 +139,7 @@ export async function prepareLiveResearch(
   if ((recent?.count ?? 0) >= liveLimit) {
     throw new RepositoryError(
       "LIVE_RESEARCH_LIMIT",
-      `This ${viewer.mode === "guest" ? "guest" : "account"} has reached its ${liveLimit}-run live research limit for the last 24 hours. The free demo remains available.`,
+      `This ${viewer.mode === "guest" ? "guest" : "account"} has reached its ${liveLimit}-run live research limit for the last 24 hours.`,
       429,
       true,
     );
@@ -154,7 +154,7 @@ export async function prepareLiveResearch(
     seed: normalized.seed,
     depth: normalized.depth,
     performerId: normalized.performerId,
-    modelId: "gpt-5.6-luna",
+    modelId: normalized.modelId,
     researchPreset: normalized.researchPreset,
     answerDensity: normalized.answerDensity,
     imagePreference: normalized.imagePreference,
@@ -768,7 +768,6 @@ async function normalizeRequest(viewer: ViewerContext, request: LiveResearchRequ
       throw new RepositoryError("BAD_REQUEST", "Choose a supported performer.", 400);
     }
     if (
-      request.modelId !== "gpt-5.6-luna" ||
       !MODELS.some((model) => model.id === request.modelId && model.mode === "live")
     ) {
       throw new RepositoryError("BAD_REQUEST", "Choose the supported live research model.", 400);
@@ -809,6 +808,7 @@ async function normalizeRequest(viewer: ViewerContext, request: LiveResearchRequ
       seed,
       depth: 0,
       performerId: request.performerId,
+      modelId: request.modelId,
       researchPreset: request.researchPreset,
       answerDensity: request.answerDensity,
       imagePreference: request.imagePreference,
@@ -833,12 +833,10 @@ async function normalizeRequest(viewer: ViewerContext, request: LiveResearchRequ
     throw new RepositoryError("BAD_REQUEST", "A valid journey version is required.", 400);
   }
   const journey = await getJourney(viewer, request.journeyId);
-  if (journey.modelId !== "gpt-5.6-luna") {
+  if (!MODELS.some((model) => model.id === journey.modelId && model.mode === "live")) {
     throw new RepositoryError(
       "BAD_REQUEST",
-      journey.modelId === "fixture-terra"
-        ? "This saved journey uses the free demo model."
-        : "This journey uses the retired Terra live model. Start a new Luna journey to continue live research.",
+      "This saved journey uses a model that is no longer available for live research.",
       400,
     );
   }
@@ -875,6 +873,7 @@ async function normalizeRequest(viewer: ViewerContext, request: LiveResearchRequ
     seed: journey.seed,
     depth: fromTurn.depth + 1,
     performerId: journey.performerId,
+    modelId: journey.modelId,
     researchPreset: journey.researchPreset,
     answerDensity: journey.answerDensity,
     imagePreference: journey.imagePreference,

@@ -135,7 +135,7 @@ export async function createJourney(
   request: CreateJourneyRequest,
 ): Promise<JourneyDetail> {
   validateCreateRequest(request);
-  if (request.modelId !== "fixture-terra") {
+  if (String(request.modelId) !== "fixture-terra") {
     throw new RepositoryError(
       "BAD_REQUEST",
       "Live models must use the foreground research route.",
@@ -567,7 +567,7 @@ export async function advanceJourney(
   }
 
   const journey = await getJourney(viewer, journeyId);
-  if (journey.modelId !== "fixture-terra" && request.action !== "reject") {
+  if (String(journey.modelId) !== "fixture-terra" && request.action !== "reject") {
     throw new RepositoryError(
       "BAD_REQUEST",
       "Live journey choices must use the foreground research route.",
@@ -594,15 +594,15 @@ export async function advanceJourney(
   if (request.action === "reject") {
     const setVersion = fromTurn.optionSetVersion + 1;
     const actionId = crypto.randomUUID();
-    const draft = journey.modelId === "gpt-5.6-luna"
-      ? await liveRedraw?.({ journey, turn: fromTurn })
-      : buildFixtureTurn({
+    const draft = String(journey.modelId) === "fixture-terra"
+      ? buildFixtureTurn({
           question: fromTurn.question,
           depth: fromTurn.depth,
           performerId: journey.performerId,
           rejectionCount: setVersion,
           adventure: request.adventure ?? 50,
-        });
+        })
+      : await liveRedraw?.({ journey, turn: fromTurn });
     if (!draft || draft.options.length !== 2) {
       throw new RepositoryError(
         "RESEARCH_VALIDATION_FAILED",
@@ -1159,15 +1159,16 @@ function parseAnswerPayload(
   if (value) {
     try {
       const parsed = JSON.parse(value);
-      if (Array.isArray(parsed)) return { blocks: parsed, media: null };
+      if (Array.isArray(parsed)) return { blocks: parsed, media: [] };
       if (parsed && typeof parsed === "object" && Array.isArray(parsed.blocks)) {
-        const media = parsed.media && typeof parsed.media === "object"
-          && typeof parsed.media.imageUrl === "string"
-          && typeof parsed.media.sourcePageUrl === "string"
-          && typeof parsed.media.caption === "string"
-          && typeof parsed.media.alt === "string"
-          ? parsed.media
-          : null;
+        const candidates = Array.isArray(parsed.media) ? parsed.media : parsed.media ? [parsed.media] : [];
+        const media = candidates.filter((item: unknown): item is JourneyTurn["media"][number] =>
+          Boolean(item) && typeof item === "object"
+          && typeof (item as JourneyTurn["media"][number]).imageUrl === "string"
+          && typeof (item as JourneyTurn["media"][number]).sourcePageUrl === "string"
+          && typeof (item as JourneyTurn["media"][number]).caption === "string"
+          && typeof (item as JourneyTurn["media"][number]).alt === "string",
+        ).slice(0, 10);
         return { blocks: parsed.blocks, media };
       }
     } catch {
@@ -1175,7 +1176,7 @@ function parseAnswerPayload(
     }
   }
   const blocks = answer.split(/\n\n+/).map((text) => ({ text, sourceIds: [] }));
-  return { blocks, media: null };
+  return { blocks, media: [] };
 }
 
 function parseResearchHandoff(value: string | null) {

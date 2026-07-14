@@ -38,7 +38,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-The local site runs at `http://localhost:3000`. Set `OPENAI_API_KEY` in `.env.local` to exercise live mode locally; the free demo and build tests require no provider key. `WONDERDRIVE_DAILY_BUDGET_USD` optionally changes the default $25 rolling project ceiling. Never expose either value through a `NEXT_PUBLIC_` variable.
+The local site runs at `http://localhost:3000`. Set `OPENAI_API_KEY` in `.env.local` to exercise live mode locally; build tests require no provider request. `WONDERDRIVE_DAILY_BUDGET_USD` optionally changes the default $25 rolling project ceiling. Never expose either value through a `NEXT_PUBLIC_` variable.
 
 Apply all SQL files in `drizzle/` to a fresh local D1 database before exercising the API. Sites applies the packaged migrations when a version is deployed.
 
@@ -79,7 +79,7 @@ tests/                Rendered production and fixture checks
 
 ## Status and scope
 
-Live mode is one foreground OpenAI Responses request with built-in web search. Presets cap tool calls, output tokens, reasoning effort, and wall time; guest and signed-in identities also have rolling live-run and estimated-spend limits. Consulted URLs, cited relations, provider request ID, complete usage, price snapshot, prompt/performer/model versions, and research handoff are saved with the committed turn. The free demo remains available for zero-provider-cost judging and development.
+Every journey uses a user-selected, compatible OpenAI model through one foreground Responses request with built-in text and optional image search. Presets cap tool calls, output tokens, reasoning effort, and wall time; guest and signed-in identities also have rolling live-run and estimated-spend limits. Consulted URLs, cited relations, sourced image results, provider request ID, complete usage, price snapshot, prompt/performer/model versions, and research handoff are saved with the committed turn.
 
 Automatic journeys, scheduled/background continuation, Trigger.dev, provider fan-out, and live parallel comparison are outside the hackathon scope.
 

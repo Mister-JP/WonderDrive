@@ -16,6 +16,7 @@ export async function POST(request: Request, context: Context) {
       runLiveRedraw({
         turn,
         performerId: journey.performerId,
+        modelId: journey.modelId,
         rejectedQuestions: [
           ...await listRejectedQuestions(viewer, journeyId),
           ...turn.options.map((option) => option.question),
