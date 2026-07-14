@@ -45,6 +45,7 @@ Apply all SQL files in `drizzle/` to a fresh local D1 database before exercising
 ## Validation
 
 ```bash
+npm run architecture:check
 npm run lint
 npm run typecheck
 npm test
@@ -59,8 +60,9 @@ npm run db:generate
 app/                  Product experience, identity helper, and server routes
 db/                   Canonical D1 schema
 drizzle/              Generated, reviewed SQL migrations
-lib/                  Contracts, reviewed fixtures, identity, and D1 repository
-docs/                 Final blueprint, architecture, and phase gates
+lib/                  Contracts, domain boundaries, providers, fixtures, and D1 repositories
+scripts/              Architecture-index maintenance tooling
+docs/                 Blueprint, architecture, generated code index, and phase gates
 tests/                Rendered production and fixture checks
 .openai/hosting.json  Logical Sites-managed bindings
 ```
@@ -72,6 +74,7 @@ tests/                Rendered production and fixture checks
 - [Phase 2 live research contract](docs/phase-2.md)
 - [V3 implementation contract](docs/v3-implementation.md)
 - [Final architecture decisions](docs/architecture.md)
+- [Current code index](docs/code-index.md)
 - [Final product and engineering blueprint](docs/WonderDrive_Final_Product_and_Engineering_Blueprint_v3_Research_First.docx)
 
 ## Status and scope

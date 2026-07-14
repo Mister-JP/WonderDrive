@@ -4,6 +4,7 @@ import type {
   PerformerId,
   ResearchEvent,
   Source,
+  TurnMedia,
 } from "./contracts";
 
 type FixtureSource = Omit<Source, "id" | "relation">;
@@ -17,11 +18,7 @@ type Theme = {
   consequence: string;
   researchSummary: string;
   transition: string;
-  interlude: {
-    text: string;
-    sourceTitle: string;
-    sourceUrl: string;
-  };
+  media?: TurnMedia;
   sources: FixtureSource[];
   optionPairs: Array<[
     { question: string; angle: string },
@@ -44,11 +41,6 @@ const themes: Theme[] = [
       "Separated sound source, transmission path, surface behavior, and human perception; checked the difference between noise control and acoustic character.",
     transition:
       "Once a room is treated as an instrument, the next curiosity is whether we should tune the room—or tune the way we listen.",
-    interlude: {
-      text: "Sound can reveal room size and surface character before vision has enough information to do the same.",
-      sourceTitle: "National Park Service — Understanding Sound",
-      sourceUrl: "https://www.nps.gov/subjects/sound/understandingsound.htm",
-    },
     sources: [
       {
         title: "Understanding Sound",
@@ -113,11 +105,6 @@ const themes: Theme[] = [
       "Reviewed scale, projection, symbolization, and collection purpose; distinguished geometric accuracy from contextual truthfulness.",
     transition:
       "If every map is an argument about relevance, the next path can follow either its technical choices or the authority behind them.",
-    interlude: {
-      text: "The same landscape can require several incompatible maps because navigation, geology, ownership, and memory ask different questions of it.",
-      sourceTitle: "Library of Congress — Geography and Map Reading Room",
-      sourceUrl: "https://www.loc.gov/research-centers/geography-and-map-reading-room/",
-    },
     sources: [
       {
         title: "Topographic Maps",
@@ -182,10 +169,11 @@ const themes: Theme[] = [
       "Compared institutional archives, public monuments, repeated routes, and contested names as different mechanisms of collective remembering.",
     transition:
       "Memory becomes especially interesting where the archive and the lived street disagree about what deserves to remain.",
-    interlude: {
-      text: "An archive preserves selected records, but its silences can be as historically consequential as its holdings.",
-      sourceTitle: "U.S. National Archives — About the Records",
-      sourceUrl: "https://www.archives.gov/research",
+    media: {
+      imageUrl: "https://tile.loc.gov/image-services/iiif/service:gmd:gmd410:g4104:g4104c:ct002834/full/pct:25/0/default.jpg",
+      sourcePageUrl: "https://www.loc.gov/item/2010587004/",
+      caption: "Souvenir map of Jackson Park and Midway Plaisance, Chicago, 1892. Library of Congress.",
+      alt: "Historic illustrated map of Jackson Park and the Midway Plaisance prepared for the World's Columbian Exposition.",
     },
     sources: [
       {
@@ -251,11 +239,6 @@ const themes: Theme[] = [
       "Traced standards, installed infrastructure, training, and feedback loops as mechanisms that make contingent choices feel natural later.",
     transition:
       "Once inevitability is reframed as accumulated reinforcement, curiosity can move toward the forgotten fork or the machinery that closed it.",
-    interlude: {
-      text: "A technical standard can shape behavior for decades precisely because successful standards become nearly invisible to ordinary users.",
-      sourceTitle: "NIST — Standards Coordination Office",
-      sourceUrl: "https://www.nist.gov/standardsgov",
-    },
     sources: [
       {
         title: "Standards Coordination Office",
@@ -320,11 +303,6 @@ const themes: Theme[] = [
       "Connected the physical range of visible light with adaptation, contrast, glare, and the design trade-off between illumination and legibility.",
     transition:
       "Light becomes a guide not when it reveals everything, but when it preserves the differences worth noticing.",
-    interlude: {
-      text: "Visible light occupies only a small band of the electromagnetic spectrum detected by human eyes.",
-      sourceTitle: "NASA Science — Visible Light",
-      sourceUrl: "https://science.nasa.gov/ems/09_visiblelight/",
-    },
     sources: [
       {
         title: "Visible Light",
@@ -391,11 +369,6 @@ const fallbackTheme: Theme = {
     "Examined the question’s boundary, scale, implied actors, and evidence standard; identified where a reframing could create a more investigable path.",
   transition:
     "The question now has enough shape to choose between investigating its mechanism and challenging the boundary it started with.",
-  interlude: {
-    text: "Library subject headings are designed to connect many differently worded questions to a shared body of material.",
-    sourceTitle: "Library of Congress — Subject Headings",
-    sourceUrl: "https://www.loc.gov/aba/publications/FreeLCSH/freelcsh.html",
-  },
   sources: [
     {
       title: "Library of Congress Subject Headings",
@@ -452,6 +425,7 @@ export type FixtureTurnDraft = {
   topicLabel: string;
   answer: string;
   answerBlocks: AnswerBlock[];
+  media: TurnMedia | null;
   transition: string;
   researchSummary: string;
   researchHandoff: {
@@ -464,7 +438,6 @@ export type FixtureTurnDraft = {
   options: Array<{ question: string; angle: string }>;
   sources: FixtureSource[];
   researchEvents: Omit<ResearchEvent, "id" | "sourceId">[];
-  interlude: Theme["interlude"] & { factKey: string };
 };
 
 export function buildFixtureTurn(input: {
@@ -497,6 +470,7 @@ export function buildFixtureTurn(input: {
     topicLabel: theme.label,
     answer: blocks.map((block) => block.text).join("\n\n"),
     answerBlocks: blocks,
+    media: theme.media ?? null,
     transition: theme.transition,
     researchSummary: theme.researchSummary,
     researchHandoff: {
@@ -535,10 +509,6 @@ export function buildFixtureTurn(input: {
         label: "Composed the answer and validated exactly two distinct paths",
       },
     ],
-    interlude: {
-      ...theme.interlude,
-      factKey: `${theme.key}:interlude:v1`,
-    },
   };
 }
 

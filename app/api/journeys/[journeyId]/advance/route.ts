@@ -1,18 +1,28 @@
-import { assertMutationOrigin, failure, readJson, success } from "../../../../../lib/api";
+import { mutation, readJson } from "../../../../../lib/api";
 import type { AdvanceJourneyRequest } from "../../../../../lib/contracts";
-import { advanceJourney } from "../../../../../lib/repository";
-import { resolveViewer } from "../../../../../lib/viewer";
+import { runLiveRedraw } from "../../../../../lib/live-redraw";
+import {
+  advanceJourney,
+  listRejectedQuestions,
+} from "../../../../../lib/repository";
 
 type Context = { params: Promise<{ journeyId: string }> };
 
 export async function POST(request: Request, context: Context) {
-  try {
-    assertMutationOrigin(request);
-    const viewer = await resolveViewer();
+  return mutation(request, async (viewer) => {
     const { journeyId } = await context.params;
-    const body = (await readJson(request)) as AdvanceJourneyRequest;
-    return success(await advanceJourney(viewer, journeyId, body), viewer);
-  } catch (error) {
-    return failure(error);
-  }
+    const body = await readJson<AdvanceJourneyRequest>(request);
+    return advanceJourney(viewer, journeyId, body, async ({ journey, turn }) =>
+      runLiveRedraw({
+        turn,
+        performerId: journey.performerId,
+        rejectedQuestions: [
+          ...await listRejectedQuestions(viewer, journeyId),
+          ...turn.options.map((option) => option.question),
+        ],
+        adventure: body.adventure ?? 50,
+        reason: body.reason?.trim() || undefined,
+      }),
+    );
+  });
 }

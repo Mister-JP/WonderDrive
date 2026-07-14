@@ -1,6 +1,5 @@
 import { assertMutationOrigin, failure, readJson } from "../../../lib/api";
 import type {
-  ApiFailure,
   LiveResearchRequest,
   LiveResearchStreamEvent,
 } from "../../../lib/contracts";
@@ -10,8 +9,7 @@ import {
   prepareLiveResearch,
 } from "../../../lib/live-repository";
 import { runLiveResearch } from "../../../lib/live-research";
-import { buildFixtureTurn } from "../../../lib/fixtures";
-import { RepositoryError } from "../../../lib/repository";
+import { publicError } from "../../../lib/errors";
 import { publicViewer, resolveViewer } from "../../../lib/viewer";
 
 export const dynamic = "force-dynamic";
@@ -62,19 +60,6 @@ export async function POST(request: Request) {
             controller.close();
             return;
           }
-          const interlude = buildFixtureTurn({
-            question: preparation.prepared.question,
-            depth: preparation.prepared.depth,
-            performerId: preparation.prepared.performerId,
-          }).interlude;
-          send({
-            type: "interlude",
-            interlude: {
-              text: interlude.text,
-              sourceTitle: interlude.sourceTitle,
-              sourceUrl: interlude.sourceUrl,
-            },
-          });
           try {
             const draft = await runLiveResearch(
               preparation.prepared,
@@ -85,7 +70,15 @@ export async function POST(request: Request) {
             send({ type: "complete", data: journey, viewer: publicViewer(viewer) });
           } catch (error) {
             await markLiveResearchFailed(viewer, preparation.prepared.requestId, error);
-            if (!closed) send({ type: "error", error: publicError(error) });
+            if (!closed) {
+              send({
+                type: "error",
+                error: publicError(
+                  error,
+                  "WonderDrive could not complete live research. No partial journey was saved.",
+                ),
+              });
+            }
           } finally {
             clearInterval(heartbeat);
             if (!closed) {
@@ -112,20 +105,4 @@ export async function POST(request: Request) {
   } catch (error) {
     return failure(error);
   }
-}
-
-function publicError(error: unknown): ApiFailure["error"] {
-  if (error instanceof RepositoryError) {
-    return {
-      code: error.code,
-      message: error.message,
-      retryable: error.retryable,
-    };
-  }
-  console.error("WonderDrive live research error", error);
-  return {
-    code: "INTERNAL_ERROR",
-    message: "WonderDrive could not complete live research. No partial journey was saved.",
-    retryable: true,
-  };
 }

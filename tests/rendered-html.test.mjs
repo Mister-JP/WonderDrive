@@ -13,7 +13,7 @@ const env = {
   },
   DB: {
     prepare() {
-      throw new Error("The public Phase 1 render must not query D1 before client hydration");
+      throw new Error("The public render must not query D1 before client hydration");
     },
   },
 };
@@ -36,11 +36,10 @@ test("server-renders the honest WonderDrive V3 product shell", async () => {
 
   const html = await response.text();
   assert.match(html, /<title>WonderDrive — Give curiosity a direction<\/title>/i);
-  assert.match(html, /Give curiosity/i);
+  assert.match(html, /curiosity, performed/i);
   assert.match(html, /exactly two/i);
-  assert.match(html, /Research first/i);
-  assert.match(html, /same selected model researches and performs/i);
-  assert.match(html, /durable branching graph/i);
+  assert.match(html, /Opening your WonderDrive library/i);
+  assert.match(html, /Resolving a durable guest identity/i);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton|Starter Project/i);
 });
 

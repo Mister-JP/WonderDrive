@@ -1,8 +1,30 @@
 # WonderDrive V3 architecture decisions
 
-Date: 2026-07-13
+Date: 2026-07-14
 Status: final blueprint baseline
 Supersedes: `ARCHITECTURE_DECISIONS.md` and the V2 Sites-guided blueprint
+
+## Code change protocol
+
+1. Read this document for invariants and boundaries.
+2. Read the generated [code index](code-index.md) to find the existing owner and its direct local dependencies.
+3. Change the smallest cohesive module; prefer shared boundary helpers over a second implementation.
+4. Run `npm run architecture:update` whenever a file or local import changes.
+5. Run `npm run architecture:check`, lint, type checking, and tests. CI enforces the index, and TypeScript rejects unused locals and parameters.
+
+The runtime dependency direction is intentionally simple:
+
+```text
+React experience → API routes → domain/provider/repository modules → D1 or OpenAI
+                         ↘ shared contracts, validation, and public errors ↗
+```
+
+- `app/client-api.ts` owns browser transport; `app/wonderdrive-experience.tsx` owns view orchestration and presentation.
+- `lib/api.ts` owns HTTP boundaries; routes should contain only parameter extraction and use-case selection.
+- `lib/repository.ts` owns deterministic journey mutations; `lib/live-repository.ts` owns live reservation and atomic commit.
+- `lib/live-research.ts`, `lib/live-redraw.ts`, and `lib/starter-recommendations.ts` own distinct provider use cases and share `lib/openai.ts`.
+- `lib/request.ts`, `lib/errors.ts`, and `lib/turn-options.ts` are narrow shared boundaries. They must not import product repositories.
+- `db/schema.ts` is the desired schema; `drizzle/` is immutable migration history. Backward-compatible readers stay until deployed data is migrated deliberately.
 
 ## Product decision
 
@@ -62,11 +84,11 @@ Exclude full transcripts, copied pages, irrelevant old branches, secrets, PII, r
 
 ## Experience invariants
 
-1. The research stage shows honest status, source activity, a collapsible Research Trail, and sourced Curiosity Interludes while the request is pending.
-2. Interludes come from a curated, versioned fact bank in P0; they are not fabricated progress or a second paid generation loop.
-3. The answer includes usable inline citations and a consulted-versus-cited evidence drawer.
+1. The journey screen stays mounted while research is pending. The answer card, image, evidence row, and two path positions show content-shaped buffering placeholders; no intermediate research-steps page is rendered.
+2. A ready turn keeps the main journey concise: one contained short-answer card, an optional sourced image, a highlighted conclusion, and one evidence row. The complete answer, sources, research summary, and metadata open in a dismissible deeper-dive overlay.
+3. The answer includes usable inline citations and consulted-versus-cited evidence.
 4. Exactly two distinct next questions appear after every ready turn.
-5. Reject Both regenerates one replacement pair using temporary grounded/adventurous feedback and does not create a new branch.
+5. Reject Both regenerates one replacement pair using temporary practical, surprising, or different-direction feedback and does not create a new branch.
 6. Factual visuals are real, sourced, captioned, and provenance-aware. Generated images are decorative and labeled.
 7. The canonical displayed answer is the canonical read-aloud text. Browser speech is acceptable for P0.
 8. Graph, status, action, and comparison meaning never depend on color alone; the map has a list equivalent.
@@ -74,7 +96,7 @@ Exclude full transcripts, copied pages, irrelevant old branches, secrets, PII, r
 
 ## Data and concurrency
 
-Canonical D1 records cover users/guests, preferences, performer cues, model registry, prompt versions, journeys, turns, options, actions, edges, foreground research runs/events, sources and relations, usage ledger, idempotency keys, interlude facts/impressions, and snapshots.
+Canonical D1 records cover users/guests, preferences, performer cues, model registry, prompt versions, journeys, turns, options, actions, edges, foreground research runs/events, sources and relations, usage ledger, idempotency keys, and snapshots. Legacy interlude tables remain in the schema only to prevent destructive migration of deployed databases.
 
 - One active research run per journey/action.
 - Idempotency key plus optimistic journey version prevents duplicate turns and two-tab races.

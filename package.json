@@ -14,6 +14,8 @@
     "dev": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext dev",
     "build": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext build",
     "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
+    "architecture:update": "node scripts/architecture-index.mjs",
+    "architecture:check": "node scripts/architecture-index.mjs --check",
     "test": "npm run build && node --experimental-loader ./tests/cloudflare-loader.mjs --test tests/rendered-html.test.mjs && tsx --test tests/fixtures.test.mjs && node --experimental-loader ./tests/cloudflare-loader.mjs --import tsx --test tests/live-research.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "typecheck": "tsc --noEmit",

@@ -69,8 +69,14 @@ export type BootstrapCatalog = {
   models: ModelConfig[];
   presets: PresetConfig[];
   starters: Record<PerformerId, string[]>;
+  discoveryStarters: PersonalizedStarter[];
   promptVersion: string;
   schemaVersion: string;
+};
+
+export type PersonalizedStarter = {
+  question: string;
+  topic: string;
 };
 
 export type Viewer = {
@@ -101,16 +107,16 @@ export type ResearchEvent = {
   sourceId: string | null;
 };
 
-export type Interlude = {
-  id: string;
-  text: string;
-  sourceTitle: string;
-  sourceUrl: string;
-};
-
 export type AnswerBlock = {
   text: string;
   sourceIds: string[];
+};
+
+export type TurnMedia = {
+  imageUrl: string;
+  sourcePageUrl: string;
+  caption: string;
+  alt: string;
 };
 
 export type ResearchHandoff = {
@@ -146,6 +152,7 @@ export type JourneyTurn = {
   question: string;
   answer: string;
   answerBlocks: AnswerBlock[];
+  media: TurnMedia | null;
   transition: string;
   topicLabel: string;
   researchSummary: string;
@@ -155,7 +162,6 @@ export type JourneyTurn = {
   options: TurnOption[];
   sources: Source[];
   researchEvents: ResearchEvent[];
-  interlude: Interlude;
   metadata: {
     performerId: PerformerId;
     performerVersion: string;
@@ -267,7 +273,6 @@ export type LiveResearchStreamEvent =
   | { type: "started"; requestId: string; question: string; message: string }
   | { type: "heartbeat"; at: number }
   | { type: "activity"; event: ResearchEvent }
-  | { type: "interlude"; interlude: Omit<Interlude, "id"> }
   | { type: "complete"; data: JourneyDetail; viewer: Viewer }
   | { type: "error"; error: ApiFailure["error"] };
 

@@ -14,13 +14,21 @@ import { getD1 } from "../db";
 import type { ViewerContext } from "./viewer";
 import {
   getJourney,
-  RepositoryError,
 } from "./repository";
+import { RepositoryError } from "./errors";
 import type { LiveTurnDraft, PreparedLiveResearch } from "./live-research";
+import {
+  assertId,
+  assertIdempotencyKey,
+  hashPayload,
+  normalizeSeed,
+  titleFromSeed,
+} from "./request";
+import { optionStatements } from "./turn-options";
 
 const PRESETS: ResearchPreset[] = ["spark", "standard", "deep"];
 
-export type LivePreparation =
+type LivePreparation =
   | { type: "ready"; prepared: PreparedLiveResearch }
   | { type: "replay"; journey: JourneyDetail; requestId: string };
 
@@ -28,7 +36,7 @@ export async function prepareLiveResearch(
   viewer: ViewerContext,
   request: LiveResearchRequest,
 ): Promise<LivePreparation> {
-  validateIdempotencyKey(request?.idempotencyKey);
+  assertIdempotencyKey(request?.idempotencyKey);
   const db = getD1();
   const normalized = await normalizeRequest(viewer, request);
   const payloadHash = await hashPayload(normalized.payload);
@@ -150,8 +158,7 @@ export async function prepareLiveResearch(
     researchPreset: normalized.researchPreset,
     answerDensity: normalized.answerDensity,
     imagePreference: normalized.imagePreference,
-    contextTurns: [...normalized.contextTurns],
-    audienceSignals: [...normalized.audienceSignals],
+    topicTrail: [...normalized.topicTrail],
     journeyId: normalized.journeyId,
     fromTurnId: normalized.fromTurnId,
     selectedOptionId: normalized.selectedOptionId,
@@ -281,7 +288,7 @@ async function commitLiveCreate(
         journeyId,
         prepared.question,
         draft.answer,
-        JSON.stringify(draft.answerBlocks),
+        JSON.stringify({ blocks: draft.answerBlocks, media: draft.media }),
         draft.transition,
         draft.topicLabel,
         draft.researchSummary,
@@ -298,7 +305,7 @@ async function commitLiveCreate(
         journeyId,
         viewer.identityId,
       ),
-    ...liveOptionStatements(db, turnId, 0, draft),
+    ...optionStatements(db, turnId, 0, draft),
     ...liveResearchStatements(db, prepared, draft, { journeyId, turnId, runId, now }),
     db
       .prepare(
@@ -414,7 +421,7 @@ async function commitLiveAdvance(
         prepared.depth,
         prepared.question,
         draft.answer,
-        JSON.stringify(draft.answerBlocks),
+        JSON.stringify({ blocks: draft.answerBlocks, media: draft.media }),
         draft.transition,
         draft.topicLabel,
         draft.researchSummary,
@@ -432,14 +439,11 @@ async function commitLiveAdvance(
         viewer.identityId,
         expectedVersion,
       ),
-    ...conditionalLiveOptionStatements(
-      db,
-      childId,
-      draft,
+    ...optionStatements(db, childId, 0, draft, {
       journeyId,
-      viewer.identityId,
+      identityId: viewer.identityId,
       expectedVersion,
-    ),
+    }),
     ...conditionalLiveResearchStatements(
       db,
       prepared,
@@ -599,53 +603,6 @@ async function commitLiveAdvance(
   return getJourney(viewer, journeyId);
 }
 
-function liveOptionStatements(
-  db: D1Database,
-  turnId: string,
-  setVersion: number,
-  draft: LiveTurnDraft,
-) {
-  return draft.options.map((option, position) =>
-    db
-      .prepare(
-        `INSERT INTO turn_options
-          (id, turn_id, set_version, position, question, angle, state)
-         VALUES (?, ?, ?, ?, ?, ?, 'proposed')`,
-      )
-      .bind(crypto.randomUUID(), turnId, setVersion, position, option.question, option.angle),
-  );
-}
-
-function conditionalLiveOptionStatements(
-  db: D1Database,
-  turnId: string,
-  draft: LiveTurnDraft,
-  journeyId: string,
-  identityId: string,
-  expectedVersion: number,
-) {
-  return draft.options.map((option, position) =>
-    db
-      .prepare(
-        `INSERT INTO turn_options
-          (id, turn_id, set_version, position, question, angle, state)
-         SELECT ?, ?, 0, ?, ?, ?, 'proposed'
-         WHERE EXISTS (SELECT 1 FROM journeys WHERE id = ? AND owner_identity_id = ?
-           AND version = ? AND deleted_at IS NULL)`,
-      )
-      .bind(
-        crypto.randomUUID(),
-        turnId,
-        position,
-        option.question,
-        option.angle,
-        journeyId,
-        identityId,
-        expectedVersion,
-      ),
-  );
-}
-
 function liveResearchStatements(
   db: D1Database,
   prepared: PreparedLiveResearch,
@@ -799,25 +756,6 @@ function appendEvidenceStatements(
         ),
     );
   }
-  statements.push(
-    db
-      .prepare(
-        `INSERT INTO turn_interludes
-          (id, turn_id, fact_key, text, source_url, source_title, created_at)
-         SELECT ?, ?, ?, ?, ?, ?, ? WHERE EXISTS (SELECT 1 FROM turns WHERE id = ? AND journey_id = ?)`,
-      )
-      .bind(
-        crypto.randomUUID(),
-        ids.turnId,
-        draft.interlude.factKey,
-        draft.interlude.text,
-        draft.interlude.sourceUrl,
-        draft.interlude.sourceTitle,
-        ids.now,
-        ids.turnId,
-        ids.journeyId,
-      ),
-  );
 }
 
 async function normalizeRequest(viewer: ViewerContext, request: LiveResearchRequest) {
@@ -874,8 +812,7 @@ async function normalizeRequest(viewer: ViewerContext, request: LiveResearchRequ
       researchPreset: request.researchPreset,
       answerDensity: request.answerDensity,
       imagePreference: request.imagePreference,
-      contextTurns: [],
-      audienceSignals: [],
+      topicTrail: [],
       journeyId: undefined,
       fromTurnId: undefined,
       selectedOptionId: undefined,
@@ -924,7 +861,7 @@ async function normalizeRequest(viewer: ViewerContext, request: LiveResearchRequ
   if (!selected || (fromTurn.id === journey.currentTurnId && selected.state !== "proposed")) {
     throw new RepositoryError("BAD_REQUEST", "Choose one of the two current paths.", 400);
   }
-  const contextTurns = ancestorContext(journey, fromTurn.id);
+  const topicTrail = ancestorTopicTrail(journey, fromTurn.id);
   return {
     payload: {
       kind: request.kind,
@@ -941,8 +878,7 @@ async function normalizeRequest(viewer: ViewerContext, request: LiveResearchRequ
     researchPreset: journey.researchPreset,
     answerDensity: journey.answerDensity,
     imagePreference: journey.imagePreference,
-    contextTurns,
-    audienceSignals: collectAudienceSignals(journey, fromTurn.id, selected.id, request.action),
+    topicTrail,
     journeyId: journey.id,
     fromTurnId: fromTurn.id,
     selectedOptionId: selected.id,
@@ -952,73 +888,15 @@ async function normalizeRequest(viewer: ViewerContext, request: LiveResearchRequ
   } as const;
 }
 
-function ancestorContext(journey: JourneyDetail, fromTurnId: string) {
+function ancestorTopicTrail(journey: JourneyDetail, fromTurnId: string) {
   const byId = new Map(journey.turns.map((turn) => [turn.id, turn]));
-  const chain = [];
+  const chain: string[] = [];
   let current = byId.get(fromTurnId);
   while (current) {
-    chain.push({
-      question: current.question,
-      topicLabel: current.topicLabel,
-      transition: current.transition,
-      researchHandoff: current.researchHandoff,
-    });
+    chain.push(current.topicLabel);
     current = current.parentTurnId ? byId.get(current.parentTurnId) : undefined;
   }
-  return chain.reverse().slice(-4);
-}
-
-function collectAudienceSignals(
-  journey: JourneyDetail,
-  fromTurnId: string,
-  selectedOptionId: string,
-  action: "choose" | "delegate",
-) {
-  const signals: PreparedLiveResearch["audienceSignals"] = [];
-  for (const turn of journey.turns.slice(-4)) {
-    for (const option of turn.options) {
-      if (option.state === "rejected") {
-        signals.push({ kind: "rejected", question: option.question });
-      } else if (option.state === "proposed" && turn.id !== fromTurnId) {
-        signals.push({ kind: "unchosen", question: option.question });
-      }
-    }
-  }
-  const current = journey.turns.find((turn) => turn.id === fromTurnId);
-  const selected = current?.options.find((option) => option.id === selectedOptionId);
-  if (selected) signals.push({ kind: action === "delegate" ? "delegated" : "chosen", question: selected.question });
-  return signals.slice(-8);
-}
-
-function normalizeSeed(seed: unknown): string {
-  if (typeof seed !== "string") {
-    throw new RepositoryError("BAD_REQUEST", "Start with a question.", 400);
-  }
-  const normalized = seed.trim().replace(/\s+/g, " ");
-  if (normalized.length < 3 || normalized.length > 280) {
-    throw new RepositoryError(
-      "BAD_REQUEST",
-      "Keep the starting question between 3 and 280 characters.",
-      400,
-    );
-  }
-  return normalized;
-}
-
-function validateIdempotencyKey(value: unknown) {
-  if (typeof value !== "string" || value.length < 8 || value.length > 100) {
-    throw new RepositoryError("BAD_REQUEST", "A valid request key is required.", 400);
-  }
-}
-
-function assertId(value: unknown, label: string) {
-  if (typeof value !== "string" || value.length < 8 || value.length > 100) {
-    throw new RepositoryError("BAD_REQUEST", `A valid ${label} ID is required.`, 400);
-  }
-}
-
-function titleFromSeed(seed: string) {
-  return seed.length <= 62 ? seed : `${seed.slice(0, 59).trimEnd()}…`;
+  return chain.reverse();
 }
 
 function assertChanged(result: D1Result<unknown> | undefined) {
@@ -1030,10 +908,4 @@ function assertChanged(result: D1Result<unknown> | undefined) {
       true,
     );
   }
-}
-
-async function hashPayload(value: unknown) {
-  const bytes = new TextEncoder().encode(JSON.stringify(value));
-  const hash = await crypto.subtle.digest("SHA-256", bytes);
-  return Array.from(new Uint8Array(hash), (byte) => byte.toString(16).padStart(2, "0")).join("");
 }

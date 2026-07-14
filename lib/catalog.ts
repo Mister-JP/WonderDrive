@@ -7,8 +7,8 @@ import type {
   UserPreferences,
 } from "./contracts";
 
-export const PROMPT_VERSION = "wonder-research-turn@3.0.0";
-export const TURN_SCHEMA_VERSION = "wonder-turn-draft@2";
+export const PROMPT_VERSION = "wonder-research-turn@3.1.0";
+export const TURN_SCHEMA_VERSION = "wonder-turn-draft@3";
 
 export const DEFAULT_PREFERENCES: UserPreferences = {
   answerDensity: "balanced",
@@ -134,7 +134,32 @@ export const STARTERS: Record<PerformerId, string[]> = {
   ],
 };
 
-export const STARTER_QUESTIONS = [...STARTERS.sage, ...STARTERS.spark, ...STARTERS.mechanist];
+export const DISCOVERY_STARTERS = [
+  { question: "How does a memory become part of a place?", topic: "memory and place" },
+  { question: "What makes a useful standard survive its makers?", topic: "living standards" },
+  { question: "Where does a city hide the work that keeps it alive?", topic: "urban systems" },
+  { question: "Why do some sounds make a room feel larger?", topic: "acoustic space" },
+  { question: "What can an accurate map still leave out?", topic: "maps and power" },
+  { question: "How does a repeated shortcut become infrastructure?", topic: "emergent infrastructure" },
+  { question: "Can a public space teach people how to behave?", topic: "behavioral design" },
+  { question: "What does an ecosystem remember after a disturbance?", topic: "ecological memory" },
+  { question: "Why do tools change the questions we are able to ask?", topic: "tools and inquiry" },
+  { question: "How does a rumor acquire the shape of evidence?", topic: "information systems" },
+  { question: "What makes a machine feel predictable to a person?", topic: "human-machine trust" },
+  { question: "When does convenience become dependency?", topic: "systems dependency" },
+  { question: "How do archives decide what the future can remember?", topic: "archives" },
+  { question: "What can a boundary reveal by failing?", topic: "boundaries" },
+  { question: "Why do networks become fragile as they become efficient?", topic: "network resilience" },
+  { question: "How does an image become evidence?", topic: "visual evidence" },
+  { question: "What keeps a tradition recognizable while it changes?", topic: "cultural continuity" },
+  { question: "How does a neighborhood develop its own rhythm?", topic: "urban rhythm" },
+  { question: "What makes one explanation easier to believe than another?", topic: "explanation and belief" },
+  { question: "Where does uncertainty belong in a good decision?", topic: "decision-making" },
+  { question: "How can a system be fair without treating everyone the same?", topic: "fair systems" },
+  { question: "What does a measurement change simply by being watched?", topic: "measurement" },
+  { question: "Why do invisible systems become visible when they break?", topic: "failure modes" },
+  { question: "How does curiosity change after the first answer?", topic: "curiosity" },
+] as const;
 
 export const PRESETS: PresetConfig[] = [
   {
@@ -181,6 +206,7 @@ export const BOOTSTRAP_CATALOG: BootstrapCatalog = {
   models: MODELS.filter((model) => model.status === "enabled"),
   presets: PRESETS,
   starters: STARTERS,
+  discoveryStarters: [...DISCOVERY_STARTERS],
   promptVersion: PROMPT_VERSION,
   schemaVersion: TURN_SCHEMA_VERSION,
 };

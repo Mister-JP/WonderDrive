@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import type { ApiFailure, ApiSuccess } from "./contracts";
-import { RepositoryError } from "./repository";
-import { publicViewer, type ViewerContext } from "./viewer";
+import { publicError, RepositoryError } from "./errors";
+import { publicViewer, resolveViewer, type ViewerContext } from "./viewer";
 
-export function success<T>(data: T, viewer: ViewerContext, status = 200) {
+function success<T>(data: T, viewer: ViewerContext, status = 200) {
   const response = NextResponse.json<ApiSuccess<T>>(
     { data, viewer: publicViewer(viewer) },
     { status },
@@ -14,36 +14,42 @@ export function success<T>(data: T, viewer: ViewerContext, status = 200) {
 }
 
 export function failure(error: unknown) {
-  if (error instanceof RepositoryError) {
-    return NextResponse.json<ApiFailure>(
-      {
-        error: {
-          code: error.code,
-          message: error.message,
-          retryable: error.retryable,
-        },
-      },
-      { status: error.status },
-    );
-  }
-  console.error("WonderDrive API error", error);
   return NextResponse.json<ApiFailure>(
-    {
-      error: {
-        code: "INTERNAL_ERROR",
-        message: "WonderDrive could not complete that request.",
-        retryable: true,
-      },
-    },
-    { status: 500 },
+    { error: publicError(error) },
+    { status: error instanceof RepositoryError ? error.status : 500 },
   );
 }
 
-export async function readJson(request: Request): Promise<unknown> {
+export async function readJson<T = unknown>(request: Request): Promise<T> {
   try {
-    return await request.json();
+    return await request.json() as T;
   } catch {
     throw new RepositoryError("BAD_REQUEST", "The request body must be valid JSON.", 400);
+  }
+}
+
+/** Standard authenticated JSON response boundary for read-only routes. */
+export async function query<T>(work: (viewer: ViewerContext) => Promise<T>, status = 200) {
+  try {
+    const viewer = await resolveViewer();
+    return success(await work(viewer), viewer, status);
+  } catch (error) {
+    return failure(error);
+  }
+}
+
+/** Standard same-origin boundary for every state-changing JSON route. */
+export async function mutation<T>(
+  request: Request,
+  work: (viewer: ViewerContext) => Promise<T>,
+  status = 200,
+) {
+  try {
+    assertMutationOrigin(request);
+    const viewer = await resolveViewer();
+    return success(await work(viewer), viewer, status);
+  } catch (error) {
+    return failure(error);
   }
 }
 

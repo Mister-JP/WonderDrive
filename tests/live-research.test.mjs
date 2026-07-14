@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { liveResearchTestHooks } from "../lib/live-research.ts";
+import { env } from "cloudflare:workers";
+import { liveResearchTestHooks, runLiveResearch } from "../lib/live-research.ts";
 
 const providerResponse = {
   output: [
@@ -38,6 +39,13 @@ const validTurn = {
       citationUrls: ["https://research.example.net/context"],
     },
   ],
+  media: {
+    available: false,
+    imageUrl: "",
+    sourcePageUrl: "",
+    caption: "",
+    alt: "",
+  },
   transition:
     "The evidence leaves two useful directions: investigate the mechanism or challenge the boundary.",
   researchSummary:
@@ -86,5 +94,162 @@ test("rejects a citation URL that web search did not return", () => {
     );
   } finally {
     console.error = originalError;
+  }
+});
+
+test("accepts generated prose up to 20 percent beyond its target length", () => {
+  const sources = liveResearchTestHooks.extractSources(providerResponse);
+  const tolerated = structuredClone(validTurn);
+  tolerated.answerBlocks[0].text = "x".repeat(901);
+
+  const mapped = liveResearchTestHooks.validateAndMapTurn(tolerated, sources);
+  assert.equal(mapped.answerBlocks[0].text.length, 901);
+
+  const excessive = structuredClone(validTurn);
+  excessive.answerBlocks[0].text = "x".repeat(1_081);
+  const originalError = console.error;
+  console.error = () => {};
+  try {
+    assert.throws(
+      () => liveResearchTestHooks.validateAndMapTurn(excessive, sources),
+      (error) => error?.code === "SCHEMA_INVALID",
+    );
+  } finally {
+    console.error = originalError;
+  }
+});
+
+test("sends only the ordered topic trail as prior-content context", () => {
+  const input = liveResearchTestHooks.buildResearchInput({
+    question: "How does Bluetooth hopping avoid interference?",
+    researchPreset: "standard",
+    answerDensity: "balanced",
+    imagePreference: "when-useful",
+    topicTrail: ["radio spectrum", "frequency hopping"],
+    rejectedQuestions: ["Who invented Bluetooth?"],
+    seed: "PRIVATE STARTING QUESTION",
+    priorAnswer: "PRIVATE OLD ANSWER",
+    priorSources: ["PRIVATE OLD SOURCE"],
+  });
+
+  assert.match(input, /1\. radio spectrum\n2\. frequency hopping/);
+  assert.match(input, /Question to research now: How does Bluetooth hopping avoid interference\?/);
+  assert.doesNotMatch(input, /Who invented Bluetooth\?|PRIVATE STARTING QUESTION|PRIVATE OLD ANSWER|PRIVATE OLD SOURCE/);
+});
+
+test("repairs citation pointers with source IDs without rewriting prose", () => {
+  const sources = liveResearchTestHooks.extractSources(providerResponse);
+  const broken = structuredClone(validTurn);
+  broken.answerBlocks[0].citationUrls = ["https://redirected.example/unknown"];
+  const repaired = liveResearchTestHooks.applyCitationRepair(broken, sources, {
+    blocks: [
+      { sourceIds: ["S1"], unsupported: false },
+      { sourceIds: ["S2"], unsupported: false },
+    ],
+  });
+
+  assert.equal(repaired.answerBlocks[0].text, broken.answerBlocks[0].text);
+  assert.deepEqual(repaired.options, broken.options);
+  assert.deepEqual(repaired.answerBlocks[0].citationUrls, ["https://example.org/evidence"]);
+  assert.deepEqual(repaired.answerBlocks[1].citationUrls, ["https://research.example.net/context"]);
+  assert.equal(liveResearchTestHooks.validateAndMapTurn(repaired, sources).answerBlocks.length, 2);
+});
+
+test("refuses a citation repair that marks any answer block unsupported", () => {
+  const sources = liveResearchTestHooks.extractSources(providerResponse);
+  assert.throws(
+    () => liveResearchTestHooks.applyCitationRepair(validTurn, sources, {
+      blocks: [
+        { sourceIds: [], unsupported: true },
+        { sourceIds: ["S2"], unsupported: false },
+      ],
+    }),
+    (error) => error?.code === "CITATION_INVALID",
+  );
+});
+
+test("runs exactly one no-search repair after an initial citation mismatch", async () => {
+  const originalFetch = globalThis.fetch;
+  const originalError = console.error;
+  env.OPENAI_API_KEY = "test-key";
+  const broken = structuredClone(validTurn);
+  broken.answerBlocks[0].citationUrls = ["https://redirected.example/unknown"];
+  const completed = {
+    id: "resp_research",
+    output: providerResponse.output,
+    usage: {
+      input_tokens: 100,
+      output_tokens: 50,
+      total_tokens: 150,
+      input_tokens_details: { cached_tokens: 10 },
+      output_tokens_details: { reasoning_tokens: 5 },
+    },
+  };
+  const stream = [
+    { type: "response.output_text.delta", delta: JSON.stringify(broken) },
+    { type: "response.completed", response: completed },
+  ].map((event) => `data: ${JSON.stringify(event)}\n\n`).join("") + "data: [DONE]\n\n";
+  const repairPayload = {
+    id: "resp_repair",
+    output: [{
+      type: "message",
+      content: [{
+        type: "output_text",
+        text: JSON.stringify({
+          blocks: [
+            { sourceIds: ["S1"], unsupported: false },
+            { sourceIds: ["S2"], unsupported: false },
+          ],
+        }),
+      }],
+    }],
+    usage: {
+      input_tokens: 20,
+      output_tokens: 10,
+      total_tokens: 30,
+      input_tokens_details: { cached_tokens: 0 },
+      output_tokens_details: { reasoning_tokens: 2 },
+    },
+  };
+  const requests = [];
+  console.error = () => {};
+  globalThis.fetch = async (_url, init) => {
+    requests.push(JSON.parse(init.body));
+    return requests.length === 1
+      ? new Response(stream, { status: 200, headers: { "content-type": "text/event-stream" } })
+      : Response.json(repairPayload);
+  };
+  const events = [];
+  try {
+    const draft = await runLiveResearch({
+      requestId: "request-123",
+      identityId: "identity-123",
+      kind: "create",
+      question: "How does Bluetooth avoid interference?",
+      seed: "How does Bluetooth avoid interference?",
+      depth: 0,
+      performerId: "sage",
+      modelId: "gpt-5.6-luna",
+      researchPreset: "standard",
+      answerDensity: "balanced",
+      imagePreference: "when-useful",
+      topicTrail: [],
+      idempotencyKey: "idempotency-123",
+      payloadHash: "payload-123",
+    }, (event) => events.push(event));
+
+    assert.equal(requests.length, 2);
+    assert.deepEqual(requests[0].tools, [{ type: "web_search" }]);
+    assert.equal(requests[1].tools, undefined);
+    assert.equal(draft.answerBlocks[0].sourceIds.length, 1);
+    assert.equal(draft.usage.inputTokens, 120);
+    assert.equal(draft.usage.outputTokens, 60);
+    assert.equal(draft.usage.totalTokens, 180);
+    assert.equal(draft.usage.reasoningTokens, 7);
+    assert.ok(events.some((event) => event.label.includes("repairing pointers once")));
+  } finally {
+    console.error = originalError;
+    globalThis.fetch = originalFetch;
+    delete env.OPENAI_API_KEY;
   }
 });

@@ -1,0 +1,182 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2430" height="1630" viewBox="0 0 2430 1630"><rect width="2430" height="1630" fill="#f7f5ef"/><style>text{font-family:Arial,Helvetica,sans-serif}</style><defs><filter id="w"><feTurbulence baseFrequency=".012" numOctaves="1" seed="8" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale=".7"/></filter></defs>
+<text x="70" y="74" fill="#17212b" font-size="36" font-weight="600"><tspan x="70" dy="0">WonderDrive — one answer screen, two states</tspan></text>
+<text x="72" y="105" fill="#667085" font-size="17" font-weight="500"><tspan x="72" dy="0">Loading happens inside the information layout; the page never swaps to a separate research screen.</tspan></text>
+<rect x="1915" y="42" width="420" height="52" rx="7" fill="#dfff58" stroke="#17212b" stroke-width="2"  filter="url(#w)"/>
+<text x="1972" y="70" fill="#17212b" font-size="13" font-weight="500"><tspan x="1972" dy="0">PERSISTENT SHELL · PROGRESSIVE REVEAL</tspan></text>
+<ellipse cx="91" cy="171" rx="21" ry="21" fill="#acd8ff" stroke="#17212b" stroke-width="2" filter="url(#w)"/>
+<text x="84" y="176" fill="#17212b" font-size="18" font-weight="500"><tspan x="84" dy="0">1</tspan></text>
+<text x="127" y="176" fill="#17212b" font-size="24" font-weight="600"><tspan x="127" dy="0">Researching in place</tspan></text>
+<text x="127" y="197" fill="#667085" font-size="12" font-weight="500"><tspan x="127" dy="0">Same URL · research fills the answer panel</tspan></text>
+<rect x="70" y="228" width="1110" height="1150" rx="7" fill="#fffdf8" stroke="#17212b" stroke-width="3"  filter="url(#w)"/>
+<rect x="70" y="228" width="1110" height="57" rx="7" fill="#eeeae2" stroke="#17212b" stroke-width="2"  filter="url(#w)"/>
+<ellipse cx="101" cy="255" rx="6" ry="6" fill="#ff7b67" stroke="#17212b" stroke-width="1" filter="url(#w)"/>
+<ellipse cx="124" cy="255" rx="6" ry="6" fill="#ffd166" stroke="#17212b" stroke-width="1" filter="url(#w)"/>
+<ellipse cx="147" cy="255" rx="6" ry="6" fill="#81d88d" stroke="#17212b" stroke-width="1" filter="url(#w)"/>
+<rect x="360" y="242" width="530" height="29" rx="7" fill="#ffffff" stroke="#b7bec6" stroke-width="1"  filter="url(#w)"/>
+<text x="518" y="259" fill="#667085" font-size="11" font-weight="500"><tspan x="518" dy="0">wonderdrive.app/journey/7</tspan></text>
+<text x="102" y="323" fill="#17212b" font-size="16" font-weight="500"><tspan x="102" dy="0">WONDERDRIVE</tspan></text>
+<text x="565" y="321" fill="#17212b" font-size="12" font-weight="500"><tspan x="565" dy="0">Journey</tspan></text>
+<text x="645" y="321" fill="#667085" font-size="12" font-weight="500"><tspan x="645" dy="0">Map</tspan></text>
+<text x="1092" y="323" fill="#17212b" font-size="14" font-weight="500"><tspan x="1092" dy="0">•••</tspan></text>
+<polyline points="95,343 1155,343" fill="none" stroke="#c9cfd5" stroke-width="1" />
+<text x="112" y="385" fill="#d64b38" font-size="10" font-weight="500"><tspan x="112" dy="0">TURN 01 · SAGE</tspan></text>
+<text x="112" y="434" fill="#17212b" font-size="31" font-weight="600"><tspan x="112" dy="0">Where does a city</tspan></text>
+<text x="112" y="473" fill="#17212b" font-size="31" font-weight="600"><tspan x="112" dy="0">keep its memories?</tspan></text>
+<rect x="930" y="376" width="90" height="55" rx="7" fill="#ffffff" stroke="#aeb6bd" stroke-width="1"  filter="url(#w)"/>
+<text x="951" y="404" fill="#17212b" font-size="20" font-weight="500"><tspan x="951" dy="0">1</tspan></text>
+<text x="946" y="419" fill="#667085" font-size="8" font-weight="500"><tspan x="946" dy="0">TURN</tspan></text>
+<rect x="1020" y="376" width="112" height="55" rx="7" fill="#ffffff" stroke="#aeb6bd" stroke-width="1"  filter="url(#w)"/>
+<text x="1042" y="404" fill="#17212b" font-size="20" font-weight="500"><tspan x="1042" dy="0">—</tspan></text>
+<text x="1043" y="419" fill="#667085" font-size="8" font-weight="500"><tspan x="1043" dy="0">SOURCES</tspan></text>
+<polyline points="95,495 1155,495" fill="none" stroke="#c9cfd5" stroke-width="1" />
+<polyline points="772,495 772,1345" fill="none" stroke="#aeb6bd" stroke-width="1" />
+<ellipse cx="139" cy="552" rx="21" ry="21" fill="#ffb3a7" stroke="#ff7b67" stroke-width="1" filter="url(#w)"/>
+<text x="133" y="556" fill="#9e2d20" font-size="16" font-weight="500"><tspan x="133" dy="0">S</tspan></text>
+<text x="174" y="545" fill="#17212b" font-size="16" font-weight="500"><tspan x="174" dy="0">Sage is researching</tspan></text>
+<text x="174" y="562" fill="#667085" font-size="10" font-weight="500"><tspan x="174" dy="0">performed from live web research</tspan></text>
+<rect x="640" y="529" width="91" height="28" rx="7" fill="#e6f4ff" stroke="#3182ce" stroke-width="1"  filter="url(#w)"/>
+<text x="656" y="545" fill="#1971c2" font-size="9" font-weight="500"><tspan x="656" dy="0">IN PROGRESS</tspan></text>
+<polyline points="112,590 730,590" fill="none" stroke="#c9cfd5" stroke-width="1" />
+<text x="116" y="626" fill="#1971c2" font-size="10" font-weight="500"><tspan x="116" dy="0">LIVE RESEARCH</tspan></text>
+<text x="594" y="625" fill="#667085" font-size="9" font-weight="500"><tspan x="594" dy="0">KEEP THIS PAGE OPEN</tspan></text>
+<text x="118" y="662" fill="#7b8791" font-size="12" font-weight="500"><tspan x="118" dy="0">01</tspan></text>
+<ellipse cx="159" cy="658" rx="6" ry="6" fill="#dfff58" stroke="#dfff58" stroke-width="1" filter="url(#w)"/>
+<text x="181" y="660" fill="#17212b" font-size="12" font-weight="500"><tspan x="181" dy="0">Reserved one foreground run</tspan></text>
+<polyline points="118,683 693,683" fill="none" stroke="#d5dade" stroke-width="1" />
+<text x="118" y="728" fill="#7b8791" font-size="12" font-weight="500"><tspan x="118" dy="0">02</tspan></text>
+<ellipse cx="159" cy="724" rx="6" ry="6" fill="#acd8ff" stroke="#acd8ff" stroke-width="1" filter="url(#w)"/>
+<text x="181" y="726" fill="#17212b" font-size="12" font-weight="500"><tspan x="181" dy="0">Searching archives and civic records</tspan></text>
+<polyline points="118,749 693,749" fill="none" stroke="#d5dade" stroke-width="1" />
+<text x="118" y="794" fill="#7b8791" font-size="12" font-weight="500"><tspan x="118" dy="0">03</tspan></text>
+<ellipse cx="159" cy="790" rx="6" ry="6" fill="#ff7b67" stroke="#ff7b67" stroke-width="1" filter="url(#w)"/>
+<text x="181" y="792" fill="#17212b" font-size="12" font-weight="500"><tspan x="181" dy="0">Checking dates across primary sources</tspan></text>
+<polyline points="118,815 693,815" fill="none" stroke="#d5dade" stroke-width="1" />
+<text x="118" y="860" fill="#7b8791" font-size="12" font-weight="500"><tspan x="118" dy="0">04</tspan></text>
+<ellipse cx="159" cy="856" rx="6" ry="6" fill="#dfff58" stroke="#dfff58" stroke-width="1" filter="url(#w)"/>
+<text x="181" y="858" fill="#17212b" font-size="12" font-weight="500"><tspan x="181" dy="0">Composing a sourced explanation</tspan></text>
+<polyline points="118,881 693,881" fill="none" stroke="#d5dade" stroke-width="1" />
+<rect x="118" y="933" width="575" height="5" rx="7" fill="#d9dee2" stroke="#d9dee2" stroke-width="1"  filter="url(#w)"/>
+<rect x="118" y="933" width="390" height="5" rx="7" fill="#dfff58" stroke="#dfff58" stroke-width="1"  filter="url(#w)"/>
+<text x="118" y="959" fill="#6c8d00" font-size="8" font-weight="500"><tspan x="118" dy="0">SEARCH</tspan></text>
+<text x="360" y="959" fill="#1971c2" font-size="8" font-weight="500"><tspan x="360" dy="0">CHECK</tspan></text>
+<text x="618" y="959" fill="#9aa4ac" font-size="8" font-weight="500"><tspan x="618" dy="0">COMPOSE</tspan></text>
+<rect x="118" y="1000" width="550" height="17" rx="7" fill="#dfe4e7" stroke="#dfe4e7" stroke-width="1"  filter="url(#w)"/>
+<rect x="118" y="1033" width="600" height="17" rx="7" fill="#e7eaec" stroke="#e7eaec" stroke-width="1"  filter="url(#w)"/>
+<rect x="118" y="1066" width="490" height="17" rx="7" fill="#e7eaec" stroke="#e7eaec" stroke-width="1"  filter="url(#w)"/>
+<rect x="118" y="1125" width="600" height="76" rx="7" fill="#eff1f2" stroke="#d6dce0" stroke-width="1"  filter="url(#w)"/>
+<rect x="118" y="1231" width="600" height="49" rx="7" fill="#ffffff" stroke="#b7bec6" stroke-width="1"  filter="url(#w)"/>
+<text x="138" y="1258" fill="#7b8791" font-size="11" font-weight="500"><tspan x="138" dy="0">Sources &amp; evidence</tspan></text>
+<text x="678" y="1261" fill="#7b8791" font-size="14" font-weight="500"><tspan x="678" dy="0">⌄</tspan></text>
+<text x="807" y="542" fill="#7b8791" font-size="9" font-weight="500"><tspan x="807" dy="0">AUDIENCE DIRECTION</tspan></text>
+<text x="807" y="589" fill="#59636b" font-size="25" font-weight="600"><tspan x="807" dy="0">Where should</tspan></text>
+<text x="807" y="620" fill="#59636b" font-size="25" font-weight="600"><tspan x="807" dy="0">curiosity go next?</tspan></text>
+<text x="807" y="652" fill="#8a949c" font-size="11" font-weight="500"><tspan x="807" dy="0">Paths appear when the sourced answer is ready.</tspan></text>
+<rect x="807" y="691" width="320" height="148" rx="7" fill="#eef1f2" stroke="#c8ced3" stroke-width="2" stroke-dasharray="9 7" filter="url(#w)"/>
+<rect x="807" y="858" width="320" height="148" rx="7" fill="#eef1f2" stroke="#c8ced3" stroke-width="2" stroke-dasharray="9 7" filter="url(#w)"/>
+<text x="913" y="766" fill="#9aa3aa" font-size="11" font-weight="500"><tspan x="913" dy="0">PATH A</tspan></text>
+<text x="913" y="933" fill="#9aa3aa" font-size="11" font-weight="500"><tspan x="913" dy="0">PATH B</tspan></text>
+<rect x="807" y="1037" width="320" height="54" rx="7" fill="#f2f3f4" stroke="#c8ced3" stroke-width="2"  filter="url(#w)"/>
+<text x="885" y="1065" fill="#8b959c" font-size="10" font-weight="500"><tspan x="885" dy="0">Available after research</tspan></text>
+<ellipse cx="1271" cy="171" rx="21" ry="21" fill="#dfff58" stroke="#17212b" stroke-width="2" filter="url(#w)"/>
+<text x="1264" y="176" fill="#17212b" font-size="18" font-weight="500"><tspan x="1264" dy="0">2</tspan></text>
+<text x="1307" y="176" fill="#17212b" font-size="24" font-weight="600"><tspan x="1307" dy="0">Information displayed</tspan></text>
+<text x="1307" y="197" fill="#667085" font-size="12" font-weight="500"><tspan x="1307" dy="0">Same URL · content replaces its placeholders</tspan></text>
+<rect x="1250" y="228" width="1110" height="1150" rx="7" fill="#fffdf8" stroke="#17212b" stroke-width="3"  filter="url(#w)"/>
+<rect x="1250" y="228" width="1110" height="57" rx="7" fill="#eeeae2" stroke="#17212b" stroke-width="2"  filter="url(#w)"/>
+<ellipse cx="1281" cy="255" rx="6" ry="6" fill="#ff7b67" stroke="#17212b" stroke-width="1" filter="url(#w)"/>
+<ellipse cx="1304" cy="255" rx="6" ry="6" fill="#ffd166" stroke="#17212b" stroke-width="1" filter="url(#w)"/>
+<ellipse cx="1327" cy="255" rx="6" ry="6" fill="#81d88d" stroke="#17212b" stroke-width="1" filter="url(#w)"/>
+<rect x="1540" y="242" width="530" height="29" rx="7" fill="#ffffff" stroke="#b7bec6" stroke-width="1"  filter="url(#w)"/>
+<text x="1698" y="259" fill="#667085" font-size="11" font-weight="500"><tspan x="1698" dy="0">wonderdrive.app/journey/7</tspan></text>
+<text x="1282" y="323" fill="#17212b" font-size="16" font-weight="500"><tspan x="1282" dy="0">WONDERDRIVE</tspan></text>
+<text x="1745" y="321" fill="#17212b" font-size="12" font-weight="500"><tspan x="1745" dy="0">Journey</tspan></text>
+<text x="1825" y="321" fill="#667085" font-size="12" font-weight="500"><tspan x="1825" dy="0">Map</tspan></text>
+<text x="2272" y="323" fill="#17212b" font-size="14" font-weight="500"><tspan x="2272" dy="0">•••</tspan></text>
+<polyline points="1275,343 2335,343" fill="none" stroke="#c9cfd5" stroke-width="1" />
+<text x="1292" y="385" fill="#d64b38" font-size="10" font-weight="500"><tspan x="1292" dy="0">TURN 01 · SAGE</tspan></text>
+<text x="1292" y="434" fill="#17212b" font-size="31" font-weight="600"><tspan x="1292" dy="0">Where does a city</tspan></text>
+<text x="1292" y="473" fill="#17212b" font-size="31" font-weight="600"><tspan x="1292" dy="0">keep its memories?</tspan></text>
+<rect x="2110" y="376" width="90" height="55" rx="7" fill="#ffffff" stroke="#aeb6bd" stroke-width="1"  filter="url(#w)"/>
+<text x="2131" y="404" fill="#17212b" font-size="20" font-weight="500"><tspan x="2131" dy="0">1</tspan></text>
+<text x="2126" y="419" fill="#667085" font-size="8" font-weight="500"><tspan x="2126" dy="0">TURN</tspan></text>
+<rect x="2200" y="376" width="112" height="55" rx="7" fill="#ffffff" stroke="#aeb6bd" stroke-width="1"  filter="url(#w)"/>
+<text x="2222" y="404" fill="#17212b" font-size="20" font-weight="500"><tspan x="2222" dy="0">4</tspan></text>
+<text x="2223" y="419" fill="#667085" font-size="8" font-weight="500"><tspan x="2223" dy="0">SOURCES</tspan></text>
+<polyline points="1275,495 2335,495" fill="none" stroke="#c9cfd5" stroke-width="1" />
+<polyline points="1952,495 1952,1345" fill="none" stroke="#aeb6bd" stroke-width="1" />
+<ellipse cx="1319" cy="552" rx="21" ry="21" fill="#ffb3a7" stroke="#ff7b67" stroke-width="1" filter="url(#w)"/>
+<text x="1313" y="556" fill="#9e2d20" font-size="16" font-weight="500"><tspan x="1313" dy="0">S</tspan></text>
+<text x="1354" y="545" fill="#17212b" font-size="16" font-weight="500"><tspan x="1354" dy="0">Sage</tspan></text>
+<text x="1354" y="562" fill="#667085" font-size="10" font-weight="500"><tspan x="1354" dy="0">performed from live web research</tspan></text>
+<rect x="1820" y="529" width="91" height="28" rx="7" fill="#dfff58" stroke="#17212b" stroke-width="1"  filter="url(#w)"/>
+<text x="1838" y="545" fill="#17212b" font-size="9" font-weight="500"><tspan x="1838" dy="0">COMPOSED</tspan></text>
+<polyline points="1292,590 1910,590" fill="none" stroke="#c9cfd5" stroke-width="1" />
+<text x="1298" y="676" fill="#17212b" font-size="54" font-weight="600"><tspan x="1298" dy="0">C</tspan></text>
+<text x="1339" y="640" fill="#17212b" font-size="16" font-weight="500"><tspan x="1339" dy="0">ities remember in layers: through street names, buildings,</tspan></text>
+<text x="1339" y="666" fill="#17212b" font-size="16" font-weight="500"><tspan x="1339" dy="0">archives, rituals, and the stories residents repeat. Official</tspan></text>
+<text x="1298" y="697" fill="#17212b" font-size="16" font-weight="500"><tspan x="1298" dy="0">records preserve decisions, while everyday memory often survives</tspan></text>
+<text x="1298" y="723" fill="#17212b" font-size="16" font-weight="500"><tspan x="1298" dy="0">in landmarks, local language, and contested public space.</tspan></text>
+<ellipse cx="1816" cy="713" rx="9" ry="9" fill="#acd8ff" stroke="#17212b" stroke-width="1" filter="url(#w)"/>
+<text x="1813" y="715" fill="#17212b" font-size="9" font-weight="500"><tspan x="1813" dy="0">1</tspan></text>
+<text x="1298" y="775" fill="#17212b" font-size="16" font-weight="500"><tspan x="1298" dy="0">What a city chooses to preserve—and what it allows to disappear—</tspan></text>
+<text x="1298" y="801" fill="#17212b" font-size="16" font-weight="500"><tspan x="1298" dy="0">reveals who has had the power to define its shared past.</tspan></text>
+<ellipse cx="1749" cy="791" rx="9" ry="9" fill="#acd8ff" stroke="#17212b" stroke-width="1" filter="url(#w)"/>
+<text x="1746" y="793" fill="#17212b" font-size="9" font-weight="500"><tspan x="1746" dy="0">2</tspan></text>
+<rect x="1298" y="843" width="600" height="95" rx="7" fill="#efffc4" stroke="#17212b" stroke-width="1"  filter="url(#w)"/>
+<text x="1319" y="867" fill="#17212b" font-size="9" font-weight="500"><tspan x="1319" dy="0">WHERE THIS LEAVES US</tspan></text>
+<text x="1319" y="896" fill="#17212b" font-size="14" font-weight="500"><tspan x="1319" dy="0">A city's memory is less like a vault and more like a</tspan></text>
+<text x="1319" y="919" fill="#17212b" font-size="14" font-weight="500"><tspan x="1319" dy="0">negotiation that every generation quietly edits.</tspan></text>
+<rect x="1298" y="974" width="600" height="50" rx="7" fill="#ffffff" stroke="#17212b" stroke-width="1"  filter="url(#w)"/>
+<text x="1318" y="1001" fill="#17212b" font-size="11" font-weight="500"><tspan x="1318" dy="0">Sources &amp; evidence</tspan></text>
+<text x="1761" y="999" fill="#667085" font-size="9" font-weight="500"><tspan x="1761" dy="0">4 inspectable links</tspan></text>
+<text x="1870" y="1004" fill="#17212b" font-size="14" font-weight="500"><tspan x="1870" dy="0">⌄</tspan></text>
+<rect x="1298" y="1024" width="600" height="50" rx="7" fill="#ffffff" stroke="#17212b" stroke-width="1"  filter="url(#w)"/>
+<text x="1318" y="1051" fill="#17212b" font-size="11" font-weight="500"><tspan x="1318" dy="0">Research Trail</tspan></text>
+<text x="1736" y="1049" fill="#667085" font-size="9" font-weight="500"><tspan x="1736" dy="0">activity, not reasoning</tspan></text>
+<text x="1870" y="1054" fill="#17212b" font-size="14" font-weight="500"><tspan x="1870" dy="0">⌄</tspan></text>
+<rect x="1298" y="1074" width="600" height="50" rx="7" fill="#ffffff" stroke="#17212b" stroke-width="1"  filter="url(#w)"/>
+<text x="1318" y="1101" fill="#17212b" font-size="11" font-weight="500"><tspan x="1318" dy="0">Performance metadata</tspan></text>
+<text x="1870" y="1104" fill="#17212b" font-size="14" font-weight="500"><tspan x="1870" dy="0">⌄</tspan></text>
+<rect x="1953" y="495" width="382" height="850" rx="7" fill="#17212b" stroke="#17212b" stroke-width="1"  filter="url(#w)"/>
+<text x="1987" y="542" fill="#dfff58" font-size="9" font-weight="500"><tspan x="1987" dy="0">AUDIENCE DIRECTION / 02 PATHS</tspan></text>
+<text x="1987" y="598" fill="#fffdf8" font-size="28" font-weight="600"><tspan x="1987" dy="0">Where should</tspan></text>
+<text x="1987" y="633" fill="#fffdf8" font-size="28" font-weight="600"><tspan x="1987" dy="0">curiosity go next?</tspan></text>
+<text x="1987" y="660" fill="#aab3ba" font-size="11" font-weight="500"><tspan x="1987" dy="0">Nothing advances until you decide.</tspan></text>
+<rect x="1987" y="698" width="314" height="168" rx="7" fill="#acd8ff" stroke="#fffdf8" stroke-width="1"  filter="url(#w)"/>
+<ellipse cx="2018" cy="728" rx="12" ry="12" fill="#17212b" stroke="#17212b" stroke-width="1" filter="url(#w)"/>
+<text x="2014" y="728" fill="#ffffff" font-size="10" font-weight="500"><tspan x="2014" dy="0">A</tspan></text>
+<text x="2043" y="729" fill="#17212b" font-size="9" font-weight="500"><tspan x="2043" dy="0">PLACE &amp; POWER</tspan></text>
+<text x="2006" y="776" fill="#17212b" font-size="18" font-weight="500"><tspan x="2006" dy="0">Who decides which city</tspan></text>
+<text x="2006" y="801" fill="#17212b" font-size="18" font-weight="500"><tspan x="2006" dy="0">memories become official?</tspan></text>
+<polyline points="2006,823 2280,823" fill="none" stroke="#5c7588" stroke-width="1" />
+<text x="2006" y="846" fill="#17212b" font-size="9" font-weight="500"><tspan x="2006" dy="0">TAKE THIS PATH</tspan></text>
+<rect x="1987" y="882" width="314" height="168" rx="7" fill="#dfff58" stroke="#fffdf8" stroke-width="1"  filter="url(#w)"/>
+<ellipse cx="2018" cy="912" rx="12" ry="12" fill="#17212b" stroke="#17212b" stroke-width="1" filter="url(#w)"/>
+<text x="2014" y="912" fill="#ffffff" font-size="10" font-weight="500"><tspan x="2014" dy="0">B</tspan></text>
+<text x="2043" y="913" fill="#17212b" font-size="9" font-weight="500"><tspan x="2043" dy="0">LOSS &amp; RECOVERY</tspan></text>
+<text x="2006" y="960" fill="#17212b" font-size="18" font-weight="500"><tspan x="2006" dy="0">Can a city recover a</tspan></text>
+<text x="2006" y="985" fill="#17212b" font-size="18" font-weight="500"><tspan x="2006" dy="0">memory it erased?</tspan></text>
+<polyline points="2006,1007 2280,1007" fill="none" stroke="#687b1f" stroke-width="1" />
+<text x="2006" y="1030" fill="#17212b" font-size="9" font-weight="500"><tspan x="2006" dy="0">TAKE THIS PATH</tspan></text>
+<rect x="1987" y="1082" width="314" height="55" rx="7" fill="#17212b" stroke="#ffffff" stroke-width="1"  filter="url(#w)"/>
+<text x="2012" y="1111" fill="#fffdf8" font-size="12" font-weight="500"><tspan x="2012" dy="0">✦  Let Sage choose</tspan></text>
+<text x="2270" y="1114" fill="#dfff58" font-size="15" font-weight="500"><tspan x="2270" dy="0">→</tspan></text>
+<polyline points="1987,1175 2301,1175" fill="none" stroke="#59646c" stroke-width="1" />
+<text x="1987" y="1205" fill="#fffdf8" font-size="10" font-weight="500"><tspan x="1987" dy="0">NEITHER PATH?</tspan></text>
+<text x="1987" y="1230" fill="#9da7ae" font-size="8" font-weight="500"><tspan x="1987" dy="0">Grounded</tspan></text>
+<polyline points="2050,1228 2225,1228" fill="none" stroke="#ff7b67" stroke-width="3" />
+<ellipse cx="2140" cy="1228" rx="8" ry="8" fill="#ff7b67" stroke="#ff7b67" stroke-width="1" filter="url(#w)"/>
+<text x="2238" y="1230" fill="#9da7ae" font-size="8" font-weight="500"><tspan x="2238" dy="0">Adventurous</tspan></text>
+<rect x="1987" y="1260" width="314" height="45" rx="7" fill="#ff7b67" stroke="#fffdf8" stroke-width="1"  filter="url(#w)"/>
+<text x="2075" y="1283" fill="#17212b" font-size="9" font-weight="500"><tspan x="2075" dy="0">REJECT BOTH &amp; REDRAW</tspan></text>
+<polyline points="1188,695 1236,695" fill="none" stroke="#ff7b67" stroke-width="4" />
+<path d="M1224,687 L1236,695 L1224,703" fill="none" stroke="#ff7b67" stroke-width="4"/>
+<rect x="1125" y="625" width="170" height="48" rx="7" fill="#fffdf8" stroke="#ff7b67" stroke-width="1"  filter="url(#w)"/>
+<text x="1146" y="645" fill="#d64b38" font-size="9" font-weight="500"><tspan x="1146" dy="0">CONTENT REPLACES</tspan></text>
+<text x="1153" y="659" fill="#d64b38" font-size="9" font-weight="500"><tspan x="1153" dy="0">PLACEHOLDERS</tspan></text>
+<polyline points="70,1418 2360,1418" fill="none" stroke="#b7bec6" stroke-width="1" />
+<rect x="70" y="1450" width="2290" height="130" rx="7" fill="#e6f4ff" stroke="#3182ce" stroke-width="2"  filter="url(#w)"/>
+<text x="100" y="1488" fill="#1971c2" font-size="12" font-weight="500"><tspan x="100" dy="0">UNIFIED BEHAVIOR</tspan></text>
+<text x="100" y="1522" fill="#17212b" font-size="15" font-weight="500"><tspan x="100" dy="0">The question header, answer column, and direction rail mount once. During research, the answer column shows observable activity and content-shaped</tspan></text>
+<text x="100" y="1550" fill="#17212b" font-size="15" font-weight="500"><tspan x="100" dy="0">placeholders while paths remain visibly disabled. When validation succeeds, information and choices replace those regions without a page change.</tspan></text>
+</svg>

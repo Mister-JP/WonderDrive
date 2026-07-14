@@ -5,7 +5,7 @@ Phase 1 proves that WonderDrive is a coherent, runnable product before paid mode
 ## Delivered experience
 
 - Configure a starting question, performer, and research-depth rehearsal.
-- Watch observable research events and a sourced Curiosity Interlude appear in sequence.
+- Watch observable research events appear in sequence.
 - Read a composed answer with inline source markers, an evidence drawer, and a Research Trail that does not expose private reasoning.
 - Choose exactly one of two next questions, reject both with grounded/adventurous feedback, or delegate the choice for one turn.
 - Save and reload journeys through the Sites-managed D1 binding.
@@ -25,7 +25,7 @@ Phase 1 proves that WonderDrive is a coherent, runnable product before paid mode
 
 The Phase 1 engine classifies a question into a reviewed topic set, produces deterministic answer blocks, links official or institutional sources, emits sanitized activity events, and selects one of several distinct question pairs. It does not call a model, search the live web, fabricate streaming, or expose chain-of-thought.
 
-The visible research replay exists to test pacing, progressive facts, cancellation/skip behavior, evidence hierarchy, and the transition into the performance. Phase 2 may replace the fixture adapter with a bounded foreground provider adapter while preserving the same UI and data contracts.
+The visible research replay exists to test pacing, cancellation/skip behavior, evidence hierarchy, and the transition into the performance. Phase 2 replaces the fixture adapter with a bounded foreground provider adapter while preserving the same UI and data contracts.
 
 ## Explicit exclusions
 
@@ -42,6 +42,7 @@ Run:
 
 ```bash
 npm ci
+npm run architecture:check
 npm run lint
 npm run typecheck
 npm test

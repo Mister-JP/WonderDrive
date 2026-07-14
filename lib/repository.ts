@@ -22,36 +22,15 @@ import type {
 import { buildFixtureTurn, stableKey, type FixtureTurnDraft } from "./fixtures";
 import { getD1 } from "../db";
 import type { ViewerContext } from "./viewer";
-
-type ErrorCode =
-  | "BAD_REQUEST"
-  | "NOT_FOUND"
-  | "FORBIDDEN"
-  | "VERSION_CONFLICT"
-  | "IDEMPOTENCY_CONFLICT"
-  | "ALREADY_IN_PROGRESS"
-  | "JOURNEY_LIMIT"
-  | "LIVE_RESEARCH_LIMIT"
-  | "BUDGET_EXCEEDED"
-  | "PROVIDER_UNAVAILABLE"
-  | "PROVIDER_ERROR"
-  | "PROVIDER_TIMEOUT"
-  | "SCHEMA_INVALID"
-  | "CITATION_INVALID"
-  | "RESEARCH_VALIDATION_FAILED"
-  | "INTERNAL_ERROR";
-
-export class RepositoryError extends Error {
-  constructor(
-    public readonly code: ErrorCode,
-    message: string,
-    public readonly status: number,
-    public readonly retryable = false,
-  ) {
-    super(message);
-    this.name = "RepositoryError";
-  }
-}
+import { RepositoryError } from "./errors";
+import {
+  assertId,
+  assertIdempotencyKey,
+  hashPayload,
+  normalizeSeed,
+  titleFromSeed,
+} from "./request";
+import { optionStatements } from "./turn-options";
 
 type JourneyRow = {
   id: string;
@@ -147,14 +126,6 @@ type EventRow = {
   kind: JourneyTurn["researchEvents"][number]["kind"];
   label: string;
   source_id: string | null;
-};
-
-type InterludeRow = {
-  turn_id: string;
-  id: string;
-  text: string;
-  source_title: string;
-  source_url: string;
 };
 
 const PRESETS: ResearchPreset[] = ["spark", "standard", "deep"];
@@ -265,7 +236,7 @@ export async function createJourney(
         journeyId,
         seed,
         draft.answer,
-        JSON.stringify(draft.answerBlocks),
+        JSON.stringify({ blocks: draft.answerBlocks, media: draft.media }),
         draft.transition,
         draft.topicLabel,
         draft.researchSummary,
@@ -375,8 +346,7 @@ export async function getJourney(
     throw new RepositoryError("NOT_FOUND", "That saved journey was not found.", 404);
   }
 
-  const [turnsResult, optionsResult, sourcesResult, eventsResult, interludesResult, actionsResult] =
-    await Promise.all([
+  const [turnsResult, optionsResult, sourcesResult, eventsResult, actionsResult] = await Promise.all([
       db
         .prepare(
           `SELECT t.id, t.parent_turn_id, t.depth, t.question, t.answer, t.answer_json,
@@ -437,15 +407,6 @@ export async function getJourney(
         .all<EventRow>(),
       db
         .prepare(
-          `SELECT i.turn_id, i.id, i.text, i.source_title, i.source_url
-           FROM turn_interludes i
-           JOIN turns t ON t.id = i.turn_id
-           WHERE t.journey_id = ?`,
-        )
-        .bind(journeyId)
-        .all<InterludeRow>(),
-      db
-        .prepare(
           `SELECT id, turn_id, kind, option_id, result_turn_id, metadata_json, created_at
            FROM turn_actions WHERE journey_id = ? ORDER BY created_at`,
         )
@@ -456,18 +417,18 @@ export async function getJourney(
   const options = groupBy(optionsResult.results, "turn_id");
   const sources = groupBy(sourcesResult.results, "turn_id");
   const events = groupBy(eventsResult.results, "turn_id");
-  const interludes = new Map(interludesResult.results.map((item) => [item.turn_id, item]));
   const topicLabels: string[] = [];
   const turns: JourneyTurn[] = turnsResult.results.map((turn) => {
     if (turn.topic_label && !topicLabels.includes(turn.topic_label)) topicLabels.push(turn.topic_label);
-    const interlude = interludes.get(turn.id);
+    const answerPayload = parseAnswerPayload(turn.answer_json, turn.answer ?? "");
     return {
       id: turn.id,
       parentTurnId: turn.parent_turn_id,
       depth: turn.depth,
       question: turn.question,
       answer: turn.answer ?? "",
-      answerBlocks: parseAnswerBlocks(turn.answer_json, turn.answer ?? ""),
+      answerBlocks: answerPayload.blocks,
+      media: answerPayload.media,
       transition: turn.transition ?? "",
       topicLabel: turn.topic_label ?? "open question",
       researchSummary: turn.research_summary ?? "",
@@ -499,19 +460,6 @@ export async function getJourney(
         label: event.label,
         sourceId: event.source_id,
       })),
-      interlude: interlude
-        ? {
-            id: interlude.id,
-            text: interlude.text,
-            sourceTitle: interlude.source_title,
-            sourceUrl: interlude.source_url,
-          }
-        : {
-            id: `missing-${turn.id}`,
-            text: "This fixture turn has no interlude.",
-            sourceTitle: "WonderDrive",
-            sourceUrl: "https://github.com/Mister-JP/WonderDrive",
-          },
       research: {
         mode: turn.run_provider === "openai" ? "live" : "fixture",
         providerResponseId: turn.provider_response_id,
@@ -564,10 +512,32 @@ export async function getJourney(
   };
 }
 
+export async function listRejectedQuestions(
+  viewer: ViewerContext,
+  journeyId: string,
+): Promise<string[]> {
+  await getJourney(viewer, journeyId);
+  const result = await getD1()
+    .prepare(
+      `SELECT o.question
+       FROM turn_options o
+       JOIN turns t ON t.id = o.turn_id
+       WHERE t.journey_id = ? AND o.state = 'rejected'
+       ORDER BY t.created_at, o.set_version, o.position`,
+    )
+    .bind(journeyId)
+    .all<{ question: string }>();
+  return result.results.map((item) => item.question);
+}
+
 export async function advanceJourney(
   viewer: ViewerContext,
   journeyId: string,
   request: AdvanceJourneyRequest,
+  liveRedraw?: (context: { journey: JourneyDetail; turn: JourneyTurn }) => Promise<{
+    preferredPosition: 0 | 1;
+    options: Array<{ question: string; angle: string }>;
+  }>,
 ): Promise<JourneyDetail> {
   validateAdvanceRequest(request);
   const db = getD1();
@@ -624,13 +594,22 @@ export async function advanceJourney(
   if (request.action === "reject") {
     const setVersion = fromTurn.optionSetVersion + 1;
     const actionId = crypto.randomUUID();
-    const draft = buildFixtureTurn({
-      question: fromTurn.question,
-      depth: fromTurn.depth,
-      performerId: journey.performerId,
-      rejectionCount: setVersion,
-      adventure: request.adventure ?? 50,
-    });
+    const draft = journey.modelId === "gpt-5.6-luna"
+      ? await liveRedraw?.({ journey, turn: fromTurn })
+      : buildFixtureTurn({
+          question: fromTurn.question,
+          depth: fromTurn.depth,
+          performerId: journey.performerId,
+          rejectionCount: setVersion,
+          adventure: request.adventure ?? 50,
+        });
+    if (!draft || draft.options.length !== 2) {
+      throw new RepositoryError(
+        "RESEARCH_VALIDATION_FAILED",
+        "Live replacement questions must be generated before committing a redraw.",
+        500,
+      );
+    }
     const statements = [
       db
         .prepare(
@@ -645,23 +624,20 @@ export async function advanceJourney(
           viewer.identityId,
           request.expectedVersion,
         ),
-      ...conditionalOptionStatements(
-        db,
-        fromTurn.id,
-        setVersion,
-        draft,
+      ...optionStatements(db, fromTurn.id, setVersion, draft, {
         journeyId,
-        viewer.identityId,
-        request.expectedVersion,
-      ),
+        identityId: viewer.identityId,
+        expectedVersion: request.expectedVersion,
+      }),
       db
         .prepare(
-          `UPDATE turns SET option_set_version = ?
+          `UPDATE turns SET option_set_version = ?, preferred_position = ?
            WHERE id = ? AND journey_id = ?
              AND EXISTS (SELECT 1 FROM journeys WHERE id = ? AND owner_identity_id = ? AND version = ? AND deleted_at IS NULL)`,
         )
         .bind(
           setVersion,
+          draft.preferredPosition,
           fromTurn.id,
           journeyId,
           journeyId,
@@ -781,7 +757,7 @@ export async function advanceJourney(
         childDepth,
         selected.question,
         draft.answer,
-        JSON.stringify(draft.answerBlocks),
+        JSON.stringify({ blocks: draft.answerBlocks, media: draft.media }),
         draft.transition,
         draft.topicLabel,
         draft.researchSummary,
@@ -800,15 +776,11 @@ export async function advanceJourney(
         viewer.identityId,
         request.expectedVersion,
       ),
-    ...conditionalOptionStatements(
-      db,
-      childId,
-      0,
-      draft,
+    ...optionStatements(db, childId, 0, draft, {
       journeyId,
-      viewer.identityId,
-      request.expectedVersion,
-    ),
+      identityId: viewer.identityId,
+      expectedVersion: request.expectedVersion,
+    }),
     ...conditionalResearchStatements(
       db,
       {
@@ -987,51 +959,6 @@ export async function compareJourneys(
   };
 }
 
-function optionStatements(
-  db: D1Database,
-  turnId: string,
-  setVersion: number,
-  draft: FixtureTurnDraft,
-) {
-  return draft.options.map((option, position) =>
-    db
-      .prepare(
-        "INSERT INTO turn_options (id, turn_id, set_version, position, question, angle, state) VALUES (?, ?, ?, ?, ?, ?, 'proposed')",
-      )
-      .bind(crypto.randomUUID(), turnId, setVersion, position, option.question, option.angle),
-  );
-}
-
-function conditionalOptionStatements(
-  db: D1Database,
-  turnId: string,
-  setVersion: number,
-  draft: FixtureTurnDraft,
-  journeyId: string,
-  identityId: string,
-  expectedVersion: number,
-) {
-  return draft.options.map((option, position) =>
-    db
-      .prepare(
-        `INSERT INTO turn_options (id, turn_id, set_version, position, question, angle, state)
-         SELECT ?, ?, ?, ?, ?, ?, 'proposed'
-         WHERE EXISTS (SELECT 1 FROM journeys WHERE id = ? AND owner_identity_id = ? AND version = ? AND deleted_at IS NULL)`,
-      )
-      .bind(
-        crypto.randomUUID(),
-        turnId,
-        setVersion,
-        position,
-        option.question,
-        option.angle,
-        journeyId,
-        identityId,
-        expectedVersion,
-      ),
-  );
-}
-
 function researchStatements(
   db: D1Database,
   input: {
@@ -1090,23 +1017,6 @@ function researchStatements(
         ),
     );
   });
-  statements.push(
-    db
-      .prepare(
-        `INSERT INTO turn_interludes
-          (id, turn_id, fact_key, text, source_url, source_title, created_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      )
-      .bind(
-        crypto.randomUUID(),
-        input.turnId,
-        draft.interlude.factKey,
-        draft.interlude.text,
-        draft.interlude.sourceUrl,
-        draft.interlude.sourceTitle,
-        now,
-      ),
-  );
   return statements;
 }
 
@@ -1195,25 +1105,6 @@ function conditionalResearchStatements(
         ),
     );
   });
-  statements.push(
-    db
-      .prepare(
-        `INSERT INTO turn_interludes
-          (id, turn_id, fact_key, text, source_url, source_title, created_at)
-         SELECT ?, ?, ?, ?, ?, ?, ? WHERE EXISTS (SELECT 1 FROM turns WHERE id = ? AND journey_id = ?)`,
-      )
-      .bind(
-        crypto.randomUUID(),
-        input.turnId,
-        draft.interlude.factKey,
-        draft.interlude.text,
-        draft.interlude.sourceUrl,
-        draft.interlude.sourceTitle,
-        now,
-        input.turnId,
-        input.journeyId,
-      ),
-  );
   return statements;
 }
 
@@ -1261,16 +1152,30 @@ function summaryFromDetail(detail: JourneyDetail): JourneySummary {
   };
 }
 
-function parseAnswerBlocks(value: string | null, answer: string) {
+function parseAnswerPayload(
+  value: string | null,
+  answer: string,
+): { blocks: JourneyTurn["answerBlocks"]; media: JourneyTurn["media"] } {
   if (value) {
     try {
       const parsed = JSON.parse(value);
-      if (Array.isArray(parsed)) return parsed;
+      if (Array.isArray(parsed)) return { blocks: parsed, media: null };
+      if (parsed && typeof parsed === "object" && Array.isArray(parsed.blocks)) {
+        const media = parsed.media && typeof parsed.media === "object"
+          && typeof parsed.media.imageUrl === "string"
+          && typeof parsed.media.sourcePageUrl === "string"
+          && typeof parsed.media.caption === "string"
+          && typeof parsed.media.alt === "string"
+          ? parsed.media
+          : null;
+        return { blocks: parsed.blocks, media };
+      }
     } catch {
       // Older rows fall back to their plain-text answer.
     }
   }
-  return answer.split(/\n\n+/).map((text) => ({ text, sourceIds: [] }));
+  const blocks = answer.split(/\n\n+/).map((text) => ({ text, sourceIds: [] }));
+  return { blocks, media: null };
 }
 
 function parseResearchHandoff(value: string | null) {
@@ -1326,7 +1231,7 @@ function validateCreateRequest(request: CreateJourneyRequest) {
     throw new RepositoryError("BAD_REQUEST", "Choose a supported performer.", 400);
   }
   if (!MODELS.some((model) => model.id === request.modelId)) {
-    throw new RepositoryError("BAD_REQUEST", "Choose a supported Phase 1 model fixture.", 400);
+    throw new RepositoryError("BAD_REQUEST", "Choose a supported demo model.", 400);
   }
   if (!PRESETS.includes(request.researchPreset)) {
     throw new RepositoryError("BAD_REQUEST", "Choose a supported research preset.", 400);
@@ -1337,7 +1242,7 @@ function validateCreateRequest(request: CreateJourneyRequest) {
   if (!["avoid", "when-useful", "prefer"].includes(request.imagePreference)) {
     throw new RepositoryError("BAD_REQUEST", "Choose a supported factual-image preference.", 400);
   }
-  validateIdempotencyKey(request.idempotencyKey);
+  assertIdempotencyKey(request.idempotencyKey);
 }
 
 function validateAdvanceRequest(request: AdvanceJourneyRequest) {
@@ -1364,34 +1269,7 @@ function validateAdvanceRequest(request: AdvanceJourneyRequest) {
   if (request.reason !== undefined && (typeof request.reason !== "string" || request.reason.trim().length > 240)) {
     throw new RepositoryError("BAD_REQUEST", "Keep the rejection reason under 240 characters.", 400);
   }
-  validateIdempotencyKey(request.idempotencyKey);
-}
-
-function validateIdempotencyKey(value: string) {
-  if (typeof value !== "string" || value.length < 8 || value.length > 100) {
-    throw new RepositoryError("BAD_REQUEST", "A valid request key is required.", 400);
-  }
-}
-
-function normalizeSeed(seed: string): string {
-  if (typeof seed !== "string") {
-    throw new RepositoryError("BAD_REQUEST", "Start with a question.", 400);
-  }
-  const normalized = seed.trim().replace(/\s+/g, " ");
-  if (normalized.length < 3 || normalized.length > 280) {
-    throw new RepositoryError("BAD_REQUEST", "Keep the starting question between 3 and 280 characters.", 400);
-  }
-  return normalized;
-}
-
-function titleFromSeed(seed: string): string {
-  return seed.length <= 62 ? seed : `${seed.slice(0, 59).trimEnd()}…`;
-}
-
-function assertId(value: string, label: string) {
-  if (typeof value !== "string" || value.length < 8 || value.length > 100) {
-    throw new RepositoryError("BAD_REQUEST", `A valid ${label} ID is required.`, 400);
-  }
+  assertIdempotencyKey(request.idempotencyKey);
 }
 
 function assertMutationChanged(result: D1Result<unknown> | undefined) {
@@ -1403,12 +1281,6 @@ function assertMutationChanged(result: D1Result<unknown> | undefined) {
       true,
     );
   }
-}
-
-async function hashPayload(value: unknown): Promise<string> {
-  const bytes = new TextEncoder().encode(JSON.stringify(value));
-  const hash = await crypto.subtle.digest("SHA-256", bytes);
-  return Array.from(new Uint8Array(hash), (byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
 function formatList(values: string[]): string {

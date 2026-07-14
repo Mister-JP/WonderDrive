@@ -58,6 +58,16 @@ export const preferences = sqliteTable("preferences", {
     .default(sql`(unixepoch() * 1000)`),
 });
 
+export const starterRecommendations = sqliteTable("starter_recommendations", {
+  identityId: text("identity_id")
+    .primaryKey()
+    .references(() => identities.id),
+  historyHash: text("history_hash").notNull(),
+  questionsJson: text("questions_json").notNull(),
+  generatedAt: integer("generated_at", { mode: "timestamp_ms" }).notNull(),
+  expiresAt: integer("expires_at", { mode: "timestamp_ms" }).notNull(),
+});
+
 export const journeys = sqliteTable(
   "journeys",
   {
@@ -365,6 +375,8 @@ export const snapshots = sqliteTable(
   (table) => [index("snapshots_journey_created_idx").on(table.journeyId, table.createdAt)],
 );
 
+// Legacy Phase 1 tables remain declared so future migrations do not drop deployed data.
+// No current runtime path reads or writes them.
 export const interludeFacts = sqliteTable("interlude_facts", {
   id: text("id").primaryKey(),
   factKey: text("fact_key").notNull().unique(),
@@ -447,6 +459,7 @@ export const researchEvents = sqliteTable(
   ],
 );
 
+// Legacy per-turn records are retained for migration compatibility only.
 export const turnInterludes = sqliteTable(
   "turn_interludes",
   {

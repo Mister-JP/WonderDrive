@@ -5,7 +5,9 @@ import type {
   UserPreferences,
 } from "./contracts";
 import { getD1 } from "../db";
-import { getJourney, RepositoryError } from "./repository";
+import { getJourney } from "./repository";
+import { RepositoryError } from "./errors";
+import { asRecord } from "./request";
 import type { ViewerContext } from "./viewer";
 
 type PreferencesRow = {
@@ -257,11 +259,4 @@ function validatePreferences(value: unknown): UserPreferences {
     speechRate,
     reduceMotion,
   };
-}
-
-function asRecord(value: unknown): Record<string, unknown> {
-  if (!value || typeof value !== "object" || Array.isArray(value)) {
-    throw new RepositoryError("BAD_REQUEST", "A valid request body is required.", 400);
-  }
-  return value as Record<string, unknown>;
 }

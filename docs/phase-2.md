@@ -9,7 +9,7 @@ Phase 2 replaces the Phase 1 fixture at the canonical turn-adapter seam while ke
 3. The same open HTTP request calls the OpenAI Responses API with `gpt-5.6-luna`, built-in `web_search`, `store: false`, a strict JSON schema, and preset-specific tool, output, reasoning, and wall-time ceilings.
 4. WonderDrive normalizes only observable activity for the research stage. It never streams hidden chain-of-thought or raw provider envelopes.
 5. The output must contain two to four bounded answer blocks and exactly two distinct next questions. Each answer block must cite at least one URL in the provider-returned source set.
-6. Only after validation does one D1 batch commit the journey/turn, options, action, research run/events, sources/relations, curated interlude, and usage fields. A disconnect, provider error, timeout, invalid citation, duplicate option pair, or version race marks the request failed and commits no turn.
+6. Only after validation does one D1 batch commit the journey/turn, options, action, research run/events, sources/relations, and usage fields. A disconnect, provider error, timeout, invalid citation, duplicate option pair, or version race marks the request failed and commits no turn.
 
 ## Research presets
 
@@ -20,10 +20,6 @@ Phase 2 replaces the Phase 1 fixture at the canonical turn-adapter seam while ke
 | Deep | 3 | 6,400 | high | 90 seconds |
 
 These are hard request ceilings, not estimates of actual usage. The research ledger stores provider input, output, reasoning, and total tokens; web-search call count; provider response ID; and elapsed milliseconds. Live runs are limited to four per rolling 24 hours for a guest and twenty for a signed-in ChatGPT identity. The provider account can still impose stricter budget, quota, or rate limits.
-
-## Curiosity interludes
-
-While the foreground request remains open, the UI reveals one sourced interlude from the existing reviewed, versioned fact bank. It is not fabricated progress and does not spend a second model call. The eventual answer and inline citations still come from the live web-research run.
 
 ## Honest modes
 
