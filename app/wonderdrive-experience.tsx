@@ -62,8 +62,6 @@ type JourneyViewOptions = {
 
 const navItems: Array<{ id: View; label: string }> = [
   { id: "start", label: "New drive" },
-  { id: "journey", label: "Stage" },
-  { id: "map", label: "Journey map" },
   { id: "library", label: "Library" },
   { id: "compare", label: "Compare" },
   { id: "settings", label: "Settings" },
@@ -472,32 +470,40 @@ export function WonderDriveExperience() {
           }}
         />
       ) : activeJourney && activeTurn ? (
-        view === "map" ? (
-          <JourneyMap
-            journey={activeJourney}
-            activeTurnId={activeTurn.id}
-            onSelect={(turnId) => {
-              setActiveTurnId(turnId);
-            }}
-            onContinue={(turnId) => {
-              setActiveTurnId(turnId);
-              setView("journey");
-            }}
-            onChoose={(turnId, optionId) => void advance("choose", { turnId, optionId })}
-          />
-        ) : (
-          <PerformanceStage
-            journey={activeJourney}
-            turn={activeTurn}
-            busy={mutation}
-            onChoose={(optionId) => void advance("choose", { turnId: activeTurn.id, optionId })}
-            onReject={(adventure, reason) => void advance("reject", { turnId: activeTurn.id, adventure, reason })}
-            onDelegate={() => void advance("delegate", { turnId: activeTurn.id })}
-            onMap={() => setView("map")}
-            speechRate={preferences.speechRate}
-            onSnapshot={() => void snapshotJourney(activeJourney.id)}
-          />
-        )
+        <div className="active-journey-shell">
+          <nav className="journey-view-switcher" aria-label="Current journey views">
+            <span>{activeJourney.title}</span>
+            <div>
+              <button type="button" className={view === "journey" ? "active" : ""} aria-current={view === "journey" ? "page" : undefined} onClick={() => setView("journey")}>Stage</button>
+              <button type="button" className={view === "map" ? "active" : ""} aria-current={view === "map" ? "page" : undefined} onClick={() => setView("map")}>Journey map</button>
+            </div>
+          </nav>
+          {view === "map" ? (
+            <JourneyMap
+              journey={activeJourney}
+              activeTurnId={activeTurn.id}
+              onSelect={(turnId) => {
+                setActiveTurnId(turnId);
+              }}
+              onContinue={(turnId) => {
+                setActiveTurnId(turnId);
+                setView("journey");
+              }}
+              onChoose={(turnId, optionId) => void advance("choose", { turnId, optionId })}
+            />
+          ) : (
+            <PerformanceStage
+              journey={activeJourney}
+              turn={activeTurn}
+              busy={mutation}
+              onChoose={(optionId) => void advance("choose", { turnId: activeTurn.id, optionId })}
+              onReject={(adventure, reason) => void advance("reject", { turnId: activeTurn.id, adventure, reason })}
+              onDelegate={() => void advance("delegate", { turnId: activeTurn.id })}
+              speechRate={preferences.speechRate}
+              onSnapshot={() => void snapshotJourney(activeJourney.id)}
+            />
+          )}
+        </div>
       ) : (
         <EmptyStage onOpenLibrary={() => setView("library")} />
       )}
@@ -856,7 +862,6 @@ function PerformanceStage({
   onChoose,
   onReject,
   onDelegate,
-  onMap,
   speechRate,
   onSnapshot,
 }: {
@@ -866,7 +871,6 @@ function PerformanceStage({
   onChoose: (optionId: string) => void;
   onReject: (adventure: number, reason?: string) => void;
   onDelegate: () => void;
-  onMap: () => void;
   speechRate: number;
   onSnapshot: () => void;
 }) {
@@ -942,7 +946,6 @@ function PerformanceStage({
         <div className="stage-metrics">
           <span><strong>{journey.turnCount}</strong> turns</span>
           <span><strong>{journey.sourceCount}</strong> sources</span>
-          <button type="button" onClick={onMap}>Open map ↗</button>
         </div>
       </header>
 
@@ -953,7 +956,7 @@ function PerformanceStage({
         </div>
       )}
 
-      <article className={`contained-answer-card ${turn.media ? "has-media" : "without-media"}`}>
+      <article className="contained-answer-card has-media">
         <div className="contained-answer-topline">
           <div className="answer-byline compact-byline">
             <span className={`performer-mark ${performer.accent}`}>{performer.mark}</span>
@@ -986,18 +989,7 @@ function PerformanceStage({
             </div>
           </div>
 
-          {turn.media && (
-            <figure className="contained-answer-media">
-              <a href={turn.media.sourcePageUrl} target="_blank" rel="noreferrer">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={turn.media.imageUrl} alt={turn.media.alt} loading="lazy" referrerPolicy="no-referrer" />
-              </a>
-              <figcaption>
-                <span>{turn.media.caption}</span>
-                <a href={turn.media.sourcePageUrl} target="_blank" rel="noreferrer">Source ↗</a>
-              </figcaption>
-            </figure>
-          )}
+          <AnswerVisual media={turn.media} topic={turn.topicLabel} performerMark={performer.mark} />
         </div>
 
         <button ref={deepDiveTriggerRef} className="evidence-research-row" type="button" onClick={() => setDeepDiveOpen(true)}>
@@ -1051,20 +1043,12 @@ function PerformanceStage({
               <div><p>Deeper dive · Turn {turn.depth + 1}</p><h2 id="deep-dive-title">{turn.question}</h2></div>
               <button ref={deepDiveCloseRef} type="button" onClick={() => setDeepDiveOpen(false)} aria-label="Close deeper dive">×</button>
             </header>
-            <div className={`deep-dive-layout ${turn.media ? "has-media" : ""}`}>
+            <div className="deep-dive-layout has-media">
               <div className="deep-dive-answer">
                 {turn.answerBlocks.map((block, blockIndex) => <p key={`${turn.id}-deep-${blockIndex}`}>{block.text} {citations(block.sourceIds)}</p>)}
               </div>
               <aside className="deep-dive-evidence">
-                {turn.media && (
-                  <figure>
-                    <a href={turn.media.sourcePageUrl} target="_blank" rel="noreferrer">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={turn.media.imageUrl} alt={turn.media.alt} referrerPolicy="no-referrer" />
-                    </a>
-                    <figcaption>{turn.media.caption}</figcaption>
-                  </figure>
-                )}
+                <AnswerVisual media={turn.media} topic={turn.topicLabel} performerMark={performer.mark} compact />
                 <h3>Sources</h3>
                 <ol>{turn.sources.map((source, index) => <li key={source.id}><span>{index + 1}</span><div><strong>{source.title}</strong><small>{source.publisher} · {source.relation}</small></div><a href={source.url} target="_blank" rel="noreferrer">Open ↗</a></li>)}</ol>
               </aside>
@@ -1083,6 +1067,42 @@ function PerformanceStage({
         </div>
       )}
     </section>
+  );
+}
+
+function AnswerVisual({
+  media,
+  topic,
+  performerMark,
+  compact = false,
+}: {
+  media: JourneyTurn["media"];
+  topic: string;
+  performerMark: string;
+  compact?: boolean;
+}) {
+  const [failedUrl, setFailedUrl] = useState<string | null>(null);
+  const showFallback = !media || failedUrl === media.imageUrl;
+  return (
+    <figure className={`contained-answer-media ${showFallback ? "visual-fallback" : ""} ${compact ? "compact-visual" : ""}`}>
+      {showFallback ? (
+        <div className="fallback-art" role="img" aria-label={`Abstract illustration for ${topic}`}>
+          <span className="fallback-orbit" aria-hidden="true" />
+          <span className="fallback-mark" aria-hidden="true">{performerMark}</span>
+          <strong>{topic}</strong>
+          <small>WonderDrive field note</small>
+        </div>
+      ) : (
+        <a href={media.sourcePageUrl} target="_blank" rel="noreferrer">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={media.imageUrl} alt={media.alt} loading="eager" referrerPolicy="no-referrer" onError={() => setFailedUrl(media.imageUrl)} />
+        </a>
+      )}
+      <figcaption>
+        <span>{showFallback ? `A visual marker for ${topic}` : media.caption}</span>
+        {!showFallback && <a href={media.sourcePageUrl} target="_blank" rel="noreferrer">Source ↗</a>}
+      </figcaption>
+    </figure>
   );
 }
 
