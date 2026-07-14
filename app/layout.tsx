@@ -16,9 +16,9 @@ const display = Newsreader({
   weight: ["400", "500", "600"],
 });
 
-const title = "WonderDrive — Follow the question";
+const title = "WonderDrive — Give curiosity a direction";
 const description =
-  "An audience-directed curiosity performance where models research, explain, and offer exactly two worthwhile ways forward.";
+  "A saved, audience-directed curiosity performance with visible research, sourced answers, and exactly two worthwhile ways forward.";
 
 export async function generateMetadata(): Promise<Metadata> {
   const requestHeaders = await headers();
@@ -48,9 +48,9 @@ export async function generateMetadata(): Promise<Metadata> {
       images: [
         {
           url: socialImage,
-          width: 1743,
+          width: 1731,
           height: 909,
-          alt: "WonderDrive — Follow one question until it becomes somewhere else.",
+          alt: "WonderDrive — Give curiosity a direction.",
         },
       ],
     },

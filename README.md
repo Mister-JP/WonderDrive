@@ -1,14 +1,14 @@
 # WonderDrive
 
-WonderDrive is an audience-directed curiosity performance. A visitor chooses a performer/model and a question; that same model researches the live web, turns the evidence into a composed explanation, and offers exactly two earned questions for the audience to choose between.
+WonderDrive is an audience-directed curiosity performance. A visitor chooses a performer and a question, watches the research stage, receives a sourced explanation, and chooses between exactly two earned ways forward.
 
-This repository is the public implementation for the 2026 OpenAI Build Week hackathon. It is currently at **Phase 0: foundation**. The public shell, supported Sites runtime, D1 contract, identity seam, CI, and documentation are present. Live model research is intentionally not represented as complete yet.
+This repository is the public implementation for the 2026 OpenAI Build Week hackathon. It is currently at **Phase 1: deterministic product loop**. A judge can create, direct, reject, delegate, save, reload, branch, map, delete, and compare journeys through the public product. The complete interaction uses reviewed fixtures, so it proves the experience and persistence contract without pretending that live model research is connected.
 
-**Live Phase 0:** [wonderdrive.jigs.chatgpt.site](https://wonderdrive.jigs.chatgpt.site)
+**Live Phase 1:** [wonderdrive.jigs.chatgpt.site](https://wonderdrive.jigs.chatgpt.site)
 
 ## Product contract
 
-- One selected model researches and performs each turn.
+- One selected performer carries each turn; the Phase 1 model ticket is an explicitly labeled fixture.
 - Research activity and sources are observable; hidden chain-of-thought is not exposed.
 - Every ready turn ends with exactly two distinct next questions.
 - The journey advances only after an explicit audience action.
@@ -35,38 +35,43 @@ cp .env.example .env.local
 npm run dev
 ```
 
-The local site runs at `http://localhost:3000`. The public shell makes no provider request, so an API key is not required for Phase 0.
+The local site runs at `http://localhost:3000`. Phase 1 makes no provider request, so no API key is required.
+
+Apply both SQL files in `drizzle/` to a fresh local D1 database before exercising the API. Sites applies the packaged migrations when a version is deployed.
 
 ## Validation
 
 ```bash
 npm run lint
+npm run typecheck
 npm test
 npm run db:generate
 ```
 
-`npm test` performs a production Sites build and verifies both the public page and the health endpoint.
+`npm test` performs a production Sites build, verifies the public page and health endpoint, and checks deterministic fixture invariants.
 
 ## Repository map
 
 ```text
-app/                  Public shell, identity helper, and server routes
+app/                  Product experience, identity helper, and server routes
 db/                   Canonical D1 schema
 drizzle/              Generated, reviewed SQL migrations
-docs/                 Final blueprint, architecture, and Phase 0 gates
-tests/                Rendered production checks
+lib/                  Contracts, reviewed fixtures, identity, and D1 repository
+docs/                 Final blueprint, architecture, and phase gates
+tests/                Rendered production and fixture checks
 .openai/hosting.json  Logical Sites-managed bindings
 ```
 
 ## Documentation
 
 - [Phase 0 acceptance gates](docs/phase-0.md)
+- [Phase 1 implementation contract](docs/phase-1.md)
 - [Final architecture decisions](docs/architecture.md)
 - [Final product and engineering blueprint](docs/WonderDrive_Final_Product_and_Engineering_Blueprint_v3_Research_First.docx)
 
 ## Status and scope
 
-The current page is an honest public foundation, not a simulated AI demo. The next implementation work is to prove the target Sites account, D1, SIWC, secrets, and foreground streaming behavior before adding the first OpenAI Responses research adapter.
+The current product is an honest deterministic rehearsal, not a simulated claim of live AI. The next implementation milestone is the first bounded OpenAI Responses research adapter, connected behind the canonical turn contract after the foreground streaming and cost gates are verified.
 
 Automatic journeys, scheduled/background continuation, Trigger.dev, provider fan-out, and live parallel comparison are outside the hackathon scope.
 
