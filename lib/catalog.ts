@@ -1,69 +1,194 @@
-import type { ModelConfig, Performer } from "./contracts";
+import type {
+  BootstrapCatalog,
+  ModelConfig,
+  Performer,
+  PerformerId,
+  PresetConfig,
+  UserPreferences,
+} from "./contracts";
+
+export const PROMPT_VERSION = "wonder-research-turn@3.0.0";
+export const TURN_SCHEMA_VERSION = "wonder-turn-draft@2";
+
+export const DEFAULT_PREFERENCES: UserPreferences = {
+  answerDensity: "balanced",
+  textSize: "m",
+  imagePreference: "when-useful",
+  speechRate: 1,
+  reduceMotion: false,
+};
 
 export const PERFORMERS: Performer[] = [
   {
-    id: "archivist",
-    name: "The Archivist",
-    role: "Finds the thread history tried to hide",
-    cue: "Patient, precise, and attentive to what survives in records and rituals.",
-    mark: "A",
-    accent: "coral",
-  },
-  {
-    id: "field-naturalist",
-    name: "The Field Naturalist",
-    role: "Starts with behavior, texture, and change",
-    cue: "Observant and concrete, with a preference for mechanisms over slogans.",
-    mark: "F",
-    accent: "acid",
-  },
-  {
-    id: "systems-cartographer",
-    name: "The Systems Cartographer",
-    role: "Draws the forces around the obvious answer",
-    cue: "Clear-eyed about feedback loops, boundaries, incentives, and second-order effects.",
+    id: "sage",
+    version: "sage@1.0.0",
+    name: "Sage",
+    role: "Patient connections",
+    cue: "Patiently connects the present question to deeper patterns without rushing the surprise.",
     mark: "S",
+    accent: "coral",
+    sampleOpening: "Let’s widen the frame just enough to see what this question is connected to.",
+    values: ["clarity", "historical continuity", "earned synthesis"],
+    voiceTraits: ["patient", "warm", "precise"],
+    avoids: ["rigid roleplay", "false certainty", "ornament without evidence"],
+    toolPosture: "Search when evidence helps; prefer primary sources and make uncertainty visible.",
+    recommendedModelId: "gpt-5.6-luna",
+  },
+  {
+    id: "spark",
+    version: "spark@1.0.0",
+    name: "Spark",
+    role: "Playful surprise",
+    cue: "Finds the unexpected hinge in the evidence and makes surprise useful rather than random.",
+    mark: "✦",
+    accent: "acid",
+    sampleOpening: "There’s a stranger question hiding inside this one—and the evidence points right at it.",
+    values: ["curiosity", "productive surprise", "specificity"],
+    voiceTraits: ["playful", "nimble", "vivid"],
+    avoids: ["gimmicks", "unsupported leaps", "performing certainty"],
+    toolPosture: "Follow one surprising lead, then cross-check it before bringing it on stage.",
+    recommendedModelId: "gpt-5.6-luna",
+  },
+  {
+    id: "mechanist",
+    version: "mechanist@1.0.0",
+    name: "Mechanist",
+    role: "How things work",
+    cue: "Makes hidden mechanisms legible through concrete parts, forces, feedback, and failure modes.",
+    mark: "M",
     accent: "sky",
+    sampleOpening: "Start with the moving parts: what acts, what resists, and what changes next.",
+    values: ["mechanism", "causal honesty", "concrete explanation"],
+    voiceTraits: ["clear-eyed", "tactile", "structured"],
+    avoids: ["slogans", "personality theater", "mechanism without context"],
+    toolPosture: "Search for first-party descriptions, measured evidence, and competing causal accounts.",
+    recommendedModelId: "gpt-5.6-luna",
   },
 ];
 
 export const MODELS: ModelConfig[] = [
   {
-    id: "gpt-5.6-terra",
+    id: "gpt-5.6-luna",
+    snapshot: "openai:gpt-5.6-luna@2026-07-13",
     provider: "OpenAI",
-    name: "GPT-5.6 Terra · live",
-    disclosure: "Foreground web research · metered OpenAI usage",
+    name: "GPT-5.6 Luna",
+    disclosure: "Live foreground research with built-in web search; metered usage.",
     mode: "live",
+    status: "enabled",
+    apiSurface: "responses",
+    tools: ["web search", "page reading", "structured output"],
+    reasoningModes: ["low", "medium", "high"],
+    speedBand: "balanced",
+    qualityBand: "strong",
+    costBand: "low",
+    inputUsdPerMillion: 1,
+    cachedInputUsdPerMillion: 0.1,
+    outputUsdPerMillion: 6,
+    searchUsdPerCall: 0.01,
+    priceEffectiveAt: "2026-07-13",
+    recommended: true,
+    evaluationVersion: "wonderdrive-eval@1",
   },
   {
     id: "fixture-terra",
-    provider: "OpenAI",
-    name: "Terra · free demo",
-    disclosure: "Reviewed deterministic fixture · no provider charge",
+    snapshot: "wonderdrive:fixture-terra@1",
+    provider: "WonderDrive",
+    name: "Reviewed free demo",
+    disclosure: "Deterministic reviewed material; no provider request or charge.",
     mode: "fixture",
+    status: "enabled",
+    apiSurface: "fixture",
+    tools: ["reviewed source fixture"],
+    reasoningModes: ["deterministic"],
+    speedBand: "instant",
+    qualityBand: "reviewed",
+    costBand: "free",
+    inputUsdPerMillion: 0,
+    cachedInputUsdPerMillion: 0,
+    outputUsdPerMillion: 0,
+    searchUsdPerCall: 0,
+    priceEffectiveAt: "2026-07-13",
+    recommended: false,
+    evaluationVersion: "wonderdrive-fixture@1",
   },
 ];
 
-export const STARTER_QUESTIONS = [
-  "What does a building sound like?",
-  "Can a map tell the truth?",
-  "Where does a city keep its memories?",
-  "Why do some ideas feel inevitable?",
-  "Can silence be designed?",
-  "What can an ocean hear that we cannot?",
-] as const;
+export const STARTERS: Record<PerformerId, string[]> = {
+  sage: [
+    "Where does a city keep its memories?",
+    "What can a map hide by being accurate?",
+    "Why do some ideas feel inevitable?",
+    "Can silence be designed?",
+  ],
+  spark: [
+    "What does a building sound like?",
+    "What can an ocean hear that we cannot?",
+    "Could a shadow be public infrastructure?",
+    "When does a mistake become a tradition?",
+  ],
+  mechanist: [
+    "How does a room decide where an echo goes?",
+    "What keeps a standard alive after its inventors leave?",
+    "How does a repeated route become infrastructure?",
+    "What makes a city develop its own sound?",
+  ],
+};
 
-export const PRESET_LABELS = {
-  spark: {
+export const STARTER_QUESTIONS = [...STARTERS.sage, ...STARTERS.spark, ...STARTERS.mechanist];
+
+export const PRESETS: PresetConfig[] = [
+  {
+    id: "spark",
     name: "Spark",
-    description: "Up to one web search with a compact answer",
+    description: "A quick sourced orientation for simple or stable curiosity.",
+    sourceRange: "2–4 useful sources",
+    waitBand: "about 25 seconds",
+    costBand: "lowest live cost",
+    maxToolCalls: 2,
+    maxOutputTokens: 1400,
+    deadlineMs: 25_000,
   },
-  standard: {
+  {
+    id: "standard",
     name: "Standard",
-    description: "Up to two web searches with balanced depth",
+    description: "Enough homework for a thoughtful, balanced performance.",
+    sourceRange: "3–8 useful sources",
+    waitBand: "about 60 seconds",
+    costBand: "balanced live cost",
+    maxToolCalls: 5,
+    maxOutputTokens: 2400,
+    deadlineMs: 60_000,
   },
-  deep: {
+  {
+    id: "deep",
     name: "Deep",
-    description: "Up to three web searches and a fuller synthesis",
+    description: "Broader evidence for niche, current, or contested questions.",
+    sourceRange: "6–15 useful sources",
+    waitBand: "up to 120 seconds",
+    costBand: "highest live cost",
+    maxToolCalls: 10,
+    maxOutputTokens: 4000,
+    deadlineMs: 120_000,
   },
-} as const;
+];
+
+export const PRESET_LABELS = Object.fromEntries(
+  PRESETS.map((preset) => [preset.id, preset]),
+) as Record<(typeof PRESETS)[number]["id"], PresetConfig>;
+
+export const BOOTSTRAP_CATALOG: BootstrapCatalog = {
+  performers: PERFORMERS,
+  models: MODELS.filter((model) => model.status === "enabled"),
+  presets: PRESETS,
+  starters: STARTERS,
+  promptVersion: PROMPT_VERSION,
+  schemaVersion: TURN_SCHEMA_VERSION,
+};
+
+export function performerById(id: PerformerId) {
+  return PERFORMERS.find((performer) => performer.id === id)!;
+}
+
+export function modelById(id: ModelConfig["id"]) {
+  return MODELS.find((model) => model.id === id)!;
+}

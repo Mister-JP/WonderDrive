@@ -46,3 +46,22 @@ export async function readJson(request: Request): Promise<unknown> {
     throw new RepositoryError("BAD_REQUEST", "The request body must be valid JSON.", 400);
   }
 }
+
+export function assertMutationOrigin(request: Request) {
+  const origin = request.headers.get("origin");
+  const fetchSite = request.headers.get("sec-fetch-site");
+  if (fetchSite === "cross-site") {
+    throw new RepositoryError("FORBIDDEN", "Cross-site mutations are not allowed.", 403);
+  }
+  if (!origin) return;
+  const requestUrl = new URL(request.url);
+  let originUrl: URL;
+  try {
+    originUrl = new URL(origin);
+  } catch {
+    throw new RepositoryError("FORBIDDEN", "The request origin was invalid.", 403);
+  }
+  if (originUrl.host !== requestUrl.host || originUrl.protocol !== requestUrl.protocol) {
+    throw new RepositoryError("FORBIDDEN", "The request origin did not match WonderDrive.", 403);
+  }
+}

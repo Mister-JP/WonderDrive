@@ -5,7 +5,7 @@ import { buildFixtureTurn } from "../lib/fixtures.ts";
 const input = {
   question: "What does a building sound like?",
   depth: 0,
-  performerId: "archivist",
+  performerId: "sage",
 };
 
 test("fixture turn is deterministic and returns exactly two distinct paths", () => {

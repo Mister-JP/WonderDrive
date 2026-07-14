@@ -42,6 +42,12 @@ const validTurn = {
     "The evidence leaves two useful directions: investigate the mechanism or challenge the boundary.",
   researchSummary:
     "Searched for primary evidence, compared an independent source, and checked citation membership.",
+  researchHandoff: {
+    discoveries: ["The evidence supports a repeatable pattern."],
+    uncertainties: ["The boundary conditions remain uncertain."],
+    unresolvedThreads: ["Test the mechanism in a different setting."],
+    sourceLeads: ["https://example.org/evidence", "https://research.example.net/context"],
+  },
   preferredPosition: 0,
   options: [
     { question: "Which mechanism makes this pattern repeat over time?", angle: "mechanism" },
@@ -76,7 +82,7 @@ test("rejects a citation URL that web search did not return", () => {
   try {
     assert.throws(
       () => liveResearchTestHooks.validateAndMapTurn(invalid, sources),
-      (error) => error?.code === "RESEARCH_VALIDATION_FAILED",
+      (error) => error?.code === "CITATION_INVALID",
     );
   } finally {
     console.error = originalError;

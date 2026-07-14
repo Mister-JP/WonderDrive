@@ -9,13 +9,23 @@ import {
   useMemo,
   useState,
 } from "react";
-import { MODELS, PERFORMERS, PRESET_LABELS, STARTER_QUESTIONS } from "../lib/catalog";
+import {
+  BOOTSTRAP_CATALOG,
+  DEFAULT_PREFERENCES,
+  PERFORMERS,
+  PRESET_LABELS,
+  STARTERS,
+} from "../lib/catalog";
 import type {
   AdvanceJourneyRequest,
+  AnswerDensity,
   ApiFailure,
   ApiSuccess,
+  BootstrapCatalog,
   CompareResult,
+  ImagePreference,
   JourneyDetail,
+  JourneySnapshot,
   JourneySummary,
   JourneyTurn,
   Interlude,
@@ -25,13 +35,20 @@ import type {
   PerformerId,
   ResearchEvent,
   ResearchPreset,
+  TextSize,
+  UserPreferences,
   Viewer,
 } from "../lib/contracts";
 
-type View = "start" | "journey" | "map" | "library" | "compare";
+type View = "start" | "journey" | "map" | "library" | "compare" | "settings";
 
 type SessionPayload = {
   journeys: JourneySummary[];
+};
+
+type BootstrapPayload = {
+  catalog: BootstrapCatalog;
+  preferences: UserPreferences;
 };
 
 type LiveResearchState = {
@@ -50,6 +67,7 @@ const navItems: Array<{ id: View; label: string }> = [
   { id: "map", label: "Journey map" },
   { id: "library", label: "Library" },
   { id: "compare", label: "Compare" },
+  { id: "settings", label: "Settings" },
 ];
 
 export function WonderDriveExperience() {
@@ -62,16 +80,24 @@ export function WonderDriveExperience() {
   const [loading, setLoading] = useState(true);
   const [mutation, setMutation] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const [compareIds, setCompareIds] = useState<string[]>([]);
   const [comparison, setComparison] = useState<CompareResult | null>(null);
   const [liveResearch, setLiveResearch] = useState<LiveResearchState | null>(null);
+  const [catalog, setCatalog] = useState<BootstrapCatalog>(BOOTSTRAP_CATALOG);
+  const [preferences, setPreferences] = useState<UserPreferences>(DEFAULT_PREFERENCES);
 
   const refreshSession = useCallback(async () => {
     setError(null);
     try {
-      const payload = await api<SessionPayload>("/api/session");
-      setViewer(payload.viewer);
-      setJourneys(payload.data.journeys);
+      const [session, bootstrap] = await Promise.all([
+        api<SessionPayload>("/api/session"),
+        api<BootstrapPayload>("/api/bootstrap"),
+      ]);
+      setViewer(session.viewer);
+      setJourneys(session.data.journeys);
+      setCatalog(bootstrap.data.catalog);
+      setPreferences(bootstrap.data.preferences);
     } catch (cause) {
       setError(messageFrom(cause));
     } finally {
@@ -107,11 +133,13 @@ export function WonderDriveExperience() {
     performerId: PerformerId;
     modelId: ModelId;
     researchPreset: ResearchPreset;
+    answerDensity: AnswerDensity;
+    imagePreference: ImagePreference;
   }) {
     setMutation("create");
     setError(null);
     try {
-      if (config.modelId === "gpt-5.6-terra") {
+      if (config.modelId === "gpt-5.6-luna") {
         setView("journey");
         setLiveResearch({
           question: config.seed,
@@ -126,7 +154,7 @@ export function WonderDriveExperience() {
           {
             kind: "create",
             ...config,
-            modelId: "gpt-5.6-terra",
+            modelId: "gpt-5.6-luna",
             idempotencyKey: crypto.randomUUID(),
           },
           setLiveResearch,
@@ -169,13 +197,13 @@ export function WonderDriveExperience() {
 
   async function advance(
     action: AdvanceJourneyRequest["action"],
-    input: { turnId: string; optionId?: string; adventure?: number },
+    input: { turnId: string; optionId?: string; adventure?: number; reason?: string },
   ) {
     if (!activeJourney) return;
     setMutation(action);
     setError(null);
     try {
-      if (activeJourney.modelId === "gpt-5.6-terra" && action !== "reject") {
+      if (activeJourney.modelId === "gpt-5.6-luna" && action !== "reject") {
         const fromTurn = activeJourney.turns.find((turn) => turn.id === input.turnId);
         const selected =
           action === "delegate"
@@ -225,6 +253,7 @@ export function WonderDriveExperience() {
             action,
             optionId: input.optionId,
             adventure: input.adventure,
+            reason: input.reason,
             expectedVersion: activeJourney.version,
             idempotencyKey: crypto.randomUUID(),
           }),
@@ -271,6 +300,40 @@ export function WonderDriveExperience() {
     }
   }
 
+  async function manageJourney(journeyId: string, changes: { title?: string; pinned?: boolean; hidden?: boolean }) {
+    setMutation(`manage-${journeyId}`);
+    setError(null);
+    try {
+      const payload = await api<JourneyDetail>(`/api/journeys/${journeyId}`, {
+        method: "PATCH",
+        body: JSON.stringify(changes),
+      });
+      setViewer(payload.viewer);
+      setJourneys((current) => upsertSummary(current, payload.data));
+      if (activeJourney?.id === journeyId) setActiveJourney(payload.data);
+    } catch (cause) {
+      setError(messageFrom(cause));
+    } finally {
+      setMutation(null);
+    }
+  }
+
+  async function snapshotJourney(journeyId: string) {
+    setMutation(`snapshot-${journeyId}`);
+    setError(null);
+    try {
+      const payload = await api<JourneySnapshot>(`/api/journeys/${journeyId}/snapshots`, {
+        method: "POST",
+        body: JSON.stringify({}),
+      });
+      setNotice(`${payload.data.label}: ${payload.data.summary}`);
+    } catch (cause) {
+      setError(messageFrom(cause));
+    } finally {
+      setMutation(null);
+    }
+  }
+
   async function compare() {
     if (compareIds.length !== 2) return;
     setMutation("compare");
@@ -302,7 +365,7 @@ export function WonderDriveExperience() {
   }
 
   return (
-    <main className="app-shell">
+    <main className={`app-shell text-${preferences.textSize} ${preferences.reduceMotion ? "reduce-motion" : ""}`}>
       <header className="app-header">
         <button className="wordmark" type="button" onClick={() => navigate("start")}>
           <span className="wordmark-mark" aria-hidden="true">W</span>
@@ -340,14 +403,29 @@ export function WonderDriveExperience() {
       </header>
 
       <div className="phase-ribbon" role="note">
-        <span>Phase 2</span>
-        Live foreground web research · cited performances · D1-saved journeys · no background jobs
+        <span>Research first</span>
+        Same selected model researches and performs · inspectable sources · durable branching graph
       </div>
+
+      {viewer?.mode === "chatgpt" && viewer.hasGuestUpgrade && (
+        <div className="upgrade-banner" role="status">
+          <span>Your guest library is still separate.</span>
+          <button type="button" onClick={() => void upgradeGuestLibrary(setViewer, refreshSession, setError)}>
+            Move guest journeys into this account
+          </button>
+        </div>
+      )}
 
       {error && (
         <div className="error-banner" role="alert">
           <span>{error}</span>
           <button type="button" onClick={() => { setError(null); void refreshSession(); }}>Reconnect</button>
+        </div>
+      )}
+      {notice && (
+        <div className="notice-banner" role="status">
+          <span>{notice}</span>
+          <button type="button" onClick={() => setNotice(null)}>Dismiss</button>
         </div>
       )}
 
@@ -370,7 +448,13 @@ export function WonderDriveExperience() {
           }}
         />
       ) : view === "start" ? (
-        <StartStage onCreate={create} creating={mutation === "create"} journeyCount={journeys.length} />
+        <StartStage
+          onCreate={create}
+          creating={mutation === "create"}
+          journeyCount={journeys.length}
+          catalog={catalog}
+          preferences={preferences}
+        />
       ) : view === "library" ? (
         <Library
           journeys={journeys}
@@ -378,6 +462,8 @@ export function WonderDriveExperience() {
           busy={mutation}
           onOpen={(id) => void openJourney(id)}
           onDelete={(id) => void removeJourney(id)}
+          onManage={(id, changes) => void manageJourney(id, changes)}
+          onSnapshot={(id) => void snapshotJourney(id)}
           onNew={() => setView("start")}
         />
       ) : view === "compare" ? (
@@ -397,6 +483,28 @@ export function WonderDriveExperience() {
           onCompare={() => void compare()}
           onNew={() => setView("start")}
         />
+      ) : view === "settings" ? (
+        <SettingsView
+          viewer={viewer}
+          preferences={preferences}
+          busy={mutation === "preferences"}
+          onSave={async (next) => {
+            setMutation("preferences");
+            setError(null);
+            try {
+              const payload = await api<UserPreferences>("/api/preferences", {
+                method: "PUT",
+                body: JSON.stringify(next),
+              });
+              setViewer(payload.viewer);
+              setPreferences(payload.data);
+            } catch (cause) {
+              setError(messageFrom(cause));
+            } finally {
+              setMutation(null);
+            }
+          }}
+        />
       ) : activeJourney && activeTurn ? (
         view === "map" ? (
           <JourneyMap
@@ -411,6 +519,7 @@ export function WonderDriveExperience() {
               setReplaying(false);
               setView("journey");
             }}
+            onChoose={(turnId, optionId) => void advance("choose", { turnId, optionId })}
           />
         ) : replaying ? (
           <ResearchReplay turn={activeTurn} onComplete={() => setReplaying(false)} />
@@ -420,9 +529,11 @@ export function WonderDriveExperience() {
             turn={activeTurn}
             busy={mutation}
             onChoose={(optionId) => void advance("choose", { turnId: activeTurn.id, optionId })}
-            onReject={(adventure) => void advance("reject", { turnId: activeTurn.id, adventure })}
+            onReject={(adventure, reason) => void advance("reject", { turnId: activeTurn.id, adventure, reason })}
             onDelegate={() => void advance("delegate", { turnId: activeTurn.id })}
             onMap={() => setView("map")}
+            speechRate={preferences.speechRate}
+            onSnapshot={() => void snapshotJourney(activeJourney.id)}
           />
         )
       ) : (
@@ -430,7 +541,7 @@ export function WonderDriveExperience() {
       )}
 
       <footer className="app-footer">
-        <p><span aria-hidden="true">W/02</span> One performer. One researched turn. Exactly two ways forward.</p>
+        <p><span aria-hidden="true">W/V3</span> One performer. One researched turn. Exactly two ways forward.</p>
         <div>
           <a href="https://github.com/Mister-JP/WonderDrive">Source</a>
           <a href="https://github.com/Mister-JP/WonderDrive/blob/main/docs/WonderDrive_Final_Product_and_Engineering_Blueprint_v3_Research_First.docx">Product book</a>
@@ -444,27 +555,43 @@ function StartStage({
   onCreate,
   creating,
   journeyCount,
+  catalog,
+  preferences,
 }: {
   onCreate: (config: {
     seed: string;
     performerId: PerformerId;
     modelId: ModelId;
     researchPreset: ResearchPreset;
+    answerDensity: AnswerDensity;
+    imagePreference: ImagePreference;
   }) => void;
   creating: boolean;
   journeyCount: number;
+  catalog: BootstrapCatalog;
+  preferences: UserPreferences;
 }) {
-  const [seed, setSeed] = useState<string>(STARTER_QUESTIONS[0]);
-  const [performerId, setPerformerId] = useState<PerformerId>("archivist");
-  const [modelId, setModelId] = useState<ModelId>("gpt-5.6-terra");
+  const [seed, setSeed] = useState<string>(STARTERS.sage[0]);
+  const [performerId, setPerformerId] = useState<PerformerId>("sage");
+  const [modelId, setModelId] = useState<ModelId>("gpt-5.6-luna");
   const [preset, setPreset] = useState<ResearchPreset>("standard");
-  const performer = PERFORMERS.find((item) => item.id === performerId)!;
-  const model = MODELS.find((item) => item.id === modelId)!;
+  const [density, setDensity] = useState<AnswerDensity>(preferences.answerDensity);
+  const [imagePreference, setImagePreference] = useState<ImagePreference>(preferences.imagePreference);
+  const [performerDetails, setPerformerDetails] = useState(false);
+  const performer = catalog.performers.find((item) => item.id === performerId)!;
+  const model = catalog.models.find((item) => item.id === modelId)!;
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (seed.trim().length >= 3) {
-      onCreate({ seed, performerId, modelId, researchPreset: preset });
+      onCreate({
+        seed,
+        performerId,
+        modelId,
+        researchPreset: preset,
+        answerDensity: density,
+        imagePreference,
+      });
     }
   }
 
@@ -478,7 +605,7 @@ function StartStage({
           research the open web, perform a sourced answer, and return exactly two
           next questions to you.
         </p>
-        <div className="contract-strip" aria-label="Phase 2 product contract">
+        <div className="contract-strip" aria-label="V3 product contract">
           <span><strong>01</strong> saved to D1</span>
           <span><strong>02</strong> inspectable sources</span>
           <span><strong>03</strong> user-directed path</span>
@@ -494,7 +621,7 @@ function StartStage({
         <fieldset className="performer-fieldset">
           <legend><span>1</span> Choose a performer</legend>
           <div className="performer-grid">
-            {PERFORMERS.map((item) => (
+            {catalog.performers.map((item) => (
               <label key={item.id} className={`performer-card ${item.id === performerId ? "selected" : ""} ${item.accent}`}>
                 <input
                   type="radio"
@@ -514,13 +641,26 @@ function StartStage({
         <div className="selected-cue">
           <span>{performer.name}’s stage note</span>
           <p>“{performer.cue}”</p>
+          <button type="button" className="text-button" onClick={() => setPerformerDetails((open) => !open)}>
+            {performerDetails ? "Hide performer contract" : "View performer contract"}
+          </button>
+          {performerDetails && (
+            <div className="performer-contract">
+              <p><strong>Sample opening</strong> “{performer.sampleOpening}”</p>
+              <p><strong>Values</strong> {performer.values.join(" · ")}</p>
+              <p><strong>Voice</strong> {performer.voiceTraits.join(" · ")}</p>
+              <p><strong>Avoids</strong> {performer.avoids.join(" · ")}</p>
+              <p><strong>Research posture</strong> {performer.toolPosture}</p>
+              <small>{performer.version}</small>
+            </div>
+          )}
         </div>
 
         <fieldset>
           <legend><span>2</span> Set the research</legend>
           <div className="config-row">
             <div className="model-selector" aria-label="Research model">
-              {MODELS.map((item) => (
+              {catalog.models.map((item) => (
                 <button
                   type="button"
                   className={`model-ticket ${modelId === item.id ? "selected" : ""}`}
@@ -529,7 +669,11 @@ function StartStage({
                   onClick={() => setModelId(item.id)}
                 >
                   <span className="ticket-logo">{item.mode === "live" ? "LIVE" : "DEMO"}</span>
-                  <span><strong>{item.name}</strong><small>{item.disclosure}</small></span>
+                  <span>
+                    <strong>{item.name}{item.recommended ? " · recommended" : ""}</strong>
+                    <small>{item.provider} · {item.speedBand} · {item.costBand} · {item.tools.join(", ")}</small>
+                    <small>{item.disclosure}</small>
+                  </span>
                 </button>
               ))}
             </div>
@@ -548,12 +692,33 @@ function StartStage({
               ))}
             </div>
           </div>
+          <div className="choice-settings">
+            <label>
+              <span>Answer density</span>
+              <select value={density} onChange={(event) => setDensity(event.target.value as AnswerDensity)}>
+                <option value="brief">Brief</option>
+                <option value="balanced">Balanced</option>
+                <option value="rich">Rich</option>
+              </select>
+            </label>
+            <label>
+              <span>Factual images</span>
+              <select value={imagePreference} onChange={(event) => setImagePreference(event.target.value as ImagePreference)}>
+                <option value="avoid">Avoid</option>
+                <option value="when-useful">When useful</option>
+                <option value="prefer">Prefer when supported</option>
+              </select>
+            </label>
+          </div>
+          <p className="preset-description">
+            <strong>{PRESET_LABELS[preset].name}</strong> — {PRESET_LABELS[preset].description} {PRESET_LABELS[preset].sourceRange}; {PRESET_LABELS[preset].waitBand}; {PRESET_LABELS[preset].costBand}.
+          </p>
         </fieldset>
 
         <fieldset>
           <legend><span>3</span> Bring a question</legend>
           <div className="starter-chips" aria-label="Question starters">
-            {STARTER_QUESTIONS.slice(0, 4).map((question) => (
+            {catalog.starters[performerId].map((question) => (
               <button type="button" key={question} onClick={() => setSeed(question)}>
                 {question}
               </button>
@@ -602,7 +767,6 @@ function LiveResearchStage({
     (turn) => turn.id === state.result?.currentTurnId,
   );
   const interlude = resultTurn?.interlude ?? state.interlude;
-  const progress = state.status === "complete" ? 100 : Math.min(92, 12 + state.events.length * 11);
   return (
     <section className="research-stage" aria-labelledby="live-research-title">
       <div className="research-topline">
@@ -661,8 +825,9 @@ function LiveResearchStage({
           </aside>
         )}
       </div>
-      <div className="research-progress" aria-label={`${progress}% of live research complete`}>
-        <span style={{ width: `${progress}%` }} />
+      <div className="research-status-line" role="status">
+        <span className={state.status} />
+        {state.status === "running" ? "Research is active in this foreground request." : state.status === "complete" ? "Validated and committed." : "Stopped without committing an incomplete turn."}
       </div>
       <p className="fixture-disclosure">
         Live mode makes a metered OpenAI Responses request with web search. A turn is saved only after its source links, answer blocks, and exactly two paths pass validation.
@@ -682,7 +847,6 @@ function ResearchReplay({ turn, onComplete }: { turn: JourneyTurn; onComplete: (
   }, [visible, total]);
 
   const complete = visible >= total;
-  const progress = Math.round((visible / total) * 100);
 
   return (
     <section className="research-stage" aria-labelledby="research-title">
@@ -711,9 +875,7 @@ function ResearchReplay({ turn, onComplete }: { turn: JourneyTurn; onComplete: (
           <a href={turn.interlude.sourceUrl} target="_blank" rel="noreferrer">{turn.interlude.sourceTitle} ↗</a>
         </aside>
       </div>
-      <div className="research-progress" aria-label={`${progress}% of replay complete`}>
-        <span style={{ width: `${progress}%` }} />
-      </div>
+      <div className="research-status-line" role="status"><span className={complete ? "complete" : "running"} />{complete ? "Replay complete." : "Replaying saved observable activity."}</div>
       <p className="fixture-disclosure">
         {turn.research.mode === "live"
           ? "This replays observable provider activity and sources saved with the turn. It never exposes private model reasoning."
@@ -731,19 +893,40 @@ function PerformanceStage({
   onReject,
   onDelegate,
   onMap,
+  speechRate,
+  onSnapshot,
 }: {
   journey: JourneyDetail;
   turn: JourneyTurn;
   busy: string | null;
   onChoose: (optionId: string) => void;
-  onReject: (adventure: number) => void;
+  onReject: (adventure: number, reason?: string) => void;
   onDelegate: () => void;
   onMap: () => void;
+  speechRate: number;
+  onSnapshot: () => void;
 }) {
   const [adventure, setAdventure] = useState(50);
+  const [reason, setReason] = useState("");
+  const [speaking, setSpeaking] = useState(false);
   const performer = PERFORMERS.find((item) => item.id === journey.performerId)!;
   const historical = turn.id !== journey.currentTurnId;
-  const actionable = turn.options.length === 2;
+  const actionable = turn.options.filter((option) => option.state === "proposed").length > 0;
+
+  function toggleSpeech() {
+    if (!("speechSynthesis" in window)) return;
+    if (speaking) {
+      window.speechSynthesis.cancel();
+      setSpeaking(false);
+      return;
+    }
+    const utterance = new SpeechSynthesisUtterance(`${turn.question}. ${turn.answer}. ${turn.transition}`);
+    utterance.rate = speechRate;
+    utterance.onend = () => setSpeaking(false);
+    utterance.onerror = () => setSpeaking(false);
+    window.speechSynthesis.speak(utterance);
+    setSpeaking(true);
+  }
 
   return (
     <section className="performance-stage" aria-labelledby="performance-title">
@@ -773,6 +956,11 @@ function PerformanceStage({
             <div><strong>{performer.name}</strong><small>{turn.research.mode === "live" ? "performed from live web research" : "performed from a reviewed fixture"}</small></div>
             <span className="ready-stamp">COMPOSED</span>
           </div>
+          <div className="performance-tools">
+            <button type="button" onClick={toggleSpeech}>{speaking ? "Stop reading" : "Read aloud"}</button>
+            <button type="button" disabled={busy !== null} onClick={onSnapshot}>Save snapshot</button>
+            <a href={`/api/journeys/${journey.id}/export`}>Export JSON</a>
+          </div>
           <div className="answer-copy">
             {turn.answerBlocks.map((block, blockIndex) => (
               <p key={`${turn.id}-${blockIndex}`}>
@@ -796,6 +984,7 @@ function PerformanceStage({
             ))}
           </div>
           <p className="transition-line"><span>Where this leaves us</span>{turn.transition}</p>
+          <p className="media-fallback">No factual image was attached to this turn. WonderDrive never substitutes decorative imagery for evidence.</p>
 
           <details className="evidence-drawer">
             <summary><span>Sources &amp; evidence</span><strong>{turn.sources.length} inspectable links</strong></summary>
@@ -821,8 +1010,21 @@ function PerformanceStage({
                 <div><dt>Output</dt><dd>{turn.research.usage.outputTokens.toLocaleString()} tokens</dd></div>
                 <div><dt>Web</dt><dd>{turn.research.usage.webSearchCalls} searches</dd></div>
                 <div><dt>Elapsed</dt><dd>{Math.round(turn.research.usage.latencyMs / 1000)}s</dd></div>
+                <div><dt>Cost</dt><dd>${turn.research.usage.estimatedCostUsd.toFixed(4)}</dd></div>
+                <div><dt>Pages</dt><dd>{turn.research.usage.pageFetches}</dd></div>
               </dl>
             )}
+          </details>
+          <details className="evidence-drawer">
+            <summary><span>Performance metadata</span><strong>inspectable run contract</strong></summary>
+            <dl className="metadata-grid">
+              <div><dt>Performer</dt><dd>{turn.metadata.performerId} · {turn.metadata.performerVersion}</dd></div>
+              <div><dt>Model</dt><dd>{turn.metadata.provider} · {turn.metadata.modelId}</dd></div>
+              <div><dt>Snapshot</dt><dd>{turn.metadata.modelSnapshot}</dd></div>
+              <div><dt>Research</dt><dd>{turn.metadata.researchPreset} · {turn.metadata.answerDensity}</dd></div>
+              <div><dt>Prompt</dt><dd>{turn.metadata.promptVersion}</dd></div>
+              <div><dt>Researched</dt><dd>{new Date(turn.metadata.researchedAt).toLocaleString()}</dd></div>
+            </dl>
           </details>
         </article>
 
@@ -837,17 +1039,17 @@ function PerformanceStage({
                 type="button"
                 className={`path-card path-${index + 1}`}
                 key={option.id}
-                disabled={!actionable || busy !== null}
+                disabled={!actionable || option.state !== "proposed" || busy !== null}
                 onClick={() => onChoose(option.id)}
               >
-                <span><i>{index === 0 ? "A" : "B"}</i>{option.angle}</span>
+                <span><i>{index === 0 ? "A" : "B"}</i>{option.angle} · {option.state}</span>
                 <strong>{option.question}</strong>
                 <small>{historical ? "Branch from here" : "Take this path"} <b aria-hidden="true">↘</b></small>
               </button>
             ))}
           </div>
 
-          <button className="delegate-button" type="button" disabled={busy !== null} onClick={onDelegate}>
+          <button className="delegate-button" type="button" disabled={!actionable || busy !== null} onClick={onDelegate}>
             <span aria-hidden="true">✦</span>
             <span><strong>Let {performer.name.replace("The ", "")} choose</strong><small>Delegate this turn only</small></span>
             <i aria-hidden="true">→</i>
@@ -867,7 +1069,11 @@ function PerformanceStage({
               />
               <span>Adventurous</span>
             </label>
-            <button type="button" disabled={busy !== null} onClick={() => onReject(adventure)}>
+            <label className="reason-field">
+              <span>Optional note</span>
+              <input value={reason} onChange={(event) => setReason(event.target.value)} maxLength={280} placeholder="What should the redraw change?" />
+            </label>
+            <button type="button" disabled={!actionable || busy !== null} onClick={() => onReject(adventure, reason.trim() || undefined)}>
               {busy === "reject" ? "Replacing…" : "Reject both & redraw"}
             </button>
           </div>
@@ -882,11 +1088,13 @@ function JourneyMap({
   activeTurnId,
   onSelect,
   onContinue,
+  onChoose,
 }: {
   journey: JourneyDetail;
   activeTurnId: string;
   onSelect: (id: string) => void;
   onContinue: (id: string) => void;
+  onChoose: (turnId: string, optionId: string) => void;
 }) {
   const activeTurn = journey.turns.find((turn) => turn.id === activeTurnId) ?? journey.turns[0];
   const childCount = journey.turns.filter((turn) => turn.parentTurnId === activeTurn.id).length;
@@ -925,6 +1133,14 @@ function JourneyMap({
           <h2>{activeTurn.question}</h2>
           <p>{activeTurn.researchSummary}</p>
           <dl><div><dt>Topic</dt><dd>{activeTurn.topicLabel}</dd></div><div><dt>Branches from here</dt><dd>{childCount}</dd></div><div><dt>Sources</dt><dd>{activeTurn.sources.length}</dd></div></dl>
+          <div className="map-options" aria-label="Turn paths">
+            {activeTurn.options.map((option) => (
+              <button type="button" key={option.id} disabled={option.state !== "proposed"} onClick={() => onChoose(activeTurn.id, option.id)}>
+                <span>{option.position === 0 ? "A" : "B"} · {option.state}</span>
+                <strong>{option.question}</strong>
+              </button>
+            ))}
+          </div>
           <button type="button" onClick={() => onContinue(activeTurn.id)}>{activeTurn.id === journey.currentTurnId ? "Return to this turn" : "Revisit & branch"} <span>↗</span></button>
           <small>Earlier turns remain saved even when you choose a new direction.</small>
         </aside>
@@ -939,6 +1155,8 @@ function Library({
   busy,
   onOpen,
   onDelete,
+  onManage,
+  onSnapshot,
   onNew,
 }: {
   journeys: JourneySummary[];
@@ -946,25 +1164,40 @@ function Library({
   busy: string | null;
   onOpen: (id: string) => void;
   onDelete: (id: string) => void;
+  onManage: (id: string, changes: { title?: string; pinned?: boolean; hidden?: boolean }) => void;
+  onSnapshot: (id: string) => void;
   onNew: () => void;
 }) {
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const [query, setQuery] = useState("");
+  const [performerFilter, setPerformerFilter] = useState<PerformerId | "all">("all");
+  const [showHidden, setShowHidden] = useState(false);
+  const visibleJourneys = journeys
+    .filter((journey) => showHidden || !journey.hidden)
+    .filter((journey) => performerFilter === "all" || journey.performerId === performerFilter)
+    .filter((journey) => `${journey.title} ${journey.seed} ${journey.topicLabels.join(" ")}`.toLowerCase().includes(query.toLowerCase()))
+    .sort((left, right) => Number(right.pinned) - Number(left.pinned) || right.updatedAt - left.updatedAt);
   return (
     <section className="library-view" aria-labelledby="library-title">
       <header className="view-heading">
         <div><p className="eyebrow"><span /> Durable library / D1</p><h1 id="library-title">Questions worth<br /><em>returning to.</em></h1></div>
         <div><p>{journeys.length} of {viewer?.journeyLimit ?? "—"} journeys saved</p><button type="button" className="compact-action" onClick={onNew}>New drive +</button></div>
       </header>
+      <div className="library-filters" aria-label="Library filters">
+        <label><span>Search</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Title, question, or topic" /></label>
+        <label><span>Performer</span><select value={performerFilter} onChange={(event) => setPerformerFilter(event.target.value as PerformerId | "all")}><option value="all">All performers</option>{PERFORMERS.map((performer) => <option value={performer.id} key={performer.id}>{performer.name}</option>)}</select></label>
+        <label className="check-setting"><input type="checkbox" checked={showHidden} onChange={(event) => setShowHidden(event.target.checked)} /><span>Show hidden</span></label>
+      </div>
       {journeys.length ? (
         <div className="library-grid">
-          {journeys.map((journey, index) => {
+          {visibleJourneys.map((journey, index) => {
             const performer = PERFORMERS.find((item) => item.id === journey.performerId)!;
             return (
               <article key={journey.id} className="library-card">
-                <div className="library-card-top"><span>{String(index + 1).padStart(2, "0")}</span><i className={performer.accent}>{performer.mark}</i></div>
+                <div className="library-card-top"><span>{journey.pinned ? "PINNED" : String(index + 1).padStart(2, "0")}</span><i className={performer.accent}>{performer.mark}</i></div>
                 <p>{journey.topicLabels.join(" · ") || "unclassified journey"}</p>
                 <h2>{journey.title}</h2>
-                <dl><div><dt>Turns</dt><dd>{journey.turnCount}</dd></div><div><dt>Sources</dt><dd>{journey.sourceCount}</dd></div><div><dt>Performer</dt><dd>{performer.name.replace("The ", "")}</dd></div></dl>
+                <dl><div><dt>Turns</dt><dd>{journey.turnCount}</dd></div><div><dt>Sources</dt><dd>{journey.sourceCount}</dd></div><div><dt>Open</dt><dd>{journey.openBranchCount}</dd></div></dl>
                 <div className="library-actions">
                   <button type="button" disabled={busy !== null} onClick={() => onOpen(journey.id)}>Resume <span>↗</span></button>
                   {confirmDelete === journey.id ? (
@@ -972,6 +1205,13 @@ function Library({
                   ) : (
                     <button type="button" className="text-button" onClick={() => setConfirmDelete(journey.id)}>Remove</button>
                   )}
+                </div>
+                <div className="library-manage">
+                  <button type="button" onClick={() => { const title = window.prompt("Rename this journey", journey.title); if (title) onManage(journey.id, { title }); }}>Rename</button>
+                  <button type="button" onClick={() => onManage(journey.id, { pinned: !journey.pinned })}>{journey.pinned ? "Unpin" : "Pin"}</button>
+                  <button type="button" onClick={() => onManage(journey.id, { hidden: !journey.hidden })}>{journey.hidden ? "Unhide" : "Hide"}</button>
+                  <button type="button" onClick={() => onSnapshot(journey.id)}>Snapshot</button>
+                  <a href={`/api/journeys/${journey.id}/export`}>Export</a>
                 </div>
               </article>
             );
@@ -1036,11 +1276,47 @@ function ComparisonReport({ result }: { result: CompareResult }) {
       <div className="compare-columns">
         {[result.left, result.right].map((journey, index) => (
           <article key={journey.id}>
-            <span>Path {index === 0 ? "A" : "B"}</span><h3>{journey.title}</h3><p>{journey.turnCount} turns with {journey.sourceCount} cited source appearances.</p><div>{journey.topicLabels.map((topic) => <small key={topic}>{topic}</small>)}</div>
+            <span>Path {index === 0 ? "A" : "B"}</span><h3>{journey.title}</h3>
+            <p>{journey.performerName} · {journey.modelName} · {journey.researchPreset}</p>
+            <p>{journey.turnCount} turns · {journey.sourceCount} source appearances · {journey.openBranchCount} open branches · ${journey.totalEstimatedCostUsd.toFixed(4)}</p>
+            <p>{journey.actionCount} decisions ({journey.rejectedCount} redraws, {journey.delegatedCount} delegated)</p>
+            <ol>{journey.timeline.map((turn) => <li key={turn.turnId}><strong>{turn.question}</strong><small>{turn.topicLabel} · {new Date(turn.researchedAt).toLocaleDateString()}</small></li>)}</ol>
+            <div>{journey.topicLabels.map((topic) => <small key={topic}>{topic}</small>)}</div>
           </article>
         ))}
       </div>
       <div className="observations"><span>What the saved data shows</span><ul>{result.observations.map((observation) => <li key={observation}>{observation}</li>)}</ul></div>
+      {!!result.confounders.length && <div className="confounders"><span>Comparison cautions</span><ul>{result.confounders.map((item) => <li key={item}>{item}</li>)}</ul></div>}
+    </section>
+  );
+}
+
+function SettingsView({
+  viewer,
+  preferences,
+  busy,
+  onSave,
+}: {
+  viewer: Viewer | null;
+  preferences: UserPreferences;
+  busy: boolean;
+  onSave: (next: UserPreferences) => Promise<void>;
+}) {
+  const [draft, setDraft] = useState(preferences);
+  return (
+    <section className="settings-view" aria-labelledby="settings-title">
+      <header className="view-heading">
+        <div><p className="eyebrow"><span /> Audience controls</p><h1 id="settings-title">Make the stage<br /><em>comfortable.</em></h1></div>
+        <div><p>{viewer?.mode === "chatgpt" ? "Synced to your ChatGPT identity" : "Saved to this guest session"}</p><span>These preferences change presentation and future turns, never evidence.</span></div>
+      </header>
+      <form className="settings-form" onSubmit={(event) => { event.preventDefault(); void onSave(draft); }}>
+        <label><span>Default answer density</span><select value={draft.answerDensity} onChange={(event) => setDraft({ ...draft, answerDensity: event.target.value as AnswerDensity })}><option value="brief">Brief</option><option value="balanced">Balanced</option><option value="rich">Rich</option></select><small>Separate from how deeply WonderDrive researches.</small></label>
+        <label><span>Text size</span><select value={draft.textSize} onChange={(event) => setDraft({ ...draft, textSize: event.target.value as TextSize })}><option value="s">Small</option><option value="m">Medium</option><option value="l">Large</option><option value="xl">Extra large</option></select></label>
+        <label><span>Factual images</span><select value={draft.imagePreference} onChange={(event) => setDraft({ ...draft, imagePreference: event.target.value as ImagePreference })}><option value="avoid">Avoid</option><option value="when-useful">When useful</option><option value="prefer">Prefer when supported</option></select><small>Decorative imagery is never substituted for factual media.</small></label>
+        <label><span>Read-aloud speed: {draft.speechRate.toFixed(1)}×</span><input type="range" min="0.6" max="1.6" step="0.1" value={draft.speechRate} onChange={(event) => setDraft({ ...draft, speechRate: Number(event.target.value) })} /></label>
+        <label className="check-setting"><input type="checkbox" checked={draft.reduceMotion} onChange={(event) => setDraft({ ...draft, reduceMotion: event.target.checked })} /><span>Reduce interface motion</span></label>
+        <button className="launch-button" type="submit" disabled={busy}>{busy ? "Saving…" : "Save preferences"}<i aria-hidden="true">↘</i></button>
+      </form>
     </section>
   );
 }
@@ -1076,11 +1352,16 @@ async function streamLiveResearch(
     while (true) {
       const { done, value } = await reader.read();
       buffer += decoder.decode(value, { stream: !done });
-      const lines = buffer.split("\n");
-      buffer = lines.pop() ?? "";
-      for (const line of lines) {
-        if (!line.trim()) continue;
-        const event = JSON.parse(line) as LiveResearchStreamEvent;
+      const frames = buffer.split("\n\n");
+      buffer = frames.pop() ?? "";
+      for (const frame of frames) {
+        const data = frame
+          .split("\n")
+          .filter((line) => line.startsWith("data:"))
+          .map((line) => line.slice(5).trimStart())
+          .join("\n");
+        if (!data) continue;
+        const event = JSON.parse(data) as LiveResearchStreamEvent;
         if (event.type === "started") {
           setState((current) =>
             current
@@ -1137,14 +1418,37 @@ function upsertSummary(current: JourneySummary[], detail: JourneyDetail): Journe
     performerId: detail.performerId,
     modelId: detail.modelId,
     researchPreset: detail.researchPreset,
+    answerDensity: detail.answerDensity,
+    imagePreference: detail.imagePreference,
     currentTurnId: detail.currentTurnId,
     turnCount: detail.turnCount,
     sourceCount: detail.sourceCount,
+    openBranchCount: detail.openBranchCount,
     version: detail.version,
+    pinned: detail.pinned,
+    hidden: detail.hidden,
     updatedAt: detail.updatedAt,
     topicLabels: detail.topicLabels,
   };
   return [summary, ...current.filter((journey) => journey.id !== summary.id)];
+}
+
+async function upgradeGuestLibrary(
+  setViewer: Dispatch<SetStateAction<Viewer | null>>,
+  refresh: () => Promise<void>,
+  setError: Dispatch<SetStateAction<string | null>>,
+) {
+  setError(null);
+  try {
+    const payload = await api<{ transferred: number }>("/api/session/upgrade", {
+      method: "POST",
+      body: JSON.stringify({ idempotencyKey: crypto.randomUUID() }),
+    });
+    setViewer(payload.viewer);
+    await refresh();
+  } catch (cause) {
+    setError(messageFrom(cause));
+  }
 }
 
 function messageFrom(cause: unknown): string {

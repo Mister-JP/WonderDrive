@@ -9,6 +9,7 @@ const GUEST_MAX_AGE_SECONDS = 60 * 60 * 24 * 30;
 export type ViewerContext = Viewer & {
   identityId: string;
   setCookie?: string;
+  pendingGuestIdentityId?: string;
 };
 
 type IdentityRow = {
@@ -23,7 +24,7 @@ export async function resolveViewer(): Promise<ViewerContext> {
   const now = Date.now();
 
   if (chatGPTUser) {
-    const subject = await digest(`chatgpt:${chatGPTUser.email.trim().toLowerCase()}`);
+    const subject = await digest(`chatgpt:${chatGPTUser.subject}`);
     let identity = await db
       .prepare(
         "SELECT id FROM identities WHERE provider = 'chatgpt' AND provider_subject = ? LIMIT 1",
@@ -51,6 +52,7 @@ export async function resolveViewer(): Promise<ViewerContext> {
     const statements = [
       db.prepare("UPDATE identities SET last_seen_at = ? WHERE id = ?").bind(now, identity.id),
     ];
+    let pendingGuestIdentityId: string | undefined;
     if (rawGuestToken) {
       const guestSubject = await digest(`guest:${rawGuestToken}`);
       const guest = await db
@@ -60,13 +62,7 @@ export async function resolveViewer(): Promise<ViewerContext> {
         .bind(guestSubject)
         .first<IdentityRow>();
       if (guest && guest.id !== identity.id) {
-        statements.push(
-          db
-            .prepare(
-              "UPDATE journeys SET owner_identity_id = ?, updated_at = ? WHERE owner_identity_id = ? AND deleted_at IS NULL",
-            )
-            .bind(identity.id, now, guest.id),
-        );
+        pendingGuestIdentityId = guest.id;
       }
     }
     await db.batch(statements);
@@ -76,7 +72,8 @@ export async function resolveViewer(): Promise<ViewerContext> {
       mode: "chatgpt",
       displayName: chatGPTUser.displayName,
       journeyLimit: 25,
-      setCookie: rawGuestToken ? expiredCookie(requestHeaders) : undefined,
+      pendingGuestIdentityId,
+      hasGuestUpgrade: Boolean(pendingGuestIdentityId),
     };
   }
 
@@ -98,6 +95,7 @@ export async function resolveViewer(): Promise<ViewerContext> {
         mode: "guest",
         displayName: "Guest explorer",
         journeyLimit: 5,
+        guestExpiresAt: now + GUEST_MAX_AGE_SECONDS * 1000,
       };
     }
   }
@@ -107,9 +105,9 @@ export async function resolveViewer(): Promise<ViewerContext> {
   const identityId = crypto.randomUUID();
   await db
     .prepare(
-      "INSERT INTO identities (id, provider, provider_subject, created_at, last_seen_at) VALUES (?, 'guest', ?, ?, ?)",
+      "INSERT INTO identities (id, provider, provider_subject, expires_at, created_at, last_seen_at) VALUES (?, 'guest', ?, ?, ?, ?)",
     )
-    .bind(identityId, subject, now, now)
+    .bind(identityId, subject, now + GUEST_MAX_AGE_SECONDS * 1000, now, now)
     .run();
 
   return {
@@ -117,6 +115,7 @@ export async function resolveViewer(): Promise<ViewerContext> {
     mode: "guest",
     displayName: "Guest explorer",
     journeyLimit: 5,
+    guestExpiresAt: now + GUEST_MAX_AGE_SECONDS * 1000,
     setCookie: sessionCookie(token, requestHeaders),
   };
 }
@@ -126,7 +125,62 @@ export function publicViewer(viewer: ViewerContext): Viewer {
     mode: viewer.mode,
     displayName: viewer.displayName,
     journeyLimit: viewer.journeyLimit,
+    guestExpiresAt: viewer.guestExpiresAt,
+    hasGuestUpgrade: Boolean(viewer.pendingGuestIdentityId),
   };
+}
+
+export async function upgradeGuestJourneys(
+  viewer: ViewerContext,
+  idempotencyKey: string,
+) {
+  if (viewer.mode !== "chatgpt" || !viewer.pendingGuestIdentityId) {
+    throw new Error("No guest journeys are waiting to be upgraded.");
+  }
+  if (idempotencyKey.length < 8 || idempotencyKey.length > 100) {
+    throw new Error("A valid upgrade key is required.");
+  }
+  const db = getD1();
+  const prior = await db
+    .prepare(
+      "SELECT transferred_journey_count FROM identity_upgrades WHERE account_identity_id = ? AND idempotency_key = ? LIMIT 1",
+    )
+    .bind(viewer.identityId, idempotencyKey)
+    .first<{ transferred_journey_count: number }>();
+  if (prior) return { transferred: prior.transferred_journey_count };
+  const count = await db
+    .prepare(
+      "SELECT COUNT(*) AS count FROM journeys WHERE owner_identity_id = ? AND deleted_at IS NULL",
+    )
+    .bind(viewer.pendingGuestIdentityId)
+    .first<{ count: number }>();
+  const transferred = count?.count ?? 0;
+  const now = Date.now();
+  await db.batch([
+    db
+      .prepare(
+        "UPDATE journeys SET owner_identity_id = ?, updated_at = ? WHERE owner_identity_id = ? AND deleted_at IS NULL",
+      )
+      .bind(viewer.identityId, now, viewer.pendingGuestIdentityId),
+    db
+      .prepare("UPDATE identities SET upgraded_to_identity_id = ? WHERE id = ? AND provider = 'guest'")
+      .bind(viewer.identityId, viewer.pendingGuestIdentityId),
+    db
+      .prepare(
+        `INSERT INTO identity_upgrades
+          (id, guest_identity_id, account_identity_id, idempotency_key, transferred_journey_count, created_at)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+      )
+      .bind(
+        crypto.randomUUID(),
+        viewer.pendingGuestIdentityId,
+        viewer.identityId,
+        idempotencyKey,
+        transferred,
+        now,
+      ),
+  ]);
+  return { transferred, setCookie: expiredCookie(await headers()) };
 }
 
 function readCookie(cookieHeader: string | null, name: string): string | null {

@@ -1,9 +1,16 @@
-import { MODELS, PERFORMERS } from "./catalog";
+import {
+  MODELS,
+  PERFORMERS,
+  PROMPT_VERSION,
+  modelById,
+  performerById,
+} from "./catalog";
 import type {
   AdvanceJourneyRequest,
   CompareResult,
   CreateJourneyRequest,
   JourneyDetail,
+  JourneyAction,
   JourneySummary,
   JourneyTurn,
   ModelId,
@@ -22,10 +29,15 @@ type ErrorCode =
   | "FORBIDDEN"
   | "VERSION_CONFLICT"
   | "IDEMPOTENCY_CONFLICT"
+  | "ALREADY_IN_PROGRESS"
   | "JOURNEY_LIMIT"
   | "LIVE_RESEARCH_LIMIT"
+  | "BUDGET_EXCEEDED"
   | "PROVIDER_UNAVAILABLE"
   | "PROVIDER_ERROR"
+  | "PROVIDER_TIMEOUT"
+  | "SCHEMA_INVALID"
+  | "CITATION_INVALID"
   | "RESEARCH_VALIDATION_FAILED"
   | "INTERNAL_ERROR";
 
@@ -48,12 +60,17 @@ type JourneyRow = {
   performer_id: PerformerId;
   model_id: ModelId;
   research_preset: ResearchPreset;
+  answer_density: JourneySummary["answerDensity"];
+  image_preference: JourneySummary["imagePreference"];
+  pinned: number;
+  hidden: number;
   current_turn_id: string;
   turn_count: number;
   source_count: number;
   status: "active" | "paused";
   version: number;
   updated_at: number;
+  open_branch_count: number;
 };
 
 type TurnRow = {
@@ -66,16 +83,28 @@ type TurnRow = {
   transition: string;
   topic_label: string;
   research_summary: string;
+  research_handoff_json: string | null;
   preferred_position: number;
   option_set_version: number;
   run_provider: string | null;
+  turn_provider: string | null;
+  turn_model_id: ModelId | null;
+  prompt_version: string | null;
+  performer_version: string | null;
+  model_snapshot: string | null;
+  turn_answer_density: JourneySummary["answerDensity"] | null;
+  turn_image_preference: JourneySummary["imagePreference"] | null;
   provider_response_id: string | null;
   input_tokens: number;
+  cached_input_tokens: number;
   output_tokens: number;
   reasoning_tokens: number;
   total_tokens: number;
   web_search_calls: number;
+  page_fetches: number;
   latency_ms: number;
+  estimated_cost_microusd: number;
+  rate_effective_at: string;
   created_at: number;
 };
 
@@ -95,6 +124,20 @@ type SourceRow = {
   publisher: string;
   canonical_url: string;
   relation: Source["relation"];
+  published_at: string | null;
+  retrieved_at: number;
+  warning: string | null;
+  license_note: string | null;
+};
+
+type ActionRow = {
+  id: string;
+  turn_id: string;
+  kind: JourneyAction["kind"];
+  option_id: string | null;
+  result_turn_id: string | null;
+  metadata_json: string | null;
+  created_at: number;
 };
 
 type EventRow = {
@@ -139,6 +182,8 @@ export async function createJourney(
     performerId: request.performerId,
     modelId: request.modelId,
     researchPreset: request.researchPreset,
+    answerDensity: request.answerDensity,
+    imagePreference: request.imagePreference,
   });
   const prior = await db
     .prepare(
@@ -186,8 +231,10 @@ export async function createJourney(
     db
       .prepare(
         `INSERT INTO journeys
-          (id, owner_identity_id, seed, title, performer_id, model_id, research_preset, current_turn_id, turn_count, source_count, last_action, status, version, created_at, updated_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, ?, 'created', 'active', 1, ?, ?)`,
+          (id, owner_identity_id, seed, title, performer_id, model_id, research_preset,
+           answer_density, image_preference, current_turn_id, turn_count, source_count,
+           last_action, status, version, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, 'created', 'active', 1, ?, ?)`,
       )
       .bind(
         journeyId,
@@ -197,6 +244,8 @@ export async function createJourney(
         request.performerId,
         request.modelId,
         request.researchPreset,
+        request.answerDensity,
+        request.imagePreference,
         turnId,
         draft.sources.length,
         now,
@@ -205,8 +254,11 @@ export async function createJourney(
     db
       .prepare(
         `INSERT INTO turns
-          (id, journey_id, parent_turn_id, depth, question, status, answer, answer_json, transition, topic_label, research_summary, preferred_position, fixture_key, option_set_version, provider, model_id, prompt_version, created_at, ready_at)
-         VALUES (?, ?, NULL, 0, ?, 'ready', ?, ?, ?, ?, ?, ?, ?, 0, 'fixture', ?, 'phase-1-fixture-v1', ?, ?)`,
+          (id, journey_id, parent_turn_id, depth, question, status, answer, answer_json,
+           transition, topic_label, research_summary, research_handoff_json, preferred_position,
+           fixture_key, option_set_version, provider, model_id, prompt_version,
+           performer_version, model_snapshot, answer_density, image_preference, created_at, ready_at)
+         VALUES (?, ?, NULL, 0, ?, 'ready', ?, ?, ?, ?, ?, ?, ?, ?, 0, 'fixture', ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
       .bind(
         turnId,
@@ -217,9 +269,15 @@ export async function createJourney(
         draft.transition,
         draft.topicLabel,
         draft.researchSummary,
+        JSON.stringify(draft.researchHandoff),
         draft.preferredPosition,
         draft.fixtureKey,
         request.modelId,
+        PROMPT_VERSION,
+        performerById(request.performerId).version,
+        modelById(request.modelId).snapshot,
+        request.answerDensity,
+        request.imagePreference,
         now,
         now,
       ),
@@ -264,8 +322,11 @@ export async function listJourneys(viewer: ViewerContext): Promise<JourneySummar
   const db = getD1();
   const journeys = await db
     .prepare(
-      `SELECT id, seed, title, performer_id, model_id, research_preset, current_turn_id,
-              turn_count, source_count, status, version, updated_at
+      `SELECT id, seed, title, performer_id, model_id, research_preset, answer_density,
+              image_preference, pinned, hidden, current_turn_id, turn_count, source_count,
+              status, version, updated_at,
+              (SELECT COUNT(*) FROM turn_options o JOIN turns t ON t.id = o.turn_id
+               WHERE t.journey_id = journeys.id AND o.state = 'proposed') AS open_branch_count
        FROM journeys
        WHERE owner_identity_id = ? AND deleted_at IS NULL
        ORDER BY updated_at DESC`,
@@ -300,8 +361,11 @@ export async function getJourney(
   const db = getD1();
   const journey = await db
     .prepare(
-      `SELECT id, seed, title, performer_id, model_id, research_preset, current_turn_id,
-              turn_count, source_count, status, version, updated_at
+      `SELECT id, seed, title, performer_id, model_id, research_preset, answer_density,
+              image_preference, pinned, hidden, current_turn_id, turn_count, source_count,
+              status, version, updated_at,
+              (SELECT COUNT(*) FROM turn_options o JOIN turns t ON t.id = o.turn_id
+               WHERE t.journey_id = journeys.id AND o.state = 'proposed') AS open_branch_count
        FROM journeys
        WHERE id = ? AND owner_identity_id = ? AND deleted_at IS NULL LIMIT 1`,
     )
@@ -311,19 +375,27 @@ export async function getJourney(
     throw new RepositoryError("NOT_FOUND", "That saved journey was not found.", 404);
   }
 
-  const [turnsResult, optionsResult, sourcesResult, eventsResult, interludesResult] =
+  const [turnsResult, optionsResult, sourcesResult, eventsResult, interludesResult, actionsResult] =
     await Promise.all([
       db
         .prepare(
           `SELECT t.id, t.parent_turn_id, t.depth, t.question, t.answer, t.answer_json,
-                  t.transition, t.topic_label, t.research_summary, t.preferred_position,
-                  t.option_set_version, t.created_at, r.provider AS run_provider,
+                  t.transition, t.topic_label, t.research_summary, t.research_handoff_json,
+                  t.preferred_position, t.option_set_version, t.created_at,
+                  t.provider AS turn_provider, t.model_id AS turn_model_id,
+                  t.prompt_version, t.performer_version, t.model_snapshot,
+                  t.answer_density AS turn_answer_density,
+                  t.image_preference AS turn_image_preference, r.provider AS run_provider,
                   r.provider_response_id, COALESCE(r.input_tokens, 0) AS input_tokens,
+                  COALESCE(r.cached_input_tokens, 0) AS cached_input_tokens,
                   COALESCE(r.output_tokens, 0) AS output_tokens,
                   COALESCE(r.reasoning_tokens, 0) AS reasoning_tokens,
                   COALESCE(r.total_tokens, 0) AS total_tokens,
                   COALESCE(r.web_search_calls, 0) AS web_search_calls,
-                  COALESCE(r.latency_ms, 0) AS latency_ms
+                  COALESCE(r.page_fetches, 0) AS page_fetches,
+                  COALESCE(r.latency_ms, 0) AS latency_ms,
+                  COALESCE(r.estimated_cost_microusd, 0) AS estimated_cost_microusd,
+                  COALESCE(r.rate_effective_at, '2026-07-13') AS rate_effective_at
            FROM turns t
            LEFT JOIN research_runs r ON r.turn_id = t.id
            WHERE t.journey_id = ? AND t.status = 'ready'
@@ -343,7 +415,8 @@ export async function getJourney(
         .all<OptionRow>(),
       db
         .prepare(
-          `SELECT ts.turn_id, s.id, s.title, s.publisher, s.canonical_url, ts.relation
+          `SELECT ts.turn_id, s.id, s.title, s.publisher, s.canonical_url, ts.relation,
+                  s.published_at, s.retrieved_at, s.warning, s.license_note
            FROM turn_sources ts
            JOIN turns t ON t.id = ts.turn_id
            JOIN sources s ON s.id = ts.source_id
@@ -371,6 +444,13 @@ export async function getJourney(
         )
         .bind(journeyId)
         .all<InterludeRow>(),
+      db
+        .prepare(
+          `SELECT id, turn_id, kind, option_id, result_turn_id, metadata_json, created_at
+           FROM turn_actions WHERE journey_id = ? ORDER BY created_at`,
+        )
+        .bind(journeyId)
+        .all<ActionRow>(),
     ]);
 
   const options = groupBy(optionsResult.results, "turn_id");
@@ -391,6 +471,7 @@ export async function getJourney(
       transition: turn.transition ?? "",
       topicLabel: turn.topic_label ?? "open question",
       researchSummary: turn.research_summary ?? "",
+      researchHandoff: parseResearchHandoff(turn.research_handoff_json),
       preferredPosition: turn.preferred_position === 1 ? 1 : 0,
       optionSetVersion: turn.option_set_version,
       options: (options.get(turn.id) ?? []).map((option) => ({
@@ -406,6 +487,10 @@ export async function getJourney(
         publisher: source.publisher,
         url: source.canonical_url,
         relation: source.relation,
+        publishedAt: source.published_at,
+        retrievedAt: source.retrieved_at,
+        warning: source.warning,
+        licenseNote: source.license_note,
       })),
       researchEvents: (events.get(turn.id) ?? []).map((event) => ({
         id: event.id,
@@ -432,12 +517,28 @@ export async function getJourney(
         providerResponseId: turn.provider_response_id,
         usage: {
           inputTokens: turn.input_tokens,
+          cachedInputTokens: turn.cached_input_tokens,
           outputTokens: turn.output_tokens,
           reasoningTokens: turn.reasoning_tokens,
           totalTokens: turn.total_tokens,
           webSearchCalls: turn.web_search_calls,
+          pageFetches: turn.page_fetches,
           latencyMs: turn.latency_ms,
+          estimatedCostUsd: turn.estimated_cost_microusd / 1_000_000,
+          rateEffectiveAt: turn.rate_effective_at,
         },
+      },
+      metadata: {
+        performerId: journey.performer_id,
+        performerVersion: turn.performer_version ?? performerById(journey.performer_id).version,
+        provider: turn.turn_provider ?? (turn.run_provider === "openai" ? "OpenAI" : "WonderDrive"),
+        modelId: turn.turn_model_id ?? journey.model_id,
+        modelSnapshot: turn.model_snapshot ?? modelById(journey.model_id).snapshot,
+        researchPreset: journey.research_preset,
+        answerDensity: turn.turn_answer_density ?? journey.answer_density,
+        imagePreference: turn.turn_image_preference ?? journey.image_preference,
+        promptVersion: turn.prompt_version ?? PROMPT_VERSION,
+        researchedAt: turn.created_at,
       },
       createdAt: turn.created_at,
     };
@@ -447,6 +548,19 @@ export async function getJourney(
     ...summaryFromRow(journey, topicLabels),
     status: journey.status,
     turns,
+    actions: actionsResult.results.map((action) => {
+      const metadata = safeJsonObject(action.metadata_json);
+      return {
+        id: action.id,
+        turnId: action.turn_id,
+        kind: action.kind,
+        optionId: action.option_id,
+        resultTurnId: action.result_turn_id,
+        reason: typeof metadata.reason === "string" ? metadata.reason : null,
+        adventure: typeof metadata.adventure === "number" ? metadata.adventure : null,
+        createdAt: action.created_at,
+      };
+    }),
   };
 }
 
@@ -462,6 +576,7 @@ export async function advanceJourney(
     action: request.action,
     optionId: request.optionId ?? null,
     adventure: request.adventure ?? null,
+    reason: request.reason?.trim() || null,
     expectedVersion: request.expectedVersion,
   });
   const prior = await db
@@ -508,6 +623,7 @@ export async function advanceJourney(
 
   if (request.action === "reject") {
     const setVersion = fromTurn.optionSetVersion + 1;
+    const actionId = crypto.randomUUID();
     const draft = buildFixtureTurn({
       question: fromTurn.question,
       depth: fromTurn.depth,
@@ -560,17 +676,41 @@ export async function advanceJourney(
            WHERE EXISTS (SELECT 1 FROM journeys WHERE id = ? AND owner_identity_id = ? AND version = ? AND deleted_at IS NULL)`,
         )
         .bind(
-          crypto.randomUUID(),
+          actionId,
           journeyId,
           fromTurn.id,
           request.idempotencyKey,
           payloadHash,
-          JSON.stringify({ adventure: request.adventure ?? 50, setVersion }),
+          JSON.stringify({
+            adventure: request.adventure ?? 50,
+            reason: request.reason?.trim() || null,
+            setVersion,
+          }),
           now,
           journeyId,
           viewer.identityId,
           request.expectedVersion,
         ),
+      ...fromTurn.options.map((option) =>
+        db
+          .prepare(
+            `INSERT INTO journey_edges
+              (id, journey_id, from_turn_id, option_id, to_turn_id, action_id, kind, metadata_json, created_at)
+             SELECT ?, ?, ?, ?, NULL, ?, 'rejected', ?, ?
+             WHERE EXISTS (SELECT 1 FROM turn_actions WHERE id = ? AND journey_id = ?)`,
+          )
+          .bind(
+            crypto.randomUUID(),
+            journeyId,
+            fromTurn.id,
+            option.id,
+            actionId,
+            JSON.stringify({ setVersion, reason: request.reason?.trim() || null }),
+            now,
+            actionId,
+            journeyId,
+          ),
+      ),
       db
         .prepare(
           `UPDATE journeys
@@ -588,15 +728,14 @@ export async function advanceJourney(
     request.action === "delegate"
       ? fromTurn.options.find((option) => option.position === fromTurn.preferredPosition)
       : fromTurn.options.find((option) => option.id === request.optionId);
-  if (
-    !selected ||
-    (fromTurn.id === journey.currentTurnId && selected.state !== "proposed")
-  ) {
+  if (!selected || selected.state !== "proposed") {
     throw new RepositoryError("BAD_REQUEST", "Choose one of the two current paths.", 400);
   }
 
   const childId = crypto.randomUUID();
   const runId = crypto.randomUUID();
+  const actionId = crypto.randomUUID();
+  const sibling = fromTurn.options.find((option) => option.id !== selected.id)!;
   const childDepth = fromTurn.depth + 1;
   const draft = buildFixtureTurn({
     question: selected.question,
@@ -607,7 +746,7 @@ export async function advanceJourney(
   const statements = [
     db
       .prepare(
-        `UPDATE turn_options SET state = 'superseded'
+        `UPDATE turn_options SET state = 'proposed'
          WHERE turn_id = ? AND set_version = ?
            AND EXISTS (SELECT 1 FROM journeys WHERE id = ? AND owner_identity_id = ? AND version = ? AND deleted_at IS NULL)`,
       )
@@ -628,8 +767,11 @@ export async function advanceJourney(
     db
       .prepare(
         `INSERT INTO turns
-          (id, journey_id, parent_turn_id, depth, question, status, answer, answer_json, transition, topic_label, research_summary, preferred_position, fixture_key, option_set_version, provider, model_id, prompt_version, created_at, ready_at)
-         SELECT ?, ?, ?, ?, ?, 'ready', ?, ?, ?, ?, ?, ?, ?, 0, 'fixture', ?, 'phase-1-fixture-v1', ?, ?
+          (id, journey_id, parent_turn_id, depth, question, status, answer, answer_json,
+           transition, topic_label, research_summary, research_handoff_json, preferred_position,
+           fixture_key, option_set_version, provider, model_id, prompt_version, performer_version,
+           model_snapshot, answer_density, image_preference, created_at, ready_at)
+         SELECT ?, ?, ?, ?, ?, 'ready', ?, ?, ?, ?, ?, ?, ?, ?, 0, 'fixture', ?, ?, ?, ?, ?, ?, ?, ?
          WHERE EXISTS (SELECT 1 FROM journeys WHERE id = ? AND owner_identity_id = ? AND version = ? AND deleted_at IS NULL)`,
       )
       .bind(
@@ -643,9 +785,15 @@ export async function advanceJourney(
         draft.transition,
         draft.topicLabel,
         draft.researchSummary,
+        JSON.stringify(draft.researchHandoff),
         draft.preferredPosition,
         draft.fixtureKey,
         journey.modelId,
+        PROMPT_VERSION,
+        performerById(journey.performerId).version,
+        modelById(journey.modelId).snapshot,
+        journey.answerDensity,
+        journey.imagePreference,
         now,
         now,
         journeyId,
@@ -683,7 +831,7 @@ export async function advanceJourney(
          WHERE EXISTS (SELECT 1 FROM journeys WHERE id = ? AND owner_identity_id = ? AND version = ? AND deleted_at IS NULL)`,
       )
       .bind(
-        crypto.randomUUID(),
+        actionId,
         journeyId,
         fromTurn.id,
         request.action,
@@ -696,6 +844,44 @@ export async function advanceJourney(
         journeyId,
         viewer.identityId,
         request.expectedVersion,
+      ),
+    db
+      .prepare(
+        `INSERT INTO journey_edges
+          (id, journey_id, from_turn_id, option_id, to_turn_id, action_id, kind, metadata_json, created_at)
+         SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?
+         WHERE EXISTS (SELECT 1 FROM turn_actions WHERE id = ? AND journey_id = ?)`,
+      )
+      .bind(
+        crypto.randomUUID(),
+        journeyId,
+        fromTurn.id,
+        selected.id,
+        childId,
+        actionId,
+        request.action === "delegate" ? "delegated" : "chosen",
+        JSON.stringify({ branched }),
+        now,
+        actionId,
+        journeyId,
+      ),
+    db
+      .prepare(
+        `INSERT INTO journey_edges
+          (id, journey_id, from_turn_id, option_id, to_turn_id, action_id, kind, metadata_json, created_at)
+         SELECT ?, ?, ?, ?, NULL, ?, 'unchosen', ?, ?
+         WHERE EXISTS (SELECT 1 FROM turn_actions WHERE id = ? AND journey_id = ?)`,
+      )
+      .bind(
+        crypto.randomUUID(),
+        journeyId,
+        fromTurn.id,
+        sibling.id,
+        actionId,
+        JSON.stringify({ remainsOpen: true }),
+        now,
+        actionId,
+        journeyId,
       ),
     db
       .prepare(
@@ -747,11 +933,33 @@ export async function compareJourneys(
     getJourney(viewer, leftId),
     getJourney(viewer, rightId),
   ]);
-  const left = summaryFromDetail(leftDetail);
-  const right = summaryFromDetail(rightDetail);
-  const sharedTopics = left.topicLabels.filter((topic) => right.topicLabels.includes(topic));
-  const leftOnlyTopics = left.topicLabels.filter((topic) => !right.topicLabels.includes(topic));
-  const rightOnlyTopics = right.topicLabels.filter((topic) => !left.topicLabels.includes(topic));
+  const leftSummary = summaryFromDetail(leftDetail);
+  const rightSummary = summaryFromDetail(rightDetail);
+  const decorate = (detail: JourneyDetail) => ({
+    ...summaryFromDetail(detail),
+    performerName: performerById(detail.performerId).name,
+    modelName: modelById(detail.modelId).name,
+    actionCount: detail.actions.length,
+    rejectedCount: detail.actions.filter((action) => action.kind === "reject").length,
+    delegatedCount: detail.actions.filter((action) => action.kind === "delegate").length,
+    totalEstimatedCostUsd: detail.turns.reduce(
+      (total, turn) => total + turn.research.usage.estimatedCostUsd,
+      0,
+    ),
+    timeline: detail.turns.map((turn) => ({
+      turnId: turn.id,
+      question: turn.question,
+      topicLabel: turn.topicLabel,
+      transition: turn.transition,
+      researchedAt: turn.metadata.researchedAt,
+      sourceCount: turn.sources.length,
+    })),
+  });
+  const left = decorate(leftDetail);
+  const right = decorate(rightDetail);
+  const sharedTopics = leftSummary.topicLabels.filter((topic) => rightSummary.topicLabels.includes(topic));
+  const leftOnlyTopics = leftSummary.topicLabels.filter((topic) => !rightSummary.topicLabels.includes(topic));
+  const rightOnlyTopics = rightSummary.topicLabels.filter((topic) => !leftSummary.topicLabels.includes(topic));
   const observations = [
     sharedTopics.length
       ? `Both journeys touched ${formatList(sharedTopics)}.`
@@ -763,7 +971,20 @@ export async function compareJourneys(
       ? `Both contain ${left.turnCount} committed ${left.turnCount === 1 ? "turn" : "turns"}.`
       : `${left.title} contains ${left.turnCount} turns; ${right.title} contains ${right.turnCount}.`,
   ];
-  return { left, right, sharedTopics, leftOnlyTopics, rightOnlyTopics, observations };
+  return {
+    left,
+    right,
+    sharedTopics,
+    leftOnlyTopics,
+    rightOnlyTopics,
+    observations,
+    confounders: [
+      "Live-web evidence can change between research dates.",
+      "Audience choices and rejected paths change the context of later turns.",
+      "Model output is stochastic; this view is descriptive, not a winner ranking.",
+      left.seed === right.seed ? "Both journeys began from the same seed." : "The starting seeds differ.",
+    ],
+  };
 }
 
 function optionStatements(
@@ -1004,10 +1225,15 @@ function summaryFromRow(row: JourneyRow, topicLabels: string[]): JourneySummary 
     performerId: row.performer_id,
     modelId: row.model_id,
     researchPreset: row.research_preset,
+    answerDensity: row.answer_density,
+    imagePreference: row.image_preference,
     currentTurnId: row.current_turn_id,
     turnCount: row.turn_count,
     sourceCount: row.source_count,
+    openBranchCount: row.open_branch_count,
     version: row.version,
+    pinned: Boolean(row.pinned),
+    hidden: Boolean(row.hidden),
     updatedAt: row.updated_at,
     topicLabels,
   };
@@ -1021,10 +1247,15 @@ function summaryFromDetail(detail: JourneyDetail): JourneySummary {
     performerId: detail.performerId,
     modelId: detail.modelId,
     researchPreset: detail.researchPreset,
+    answerDensity: detail.answerDensity,
+    imagePreference: detail.imagePreference,
     currentTurnId: detail.currentTurnId,
     turnCount: detail.turnCount,
     sourceCount: detail.sourceCount,
+    openBranchCount: detail.openBranchCount,
     version: detail.version,
+    pinned: detail.pinned,
+    hidden: detail.hidden,
     updatedAt: detail.updatedAt,
     topicLabels: detail.topicLabels,
   };
@@ -1040,6 +1271,39 @@ function parseAnswerBlocks(value: string | null, answer: string) {
     }
   }
   return answer.split(/\n\n+/).map((text) => ({ text, sourceIds: [] }));
+}
+
+function parseResearchHandoff(value: string | null) {
+  if (value) {
+    try {
+      const parsed = JSON.parse(value);
+      if (parsed && typeof parsed === "object") {
+        return {
+          discoveries: stringArray(parsed.discoveries),
+          uncertainties: stringArray(parsed.uncertainties),
+          unresolvedThreads: stringArray(parsed.unresolvedThreads),
+          sourceLeads: stringArray(parsed.sourceLeads),
+        };
+      }
+    } catch {
+      // Older rows receive an empty bounded handoff.
+    }
+  }
+  return { discoveries: [], uncertainties: [], unresolvedThreads: [], sourceLeads: [] };
+}
+
+function safeJsonObject(value: string | null): Record<string, unknown> {
+  if (!value) return {};
+  try {
+    const parsed = JSON.parse(value);
+    return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+function stringArray(value: unknown): string[] {
+  return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
 }
 
 function groupBy<T extends Record<string, unknown>>(rows: T[], key: keyof T) {
@@ -1067,6 +1331,12 @@ function validateCreateRequest(request: CreateJourneyRequest) {
   if (!PRESETS.includes(request.researchPreset)) {
     throw new RepositoryError("BAD_REQUEST", "Choose a supported research preset.", 400);
   }
+  if (!["brief", "balanced", "rich"].includes(request.answerDensity)) {
+    throw new RepositoryError("BAD_REQUEST", "Choose a supported answer density.", 400);
+  }
+  if (!["avoid", "when-useful", "prefer"].includes(request.imagePreference)) {
+    throw new RepositoryError("BAD_REQUEST", "Choose a supported factual-image preference.", 400);
+  }
   validateIdempotencyKey(request.idempotencyKey);
 }
 
@@ -1090,6 +1360,9 @@ function validateAdvanceRequest(request: AdvanceJourneyRequest) {
     (!Number.isFinite(request.adventure) || request.adventure < 0 || request.adventure > 100)
   ) {
     throw new RepositoryError("BAD_REQUEST", "Adventure must be between 0 and 100.", 400);
+  }
+  if (request.reason !== undefined && (typeof request.reason !== "string" || request.reason.trim().length > 240)) {
+    throw new RepositoryError("BAD_REQUEST", "Keep the rejection reason under 240 characters.", 400);
   }
   validateIdempotencyKey(request.idempotencyKey);
 }

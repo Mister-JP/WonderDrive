@@ -6,7 +6,7 @@ Phase 2 replaces the Phase 1 fixture at the canonical turn-adapter seam while ke
 
 1. The browser submits a seed or explicit path action with an idempotency key and expected journey version.
 2. The server resolves ownership, validates the action, enforces the journey and rolling live-run limits, assembles the compact ancestor context, and reserves a `research_requests` row.
-3. The same open HTTP request calls the OpenAI Responses API with `gpt-5.6-terra`, built-in `web_search`, `store: false`, a strict JSON schema, and preset-specific tool, output, reasoning, and wall-time ceilings.
+3. The same open HTTP request calls the OpenAI Responses API with `gpt-5.6-luna`, built-in `web_search`, `store: false`, a strict JSON schema, and preset-specific tool, output, reasoning, and wall-time ceilings.
 4. WonderDrive normalizes only observable activity for the research stage. It never streams hidden chain-of-thought or raw provider envelopes.
 5. The output must contain two to four bounded answer blocks and exactly two distinct next questions. Each answer block must cite at least one URL in the provider-returned source set.
 6. Only after validation does one D1 batch commit the journey/turn, options, action, research run/events, sources/relations, curated interlude, and usage fields. A disconnect, provider error, timeout, invalid citation, duplicate option pair, or version race marks the request failed and commits no turn.
@@ -27,8 +27,8 @@ While the foreground request remains open, the UI reveals one sourced interlude 
 
 ## Honest modes
 
-- **GPT-5.6 Terra · live:** metered OpenAI token and web-search usage. The visitor must keep the page open.
-- **Terra · free demo:** deterministic, reviewed Phase 1 material with no provider request.
+- **GPT-5.6 Luna · live:** metered OpenAI token and web-search usage. The visitor must keep the page open.
+- **Free demo:** deterministic, reviewed Phase 1 material with no provider request.
 
 The app never changes from live to fixture after an error. The visitor receives a retryable error explaining that nothing was committed and can deliberately choose the free demo if desired.
 

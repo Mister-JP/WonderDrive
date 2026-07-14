@@ -454,6 +454,12 @@ export type FixtureTurnDraft = {
   answerBlocks: AnswerBlock[];
   transition: string;
   researchSummary: string;
+  researchHandoff: {
+    discoveries: string[];
+    uncertainties: string[];
+    unresolvedThreads: string[];
+    sourceLeads: string[];
+  };
   preferredPosition: 0 | 1;
   options: Array<{ question: string; angle: string }>;
   sources: FixtureSource[];
@@ -493,6 +499,12 @@ export function buildFixtureTurn(input: {
     answerBlocks: blocks,
     transition: theme.transition,
     researchSummary: theme.researchSummary,
+    researchHandoff: {
+      discoveries: [theme.mechanism, theme.consequence],
+      uncertainties: [theme.tension],
+      unresolvedThreads: selectedPair.map((option) => option.question),
+      sourceLeads: theme.sources.map((source) => source.url),
+    },
     preferredPosition: stableHash(`${input.question}:${input.depth}:${performer.id}`) % 2 as 0 | 1,
     options: selectedPair.map((option) => ({ ...option })),
     sources: theme.sources,

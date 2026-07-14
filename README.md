@@ -2,9 +2,9 @@
 
 WonderDrive is an audience-directed curiosity performance. A visitor chooses a performer and a question, watches the research stage, receives a sourced explanation, and chooses between exactly two earned ways forward.
 
-This repository is the public implementation for the 2026 OpenAI Build Week hackathon. It is currently at **Phase 2: bounded live research**. A judge can use GPT-5.6 Terra with built-in web search for a real foreground research turn, inspect its sources and usage, direct the next turn, save and branch journeys, or switch to a free deterministic demo.
+This repository is the public implementation for the 2026 OpenAI Build Week hackathon. It implements the **V3 research-first blueprint**. A judge can use GPT-5.6 Luna with built-in web search for a real foreground research turn, inspect its sources and usage, direct or reopen either path, save snapshots, export and compare journeys, tune audience settings, or switch to a free deterministic demo.
 
-**Live Phase 2:** [wonderdrive.jigs.chatgpt.site](https://wonderdrive.jigs.chatgpt.site)
+**Live V3 site:** [wonderdrive.jigs.chatgpt.site](https://wonderdrive.jigs.chatgpt.site)
 
 ## Product contract
 
@@ -15,6 +15,8 @@ This repository is the public implementation for the 2026 OpenAI Build Week hack
 - Saved journeys form a branchable graph, not a chat transcript.
 - Comparison reads previously saved journeys and never launches hidden parallel work.
 - Provider failure or disconnect commits no partial turn; the fixture mode is an explicit user choice, never a silent fallback.
+- Daily project and per-identity cost ceilings stop new live work before a provider call.
+- Guest-to-account transfer is a deliberate, idempotent action rather than a side effect of sign-in.
 
 ## Stack
 
@@ -36,7 +38,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-The local site runs at `http://localhost:3000`. Set `OPENAI_API_KEY` in `.env.local` to exercise live mode locally; the free demo and build tests require no provider key. Never expose this value through a `NEXT_PUBLIC_` variable.
+The local site runs at `http://localhost:3000`. Set `OPENAI_API_KEY` in `.env.local` to exercise live mode locally; the free demo and build tests require no provider key. `WONDERDRIVE_DAILY_BUDGET_USD` optionally changes the default $25 rolling project ceiling. Never expose either value through a `NEXT_PUBLIC_` variable.
 
 Apply all SQL files in `drizzle/` to a fresh local D1 database before exercising the API. Sites applies the packaged migrations when a version is deployed.
 
@@ -68,12 +70,13 @@ tests/                Rendered production and fixture checks
 - [Phase 0 acceptance gates](docs/phase-0.md)
 - [Phase 1 implementation contract](docs/phase-1.md)
 - [Phase 2 live research contract](docs/phase-2.md)
+- [V3 implementation contract](docs/v3-implementation.md)
 - [Final architecture decisions](docs/architecture.md)
 - [Final product and engineering blueprint](docs/WonderDrive_Final_Product_and_Engineering_Blueprint_v3_Research_First.docx)
 
 ## Status and scope
 
-Live mode is one foreground OpenAI Responses request with built-in web search. Presets cap tool calls, output tokens, reasoning effort, and wall time; guest and signed-in identities also have rolling live-run limits. Consulted URLs, cited relations, provider request ID, tokens, search calls, and latency are saved with the committed turn. The free demo remains available for zero-provider-cost judging and development.
+Live mode is one foreground OpenAI Responses request with built-in web search. Presets cap tool calls, output tokens, reasoning effort, and wall time; guest and signed-in identities also have rolling live-run and estimated-spend limits. Consulted URLs, cited relations, provider request ID, complete usage, price snapshot, prompt/performer/model versions, and research handoff are saved with the committed turn. The free demo remains available for zero-provider-cost judging and development.
 
 Automatic journeys, scheduled/background continuation, Trigger.dev, provider fan-out, and live parallel comparison are outside the hackathon scope.
 

@@ -19,6 +19,8 @@ export const identities = sqliteTable(
     id: text("id").primaryKey(),
     provider: text("provider", { enum: ["chatgpt", "guest"] }).notNull(),
     providerSubject: text("provider_subject").notNull(),
+    expiresAt: integer("expires_at", { mode: "timestamp_ms" }),
+    upgradedToIdentityId: text("upgraded_to_identity_id"),
     createdAt,
     lastSeenAt: integer("last_seen_at", { mode: "timestamp_ms" })
       .notNull()
@@ -32,6 +34,30 @@ export const identities = sqliteTable(
   ],
 );
 
+export const preferences = sqliteTable("preferences", {
+  identityId: text("identity_id")
+    .primaryKey()
+    .references(() => identities.id),
+  answerDensity: text("answer_density", {
+    enum: ["brief", "balanced", "rich"],
+  })
+    .notNull()
+    .default("balanced"),
+  textSize: text("text_size", { enum: ["s", "m", "l", "xl"] })
+    .notNull()
+    .default("m"),
+  imagePreference: text("image_preference", {
+    enum: ["avoid", "when-useful", "prefer"],
+  })
+    .notNull()
+    .default("when-useful"),
+  speechRate: integer("speech_rate_percent").notNull().default(100),
+  reduceMotion: integer("reduce_motion", { mode: "boolean" }).notNull().default(false),
+  updatedAt: integer("updated_at", { mode: "timestamp_ms" })
+    .notNull()
+    .default(sql`(unixepoch() * 1000)`),
+});
+
 export const journeys = sqliteTable(
   "journeys",
   {
@@ -39,13 +65,25 @@ export const journeys = sqliteTable(
     ownerIdentityId: text("owner_identity_id").references(() => identities.id),
     seed: text("seed").notNull(),
     title: text("title").notNull().default("Untitled journey"),
-    performerId: text("performer_id").notNull().default("archivist"),
+    performerId: text("performer_id").notNull().default("sage"),
     modelId: text("model_id").notNull().default("fixture-terra"),
     researchPreset: text("research_preset", {
       enum: ["spark", "standard", "deep"],
     })
       .notNull()
       .default("standard"),
+    answerDensity: text("answer_density", {
+      enum: ["brief", "balanced", "rich"],
+    })
+      .notNull()
+      .default("balanced"),
+    imagePreference: text("image_preference", {
+      enum: ["avoid", "when-useful", "prefer"],
+    })
+      .notNull()
+      .default("when-useful"),
+    pinned: integer("pinned", { mode: "boolean" }).notNull().default(false),
+    hidden: integer("hidden", { mode: "boolean" }).notNull().default(false),
     currentTurnId: text("current_turn_id"),
     turnCount: integer("turn_count").notNull().default(0),
     sourceCount: integer("source_count").notNull().default(0),
@@ -85,12 +123,22 @@ export const turns = sqliteTable(
     transition: text("transition"),
     topicLabel: text("topic_label"),
     researchSummary: text("research_summary"),
+    researchHandoffJson: text("research_handoff_json"),
     preferredPosition: integer("preferred_position"),
     fixtureKey: text("fixture_key"),
     optionSetVersion: integer("option_set_version").notNull().default(0),
     provider: text("provider"),
     modelId: text("model_id"),
     promptVersion: text("prompt_version"),
+    promptHash: text("prompt_hash"),
+    performerVersion: text("performer_version"),
+    modelSnapshot: text("model_snapshot"),
+    answerDensity: text("answer_density", {
+      enum: ["brief", "balanced", "rich"],
+    }),
+    imagePreference: text("image_preference", {
+      enum: ["avoid", "when-useful", "prefer"],
+    }),
     createdAt,
     readyAt: integer("ready_at", { mode: "timestamp_ms" }),
   },
@@ -174,11 +222,16 @@ export const researchRuns = sqliteTable(
       .default("reserved"),
     providerResponseId: text("provider_response_id"),
     inputTokens: integer("input_tokens").notNull().default(0),
+    cachedInputTokens: integer("cached_input_tokens").notNull().default(0),
     outputTokens: integer("output_tokens").notNull().default(0),
     reasoningTokens: integer("reasoning_tokens").notNull().default(0),
     totalTokens: integer("total_tokens").notNull().default(0),
     webSearchCalls: integer("web_search_calls").notNull().default(0),
+    pageFetches: integer("page_fetches").notNull().default(0),
     latencyMs: integer("latency_ms").notNull().default(0),
+    estimatedCostMicrousd: integer("estimated_cost_microusd").notNull().default(0),
+    rateEffectiveAt: text("rate_effective_at").notNull().default("2026-07-13"),
+    leaseExpiresAt: integer("lease_expires_at", { mode: "timestamp_ms" }),
     errorCode: text("error_code"),
     errorMessage: text("error_message"),
     startedAt: integer("started_at", { mode: "timestamp_ms" }),
@@ -213,10 +266,13 @@ export const researchRequests = sqliteTable(
     errorCode: text("error_code"),
     errorMessage: text("error_message"),
     inputTokens: integer("input_tokens").notNull().default(0),
+    cachedInputTokens: integer("cached_input_tokens").notNull().default(0),
     outputTokens: integer("output_tokens").notNull().default(0),
     reasoningTokens: integer("reasoning_tokens").notNull().default(0),
     totalTokens: integer("total_tokens").notNull().default(0),
     webSearchCalls: integer("web_search_calls").notNull().default(0),
+    pageFetches: integer("page_fetches").notNull().default(0),
+    estimatedCostMicrousd: integer("estimated_cost_microusd").notNull().default(0),
     startedAt: integer("started_at", { mode: "timestamp_ms" }),
     completedAt: integer("completed_at", { mode: "timestamp_ms" }),
     createdAt,
@@ -237,9 +293,119 @@ export const sources = sqliteTable(
     canonicalUrl: text("canonical_url").notNull(),
     title: text("title"),
     publisher: text("publisher"),
+    publishedAt: text("published_at"),
+    providerSourceId: text("provider_source_id"),
+    warning: text("warning"),
+    licenseNote: text("license_note"),
     retrievedAt: integer("retrieved_at", { mode: "timestamp_ms" }).notNull(),
   },
   (table) => [uniqueIndex("sources_canonical_url_unique").on(table.canonicalUrl)],
+);
+
+export const journeyEdges = sqliteTable(
+  "journey_edges",
+  {
+    id: text("id").primaryKey(),
+    journeyId: text("journey_id").notNull().references(() => journeys.id),
+    fromTurnId: text("from_turn_id").notNull().references(() => turns.id),
+    optionId: text("option_id").references(() => turnOptions.id),
+    toTurnId: text("to_turn_id").references(() => turns.id),
+    actionId: text("action_id").references(() => turnActions.id),
+    kind: text("kind", {
+      enum: ["chosen", "unchosen", "rejected", "delegated", "reconnected"],
+    }).notNull(),
+    metadataJson: text("metadata_json"),
+    createdAt,
+  },
+  (table) => [
+    index("journey_edges_journey_idx").on(table.journeyId, table.createdAt),
+    uniqueIndex("journey_edges_action_option_unique").on(table.actionId, table.optionId, table.kind),
+  ],
+);
+
+export const usageEvents = sqliteTable(
+  "usage_events",
+  {
+    id: text("id").primaryKey(),
+    identityId: text("identity_id").notNull().references(() => identities.id),
+    journeyId: text("journey_id").notNull().references(() => journeys.id),
+    turnId: text("turn_id").notNull().references(() => turns.id),
+    researchRunId: text("research_run_id").notNull().references(() => researchRuns.id),
+    provider: text("provider").notNull(),
+    modelId: text("model_id").notNull(),
+    inputTokens: integer("input_tokens").notNull().default(0),
+    cachedInputTokens: integer("cached_input_tokens").notNull().default(0),
+    outputTokens: integer("output_tokens").notNull().default(0),
+    reasoningTokens: integer("reasoning_tokens").notNull().default(0),
+    webSearchCalls: integer("web_search_calls").notNull().default(0),
+    pageFetches: integer("page_fetches").notNull().default(0),
+    estimatedCostMicrousd: integer("estimated_cost_microusd").notNull().default(0),
+    rateEffectiveAt: text("rate_effective_at").notNull(),
+    providerResponseId: text("provider_response_id"),
+    createdAt,
+  },
+  (table) => [
+    uniqueIndex("usage_events_run_unique").on(table.researchRunId),
+    index("usage_events_identity_created_idx").on(table.identityId, table.createdAt),
+  ],
+);
+
+export const snapshots = sqliteTable(
+  "snapshots",
+  {
+    id: text("id").primaryKey(),
+    journeyId: text("journey_id").notNull().references(() => journeys.id),
+    ownerIdentityId: text("owner_identity_id").notNull().references(() => identities.id),
+    label: text("label").notNull(),
+    graphVersion: integer("graph_version").notNull(),
+    summary: text("summary").notNull(),
+    snapshotJson: text("snapshot_json").notNull(),
+    createdAt,
+  },
+  (table) => [index("snapshots_journey_created_idx").on(table.journeyId, table.createdAt)],
+);
+
+export const interludeFacts = sqliteTable("interlude_facts", {
+  id: text("id").primaryKey(),
+  factKey: text("fact_key").notNull().unique(),
+  text: text("text").notNull(),
+  topicTagsJson: text("topic_tags_json").notNull(),
+  sourceUrl: text("source_url").notNull(),
+  sourceTitle: text("source_title").notNull(),
+  verifiedAt: integer("verified_at", { mode: "timestamp_ms" }).notNull(),
+  status: text("status", { enum: ["active", "retired"] }).notNull().default("active"),
+  createdAt,
+});
+
+export const interludeImpressions = sqliteTable(
+  "interlude_impressions",
+  {
+    id: text("id").primaryKey(),
+    identityId: text("identity_id").notNull().references(() => identities.id),
+    journeyId: text("journey_id").references(() => journeys.id),
+    factKey: text("fact_key").notNull(),
+    action: text("action", { enum: ["shown", "next", "saved"] }).notNull(),
+    createdAt,
+  },
+  (table) => [index("interlude_impressions_identity_idx").on(table.identityId, table.createdAt)],
+);
+
+export const identityUpgrades = sqliteTable(
+  "identity_upgrades",
+  {
+    id: text("id").primaryKey(),
+    guestIdentityId: text("guest_identity_id").notNull().references(() => identities.id),
+    accountIdentityId: text("account_identity_id").notNull().references(() => identities.id),
+    idempotencyKey: text("idempotency_key").notNull(),
+    transferredJourneyCount: integer("transferred_journey_count").notNull().default(0),
+    createdAt,
+  },
+  (table) => [
+    uniqueIndex("identity_upgrades_account_key_unique").on(
+      table.accountIdentityId,
+      table.idempotencyKey,
+    ),
+  ],
 );
 
 export const turnSources = sqliteTable(

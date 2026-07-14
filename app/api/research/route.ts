@@ -1,4 +1,4 @@
-import { failure, readJson } from "../../../lib/api";
+import { assertMutationOrigin, failure, readJson } from "../../../lib/api";
 import type {
   ApiFailure,
   LiveResearchRequest,
@@ -18,6 +18,7 @@ export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   try {
+    assertMutationOrigin(request);
     const viewer = await resolveViewer();
     const body = (await readJson(request)) as LiveResearchRequest;
     const preparation = await prepareLiveResearch(viewer, body);
@@ -28,7 +29,10 @@ export async function POST(request: Request) {
     const stream = new ReadableStream<Uint8Array>({
       start(controller) {
         const send = (event: LiveResearchStreamEvent) => {
-          if (!closed) controller.enqueue(encoder.encode(`${JSON.stringify(event)}\n`));
+          if (!closed) {
+            const name = event.type;
+            controller.enqueue(encoder.encode(`event: ${name}\ndata: ${JSON.stringify(event)}\n\n`));
+          }
         };
         void (async () => {
           const requestId =
@@ -46,6 +50,7 @@ export async function POST(request: Request) {
                 ? "Returning the already committed result for this request"
                 : "Foreground research started; keep this page open",
           });
+          const heartbeat = setInterval(() => send({ type: "heartbeat", at: Date.now() }), 12_000);
           if (preparation.type === "replay") {
             send({
               type: "complete",
@@ -53,6 +58,7 @@ export async function POST(request: Request) {
               viewer: publicViewer(viewer),
             });
             closed = true;
+            clearInterval(heartbeat);
             controller.close();
             return;
           }
@@ -81,6 +87,7 @@ export async function POST(request: Request) {
             await markLiveResearchFailed(viewer, preparation.prepared.requestId, error);
             if (!closed) send({ type: "error", error: publicError(error) });
           } finally {
+            clearInterval(heartbeat);
             if (!closed) {
               closed = true;
               controller.close();
@@ -96,7 +103,8 @@ export async function POST(request: Request) {
 
     const headers = new Headers({
       "cache-control": "no-store, no-transform",
-      "content-type": "application/x-ndjson; charset=utf-8",
+      connection: "keep-alive",
+      "content-type": "text/event-stream; charset=utf-8",
       "x-content-type-options": "nosniff",
     });
     if (viewer.setCookie) headers.append("set-cookie", viewer.setCookie);

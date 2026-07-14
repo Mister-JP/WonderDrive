@@ -23,7 +23,7 @@ const context = {
   passThroughOnException() {},
 };
 
-test("server-renders the honest WonderDrive Phase 2 product shell", async () => {
+test("server-renders the honest WonderDrive V3 product shell", async () => {
   const app = await worker();
   const response = await app.fetch(
     new Request("http://localhost/", { headers: { accept: "text/html" } }),
@@ -38,13 +38,13 @@ test("server-renders the honest WonderDrive Phase 2 product shell", async () => 
   assert.match(html, /<title>WonderDrive — Give curiosity a direction<\/title>/i);
   assert.match(html, /Give curiosity/i);
   assert.match(html, /exactly two/i);
-  assert.match(html, /Phase 2/i);
-  assert.match(html, /Live foreground web research/i);
-  assert.match(html, /no background jobs/i);
+  assert.match(html, /Research first/i);
+  assert.match(html, /same selected model researches and performs/i);
+  assert.match(html, /durable branching graph/i);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton|Starter Project/i);
 });
 
-test("exposes an explicit Phase 2 health contract", async () => {
+test("exposes an explicit V3 health contract", async () => {
   const app = await worker();
   const response = await app.fetch(
     new Request("http://localhost/api/health"),
@@ -56,7 +56,7 @@ test("exposes an explicit Phase 2 health contract", async () => {
   assert.deepEqual(await response.json(), {
     status: "ok",
     product: "WonderDrive",
-    phase: 2,
+    phase: 3,
     capabilities: {
       publicShell: true,
       serverRoutes: true,
@@ -69,6 +69,13 @@ test("exposes an explicit Phase 2 health contract", async () => {
       webSearch: true,
       structuredOutputValidation: true,
       usageAccounting: true,
+      modelRegistry: true,
+      performerContracts: true,
+      preferences: true,
+      journeySnapshots: true,
+      journeyExport: true,
+      deliberateGuestUpgrade: true,
+      costGuardrails: true,
       backgroundJobs: false,
     },
   });

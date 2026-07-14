@@ -1,4 +1,10 @@
-import { MODELS, PERFORMERS } from "./catalog";
+import {
+  MODELS,
+  PERFORMERS,
+  PROMPT_VERSION,
+  modelById,
+  performerById,
+} from "./catalog";
 import type {
   JourneyDetail,
   LiveResearchRequest,
@@ -65,6 +71,54 @@ export async function prepareLiveResearch(
     );
   }
 
+  const now = Date.now();
+  const activeLease = await db
+    .prepare(
+      `SELECT id FROM research_requests
+       WHERE identity_id = ? AND status IN ('reserved', 'researching') AND started_at >= ?
+       ORDER BY started_at DESC LIMIT 1`,
+    )
+    .bind(viewer.identityId, now - 130_000)
+    .first<{ id: string }>();
+  if (activeLease) {
+    throw new RepositoryError(
+      "ALREADY_IN_PROGRESS",
+      "Another foreground research run is active for this identity. Return to that tab or wait for its lease to expire.",
+      409,
+      true,
+    );
+  }
+
+  const configuredProjectBudget = Number(process.env.WONDERDRIVE_DAILY_BUDGET_USD ?? "25");
+  const projectBudgetUsd = Number.isFinite(configuredProjectBudget) && configuredProjectBudget > 0
+    ? configuredProjectBudget
+    : 25;
+  const spend = await db
+    .prepare(
+      `SELECT COALESCE(SUM(estimated_cost_microusd), 0) AS project_spend,
+              COALESCE(SUM(CASE WHEN identity_id = ? THEN estimated_cost_microusd ELSE 0 END), 0) AS identity_spend
+       FROM usage_events WHERE created_at >= ?`,
+    )
+    .bind(viewer.identityId, now - 86_400_000)
+    .first<{ project_spend: number; identity_spend: number }>();
+  const identityBudgetUsd = viewer.mode === "guest" ? 1 : 5;
+  if ((spend?.project_spend ?? 0) >= projectBudgetUsd * 1_000_000) {
+    throw new RepositoryError(
+      "BUDGET_EXCEEDED",
+      "WonderDrive’s live research budget is paused for this 24-hour window. The reviewed free demo remains available.",
+      429,
+      true,
+    );
+  }
+  if ((spend?.identity_spend ?? 0) >= identityBudgetUsd * 1_000_000) {
+    throw new RepositoryError(
+      "BUDGET_EXCEEDED",
+      `This ${viewer.mode === "guest" ? "guest" : "account"} has reached its live research spend ceiling for the last 24 hours.`,
+      429,
+      true,
+    );
+  }
+
   const liveLimit = viewer.mode === "guest" ? 4 : 20;
   const recent = await db
     .prepare(
@@ -92,9 +146,12 @@ export async function prepareLiveResearch(
     seed: normalized.seed,
     depth: normalized.depth,
     performerId: normalized.performerId,
-    modelId: "gpt-5.6-terra",
+    modelId: "gpt-5.6-luna",
     researchPreset: normalized.researchPreset,
+    answerDensity: normalized.answerDensity,
+    imagePreference: normalized.imagePreference,
     contextTurns: [...normalized.contextTurns],
+    audienceSignals: [...normalized.audienceSignals],
     journeyId: normalized.journeyId,
     fromTurnId: normalized.fromTurnId,
     selectedOptionId: normalized.selectedOptionId,
@@ -104,7 +161,6 @@ export async function prepareLiveResearch(
     idempotencyKey: request.idempotencyKey,
     payloadHash,
   };
-  const now = Date.now();
   try {
     await db
       .prepare(
@@ -183,9 +239,10 @@ async function commitLiveCreate(
       .prepare(
         `INSERT INTO journeys
           (id, owner_identity_id, seed, title, performer_id, model_id, research_preset,
-           current_turn_id, turn_count, source_count, last_action, status, version,
+           answer_density, image_preference, current_turn_id, turn_count, source_count,
+           last_action, status, version,
            created_at, updated_at)
-         SELECT ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, 'created', 'active', 1, ?, ?
+         SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, 'created', 'active', 1, ?, ?
          WHERE EXISTS (
            SELECT 1 FROM research_requests
            WHERE id = ? AND identity_id = ? AND status = 'researching'
@@ -199,6 +256,8 @@ async function commitLiveCreate(
         prepared.performerId,
         prepared.modelId,
         prepared.researchPreset,
+        prepared.answerDensity,
+        prepared.imagePreference,
         turnId,
         draft.sources.length,
         now,
@@ -210,10 +269,11 @@ async function commitLiveCreate(
       .prepare(
         `INSERT INTO turns
           (id, journey_id, parent_turn_id, depth, question, status, answer, answer_json,
-           transition, topic_label, research_summary, preferred_position, fixture_key,
-           option_set_version, provider, model_id, prompt_version, created_at, ready_at)
-         SELECT ?, ?, NULL, 0, ?, 'ready', ?, ?, ?, ?, ?, ?, NULL, 0,
-                'openai', ?, 'phase-2-live-v1', ?, ?
+           transition, topic_label, research_summary, research_handoff_json, preferred_position,
+           fixture_key, option_set_version, provider, model_id, prompt_version, performer_version,
+           model_snapshot, answer_density, image_preference, created_at, ready_at)
+         SELECT ?, ?, NULL, 0, ?, 'ready', ?, ?, ?, ?, ?, ?, ?, NULL, 0,
+                'openai', ?, ?, ?, ?, ?, ?, ?, ?
          WHERE EXISTS (SELECT 1 FROM journeys WHERE id = ? AND owner_identity_id = ?)`,
       )
       .bind(
@@ -225,8 +285,14 @@ async function commitLiveCreate(
         draft.transition,
         draft.topicLabel,
         draft.researchSummary,
+        JSON.stringify(draft.researchHandoff),
         draft.preferredPosition,
         prepared.modelId,
+        PROMPT_VERSION,
+        performerById(prepared.performerId).version,
+        modelById(prepared.modelId).snapshot,
+        prepared.answerDensity,
+        prepared.imagePreference,
         now,
         now,
         journeyId,
@@ -238,8 +304,9 @@ async function commitLiveCreate(
       .prepare(
         `UPDATE research_requests
          SET status = 'committed', provider_response_id = ?, result_journey_id = ?,
-             result_turn_id = ?, input_tokens = ?, output_tokens = ?, reasoning_tokens = ?,
-             total_tokens = ?, web_search_calls = ?, completed_at = ?
+             result_turn_id = ?, input_tokens = ?, cached_input_tokens = ?, output_tokens = ?,
+             reasoning_tokens = ?, total_tokens = ?, web_search_calls = ?, page_fetches = ?,
+             estimated_cost_microusd = ?, completed_at = ?
          WHERE id = ? AND identity_id = ? AND status = 'researching'
            AND EXISTS (SELECT 1 FROM turns WHERE id = ? AND journey_id = ?)`,
       )
@@ -248,15 +315,45 @@ async function commitLiveCreate(
         journeyId,
         turnId,
         draft.usage.inputTokens,
+        draft.usage.cachedInputTokens,
         draft.usage.outputTokens,
         draft.usage.reasoningTokens,
         draft.usage.totalTokens,
         draft.usage.webSearchCalls,
+        draft.usage.pageFetches,
+        Math.round(draft.usage.estimatedCostUsd * 1_000_000),
         now,
         prepared.requestId,
         viewer.identityId,
         turnId,
         journeyId,
+      ),
+    db
+      .prepare(
+        `INSERT INTO usage_events
+          (id, identity_id, journey_id, turn_id, research_run_id, provider, model_id,
+           input_tokens, cached_input_tokens, output_tokens, reasoning_tokens,
+           web_search_calls, page_fetches, estimated_cost_microusd, rate_effective_at,
+           provider_response_id, created_at)
+         VALUES (?, ?, ?, ?, ?, 'openai', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      )
+      .bind(
+        crypto.randomUUID(),
+        prepared.identityId,
+        journeyId,
+        turnId,
+        runId,
+        prepared.modelId,
+        draft.usage.inputTokens,
+        draft.usage.cachedInputTokens,
+        draft.usage.outputTokens,
+        draft.usage.reasoningTokens,
+        draft.usage.webSearchCalls,
+        draft.usage.pageFetches,
+        Math.round(draft.usage.estimatedCostUsd * 1_000_000),
+        draft.usage.rateEffectiveAt,
+        draft.providerResponseId,
+        now,
       ),
   ];
   const results = await db.batch(statements);
@@ -280,10 +377,11 @@ async function commitLiveAdvance(
   const now = Date.now();
   const childId = crypto.randomUUID();
   const runId = crypto.randomUUID();
+  const actionId = crypto.randomUUID();
   const statements: D1PreparedStatement[] = [
     db
       .prepare(
-        `UPDATE turn_options SET state = 'superseded'
+        `UPDATE turn_options SET state = 'proposed'
          WHERE turn_id = ?
            AND EXISTS (SELECT 1 FROM journeys WHERE id = ? AND owner_identity_id = ?
              AND version = ? AND deleted_at IS NULL)`,
@@ -301,10 +399,11 @@ async function commitLiveAdvance(
       .prepare(
         `INSERT INTO turns
           (id, journey_id, parent_turn_id, depth, question, status, answer, answer_json,
-           transition, topic_label, research_summary, preferred_position, fixture_key,
-           option_set_version, provider, model_id, prompt_version, created_at, ready_at)
-         SELECT ?, ?, ?, ?, ?, 'ready', ?, ?, ?, ?, ?, ?, NULL, 0,
-                'openai', ?, 'phase-2-live-v1', ?, ?
+           transition, topic_label, research_summary, research_handoff_json, preferred_position,
+           fixture_key, option_set_version, provider, model_id, prompt_version, performer_version,
+           model_snapshot, answer_density, image_preference, created_at, ready_at)
+         SELECT ?, ?, ?, ?, ?, 'ready', ?, ?, ?, ?, ?, ?, ?, NULL, 0,
+                'openai', ?, ?, ?, ?, ?, ?, ?, ?
          WHERE EXISTS (SELECT 1 FROM journeys WHERE id = ? AND owner_identity_id = ?
            AND version = ? AND deleted_at IS NULL)`,
       )
@@ -319,8 +418,14 @@ async function commitLiveAdvance(
         draft.transition,
         draft.topicLabel,
         draft.researchSummary,
+        JSON.stringify(draft.researchHandoff),
         draft.preferredPosition,
         prepared.modelId,
+        PROMPT_VERSION,
+        performerById(prepared.performerId).version,
+        modelById(prepared.modelId).snapshot,
+        prepared.answerDensity,
+        prepared.imagePreference,
         now,
         now,
         journeyId,
@@ -353,7 +458,7 @@ async function commitLiveAdvance(
            AND version = ? AND deleted_at IS NULL)`,
       )
       .bind(
-        crypto.randomUUID(),
+        actionId,
         journeyId,
         fromTurnId,
         prepared.action,
@@ -369,10 +474,53 @@ async function commitLiveAdvance(
       ),
     db
       .prepare(
+        `INSERT INTO journey_edges
+          (id, journey_id, from_turn_id, option_id, to_turn_id, action_id, kind, metadata_json, created_at)
+         SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?
+         WHERE EXISTS (SELECT 1 FROM turn_actions WHERE id = ? AND journey_id = ?)`,
+      )
+      .bind(
+        crypto.randomUUID(),
+        journeyId,
+        fromTurnId,
+        selectedOptionId,
+        childId,
+        actionId,
+        prepared.action === "delegate" ? "delegated" : "chosen",
+        JSON.stringify({ branched: prepared.branched }),
+        now,
+        actionId,
+        journeyId,
+      ),
+    db
+      .prepare(
+        `INSERT INTO journey_edges
+          (id, journey_id, from_turn_id, option_id, to_turn_id, action_id, kind, metadata_json, created_at)
+         SELECT ?, ?, ?, option.id, NULL, ?, 'unchosen', ?, ?
+         FROM turn_options AS option
+         WHERE option.turn_id = ? AND option.id <> ?
+           AND EXISTS (SELECT 1 FROM turn_actions WHERE id = ? AND journey_id = ?)
+         ORDER BY option.position LIMIT 1`,
+      )
+      .bind(
+        crypto.randomUUID(),
+        journeyId,
+        fromTurnId,
+        actionId,
+        JSON.stringify({ remainsOpen: true }),
+        now,
+        fromTurnId,
+        selectedOptionId,
+        actionId,
+        journeyId,
+      ),
+    db
+      .prepare(
         `UPDATE research_requests
          SET status = 'committed', provider_response_id = ?, result_journey_id = ?,
-             result_turn_id = ?, input_tokens = ?, output_tokens = ?, reasoning_tokens = ?,
-             total_tokens = ?, web_search_calls = ?, completed_at = ?
+             result_turn_id = ?, input_tokens = ?, cached_input_tokens = ?, output_tokens = ?,
+             reasoning_tokens = ?, total_tokens = ?, web_search_calls = ?, page_fetches = ?,
+             estimated_cost_microusd = ?, completed_at = ?
          WHERE id = ? AND identity_id = ? AND status = 'researching'
            AND EXISTS (SELECT 1 FROM journeys WHERE id = ? AND owner_identity_id = ?
              AND version = ? AND deleted_at IS NULL)`,
@@ -382,10 +530,13 @@ async function commitLiveAdvance(
         journeyId,
         childId,
         draft.usage.inputTokens,
+        draft.usage.cachedInputTokens,
         draft.usage.outputTokens,
         draft.usage.reasoningTokens,
         draft.usage.totalTokens,
         draft.usage.webSearchCalls,
+        draft.usage.pageFetches,
+        Math.round(draft.usage.estimatedCostUsd * 1_000_000),
         now,
         prepared.requestId,
         viewer.identityId,
@@ -409,6 +560,38 @@ async function commitLiveAdvance(
         journeyId,
         viewer.identityId,
         expectedVersion,
+      ),
+    db
+      .prepare(
+        `INSERT INTO usage_events
+          (id, identity_id, journey_id, turn_id, research_run_id, provider, model_id,
+           input_tokens, cached_input_tokens, output_tokens, reasoning_tokens,
+           web_search_calls, page_fetches, estimated_cost_microusd, rate_effective_at,
+           provider_response_id, created_at)
+         SELECT ?, ?, ?, ?, ?, 'openai', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+         WHERE EXISTS (SELECT 1 FROM journeys WHERE id = ? AND owner_identity_id = ?
+           AND version = ? AND deleted_at IS NULL)`,
+      )
+      .bind(
+        crypto.randomUUID(),
+        prepared.identityId,
+        journeyId,
+        childId,
+        runId,
+        prepared.modelId,
+        draft.usage.inputTokens,
+        draft.usage.cachedInputTokens,
+        draft.usage.outputTokens,
+        draft.usage.reasoningTokens,
+        draft.usage.webSearchCalls,
+        draft.usage.pageFetches,
+        Math.round(draft.usage.estimatedCostUsd * 1_000_000),
+        draft.usage.rateEffectiveAt,
+        draft.providerResponseId,
+        now,
+        journeyId,
+        viewer.identityId,
+        expectedVersion + 1,
       ),
   ];
   const results = await db.batch(statements);
@@ -474,9 +657,10 @@ function liveResearchStatements(
       .prepare(
         `INSERT INTO research_runs
           (id, journey_id, turn_id, provider, model_id, preset, status,
-           provider_response_id, input_tokens, output_tokens, reasoning_tokens,
-           total_tokens, web_search_calls, latency_ms, started_at, completed_at, created_at)
-         VALUES (?, ?, ?, 'openai', ?, ?, 'ready', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+           provider_response_id, input_tokens, cached_input_tokens, output_tokens,
+           reasoning_tokens, total_tokens, web_search_calls, page_fetches, latency_ms,
+           estimated_cost_microusd, rate_effective_at, started_at, completed_at, created_at)
+         VALUES (?, ?, ?, 'openai', ?, ?, 'ready', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
       .bind(
         ids.runId,
@@ -486,11 +670,15 @@ function liveResearchStatements(
         prepared.researchPreset,
         draft.providerResponseId,
         draft.usage.inputTokens,
+        draft.usage.cachedInputTokens,
         draft.usage.outputTokens,
         draft.usage.reasoningTokens,
         draft.usage.totalTokens,
         draft.usage.webSearchCalls,
+        draft.usage.pageFetches,
         draft.usage.latencyMs,
+        Math.round(draft.usage.estimatedCostUsd * 1_000_000),
+        draft.usage.rateEffectiveAt,
         ids.now - draft.usage.latencyMs,
         ids.now,
         ids.now,
@@ -513,9 +701,10 @@ function conditionalLiveResearchStatements(
       .prepare(
         `INSERT INTO research_runs
           (id, journey_id, turn_id, provider, model_id, preset, status,
-           provider_response_id, input_tokens, output_tokens, reasoning_tokens,
-           total_tokens, web_search_calls, latency_ms, started_at, completed_at, created_at)
-         SELECT ?, ?, ?, 'openai', ?, ?, 'ready', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+           provider_response_id, input_tokens, cached_input_tokens, output_tokens,
+           reasoning_tokens, total_tokens, web_search_calls, page_fetches, latency_ms,
+           estimated_cost_microusd, rate_effective_at, started_at, completed_at, created_at)
+         SELECT ?, ?, ?, 'openai', ?, ?, 'ready', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
          WHERE EXISTS (SELECT 1 FROM journeys WHERE id = ? AND owner_identity_id = ?
            AND version = ? AND deleted_at IS NULL)`,
       )
@@ -527,11 +716,15 @@ function conditionalLiveResearchStatements(
         prepared.researchPreset,
         draft.providerResponseId,
         draft.usage.inputTokens,
+        draft.usage.cachedInputTokens,
         draft.usage.outputTokens,
         draft.usage.reasoningTokens,
         draft.usage.totalTokens,
         draft.usage.webSearchCalls,
+        draft.usage.pageFetches,
         draft.usage.latencyMs,
+        Math.round(draft.usage.estimatedCostUsd * 1_000_000),
+        draft.usage.rateEffectiveAt,
         ids.now - draft.usage.latencyMs,
         ids.now,
         ids.now,
@@ -637,13 +830,19 @@ async function normalizeRequest(viewer: ViewerContext, request: LiveResearchRequ
       throw new RepositoryError("BAD_REQUEST", "Choose a supported performer.", 400);
     }
     if (
-      request.modelId !== "gpt-5.6-terra" ||
+      request.modelId !== "gpt-5.6-luna" ||
       !MODELS.some((model) => model.id === request.modelId && model.mode === "live")
     ) {
       throw new RepositoryError("BAD_REQUEST", "Choose the supported live research model.", 400);
     }
     if (!PRESETS.includes(request.researchPreset)) {
       throw new RepositoryError("BAD_REQUEST", "Choose a supported research preset.", 400);
+    }
+    if (!["brief", "balanced", "rich"].includes(request.answerDensity)) {
+      throw new RepositoryError("BAD_REQUEST", "Choose a supported answer density.", 400);
+    }
+    if (!["avoid", "when-useful", "prefer"].includes(request.imagePreference)) {
+      throw new RepositoryError("BAD_REQUEST", "Choose a supported factual-image preference.", 400);
     }
     const count = await getD1()
       .prepare(
@@ -665,13 +864,18 @@ async function normalizeRequest(viewer: ViewerContext, request: LiveResearchRequ
         performerId: request.performerId,
         modelId: request.modelId,
         researchPreset: request.researchPreset,
+        answerDensity: request.answerDensity,
+        imagePreference: request.imagePreference,
       },
       question: seed,
       seed,
       depth: 0,
       performerId: request.performerId,
       researchPreset: request.researchPreset,
+      answerDensity: request.answerDensity,
+      imagePreference: request.imagePreference,
       contextTurns: [],
+      audienceSignals: [],
       journeyId: undefined,
       fromTurnId: undefined,
       selectedOptionId: undefined,
@@ -692,8 +896,14 @@ async function normalizeRequest(viewer: ViewerContext, request: LiveResearchRequ
     throw new RepositoryError("BAD_REQUEST", "A valid journey version is required.", 400);
   }
   const journey = await getJourney(viewer, request.journeyId);
-  if (journey.modelId !== "gpt-5.6-terra") {
-    throw new RepositoryError("BAD_REQUEST", "This saved journey uses the free demo model.", 400);
+  if (journey.modelId !== "gpt-5.6-luna") {
+    throw new RepositoryError(
+      "BAD_REQUEST",
+      journey.modelId === "fixture-terra"
+        ? "This saved journey uses the free demo model."
+        : "This journey uses the retired Terra live model. Start a new Luna journey to continue live research.",
+      400,
+    );
   }
   if (journey.version !== request.expectedVersion) {
     throw new RepositoryError(
@@ -729,7 +939,10 @@ async function normalizeRequest(viewer: ViewerContext, request: LiveResearchRequ
     depth: fromTurn.depth + 1,
     performerId: journey.performerId,
     researchPreset: journey.researchPreset,
+    answerDensity: journey.answerDensity,
+    imagePreference: journey.imagePreference,
     contextTurns,
+    audienceSignals: collectAudienceSignals(journey, fromTurn.id, selected.id, request.action),
     journeyId: journey.id,
     fromTurnId: fromTurn.id,
     selectedOptionId: selected.id,
@@ -748,10 +961,33 @@ function ancestorContext(journey: JourneyDetail, fromTurnId: string) {
       question: current.question,
       topicLabel: current.topicLabel,
       transition: current.transition,
+      researchHandoff: current.researchHandoff,
     });
     current = current.parentTurnId ? byId.get(current.parentTurnId) : undefined;
   }
   return chain.reverse().slice(-4);
+}
+
+function collectAudienceSignals(
+  journey: JourneyDetail,
+  fromTurnId: string,
+  selectedOptionId: string,
+  action: "choose" | "delegate",
+) {
+  const signals: PreparedLiveResearch["audienceSignals"] = [];
+  for (const turn of journey.turns.slice(-4)) {
+    for (const option of turn.options) {
+      if (option.state === "rejected") {
+        signals.push({ kind: "rejected", question: option.question });
+      } else if (option.state === "proposed" && turn.id !== fromTurnId) {
+        signals.push({ kind: "unchosen", question: option.question });
+      }
+    }
+  }
+  const current = journey.turns.find((turn) => turn.id === fromTurnId);
+  const selected = current?.options.find((option) => option.id === selectedOptionId);
+  if (selected) signals.push({ kind: action === "delegate" ? "delegated" : "chosen", question: selected.question });
+  return signals.slice(-8);
 }
 
 function normalizeSeed(seed: unknown): string {
