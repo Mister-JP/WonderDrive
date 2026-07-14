@@ -105,46 +105,16 @@ CREATE TABLE `usage_events` (
 --> statement-breakpoint
 CREATE UNIQUE INDEX `usage_events_run_unique` ON `usage_events` (`research_run_id`);--> statement-breakpoint
 CREATE INDEX `usage_events_identity_created_idx` ON `usage_events` (`identity_id`,`created_at`);--> statement-breakpoint
-PRAGMA foreign_keys=OFF;--> statement-breakpoint
-CREATE TABLE `__new_journeys` (
-	`id` text PRIMARY KEY NOT NULL,
-	`owner_identity_id` text,
-	`seed` text NOT NULL,
-	`title` text DEFAULT 'Untitled journey' NOT NULL,
-	`performer_id` text DEFAULT 'sage' NOT NULL,
-	`model_id` text DEFAULT 'fixture-terra' NOT NULL,
-	`research_preset` text DEFAULT 'standard' NOT NULL,
-	`answer_density` text DEFAULT 'balanced' NOT NULL,
-	`image_preference` text DEFAULT 'when-useful' NOT NULL,
-	`pinned` integer DEFAULT false NOT NULL,
-	`hidden` integer DEFAULT false NOT NULL,
-	`current_turn_id` text,
-	`turn_count` integer DEFAULT 0 NOT NULL,
-	`source_count` integer DEFAULT 0 NOT NULL,
-	`last_action` text,
-	`status` text DEFAULT 'active' NOT NULL,
-	`version` integer DEFAULT 1 NOT NULL,
-	`created_at` integer DEFAULT (unixepoch() * 1000) NOT NULL,
-	`updated_at` integer DEFAULT (unixepoch() * 1000) NOT NULL,
-	`deleted_at` integer,
-	FOREIGN KEY (`owner_identity_id`) REFERENCES `identities`(`id`) ON UPDATE no action ON DELETE no action
-);
---> statement-breakpoint
-INSERT INTO `__new_journeys`("id", "owner_identity_id", "seed", "title", "performer_id", "model_id", "research_preset", "answer_density", "image_preference", "pinned", "hidden", "current_turn_id", "turn_count", "source_count", "last_action", "status", "version", "created_at", "updated_at", "deleted_at")
-SELECT "id", "owner_identity_id", "seed", "title",
-  CASE "performer_id"
-    WHEN 'archivist' THEN 'sage'
-    WHEN 'field-naturalist' THEN 'mechanist'
-    WHEN 'systems-cartographer' THEN 'mechanist'
-    ELSE "performer_id"
-  END,
-  "model_id", "research_preset", 'balanced', 'when-useful', 0, 0,
-  "current_turn_id", "turn_count", "source_count", "last_action", "status", "version", "created_at", "updated_at", "deleted_at"
-FROM `journeys`;--> statement-breakpoint
-DROP TABLE `journeys`;--> statement-breakpoint
-ALTER TABLE `__new_journeys` RENAME TO `journeys`;--> statement-breakpoint
-PRAGMA foreign_keys=ON;--> statement-breakpoint
-CREATE INDEX `journeys_owner_created_idx` ON `journeys` (`owner_identity_id`,`created_at`);--> statement-breakpoint
+ALTER TABLE `journeys` ADD `answer_density` text DEFAULT 'balanced' NOT NULL;--> statement-breakpoint
+ALTER TABLE `journeys` ADD `image_preference` text DEFAULT 'when-useful' NOT NULL;--> statement-breakpoint
+ALTER TABLE `journeys` ADD `pinned` integer DEFAULT false NOT NULL;--> statement-breakpoint
+ALTER TABLE `journeys` ADD `hidden` integer DEFAULT false NOT NULL;--> statement-breakpoint
+UPDATE `journeys` SET `performer_id` = CASE `performer_id`
+  WHEN 'archivist' THEN 'sage'
+  WHEN 'field-naturalist' THEN 'mechanist'
+  WHEN 'systems-cartographer' THEN 'mechanist'
+  ELSE `performer_id`
+END;--> statement-breakpoint
 ALTER TABLE `identities` ADD `expires_at` integer;--> statement-breakpoint
 ALTER TABLE `identities` ADD `upgraded_to_identity_id` text;--> statement-breakpoint
 ALTER TABLE `research_requests` ADD `cached_input_tokens` integer DEFAULT 0 NOT NULL;--> statement-breakpoint
