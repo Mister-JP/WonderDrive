@@ -101,6 +101,19 @@ type CitationRepair = {
   }>;
 };
 
+type CitationRecovery = {
+  blocks: Array<{
+    block: number;
+    text: string;
+    citationUrls: string[];
+  }>;
+};
+
+type CitationRepairResult = {
+  turn: ModelTurn;
+  unsupportedIndexes: number[];
+};
+
 const PRESET_LIMITS = {
   spark: { maxToolCalls: 2, maxOutputTokens: 1_400, reasoning: "low", timeoutMs: 25_000 },
   standard: { maxToolCalls: 5, maxOutputTokens: 2_400, reasoning: "medium", timeoutMs: 60_000 },
@@ -330,7 +343,7 @@ export async function runLiveResearch(
   }
   if (!outputText) outputText = extractOutputText(completedResponse);
 
-  const providerSources = extractSources(completedResponse);
+  let providerSources = extractSources(completedResponse);
   if (providerSources.length < 2) {
     throw validationFailure("The research run did not return enough inspectable web sources.");
   }
@@ -341,31 +354,82 @@ export async function runLiveResearch(
   addActivity("check", "Checked that citations resolve to sources consulted in this run");
 
   let modelTurn = parseModelTurn(outputText);
-  let repairResponse: OpenAIResponse | null = null;
+  const supplementalResponses: OpenAIResponse[] = [];
   let draft;
   try {
     draft = validateAndMapTurn(modelTurn, providerSources, prepared.imagePreference);
   } catch (error) {
     if (!(error instanceof RepositoryError) || error.code !== "CITATION_INVALID") throw error;
     addActivity("check", "A citation pointer did not match the consulted source set; repairing pointers once");
-    const repaired = await runCitationRepair(modelTurn, providerSources, prepared, externalSignal);
-    modelTurn = applyCitationRepair(modelTurn, providerSources, repaired.repair);
-    repairResponse = repaired.response;
+    const invalidIndexes = invalidCitationIndexes(modelTurn, providerSources);
+    let repairResult: CitationRepairResult = { turn: modelTurn, unsupportedIndexes: invalidIndexes };
+    try {
+      const repaired = await runCitationRepair(modelTurn, providerSources, prepared, externalSignal);
+      supplementalResponses.push(repaired.response);
+      repairResult = applyCitationRepair(modelTurn, providerSources, repaired.repair);
+    } catch (repairError) {
+      if (!(repairError instanceof RepositoryError) || repairError.code !== "CITATION_INVALID") {
+        throw repairError;
+      }
+      console.error("WonderDrive citation pointer repair could not be applied; recovering evidence", {
+        invalidBlocks: invalidIndexes.map((index) => index + 1),
+      });
+    }
+    modelTurn = repairResult.turn;
+
+    if (repairResult.unsupportedIndexes.length) {
+      addActivity("search", "Checked the remaining claims against fresh supporting evidence");
+      try {
+        const recovered = await runCitationRecovery(
+          modelTurn,
+          repairResult.unsupportedIndexes,
+          prepared,
+          externalSignal,
+        );
+        supplementalResponses.push(recovered.response);
+        const recoverySources = extractSources(recovered.response);
+        const expandedSources = dedupeSources([...providerSources, ...recoverySources]);
+        modelTurn = applyCitationRecovery(
+          modelTurn,
+          expandedSources,
+          repairResult.unsupportedIndexes,
+          recovered.recovery,
+        );
+        providerSources = prioritizeTurnSources(modelTurn, expandedSources);
+      } catch (recoveryError) {
+        if (!(recoveryError instanceof RepositoryError) || recoveryError.code !== "CITATION_INVALID") {
+          throw recoveryError;
+        }
+        console.error("WonderDrive targeted citation recovery failed; pruning unsupported blocks", {
+          unsupportedBlocks: repairResult.unsupportedIndexes.map((index) => index + 1),
+        });
+        modelTurn = pruneUnsupportedBlocks(modelTurn, repairResult.unsupportedIndexes);
+      }
+    }
     draft = validateAndMapTurn(modelTurn, providerSources, prepared.imagePreference);
-    addActivity("check", "Revalidated the repaired source IDs against the original consulted sources");
+    addActivity("check", "Revalidated the answer against the final consulted source set");
   }
   addActivity("synthesis", "Validated the sourced answer and exactly two distinct next paths");
 
-  const usage = completedResponse.usage ?? {};
-  const repairUsage = repairResponse?.usage ?? {};
-  const webSearchCalls = countWebSearchCalls(completedResponse);
-  const pageFetches = countPageFetches(completedResponse);
+  const responseUsages = [completedResponse, ...supplementalResponses].map((response) => response.usage ?? {});
+  const webSearchCalls = [completedResponse, ...supplementalResponses]
+    .reduce((total, response) => total + countWebSearchCalls(response), 0);
+  const pageFetches = [completedResponse, ...supplementalResponses]
+    .reduce((total, response) => total + countPageFetches(response), 0);
   const cachedInputTokens =
-    numberValue(usage.input_tokens_details?.cached_tokens) +
-    numberValue(repairUsage.input_tokens_details?.cached_tokens);
+    responseUsages.reduce(
+      (total, responseUsage) => total + numberValue(responseUsage.input_tokens_details?.cached_tokens),
+      0,
+    );
   const model = MODELS.find((candidate) => candidate.id === prepared.modelId)!;
-  const inputTokens = numberValue(usage.input_tokens) + numberValue(repairUsage.input_tokens);
-  const outputTokens = numberValue(usage.output_tokens) + numberValue(repairUsage.output_tokens);
+  const inputTokens = responseUsages.reduce(
+    (total, responseUsage) => total + numberValue(responseUsage.input_tokens),
+    0,
+  );
+  const outputTokens = responseUsages.reduce(
+    (total, responseUsage) => total + numberValue(responseUsage.output_tokens),
+    0,
+  );
   const estimatedCostUsd =
     ((Math.max(0, inputTokens - cachedInputTokens) * model.inputUsdPerMillion +
       cachedInputTokens * model.cachedInputUsdPerMillion +
@@ -381,9 +445,14 @@ export async function runLiveResearch(
       cachedInputTokens,
       outputTokens,
       reasoningTokens:
-        numberValue(usage.output_tokens_details?.reasoning_tokens) +
-        numberValue(repairUsage.output_tokens_details?.reasoning_tokens),
-      totalTokens: numberValue(usage.total_tokens) + numberValue(repairUsage.total_tokens),
+        responseUsages.reduce(
+          (total, responseUsage) => total + numberValue(responseUsage.output_tokens_details?.reasoning_tokens),
+          0,
+        ),
+      totalTokens: responseUsages.reduce(
+        (total, responseUsage) => total + numberValue(responseUsage.total_tokens),
+        0,
+      ),
       webSearchCalls,
       pageFetches,
       latencyMs: Date.now() - startedAt,
@@ -538,31 +607,198 @@ function applyCitationRepair(
   modelTurn: ModelTurn,
   providerSources: ProviderSource[],
   repair: CitationRepair,
-): ModelTurn {
+): CitationRepairResult {
   const blockCount = Math.min(5, modelTurn.answerBlocks.length);
   if (!Array.isArray(repair.blocks) || repair.blocks.length !== blockCount) {
     throw citationRepairFailure();
   }
+  const unsupportedIndexes: number[] = [];
   const answerBlocks = modelTurn.answerBlocks.map((block, index) => {
     if (index >= blockCount) return block;
+    const originalMatches = citationMatches(block, providerSources);
+    if (originalMatches.length) {
+      return { ...block, citationUrls: originalMatches.map((source) => source.url).slice(0, 4) };
+    }
     const repaired = repair.blocks[index];
-    if (!isObject(repaired) || repaired.unsupported !== false || !Array.isArray(repaired.sourceIds)) {
+    if (!isObject(repaired) || !Array.isArray(repaired.sourceIds) || typeof repaired.unsupported !== "boolean") {
       throw citationRepairFailure();
+    }
+    if (repaired.unsupported) {
+      unsupportedIndexes.push(index);
+      return block;
     }
     const citationUrls = [...new Set(repaired.sourceIds)]
       .map((sourceId) => /^S([1-9]|1[0-6])$/.test(sourceId) ? providerSources[Number(sourceId.slice(1)) - 1]?.url : undefined)
       .filter((url): url is string => Boolean(url))
       .slice(0, 4);
-    if (!citationUrls.length) throw citationRepairFailure();
+    if (!citationUrls.length) {
+      unsupportedIndexes.push(index);
+      return block;
+    }
     return { ...block, citationUrls };
   });
+  return { turn: { ...modelTurn, answerBlocks }, unsupportedIndexes };
+}
+
+async function runCitationRecovery(
+  modelTurn: ModelTurn,
+  unsupportedIndexes: number[],
+  prepared: PreparedLiveResearch,
+  externalSignal?: AbortSignal,
+): Promise<{ recovery: CitationRecovery; response: OpenAIResponse }> {
+  const blockCount = unsupportedIndexes.length;
+  const schema = {
+    type: "object",
+    additionalProperties: false,
+    required: ["blocks"],
+    properties: {
+      blocks: {
+        type: "array",
+        minItems: blockCount,
+        maxItems: blockCount,
+        items: {
+          type: "object",
+          additionalProperties: false,
+          required: ["block", "text", "citationUrls"],
+          properties: {
+            block: { type: "integer", enum: unsupportedIndexes.map((index) => index + 1) },
+            text: { type: "string", minLength: 64, maxLength: 1_080 },
+            citationUrls: {
+              type: "array",
+              minItems: 1,
+              maxItems: 4,
+              items: { type: "string", minLength: 6, maxLength: 2_458 },
+            },
+          },
+        },
+      },
+    },
+  } as const;
+  const controller = new AbortController();
+  const abortFromClient = () => controller.abort("WonderDrive client disconnected");
+  externalSignal?.addEventListener("abort", abortFromClient, { once: true });
+  const timeout = setTimeout(() => controller.abort("WonderDrive citation recovery timeout"), 30_000);
+  try {
+    const response = await requestOpenAI({
+      model: prepared.modelId,
+      instructions: [
+        `WonderDrive prompt ${PROMPT_VERSION}. Recover evidence for unsupported answer blocks.`,
+        "Search the web for reliable support, then rewrite only the supplied blocks so every factual claim is supported by the exact consulted URLs returned in citationUrls.",
+        "Preserve each block number and its role in the answer. Do not change any block that was not supplied.",
+        "Use concise prose suitable for a general audience. Never invent a URL or cite a search result that you did not consult.",
+      ].join("\n"),
+      input: JSON.stringify({
+        question: prepared.question,
+        blocks: unsupportedIndexes.map((index) => ({
+          block: index + 1,
+          text: modelTurn.answerBlocks[index]?.text ?? "",
+        })),
+      }),
+      tools: [{ type: "web_search" }],
+      tool_choice: "auto",
+      include: ["web_search_call.action.sources"],
+      max_tool_calls: Math.min(4, Math.max(2, blockCount * 2)),
+      max_output_tokens: Math.min(1_600, 500 + blockCount * 350),
+      reasoning: { effort: "low" },
+      text: structuredOutput("wonderdrive_citation_recovery", schema),
+      safety_identifier: `wd_recovery_${prepared.identityId}`.slice(0, 64),
+      store: false,
+    }, { signal: controller.signal });
+    if (!response.ok) {
+      console.error("WonderDrive citation recovery request failed", {
+        status: response.status,
+        requestId: response.headers.get("x-request-id"),
+      });
+      throw citationRepairFailure();
+    }
+    const payload = (await response.json()) as OpenAIResponse;
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(extractOutputText(payload));
+    } catch {
+      throw citationRepairFailure();
+    }
+    if (!isObject(parsed) || !Array.isArray(parsed.blocks)) throw citationRepairFailure();
+    return { recovery: parsed as CitationRecovery, response: payload };
+  } catch (error) {
+    if (error instanceof RepositoryError) throw error;
+    console.error("WonderDrive citation recovery was interrupted", error);
+    throw citationRepairFailure();
+  } finally {
+    clearTimeout(timeout);
+    externalSignal?.removeEventListener("abort", abortFromClient);
+  }
+}
+
+function applyCitationRecovery(
+  modelTurn: ModelTurn,
+  providerSources: ProviderSource[],
+  unsupportedIndexes: number[],
+  recovery: CitationRecovery,
+): ModelTurn {
+  if (!Array.isArray(recovery.blocks) || recovery.blocks.length !== unsupportedIndexes.length) {
+    throw citationRepairFailure();
+  }
+  const recoveredByIndex = new Map<number, ModelTurn["answerBlocks"][number]>();
+  for (const recovered of recovery.blocks) {
+    if (!isObject(recovered) || typeof recovered.block !== "number" || !Number.isInteger(recovered.block)) {
+      throw citationRepairFailure();
+    }
+    const recoveredIndex = recovered.block - 1;
+    if (!unsupportedIndexes.includes(recoveredIndex)) throw citationRepairFailure();
+    const matches = citationMatches(recovered, providerSources);
+    if (!matches.length || recoveredByIndex.has(recoveredIndex)) throw citationRepairFailure();
+    recoveredByIndex.set(recoveredIndex, {
+      text: boundedString(recovered.text, 80, 900, `recovered answer block ${recovered.block}`),
+      citationUrls: matches.map((source) => source.url).slice(0, 4),
+    });
+  }
+  if (recoveredByIndex.size !== unsupportedIndexes.length) throw citationRepairFailure();
+  return {
+    ...modelTurn,
+    answerBlocks: modelTurn.answerBlocks.map((block, index) => recoveredByIndex.get(index) ?? block),
+  };
+}
+
+function pruneUnsupportedBlocks(modelTurn: ModelTurn, unsupportedIndexes: number[]): ModelTurn {
+  const unsupported = new Set(unsupportedIndexes);
+  const answerBlocks = modelTurn.answerBlocks.filter((_, index) => !unsupported.has(index));
+  if (answerBlocks.length < 2) throw citationRepairFailure();
   return { ...modelTurn, answerBlocks };
+}
+
+function invalidCitationIndexes(modelTurn: ModelTurn, providerSources: ProviderSource[]): number[] {
+  if (!Array.isArray(modelTurn.answerBlocks)) return [];
+  return modelTurn.answerBlocks
+    .slice(0, 5)
+    .map((block, index) => citationMatches(block, providerSources).length ? -1 : index)
+    .filter((index) => index >= 0);
+}
+
+function citationMatches(
+  block: unknown,
+  providerSources: ProviderSource[],
+): ProviderSource[] {
+  if (!isObject(block)) return [];
+  if (!Array.isArray(block.citationUrls)) return [];
+  return dedupeSources(
+    block.citationUrls
+      .map((url) => matchSource(stringValue(url), providerSources))
+      .filter((source): source is ProviderSource => Boolean(source)),
+  );
+}
+
+function prioritizeTurnSources(modelTurn: ModelTurn, providerSources: ProviderSource[]): ProviderSource[] {
+  const cited = Array.isArray(modelTurn.answerBlocks)
+    ? modelTurn.answerBlocks.flatMap((block) => citationMatches(block, providerSources))
+    : [];
+  return dedupeSources([...cited, ...providerSources]).slice(0, 16);
 }
 
 function citationRepairFailure() {
   return new RepositoryError(
     "CITATION_INVALID",
-    "The live answer’s citations could not be matched to the consulted sources after one repair attempt. Nothing was saved; please retry.",
+    "The live answer could not retain enough verified citations after automatic recovery. Nothing was saved; please retry.",
     502,
     true,
   );
@@ -771,13 +1007,17 @@ function matchSource(value: string, sources: ProviderSource[]): ProviderSource |
   if (!canonical) return null;
   const exact = sources.find((source) => source.url === canonical);
   if (exact) return exact;
-  const wanted = new URL(canonical);
-  return (
-    sources.find((source) => {
-      const candidate = new URL(source.url);
-      return candidate.hostname === wanted.hostname && candidate.pathname === wanted.pathname;
-    }) ?? null
-  );
+  const wanted = citationComparableUrl(canonical);
+  return sources.find((source) => citationComparableUrl(source.url) === wanted) ?? null;
+}
+
+function citationComparableUrl(value: string): string | null {
+  const canonical = canonicalUrl(value);
+  if (!canonical) return null;
+  const url = new URL(canonical);
+  const host = url.hostname.toLowerCase().replace(/^www\./, "");
+  const path = url.pathname === "/" ? "/" : url.pathname.replace(/\/+$/, "");
+  return `${host}${url.port ? `:${url.port}` : ""}${path}`;
 }
 
 function dedupeSources<T extends ProviderSource>(sources: T[]): T[] {
@@ -874,7 +1114,9 @@ function numberValue(value: unknown): number {
 
 export const liveResearchTestHooks = {
   applyCitationRepair,
+  applyCitationRecovery,
   buildResearchInput,
   extractSources,
+  pruneUnsupportedBlocks,
   validateAndMapTurn,
 };

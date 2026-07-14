@@ -81,6 +81,30 @@ test("accepts only citations that belong to the provider source set", () => {
   assert.equal(mapped.sources.filter((source) => source.relation === "cited").length, 2);
 });
 
+test("accepts harmless citation URL aliases without using domain-only matching", () => {
+  const sources = liveResearchTestHooks.extractSources({
+    output: [{
+      type: "web_search_call",
+      action: { sources: [{ title: "Aliased evidence", url: "https://www.example.org/evidence/" }] },
+    }],
+  });
+  const aliased = structuredClone(validTurn);
+  aliased.answerBlocks[0].citationUrls = ["http://example.org/evidence?utm_source=model"];
+  aliased.answerBlocks[1].citationUrls = ["https://example.org/different-article"];
+  const originalError = console.error;
+  console.error = () => {};
+  try {
+    assert.throws(
+      () => liveResearchTestHooks.validateAndMapTurn(aliased, sources),
+      (error) => error?.code === "CITATION_INVALID",
+    );
+    aliased.answerBlocks[1].citationUrls = ["https://www.example.org/evidence/"];
+    assert.equal(liveResearchTestHooks.validateAndMapTurn(aliased, sources).answerBlocks.length, 2);
+  } finally {
+    console.error = originalError;
+  }
+});
+
 test("rejects a citation URL that web search did not return", () => {
   const sources = liveResearchTestHooks.extractSources(providerResponse);
   const invalid = structuredClone(validTurn);
@@ -148,22 +172,37 @@ test("repairs citation pointers with source IDs without rewriting prose", () => 
     ],
   });
 
-  assert.equal(repaired.answerBlocks[0].text, broken.answerBlocks[0].text);
-  assert.deepEqual(repaired.options, broken.options);
-  assert.deepEqual(repaired.answerBlocks[0].citationUrls, ["https://example.org/evidence"]);
-  assert.deepEqual(repaired.answerBlocks[1].citationUrls, ["https://research.example.net/context"]);
-  assert.equal(liveResearchTestHooks.validateAndMapTurn(repaired, sources).answerBlocks.length, 2);
+  assert.equal(repaired.turn.answerBlocks[0].text, broken.answerBlocks[0].text);
+  assert.deepEqual(repaired.turn.options, broken.options);
+  assert.deepEqual(repaired.turn.answerBlocks[0].citationUrls, ["https://example.org/evidence"]);
+  assert.deepEqual(repaired.turn.answerBlocks[1].citationUrls, ["https://research.example.net/context"]);
+  assert.deepEqual(repaired.unsupportedIndexes, []);
+  assert.equal(liveResearchTestHooks.validateAndMapTurn(repaired.turn, sources).answerBlocks.length, 2);
 });
 
-test("refuses a citation repair that marks any answer block unsupported", () => {
+test("keeps an unsupported citation block available for targeted recovery", () => {
   const sources = liveResearchTestHooks.extractSources(providerResponse);
+  const broken = structuredClone(validTurn);
+  broken.answerBlocks[0].citationUrls = ["https://unseen.example/claim"];
+  const repaired = liveResearchTestHooks.applyCitationRepair(broken, sources, {
+    blocks: [
+      { sourceIds: [], unsupported: true },
+      { sourceIds: ["S2"], unsupported: false },
+    ],
+  });
+  assert.deepEqual(repaired.unsupportedIndexes, [0]);
+  assert.equal(repaired.turn.answerBlocks[0].text, broken.answerBlocks[0].text);
+});
+
+test("prunes unsupported blocks only when at least two cited blocks survive", () => {
+  const threeBlocks = structuredClone(validTurn);
+  threeBlocks.answerBlocks.push({
+    text: "A third supported block gives the resilient pipeline enough material to omit one failed section without discarding the complete turn.",
+    citationUrls: ["https://example.org/evidence"],
+  });
+  assert.equal(liveResearchTestHooks.pruneUnsupportedBlocks(threeBlocks, [1]).answerBlocks.length, 2);
   assert.throws(
-    () => liveResearchTestHooks.applyCitationRepair(validTurn, sources, {
-      blocks: [
-        { sourceIds: [], unsupported: true },
-        { sourceIds: ["S2"], unsupported: false },
-      ],
-    }),
+    () => liveResearchTestHooks.pruneUnsupportedBlocks(validTurn, [0]),
     (error) => error?.code === "CITATION_INVALID",
   );
 });
@@ -247,6 +286,190 @@ test("runs exactly one no-search repair after an initial citation mismatch", asy
     assert.equal(draft.usage.totalTokens, 180);
     assert.equal(draft.usage.reasoningTokens, 7);
     assert.ok(events.some((event) => event.label.includes("repairing pointers once")));
+  } finally {
+    console.error = originalError;
+    globalThis.fetch = originalFetch;
+    delete env.OPENAI_API_KEY;
+  }
+});
+
+test("recovers an unsupported block with a targeted web search", async () => {
+  const originalFetch = globalThis.fetch;
+  const originalError = console.error;
+  env.OPENAI_API_KEY = "test-key";
+  const broken = structuredClone(validTurn);
+  broken.answerBlocks[0].citationUrls = ["https://unseen.example/claim"];
+  const completed = {
+    id: "resp_research",
+    output: providerResponse.output,
+    usage: { input_tokens: 100, output_tokens: 50, total_tokens: 150 },
+  };
+  const stream = [
+    { type: "response.output_text.delta", delta: JSON.stringify(broken) },
+    { type: "response.completed", response: completed },
+  ].map((event) => `data: ${JSON.stringify(event)}\n\n`).join("") + "data: [DONE]\n\n";
+  const repairPayload = {
+    id: "resp_repair",
+    output: [{
+      type: "message",
+      content: [{
+        type: "output_text",
+        text: JSON.stringify({
+          blocks: [
+            { sourceIds: [], unsupported: true },
+            { sourceIds: ["S2"], unsupported: false },
+          ],
+        }),
+      }],
+    }],
+    usage: { input_tokens: 20, output_tokens: 10, total_tokens: 30 },
+  };
+  const recoveredText =
+    "Freshly recovered evidence supports this rewritten block while keeping the original answer’s explanatory role and readable progression intact.";
+  const recoveryPayload = {
+    id: "resp_recovery",
+    output: [
+      {
+        type: "web_search_call",
+        action: {
+          sources: [{ title: "Recovered primary evidence", url: "https://recovery.example.edu/finding" }],
+        },
+      },
+      {
+        type: "message",
+        content: [{
+          type: "output_text",
+          text: JSON.stringify({
+            blocks: [{
+              block: 1,
+              text: recoveredText,
+              citationUrls: ["https://recovery.example.edu/finding"],
+            }],
+          }),
+        }],
+      },
+    ],
+    usage: { input_tokens: 30, output_tokens: 15, total_tokens: 45 },
+  };
+  const requests = [];
+  console.error = () => {};
+  globalThis.fetch = async (_url, init) => {
+    requests.push(JSON.parse(init.body));
+    if (requests.length === 1) {
+      return new Response(stream, { status: 200, headers: { "content-type": "text/event-stream" } });
+    }
+    return Response.json(requests.length === 2 ? repairPayload : recoveryPayload);
+  };
+  try {
+    const draft = await runLiveResearch({
+      requestId: "request-recovery",
+      identityId: "identity-recovery",
+      kind: "create",
+      question: "How does Bluetooth avoid interference?",
+      seed: "How does Bluetooth avoid interference?",
+      depth: 0,
+      performerId: "sage",
+      modelId: "gpt-5.6-luna",
+      researchPreset: "standard",
+      answerDensity: "balanced",
+      imagePreference: "when-useful",
+      topicTrail: [],
+      idempotencyKey: "idempotency-recovery",
+      payloadHash: "payload-recovery",
+    }, () => {});
+
+    assert.equal(requests.length, 3);
+    assert.equal(requests[1].tools, undefined);
+    assert.deepEqual(requests[2].tools, [{ type: "web_search" }]);
+    assert.equal(draft.answerBlocks[0].text, recoveredText);
+    assert.ok(draft.sources.some((source) => source.url === "https://recovery.example.edu/finding"));
+    assert.equal(draft.usage.inputTokens, 150);
+    assert.equal(draft.usage.outputTokens, 75);
+    assert.equal(draft.usage.totalTokens, 225);
+    assert.equal(draft.usage.webSearchCalls, 2);
+  } finally {
+    console.error = originalError;
+    globalThis.fetch = originalFetch;
+    delete env.OPENAI_API_KEY;
+  }
+});
+
+test("commits a shortened answer when recovery fails but two cited blocks survive", async () => {
+  const originalFetch = globalThis.fetch;
+  const originalError = console.error;
+  env.OPENAI_API_KEY = "test-key";
+  const broken = structuredClone(validTurn);
+  broken.answerBlocks.unshift({
+    text: "This unsupported opening block is long enough for the answer contract but should be removed when targeted evidence recovery cannot validate it.",
+    citationUrls: ["https://unseen.example/claim"],
+  });
+  const completed = { id: "resp_research", output: providerResponse.output, usage: {} };
+  const stream = [
+    { type: "response.output_text.delta", delta: JSON.stringify(broken) },
+    { type: "response.completed", response: completed },
+  ].map((event) => `data: ${JSON.stringify(event)}\n\n`).join("") + "data: [DONE]\n\n";
+  const repairPayload = {
+    output: [{
+      type: "message",
+      content: [{
+        type: "output_text",
+        text: JSON.stringify({
+          blocks: [
+            { sourceIds: [], unsupported: true },
+            { sourceIds: ["S1"], unsupported: false },
+            { sourceIds: ["S2"], unsupported: false },
+          ],
+        }),
+      }],
+    }],
+    usage: {},
+  };
+  const invalidRecoveryPayload = {
+    output: [{
+      type: "message",
+      content: [{
+        type: "output_text",
+        text: JSON.stringify({
+          blocks: [{
+            block: 1,
+            text: broken.answerBlocks[0].text,
+            citationUrls: ["https://still-unseen.example/claim"],
+          }],
+        }),
+      }],
+    }],
+    usage: {},
+  };
+  let requestCount = 0;
+  console.error = () => {};
+  globalThis.fetch = async () => {
+    requestCount += 1;
+    if (requestCount === 1) {
+      return new Response(stream, { status: 200, headers: { "content-type": "text/event-stream" } });
+    }
+    return Response.json(requestCount === 2 ? repairPayload : invalidRecoveryPayload);
+  };
+  try {
+    const draft = await runLiveResearch({
+      requestId: "request-prune",
+      identityId: "identity-prune",
+      kind: "create",
+      question: "How does Bluetooth avoid interference?",
+      seed: "How does Bluetooth avoid interference?",
+      depth: 0,
+      performerId: "sage",
+      modelId: "gpt-5.6-luna",
+      researchPreset: "standard",
+      answerDensity: "balanced",
+      imagePreference: "when-useful",
+      topicTrail: [],
+      idempotencyKey: "idempotency-prune",
+      payloadHash: "payload-prune",
+    }, () => {});
+
+    assert.equal(requestCount, 3);
+    assert.equal(draft.answerBlocks.length, 2);
+    assert.ok(draft.answerBlocks.every((block) => block.text !== broken.answerBlocks[0].text));
   } finally {
     console.error = originalError;
     globalThis.fetch = originalFetch;
