@@ -547,6 +547,7 @@ export async function advanceJourney(
     optionId: request.optionId ?? null,
     adventure: request.adventure ?? null,
     reason: request.reason?.trim() || null,
+    modelId: request.modelId ?? null,
     expectedVersion: request.expectedVersion,
   });
   const prior = await db
@@ -567,6 +568,7 @@ export async function advanceJourney(
   }
 
   const journey = await getJourney(viewer, journeyId);
+  const nextModelId = request.modelId ?? journey.modelId;
   if (String(journey.modelId) !== "fixture-terra" && request.action !== "reject") {
     throw new RepositoryError(
       "BAD_REQUEST",
@@ -690,10 +692,10 @@ export async function advanceJourney(
       db
         .prepare(
           `UPDATE journeys
-           SET version = version + 1, last_action = 'reject', updated_at = ?
+           SET model_id = ?, version = version + 1, last_action = 'reject', updated_at = ?
            WHERE id = ? AND owner_identity_id = ? AND version = ? AND deleted_at IS NULL`,
         )
-        .bind(now, journeyId, viewer.identityId, request.expectedVersion),
+        .bind(nextModelId, now, journeyId, viewer.identityId, request.expectedVersion),
     ];
     const results = await db.batch(statements);
     assertMutationChanged(results.at(-1));
@@ -1258,6 +1260,9 @@ function validateAdvanceRequest(request: AdvanceJourneyRequest) {
     throw new RepositoryError("BAD_REQUEST", "Choose one of the two path IDs.", 400);
   }
   if (request.optionId) assertId(request.optionId, "option");
+  if (request.modelId !== undefined && !MODELS.some((model) => model.id === request.modelId && model.mode === "live")) {
+    throw new RepositoryError("BAD_REQUEST", "Choose a supported live research model.", 400);
+  }
   if (!Number.isInteger(request.expectedVersion) || request.expectedVersion < 1) {
     throw new RepositoryError("BAD_REQUEST", "A valid journey version is required.", 400);
   }

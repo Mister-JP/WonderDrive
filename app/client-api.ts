@@ -19,7 +19,14 @@ export type LiveResearchState = {
   status: "running" | "complete" | "error";
   result: JourneyDetail | null;
   error: string | null;
+  diagnosticId: string | null;
 };
+
+export function starterRecommendationsUrl(performerId: PerformerId, forceRefresh = false) {
+  const query = new URLSearchParams({ performer: performerId });
+  if (forceRefresh) query.set("refresh", "1");
+  return `/api/starters?${query.toString()}`;
+}
 
 export async function api<T>(url: string, init?: RequestInit): Promise<ApiSuccess<T>> {
   const response = await fetch(url, {
@@ -67,7 +74,12 @@ export async function streamLiveResearch(
         if (!data) continue;
         const event = JSON.parse(data) as LiveResearchStreamEvent;
         if (event.type === "started") {
-          setState((current) => current && { ...current, question: event.question, message: event.message });
+          setState((current) => current && {
+            ...current,
+            question: event.question,
+            message: event.message,
+            diagnosticId: event.requestId,
+          });
         } else if (event.type === "activity") {
           setState((current) => current && {
             ...current,
@@ -76,6 +88,10 @@ export async function streamLiveResearch(
               : [...current.events, event.event],
           });
         } else if (event.type === "error") {
+          setState((current) => current && {
+            ...current,
+            diagnosticId: event.error.diagnosticId ?? current.diagnosticId,
+          });
           throw new Error(event.error.message);
         } else if (event.type === "complete") {
           complete = event;

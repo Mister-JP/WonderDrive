@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2316" height="1192" viewBox="0 0 2316 1192">
+<rect width="2316" height="1192" fill="#fbf8ef"/>
+<style>text{font-family:"Comic Sans MS","Bradley Hand",cursive}</style>
+<defs><marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="context-stroke"/></marker></defs>
+<rect x="45" y="45" width="2226" height="1102" rx="10" fill="#fffdf8" stroke="#202933" stroke-width="3"/>
+<ellipse cx="99.60000000000001" cy="114.6" rx="25.200000000000003" ry="34.8" fill="#202933" stroke="#202933" stroke-width="1"/>
+<text x="92.25" y="113.3" fill="#fffdf8" font-size="19" font-weight="500"><tspan x="92.25" dy="0">2</tspan></text>
+<text x="143.7" y="110.8" fill="#202933" font-size="31" font-weight="600"><tspan x="143.7" dy="0">One research turn</tspan></text>
+<text x="145.8" y="151.35" fill="#63707c" font-size="15" font-weight="500"><tspan x="145.8" dy="0">A sequence view: the same four participants, with time moving downward</tspan></text>
+<rect x="1908.75" y="79.8" width="309.75" height="60.9" rx="8" fill="#e4ff6a" stroke="#202933" stroke-width="1" transform="rotate(-0.34377467707849396 2063.625 110.25)"/>
+<text x="1937.1000000000001" y="109.19999999999999" fill="#202933" font-size="12" font-weight="500" transform="rotate(-0.34377467707849396 2047.6335000000001 107.16874999999999)"><tspan x="1937.1000000000001" dy="0">CURRENT IMPLEMENTATION · JUL 2026</tspan></text>
+<polyline points="74.4,184.2 2241.6000000000004,184.2" fill="none" stroke="#63707c" stroke-width="1"/>
+<rect x="202.5" y="233.5" width="262.5" height="101.5" rx="8" fill="#ffd8ce" stroke="#cf4c38" stroke-width="2"/>
+<text x="225.6" y="280.6" fill="#202933" font-size="21" font-weight="600"><tspan x="225.6" dy="0">Browser</tspan></text>
+<polyline points="333.75,335 333.75,1016.5" fill="none" stroke="#cf4c38" stroke-width="2" stroke-dasharray="10 8"/>
+<rect x="738" y="233.5" width="262.5" height="101.5" rx="8" fill="#dceeff" stroke="#2672a8" stroke-width="2"/>
+<text x="761.1" y="280.6" fill="#202933" font-size="21" font-weight="600"><tspan x="761.1" dy="0">ChatGPT Sites</tspan></text>
+<polyline points="869.25,335 869.25,1016.5" fill="none" stroke="#2672a8" stroke-width="2" stroke-dasharray="10 8"/>
+<rect x="1294.5" y="233.5" width="262.5" height="101.5" rx="8" fill="#eee6ff" stroke="#7451b8" stroke-width="2"/>
+<text x="1317.6000000000001" y="280.6" fill="#202933" font-size="21" font-weight="600"><tspan x="1317.6000000000001" dy="0">OpenAI</tspan></text>
+<polyline points="1425.75,335 1425.75,1016.5" fill="none" stroke="#7451b8" stroke-width="2" stroke-dasharray="10 8"/>
+<rect x="1830" y="233.5" width="262.5" height="101.5" rx="8" fill="#ddf7e8" stroke="#16815d" stroke-width="2"/>
+<text x="1853.1000000000001" y="280.6" fill="#202933" font-size="21" font-weight="600"><tspan x="1853.1000000000001" dy="0">Sites D1</tspan></text>
+<polyline points="1961.25,335 1961.25,1016.5" fill="none" stroke="#16815d" stroke-width="2" stroke-dasharray="10 8"/>
+<polyline points="333.75,393 869.25,393" fill="none" stroke="#202933" stroke-width="3" marker-end="url(#arr)"/>
+<ellipse cx="536.4" cy="353.85" rx="18.900000000000002" ry="26.099999999999998" fill="#202933" stroke="#202933" stroke-width="1"/>
+<text x="531.1500000000001" y="353.34999999999997" fill="#fffdf8" font-size="14" font-weight="500"><tspan x="531.1500000000001" dy="0">1</tspan></text>
+<text x="567.9" y="342.4" fill="#202933" font-size="19" font-weight="500"><tspan x="567.9" dy="0">Start or advance</tspan></text>
+<text x="567.9" y="377" fill="#63707c" font-size="13" font-weight="500"><tspan x="567.9" dy="0">action + IDs + idempotency key + expected version</tspan></text>
+<rect x="701.25" y="451" width="336" height="130.5" rx="8" fill="#ffd8ce" stroke="#cf4c38" stroke-width="2"/>
+<text x="724.35" y="494.09999999999997" fill="#202933" font-size="17" font-weight="500"><tspan x="724.35" dy="0">2. Authorize + reserve</tspan></text>
+<text x="724.35" y="534.05" fill="#63707c" font-size="12" font-weight="500"><tspan x="724.35" dy="0">identity · ownership · budget · lease · compact context</tspan></text>
+<polyline points="869.25,654 1425.75,654" fill="none" stroke="#7451b8" stroke-width="3" marker-end="url(#arr)"/>
+<ellipse cx="1082.4" cy="607.6" rx="18.900000000000002" ry="26.099999999999998" fill="#7451b8" stroke="#7451b8" stroke-width="1"/>
+<text x="1077.15" y="607.1" fill="#fffdf8" font-size="14" font-weight="500"><tspan x="1077.15" dy="0">3</tspan></text>
+<text x="1113.9" y="596.15" fill="#202933" font-size="19" font-weight="500"><tspan x="1113.9" dy="0">Research</tspan></text>
+<text x="1113.9" y="630.75" fill="#63707c" font-size="13" font-weight="500"><tspan x="1113.9" dy="0">selected model + web tools + strict turn schema</tspan></text>
+<polyline points="1425.75,741 869.25,741" fill="none" stroke="#7451b8" stroke-width="3" stroke-dasharray="10 8" marker-end="url(#arr)"/>
+<ellipse cx="1066.65" cy="706.2" rx="18.900000000000002" ry="26.099999999999998" fill="#7451b8" stroke="#7451b8" stroke-width="1"/>
+<text x="1061.4" y="705.6999999999999" fill="#fffdf8" font-size="14" font-weight="500"><tspan x="1061.4" dy="0">4</tspan></text>
+<text x="1098.15" y="694.75" fill="#202933" font-size="19" font-weight="500"><tspan x="1098.15" dy="0">Normalize and validate</tspan></text>
+<text x="1098.15" y="729.35" fill="#63707c" font-size="13" font-weight="500"><tspan x="1098.15" dy="0">safe activity · source allowlist · citations · exactly 2 paths</tspan></text>
+<polyline points="869.25,864.25 1961.25,864.25" fill="none" stroke="#16815d" stroke-width="3" marker-end="url(#arr)"/>
+<ellipse cx="1392.15" cy="817.85" rx="18.900000000000002" ry="26.099999999999998" fill="#16815d" stroke="#16815d" stroke-width="1"/>
+<text x="1386.9" y="817.35" fill="#fffdf8" font-size="14" font-weight="500"><tspan x="1386.9" dy="0">5</tspan></text>
+<text x="1423.65" y="806.4" fill="#202933" font-size="19" font-weight="500"><tspan x="1423.65" dy="0">Commit atomically</tspan></text>
+<text x="1423.65" y="841" fill="#63707c" font-size="13" font-weight="500"><tspan x="1423.65" dy="0">turn + choices + sources + graph edge + usage + request result</tspan></text>
+<polyline points="1961.25,958.5 869.25,958.5" fill="none" stroke="#16815d" stroke-width="3" stroke-dasharray="10 8" marker-end="url(#arr)"/>
+<ellipse cx="1539.15" cy="996.2" rx="18.900000000000002" ry="26.099999999999998" fill="#16815d" stroke="#16815d" stroke-width="1"/>
+<text x="1533.9" y="995.6999999999999" fill="#fffdf8" font-size="14" font-weight="500"><tspan x="1533.9" dy="0">6</tspan></text>
+<text x="1570.65" y="984.75" fill="#202933" font-size="19" font-weight="500"><tspan x="1570.65" dy="0">Committed</tspan></text>
+<text x="1570.65" y="1019.35" fill="#63707c" font-size="13" font-weight="500"><tspan x="1570.65" dy="0">the durable journey version is now authoritative</tspan></text>
+<polyline points="869.25,1060 333.75,1060" fill="none" stroke="#2672a8" stroke-width="3" stroke-dasharray="10 8" marker-end="url(#arr)"/>
+<ellipse cx="499.65" cy="1020.85" rx="18.900000000000002" ry="26.099999999999998" fill="#2672a8" stroke="#2672a8" stroke-width="1"/>
+<text x="494.40000000000003" y="1020.35" fill="#fffdf8" font-size="14" font-weight="500"><tspan x="494.40000000000003" dy="0">7</tspan></text>
+<text x="531.1500000000001" y="1009.4" fill="#202933" font-size="19" font-weight="500"><tspan x="531.1500000000001" dy="0">Reveal</tspan></text>
+<text x="531.1500000000001" y="1044" fill="#63707c" font-size="13" font-weight="500"><tspan x="531.1500000000001" dy="0">SSE activity first; visible answer only after commit</tspan></text>
+<rect x="87" y="364" width="194.25" height="188.5" rx="8" fill="#fff2a8" stroke="#202933" stroke-width="2" transform="rotate(-0.8594366926962348 184.125 458.25)"/>
+<text x="110.10000000000001" y="408.09999999999997" fill="#202933" font-size="18" font-weight="500" transform="rotate(-0.8594366926962348 177.3945 405.50624999999997)"><tspan x="110.10000000000001" dy="0">Browser sends</tspan></text>
+<text x="110.10000000000001" y="448.05" fill="#63707c" font-size="13" font-weight="500" transform="rotate(-0.8594366926962348 172.21800000000002 467.675)"><tspan x="110.10000000000001" dy="0">IDs and actions—</tspan><tspan x="110.10000000000001" dy="16.25">not a model-ready</tspan><tspan x="110.10000000000001" dy="16.25">transcript.</tspan></text>
+<rect x="1998" y="625" width="215.25" height="188.5" rx="8" fill="#ffd8ce" stroke="#cf4c38" stroke-width="2" transform="rotate(0.6875493541569879 2105.625 719.25)"/>
+<text x="2021.1000000000001" y="669.1" fill="#202933" font-size="18" font-weight="500" transform="rotate(0.6875493541569879 2083.2180000000003 666.50625)"><tspan x="2021.1000000000001" dy="0">Failure rule</tspan></text>
+<text x="2021.1000000000001" y="709.05" fill="#63707c" font-size="13" font-weight="500" transform="rotate(0.6875493541569879 2105.1420000000003 728.675)"><tspan x="2021.1000000000001" dy="0">Timeout, disconnect,</tspan><tspan x="2021.1000000000001" dy="16.25">invalid citations, or</tspan><tspan x="2021.1000000000001" dy="16.25">version race = no turn.</tspan></text>
+</svg>

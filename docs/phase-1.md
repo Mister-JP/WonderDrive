@@ -16,7 +16,7 @@ Phase 1 proves that WonderDrive is a coherent, runnable product before paid mode
 ## Persistence and identity
 
 - A 256-bit bearer token in an `HttpOnly`, `SameSite=Lax` cookie identifies a bounded guest session; only its SHA-256 digest is stored.
-- Guest mode keeps five active journeys. Dispatch-owned Sign in with ChatGPT is the upgrade seam and can claim guest journeys without storing the raw email address.
+- Guest mode keeps five active journeys. Dispatch-owned Sign in with ChatGPT is the upgrade seam and can claim guest journeys. Signed-in identities store the forwarded email address and optional full name so production operators can distinguish accounts; guest identities remain pseudonymous.
 - All journey reads and writes are scoped to the resolved identity.
 - Create and advance requests use idempotency keys. Journey mutations use optimistic versions, and a committed turn has exactly two current options.
 - Deletes are tombstones. The browser holds view state only; D1 is canonical.

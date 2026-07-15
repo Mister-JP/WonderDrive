@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2316" height="715" viewBox="0 0 2316 715">
+<rect width="2316" height="715" fill="#fbf8ef"/>
+<style>text{font-family:"Comic Sans MS","Bradley Hand",cursive}</style>
+<defs><marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="context-stroke"/></marker></defs>
+<rect x="45" y="45" width="2226" height="625" rx="10" fill="#fffdf8" stroke="#202933" stroke-width="3"/>
+<ellipse cx="99.60000000000001" cy="105" rx="25.200000000000003" ry="30" fill="#202933" stroke="#202933" stroke-width="1"/>
+<text x="92.25" y="106.5" fill="#fffdf8" font-size="19" font-weight="500"><tspan x="92.25" dy="0">1</tspan></text>
+<text x="143.7" y="106" fill="#202933" font-size="31" font-weight="600"><tspan x="143.7" dy="0">System landscape</tspan></text>
+<text x="145.8" y="138.75" fill="#63707c" font-size="15" font-weight="500"><tspan x="145.8" dy="0">The five-second view: who uses WonderDrive and which managed systems it depends on</tspan></text>
+<rect x="1908.75" y="75" width="309.75" height="52.5" rx="8" fill="#e4ff6a" stroke="#202933" stroke-width="1" transform="rotate(-0.34377467707849396 2063.625 101.25)"/>
+<text x="1937.1000000000001" y="102" fill="#202933" font-size="12" font-weight="500" transform="rotate(-0.34377467707849396 2047.6335000000001 98.59375)"><tspan x="1937.1000000000001" dy="0">CURRENT IMPLEMENTATION · JUL 2026</tspan></text>
+<polyline points="74.4,165 2241.6000000000004,165" fill="none" stroke="#63707c" stroke-width="1"/>
+<ellipse cx="156.3" cy="252.5" rx="32.550000000000004" ry="38.75" fill="#ffd8ce" stroke="#cf4c38" stroke-width="3"/>
+<polyline points="156.3,291.25 156.3,413.75" fill="none" stroke="#cf4c38" stroke-width="3"/>
+<polyline points="156.3,332.5 91.2,397.5" fill="none" stroke="#cf4c38" stroke-width="3"/>
+<polyline points="156.3,332.5 221.40000000000003,397.5" fill="none" stroke="#cf4c38" stroke-width="3"/>
+<polyline points="156.3,413.75 108,503.75" fill="none" stroke="#cf4c38" stroke-width="3"/>
+<polyline points="156.3,413.75 204.60000000000002,503.75" fill="none" stroke="#cf4c38" stroke-width="3"/>
+<text x="81.75" y="553.5" fill="#cf4c38" font-size="21" font-weight="600"><tspan x="81.75" dy="0">curious person</tspan></text>
+<rect x="386.25" y="170" width="682.5" height="375" rx="8" fill="#dceeff" stroke="#2672a8" stroke-width="4"/>
+<text x="409.35" y="221.5" fill="#202933" font-size="29" font-weight="600"><tspan x="409.35" dy="0">WonderDrive on ChatGPT Sites</tspan></text>
+<text x="409.35" y="260" fill="#63707c" font-size="15" font-weight="500"><tspan x="409.35" dy="0">PUBLIC WEB EXPERIENCE</tspan><tspan x="409.35" dy="18.75">choose a performer, model, question, and next path</tspan><tspan x="409.35" dy="18.75"></tspan><tspan x="409.35" dy="18.75">TRUSTED SERVER ROUTES</tspan><tspan x="409.35" dy="18.75">resolve identity · enforce ownership and limits</tspan><tspan x="409.35" dy="18.75">assemble research context · validate · persist · stream</tspan><tspan x="409.35" dy="18.75"></tspan><tspan x="409.35" dy="18.75">Sites owns the application boundary and server-only secrets.</tspan></text>
+<text x="409.35" y="521" fill="#63707c" font-size="11" font-weight="500"><tspan x="409.35" dy="0">React / Vinext application · Sign in with ChatGPT seam</tspan></text>
+<rect x="1378.5" y="145" width="756" height="206.25" rx="8" fill="#eee6ff" stroke="#7451b8" stroke-width="2"/>
+<text x="1401.6000000000001" y="192.5" fill="#202933" font-size="25" font-weight="600"><tspan x="1401.6000000000001" dy="0">OpenAI Responses API</tspan></text>
+<text x="1401.6000000000001" y="234" fill="#63707c" font-size="14" font-weight="500"><tspan x="1401.6000000000001" dy="0">The audience-selected model researches and performs the turn.</tspan><tspan x="1401.6000000000001" dy="17.5">Built-in web search · structured output · provider-returned sources</tspan><tspan x="1401.6000000000001" dy="17.5">No hidden planner, second model, or background agent.</tspan></text>
+<text x="1401.6000000000001" y="327.25" fill="#63707c" font-size="11" font-weight="500"><tspan x="1401.6000000000001" dy="0">server-to-server · store: false</tspan></text>
+<rect x="1378.5" y="401.25" width="756" height="206.25" rx="8" fill="#ddf7e8" stroke="#16815d" stroke-width="2"/>
+<text x="1401.6000000000001" y="448.75" fill="#202933" font-size="25" font-weight="600"><tspan x="1401.6000000000001" dy="0">Sites-managed D1</tspan></text>
+<text x="1401.6000000000001" y="490.25" fill="#63707c" font-size="14" font-weight="500"><tspan x="1401.6000000000001" dy="0">Canonical durable product state: identity, preferences, journeys,</tspan><tspan x="1401.6000000000001" dy="17.5">turns, choices, graph edges, research evidence, usage, and snapshots.</tspan><tspan x="1401.6000000000001" dy="17.5">Only Sites server routes can access the `DB` binding.</tspan></text>
+<text x="1401.6000000000001" y="583.5" fill="#63707c" font-size="11" font-weight="500"><tspan x="1401.6000000000001" dy="0">Cloudflare D1 through the Sites-managed DB binding</tspan></text>
+<polyline points="223.5,351.25 386.25,351.25" fill="none" stroke="#202933" stroke-width="4" marker-end="url(#arr)"/>
+<text x="243.45000000000002" y="324" fill="#63707c" font-size="14" font-weight="500"><tspan x="243.45000000000002" dy="0">explore / choose</tspan></text>
+<polyline points="1068.75,263.75 1378.5,263.75" fill="none" stroke="#7451b8" stroke-width="4" marker-end="url(#arr)"/>
+<text x="1131.75" y="232.75" fill="#7451b8" font-size="14" font-weight="500"><tspan x="1131.75" dy="0">research request</tspan></text>
+<polyline points="1378.5,320 1068.75,320" fill="none" stroke="#7451b8" stroke-width="3" stroke-dasharray="10 8" marker-end="url(#arr)"/>
+<text x="1123.3500000000001" y="344" fill="#7451b8" font-size="14" font-weight="500"><tspan x="1123.3500000000001" dy="0">sourced draft</tspan></text>
+<polyline points="1068.75,488.75 1378.5,488.75" fill="none" stroke="#16815d" stroke-width="4" marker-end="url(#arr)"/>
+<text x="1137" y="456.5" fill="#16815d" font-size="14" font-weight="500"><tspan x="1137" dy="0">read / atomic write</tspan></text>
+<polyline points="386.25,420 223.5,420" fill="none" stroke="#2672a8" stroke-width="3" stroke-dasharray="10 8" marker-end="url(#arr)"/>
+<text x="237.15" y="444.25" fill="#2672a8" font-size="13" font-weight="500"><tspan x="237.15" dy="0">live progress + result</tspan></text>
+</svg>

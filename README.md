@@ -8,7 +8,7 @@ This repository is the public implementation for the 2026 OpenAI Build Week hack
 
 ## Product contract
 
-- One selected performer and model carry each turn; the live adapter never silently delegates to another model.
+- One selected performer carries the journey; the audience may choose a different model between turns, and the live adapter never silently delegates to another model.
 - Research activity and sources are observable; hidden chain-of-thought is not exposed.
 - Every ready turn ends with exactly two distinct next questions.
 - The journey advances only after an explicit audience action.
@@ -27,6 +27,35 @@ This repository is the public implementation for the 2026 OpenAI Build Week hack
 - Drizzle schema and generated SQL migrations
 - Dispatch-owned Sign in with ChatGPT seam for durable identity
 - GitHub Actions for lint, build, and rendered-output tests
+
+## Architecture
+
+The checked-in implementation runs as one public ChatGPT Site. The browser talks only to Sites routes; those routes own identity, authorization, foreground research orchestration, validation, and persistence. Live provider work goes directly to the OpenAI Responses API, while Sites-managed D1 is the canonical product database. There is no queue, scheduler, background continuation, provider fan-out, R2 bucket, Supabase project, or separately operated backend in the current deployment.
+
+![WonderDrive system landscape](design/wonderdrive-architecture-01-system-landscape.png)
+
+The editable source is [the system-landscape Excalidraw board](design/wonderdrive-architecture-01-system-landscape.excalidraw). The complete implementation views are documented in [the architecture decisions](docs/architecture.md#architecture-views).
+
+<details>
+<summary>One foreground research turn</summary>
+
+![WonderDrive foreground research sequence](design/wonderdrive-architecture-02-research-turn.png)
+
+</details>
+
+<details>
+<summary>Inside the WonderDrive application boundary</summary>
+
+![WonderDrive internal components](design/wonderdrive-architecture-03-inside-wonderdrive.png)
+
+</details>
+
+<details>
+<summary>Build and deployment topology</summary>
+
+![WonderDrive deployment topology](design/wonderdrive-architecture-04-deployment-topology.png)
+
+</details>
 
 ## Local development
 
@@ -74,12 +103,13 @@ tests/                Rendered production and fixture checks
 - [Phase 2 live research contract](docs/phase-2.md)
 - [V3 implementation contract](docs/v3-implementation.md)
 - [Final architecture decisions](docs/architecture.md)
+- [Current architecture views](docs/architecture.md#architecture-views)
 - [Current code index](docs/code-index.md)
 - [Final product and engineering blueprint](docs/WonderDrive_Final_Product_and_Engineering_Blueprint_v3_Research_First.docx)
 
 ## Status and scope
 
-Every journey uses a user-selected, compatible OpenAI model through one foreground Responses request with built-in text and optional image search. Presets cap tool calls, output tokens, reasoning effort, and wall time; guest and signed-in identities also have rolling live-run and estimated-spend limits. Consulted URLs, cited relations, sourced image results, provider request ID, complete usage, price snapshot, prompt/performer/model versions, and research handoff are saved with the committed turn.
+Every turn starts one foreground Responses stream with the audience-selected, compatible OpenAI model, built-in text search, and optional image results. A bounded citation-repair or evidence-recovery call may follow when the initial draft does not satisfy the source contract. The model can be changed before any later turn without rewriting earlier turn metadata. Presets cap tool calls, output tokens, reasoning effort, and wall time; guest and signed-in identities also have rolling live-run and estimated-spend limits. Consulted URLs, cited relations, sourced image results, provider request IDs, complete usage, price snapshots, prompt/performer/model versions, research handoffs, and all provider-call analytics are persisted in D1.
 
 Automatic journeys, scheduled/background continuation, Trigger.dev, provider fan-out, and live parallel comparison are outside the hackathon scope.
 

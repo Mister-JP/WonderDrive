@@ -22,6 +22,7 @@ import type {
   AnswerDensity,
   BootstrapCatalog,
   CompareResult,
+  DiagnosticsReport,
   ImagePreference,
   JourneyDetail,
   JourneySnapshot,
@@ -39,6 +40,7 @@ import {
   api,
   type LiveResearchState,
   messageFrom,
+  starterRecommendationsUrl,
   streamLiveResearch,
 } from "./client-api";
 
@@ -82,6 +84,7 @@ export function WonderDriveExperience() {
   const [liveResearch, setLiveResearch] = useState<LiveResearchState | null>(null);
   const [catalog, setCatalog] = useState<BootstrapCatalog>(BOOTSTRAP_CATALOG);
   const [preferences, setPreferences] = useState<UserPreferences>(DEFAULT_PREFERENCES);
+  const [nextModelId, setNextModelId] = useState<ModelId | null>(null);
   const [personalizedStarters, setPersonalizedStarters] = useState<PersonalizedStarter[]>(
     BOOTSTRAP_CATALOG.discoveryStarters,
   );
@@ -97,7 +100,7 @@ export function WonderDriveExperience() {
       setJourneys(session.data.journeys);
       setCatalog(bootstrap.data.catalog);
       setPreferences(bootstrap.data.preferences);
-      void api<StarterPayload>("/api/starters?performer=sage&refresh=1")
+      void api<StarterPayload>(starterRecommendationsUrl("sage"))
         .then((payload) => setPersonalizedStarters(payload.data.starters))
         .catch(() => setPersonalizedStarters(bootstrap.data.catalog.discoveryStarters));
     } catch (cause) {
@@ -133,6 +136,7 @@ export function WonderDriveExperience() {
   ) => {
     setViewer(nextViewer);
     setActiveJourney(detail);
+    setNextModelId(detail.modelId);
     setActiveTurnId(turnId);
     setView(view);
     if (syncLibrary) setJourneys((current) => upsertSummary(current, detail));
@@ -169,6 +173,7 @@ export function WonderDriveExperience() {
         status: "running",
         result: null,
         error: null,
+        diagnosticId: null,
       });
       const complete = await streamLiveResearch(
         { kind: "create", ...config, idempotencyKey: crypto.randomUUID() },
@@ -192,6 +197,7 @@ export function WonderDriveExperience() {
     input: { turnId: string; optionId?: string; adventure?: number; reason?: string },
   ) {
     if (!activeJourney) return;
+    const modelId = nextModelId ?? activeJourney.modelId;
     await runMutation(action, async () => {
       if (action !== "reject") {
         const fromTurn = activeJourney.turns.find((turn) => turn.id === input.turnId);
@@ -209,6 +215,7 @@ export function WonderDriveExperience() {
           status: "running",
           result: null,
           error: null,
+          diagnosticId: null,
         });
         const complete = await streamLiveResearch(
           {
@@ -216,6 +223,7 @@ export function WonderDriveExperience() {
             journeyId: activeJourney.id,
             fromTurnId: input.turnId,
             action,
+            modelId,
             optionId: input.optionId,
             expectedVersion: activeJourney.version,
             idempotencyKey: crypto.randomUUID(),
@@ -237,6 +245,7 @@ export function WonderDriveExperience() {
           body: JSON.stringify({
             fromTurnId: input.turnId,
             action,
+            modelId,
             optionId: input.optionId,
             adventure: input.adventure,
             reason: input.reason,
@@ -347,9 +356,11 @@ export function WonderDriveExperience() {
           ) : (
             <span><strong>{viewer?.displayName ?? "Opening library…"}</strong><small>{viewer ? `${journeys.length}/${viewer.journeyLimit} saved` : "durable session"}</small></span>
           )}
-          {viewer?.mode === "guest" && (
-            <a href="/signin-with-chatgpt?return_to=%2F">Sign in</a>
-          )}
+          {viewer?.mode === "guest" ? (
+            <a className="identity-action" href="/signin-with-chatgpt?return_to=%2F">Sign in</a>
+          ) : viewer?.mode === "chatgpt" ? (
+            <a className="identity-action" href="/signout-with-chatgpt?return_to=%2F">Sign out</a>
+          ) : null}
         </div>
       </header>
 
@@ -457,6 +468,19 @@ export function WonderDriveExperience() {
         <div className="active-journey-shell">
           <nav className="journey-view-switcher" aria-label="Current journey views">
             <span>{activeJourney.title}</span>
+            <label className="journey-model-switcher">
+              <span>Next turn model</span>
+              <select
+                aria-label="Model for the next research turn"
+                disabled={mutation !== null}
+                value={nextModelId ?? activeJourney.modelId}
+                onChange={(event) => setNextModelId(event.target.value as ModelId)}
+              >
+                {catalog.models.map((model) => (
+                  <option key={model.id} value={model.id}>{model.name}</option>
+                ))}
+              </select>
+            </label>
             <div>
               <button type="button" className={view === "journey" ? "active" : ""} aria-current={view === "journey" ? "page" : undefined} onClick={() => setView("journey")}>Stage</button>
               <button type="button" className={view === "map" ? "active" : ""} aria-current={view === "map" ? "page" : undefined} onClick={() => setView("map")}>Journey map</button>
@@ -579,7 +603,7 @@ function StartStage({
     setVisibleStarters(recommendationsForPerformer(nextId, starters));
     setStartersLoading(true);
     try {
-      const payload = await api<StarterPayload>(`/api/starters?performer=${encodeURIComponent(nextId)}`);
+      const payload = await api<StarterPayload>(starterRecommendationsUrl(nextId));
       starterCache.current.set(nextId, payload.data.starters);
       if (performerIdRef.current === nextId) {
         setVisibleStarters(recommendationsForPerformer(nextId, payload.data.starters));
@@ -595,7 +619,7 @@ function StartStage({
     setStartersLoading(true);
     try {
       const payload = await api<StarterPayload>(
-        `/api/starters?performer=${encodeURIComponent(performerId)}&refresh=1`,
+        starterRecommendationsUrl(performerId, true),
       );
       starterCache.current.set(performerId, payload.data.starters);
       setVisibleStarters(recommendationsForPerformer(performerId, payload.data.starters));
@@ -830,7 +854,11 @@ function JourneyBufferingStage({
         {state.status === "error" ? (
           <div className="buffering-error" role="alert">
             <span aria-hidden="true">!</span>
-            <div><strong>This turn was not committed</strong><p>{state.error}</p></div>
+            <div>
+              <strong>This turn was not committed</strong>
+              <p>{state.error}</p>
+              {state.diagnosticId && <code>Diagnostic {formatDiagnosticId(state.diagnosticId)}</code>}
+            </div>
             <button type="button" onClick={onBack}>Return safely →</button>
           </div>
         ) : (
@@ -1419,6 +1447,39 @@ function SettingsView({
   onSave: (next: UserPreferences) => Promise<void>;
 }) {
   const [draft, setDraft] = useState(preferences);
+  const [diagnostics, setDiagnostics] = useState<DiagnosticsReport | null>(null);
+  const [diagnosticsLoading, setDiagnosticsLoading] = useState(false);
+  const [diagnosticsError, setDiagnosticsError] = useState<string | null>(null);
+
+  const refreshDiagnostics = useCallback(async () => {
+    if (viewer?.mode !== "chatgpt") return;
+    setDiagnosticsLoading(true);
+    setDiagnosticsError(null);
+    try {
+      const payload = await api<DiagnosticsReport>("/api/diagnostics");
+      setDiagnostics(payload.data);
+    } catch (cause) {
+      setDiagnosticsError(messageFrom(cause));
+    } finally {
+      setDiagnosticsLoading(false);
+    }
+  }, [viewer?.mode]);
+
+  useEffect(() => {
+    if (viewer?.mode !== "chatgpt") return;
+    let cancelled = false;
+    void api<DiagnosticsReport>("/api/diagnostics")
+      .then((payload) => {
+        if (!cancelled) setDiagnostics(payload.data);
+      })
+      .catch((cause) => {
+        if (!cancelled) setDiagnosticsError(messageFrom(cause));
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [viewer?.mode]);
+
   return (
     <section className="settings-view" aria-labelledby="settings-title">
       <header className="view-heading">
@@ -1433,6 +1494,69 @@ function SettingsView({
         <label className="check-setting"><input type="checkbox" checked={draft.reduceMotion} onChange={(event) => setDraft({ ...draft, reduceMotion: event.target.checked })} /><span>Reduce interface motion</span></label>
         <button className="launch-button" type="submit" disabled={busy}>{busy ? "Saving…" : "Save preferences"}<i aria-hidden="true">↘</i></button>
       </form>
+      <section className="diagnostics-console" aria-labelledby="diagnostics-title">
+        <header>
+          <div>
+            <p className="eyebrow"><span /> Private diagnostics</p>
+            <h2 id="diagnostics-title">What failed, where, and when.</h2>
+          </div>
+          {viewer?.mode === "chatgpt" && (
+            <button type="button" disabled={diagnosticsLoading} onClick={() => void refreshDiagnostics()}>
+              {diagnosticsLoading ? "Checking…" : "Refresh incidents"}
+            </button>
+          )}
+        </header>
+        {viewer?.mode !== "chatgpt" ? (
+          <p className="diagnostics-empty">Sign in with ChatGPT to keep private, identity-scoped diagnostic history.</p>
+        ) : diagnosticsError ? (
+          <p className="diagnostics-empty" role="alert">{diagnosticsError}</p>
+        ) : !diagnostics ? (
+          <p className="diagnostics-empty">Loading privacy-safe request health…</p>
+        ) : (
+          <>
+            <div className="diagnostics-summary">
+              <div><strong>{diagnostics.summary.requests24h}</strong><span>requests · 24h</span></div>
+              <div><strong>{diagnostics.summary.failures24h}</strong><span>failures · 24h</span></div>
+              <div><strong>{Math.round(diagnostics.summary.failureRate24h * 100)}%</strong><span>failure rate</span></div>
+              <div><strong>{diagnostics.retentionDays}d</strong><span>retention</span></div>
+            </div>
+            {!!diagnostics.repeatedFailures.length && (
+              <div className="diagnostics-alert" role="status">
+                <strong>Repeated failure detected</strong>
+                {diagnostics.repeatedFailures.map((item) => (
+                  <span key={item.errorCode}>{item.errorCode} happened {item.count} times in ten minutes.</span>
+                ))}
+              </div>
+            )}
+            <div className="incident-list">
+              {diagnostics.incidents.length ? diagnostics.incidents.map((incident) => (
+                <details key={incident.diagnosticId} className="incident-row">
+                  <summary>
+                    <code>{formatDiagnosticId(incident.diagnosticId)}</code>
+                    <strong>{incident.errorCode}</strong>
+                    <span>{incident.modelId}</span>
+                    <time dateTime={new Date(incident.createdAt).toISOString()}>{new Date(incident.createdAt).toLocaleString()}</time>
+                  </summary>
+                  <dl>
+                    <div><dt>Stage</dt><dd>{incident.stage}</dd></div>
+                    <div><dt>Last provider event</dt><dd>{incident.lastProviderEventType}</dd></div>
+                    <div><dt>Parsed events</dt><dd>{incident.providerEventCount}</dd></div>
+                    <div><dt>Malformed events</dt><dd>{incident.malformedEventCount}</dd></div>
+                    <div><dt>Output deltas</dt><dd>{incident.outputDeltaCount}</dd></div>
+                    <div><dt>Provider done marker</dt><dd>{incident.sawProviderDone ? "seen" : "not seen"}</dd></div>
+                    <div><dt>Latency</dt><dd>{incident.latencyMs ? `${(incident.latencyMs / 1000).toFixed(1)}s` : "unrecorded"}</dd></div>
+                    <div><dt>HTTP status</dt><dd>{incident.httpStatus ?? "unrecorded"}</dd></div>
+                    <div><dt>OpenAI request</dt><dd>{incident.providerRequestId ?? "unrecorded"}</dd></div>
+                    <div><dt>Preset</dt><dd>{incident.researchPreset}</dd></div>
+                  </dl>
+                  <p>{incident.errorMessage}</p>
+                </details>
+              )) : <p className="diagnostics-empty">No failed research requests in the retained window.</p>}
+            </div>
+            <p className="diagnostics-privacy">Prompts, answers, API keys, cookies, and source contents are never included.</p>
+          </>
+        )}
+      </section>
     </section>
   );
 }
@@ -1466,6 +1590,10 @@ function upsertSummary(current: JourneySummary[], detail: JourneyDetail): Journe
     topicLabels: detail.topicLabels,
   };
   return [summary, ...current.filter((journey) => journey.id !== summary.id)];
+}
+
+function formatDiagnosticId(value: string) {
+  return `WD-${value.replaceAll("-", "").slice(0, 8).toUpperCase()}`;
 }
 
 async function upgradeGuestLibrary(

@@ -29,7 +29,7 @@ The app never substitutes another model after an error. The visitor receives a r
 ## Path controls
 
 - Choose and Delegate launch one new foreground live research call for a live journey.
-- Reject Both redraws two replacement paths deterministically and creates no researched turn or provider charge.
+- Reject Both stays deterministic and free for fixture journeys. For live journeys it calls the selected OpenAI model once without web research, validates exactly two replacement paths, records the provider usage, and creates no new researched turn.
 - Manual comparison reads two saved journeys and launches no model work.
 - Automatic journeys, parallel path research, Trigger.dev, scheduled continuation, and background jobs remain out of scope.
 

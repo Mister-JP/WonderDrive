@@ -19,6 +19,9 @@ export const identities = sqliteTable(
     id: text("id").primaryKey(),
     provider: text("provider", { enum: ["chatgpt", "guest"] }).notNull(),
     providerSubject: text("provider_subject").notNull(),
+    email: text("email"),
+    fullName: text("full_name"),
+    profileUpdatedAt: integer("profile_updated_at", { mode: "timestamp_ms" }),
     expiresAt: integer("expires_at", { mode: "timestamp_ms" }),
     upgradedToIdentityId: text("upgraded_to_identity_id"),
     createdAt,
@@ -357,6 +360,61 @@ export const usageEvents = sqliteTable(
   (table) => [
     uniqueIndex("usage_events_run_unique").on(table.researchRunId),
     index("usage_events_identity_created_idx").on(table.identityId, table.createdAt),
+  ],
+);
+
+export const providerUsageEvents = sqliteTable(
+  "provider_usage_events",
+  {
+    id: text("id").primaryKey(),
+    identityId: text("identity_id").references(() => identities.id),
+    journeyId: text("journey_id").references(() => journeys.id),
+    turnId: text("turn_id").references(() => turns.id),
+    researchRequestId: text("research_request_id").references(() => researchRequests.id),
+    provider: text("provider").notNull(),
+    modelId: text("model_id").notNull(),
+    operation: text("operation", {
+      enum: [
+        "live_research",
+        "citation_repair",
+        "citation_recovery",
+        "starter_generation",
+        "question_redraw",
+      ],
+    }).notNull(),
+    purpose: text("purpose").notNull(),
+    outcome: text("outcome", {
+      enum: [
+        "completed",
+        "incomplete",
+        "provider_failed",
+        "http_error",
+        "transport_error",
+        "validation_failed",
+      ],
+    }).notNull(),
+    providerResponseId: text("provider_response_id"),
+    providerRequestId: text("provider_request_id"),
+    httpStatus: integer("http_status"),
+    inputTokens: integer("input_tokens").notNull().default(0),
+    cachedInputTokens: integer("cached_input_tokens").notNull().default(0),
+    outputTokens: integer("output_tokens").notNull().default(0),
+    reasoningTokens: integer("reasoning_tokens").notNull().default(0),
+    totalTokens: integer("total_tokens").notNull().default(0),
+    webSearchCalls: integer("web_search_calls").notNull().default(0),
+    pageFetches: integer("page_fetches").notNull().default(0),
+    estimatedCostMicrousd: integer("estimated_cost_microusd").notNull().default(0),
+    rateEffectiveAt: text("rate_effective_at").notNull(),
+    latencyMs: integer("latency_ms").notNull().default(0),
+    errorCode: text("error_code"),
+    errorMessage: text("error_message"),
+    metadataJson: text("metadata_json"),
+    createdAt,
+  },
+  (table) => [
+    index("provider_usage_identity_created_idx").on(table.identityId, table.createdAt),
+    index("provider_usage_operation_created_idx").on(table.operation, table.createdAt),
+    index("provider_usage_request_idx").on(table.researchRequestId),
   ],
 );
 

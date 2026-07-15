@@ -25,6 +25,8 @@ export async function resolveViewer(): Promise<ViewerContext> {
 
   if (chatGPTUser) {
     const subject = await digest(`chatgpt:${chatGPTUser.subject}`);
+    const email = chatGPTUser.email.trim().toLowerCase().slice(0, 320);
+    const fullName = chatGPTUser.fullName?.trim().slice(0, 200) || null;
     let identity = await db
       .prepare(
         "SELECT id FROM identities WHERE provider = 'chatgpt' AND provider_subject = ? LIMIT 1",
@@ -36,9 +38,12 @@ export async function resolveViewer(): Promise<ViewerContext> {
       const id = crypto.randomUUID();
       await db
         .prepare(
-          "INSERT OR IGNORE INTO identities (id, provider, provider_subject, created_at, last_seen_at) VALUES (?, 'chatgpt', ?, ?, ?)",
+          `INSERT OR IGNORE INTO identities
+            (id, provider, provider_subject, email, full_name, profile_updated_at,
+             created_at, last_seen_at)
+           VALUES (?, 'chatgpt', ?, ?, ?, ?, ?, ?)`,
         )
-        .bind(id, subject, now, now)
+        .bind(id, subject, email, fullName, now, now, now)
         .run();
       identity = await db
         .prepare(
@@ -50,7 +55,13 @@ export async function resolveViewer(): Promise<ViewerContext> {
     if (!identity) throw new Error("Unable to resolve the signed-in identity.");
 
     const statements = [
-      db.prepare("UPDATE identities SET last_seen_at = ? WHERE id = ?").bind(now, identity.id),
+      db
+        .prepare(
+          `UPDATE identities
+           SET last_seen_at = ?, email = ?, full_name = ?, profile_updated_at = ?
+           WHERE id = ?`,
+        )
+        .bind(now, email, fullName, now, identity.id),
     ];
     let pendingGuestIdentityId: string | undefined;
     if (rawGuestToken) {

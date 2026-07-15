@@ -257,6 +257,54 @@ test("prunes unsupported blocks only when at least two cited blocks survive", ()
   );
 });
 
+test("reports a provider token-limit terminal event instead of a missing response", async () => {
+  const originalFetch = globalThis.fetch;
+  env.OPENAI_API_KEY = "test-key";
+  const incomplete = {
+    id: "resp_incomplete",
+    status: "incomplete",
+    incomplete_details: { reason: "max_output_tokens" },
+    output: [],
+    usage: {
+      input_tokens: 100,
+      output_tokens: 8_000,
+      total_tokens: 8_100,
+      output_tokens_details: { reasoning_tokens: 8_000 },
+    },
+  };
+  // The parser must retain a final provider event even if the transport closes
+  // without the optional trailing blank line.
+  const stream = `data: ${JSON.stringify({ type: "response.incomplete", response: incomplete })}`;
+  globalThis.fetch = async () => new Response(stream, {
+    status: 200,
+    headers: { "content-type": "text/event-stream", "x-request-id": "req_incomplete" },
+  });
+  try {
+    await assert.rejects(
+      () => runLiveResearch({
+        requestId: "request-incomplete",
+        identityId: "identity-incomplete",
+        kind: "create",
+        question: "Why can reasoning consume an output allowance?",
+        seed: "Why can reasoning consume an output allowance?",
+        depth: 0,
+        performerId: "mechanist",
+        modelId: "gpt-5.4-nano",
+        researchPreset: "standard",
+        answerDensity: "balanced",
+        imagePreference: "avoid",
+        topicTrail: [],
+        idempotencyKey: "idempotency-incomplete",
+        payloadHash: "payload-incomplete",
+      }, () => {}),
+      (error) => error?.code === "PROVIDER_ERROR" && /full reasoning and output allowance/i.test(error.message),
+    );
+  } finally {
+    globalThis.fetch = originalFetch;
+    delete env.OPENAI_API_KEY;
+  }
+});
+
 test("runs exactly one no-search repair after an initial citation mismatch", async () => {
   const originalFetch = globalThis.fetch;
   const originalError = console.error;
@@ -333,6 +381,8 @@ test("runs exactly one no-search repair after an initial citation mismatch", asy
       search_content_types: ["image", "text"],
       image_settings: { max_results: 10, caption: true },
     }]);
+    assert.equal(requests[0].max_output_tokens, 8_000);
+    assert.deepEqual(requests[0].reasoning, { effort: "medium" });
     assert.equal(requests[1].tools, undefined);
     assert.equal(draft.answerBlocks[0].sourceIds.length, 1);
     assert.equal(draft.usage.inputTokens, 120);

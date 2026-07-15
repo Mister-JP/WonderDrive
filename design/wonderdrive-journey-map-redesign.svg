@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2240" height="1580" viewBox="0 0 2240 1580">
+<rect width="2240" height="1580" fill="#f7f5ef"/>
+<style>text{font-family:Arial,Helvetica,sans-serif}</style>
+<defs><filter id="w"><feTurbulence baseFrequency=".012" numOctaves="1" seed="11" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale=".6"/></filter></defs>
+<text x="65" y="73" fill="#17212b" font-size="38" font-weight="600"><tspan x="65" dy="0">WonderDrive — reimagined journey map</tspan></text>
+<text x="67" y="105" fill="#667085" font-size="17" font-weight="500"><tspan x="67" dy="0">A decision workspace that makes the active path, earlier branches, and still-open questions immediately visible.</tspan></text>
+<rect x="1840" y="42" width="475" height="50" rx="7" fill="#dfff58" stroke="#17212b" stroke-width="2"  filter="url(#w)"/>
+<text x="1903" y="70" fill="#17212b" font-size="13" font-weight="500"><tspan x="1903" dy="0">TURN → CHOICE → ANSWER → NEXT CHOICE</tspan></text>
+<text x="65" y="159" fill="#d64b38" font-size="14" font-weight="500"><tspan x="65" dy="0">DESKTOP · FOCUSED BRANCH EXPLORER</tspan></text>
+<rect x="65" y="180" width="1510" height="1080" rx="7" fill="#fffdf8" stroke="#17212b" stroke-width="3"  filter="url(#w)"/>
+<rect x="65" y="180" width="1510" height="52" rx="7" fill="#eeeae2" stroke="#17212b" stroke-width="2"  filter="url(#w)"/>
+<ellipse cx="90" cy="205" rx="5" ry="5" fill="#ff7b67" stroke="#17212b" stroke-width="1" filter="url(#w)"/>
+<ellipse cx="109" cy="205" rx="5" ry="5" fill="#ffd166" stroke="#17212b" stroke-width="1" filter="url(#w)"/>
+<ellipse cx="128" cy="205" rx="5" ry="5" fill="#81d88d" stroke="#17212b" stroke-width="1" filter="url(#w)"/>
+<rect x="535" y="193" width="520" height="25" rx="7" fill="#ffffff" stroke="#b7bec6" stroke-width="1"  filter="url(#w)"/>
+<text x="695" y="209" fill="#667085" font-size="10" font-weight="500"><tspan x="695" dy="0">wonderdrive.app/journey/map</tspan></text>
+<text x="95" y="274" fill="#17212b" font-size="15" font-weight="500"><tspan x="95" dy="0">WONDERDRIVE</tspan></text>
+<text x="1110" y="270" fill="#667085" font-size="10" font-weight="500"><tspan x="1110" dy="0">STAGE</tspan></text>
+<rect x="1190" y="246" width="120" height="36" rx="7" fill="#17212b" stroke="#17212b" stroke-width="2"  filter="url(#w)"/>
+<text x="1226" y="267" fill="#fffdf8" font-size="10" font-weight="500"><tspan x="1226" dy="0">MAP</tspan></text>
+<text x="1390" y="272" fill="#17212b" font-size="12" font-weight="500"><tspan x="1390" dy="0">•••</tspan></text>
+<polyline points="90,298 1545,298" fill="none" stroke="#ccd2d7" stroke-width="1"/>
+<text x="95" y="348" fill="#17212b" font-size="24" font-weight="600"><tspan x="95" dy="0">How does a city remember?</tspan></text>
+<text x="95" y="369" fill="#667085" font-size="10" font-weight="500"><tspan x="95" dy="0">Sage · researched journey</tspan></text>
+<rect x="1040" y="323" width="112" height="28" rx="7" fill="#e6f4ff" stroke="#17212b" stroke-width="1"  filter="url(#w)"/>
+<text x="1051" y="340" fill="#17212b" font-size="10" font-weight="500"><tspan x="1051" dy="0">TURN 3 OF 3</tspan></text>
+<rect x="1165" y="323" width="125" height="28" rx="7" fill="#efffc4" stroke="#17212b" stroke-width="1"  filter="url(#w)"/>
+<text x="1176" y="340" fill="#17212b" font-size="10" font-weight="500"><tspan x="1176" dy="0">4 OPEN PATHS</tspan></text>
+<rect x="1303" y="323" width="105" height="28" rx="7" fill="#eeeae2" stroke="#17212b" stroke-width="1"  filter="url(#w)"/>
+<text x="1314" y="340" fill="#17212b" font-size="10" font-weight="500"><tspan x="1314" dy="0">12 SOURCES</tspan></text>
+<polyline points="90,393 1545,393" fill="none" stroke="#17212b" stroke-width="1"/>
+<text x="95" y="430" fill="#d64b38" font-size="10" font-weight="500"><tspan x="95" dy="0">ACTIVE PATH</tspan></text>
+<text x="95" y="455" fill="#667085" font-size="12" font-weight="500"><tspan x="95" dy="0">The route you have taken stays visually dominant. Unchosen questions remain attached to the turn that created them.</tspan></text>
+<rect x="105" y="500" width="310" height="145" rx="7" fill="#fffdf8" stroke="#17212b" stroke-width="2"  filter="url(#w)"/>
+<ellipse cx="140" cy="535" rx="17" ry="17" fill="#eeeae2" stroke="#17212b" stroke-width="1" filter="url(#w)"/>
+<text x="134" y="538" fill="#17212b" font-size="12" font-weight="500"><tspan x="134" dy="0">1</tspan></text>
+<text x="169" y="528" fill="#667085" font-size="9" font-weight="500"><tspan x="169" dy="0">COLLECTIVE MEMORY</tspan></text>
+<text x="123" y="579" fill="#17212b" font-size="17" font-weight="500"><tspan x="123" dy="0">How does a city remember?</tspan></text>
+<rect x="123" y="608" width="75" height="28" rx="7" fill="#eeeae2" stroke="#17212b" stroke-width="1"  filter="url(#w)"/>
+<text x="134" y="625" fill="#17212b" font-size="10" font-weight="500"><tspan x="134" dy="0">EXPLORED</tspan></text>
+<polyline points="415,565 515,565" fill="none" stroke="#17212b" stroke-width="3"/>
+<path d="M503,557 L515,565 L503,573" fill="none" stroke="#17212b" stroke-width="3"/>
+<text x="438" y="547" fill="#667085" font-size="9" font-weight="500"><tspan x="438" dy="0">CHOSEN · PLACE &amp; POWER</tspan></text>
+<rect x="520" y="500" width="310" height="145" rx="7" fill="#fffdf8" stroke="#17212b" stroke-width="2"  filter="url(#w)"/>
+<ellipse cx="555" cy="535" rx="17" ry="17" fill="#eeeae2" stroke="#17212b" stroke-width="1" filter="url(#w)"/>
+<text x="549" y="538" fill="#17212b" font-size="12" font-weight="500"><tspan x="549" dy="0">2</tspan></text>
+<text x="584" y="528" fill="#667085" font-size="9" font-weight="500"><tspan x="584" dy="0">PUBLIC AUTHORITY</tspan></text>
+<text x="538" y="579" fill="#17212b" font-size="17" font-weight="500"><tspan x="538" dy="0">Who decides what becomes</tspan><tspan x="538" dy="21.25">official memory?</tspan></text>
+<rect x="538" y="608" width="75" height="28" rx="7" fill="#eeeae2" stroke="#17212b" stroke-width="1"  filter="url(#w)"/>
+<text x="549" y="625" fill="#17212b" font-size="10" font-weight="500"><tspan x="549" dy="0">EXPLORED</tspan></text>
+<polyline points="830,565 930,565" fill="none" stroke="#17212b" stroke-width="3"/>
+<path d="M918,557 L930,565 L918,573" fill="none" stroke="#17212b" stroke-width="3"/>
+<text x="851" y="547" fill="#667085" font-size="9" font-weight="500"><tspan x="851" dy="0">CHOSEN · CONFLICT</tspan></text>
+<rect x="935" y="500" width="310" height="145" rx="7" fill="#acd8ff" stroke="#17212b" stroke-width="3"  filter="url(#w)"/>
+<ellipse cx="970" cy="535" rx="17" ry="17" fill="#dfff58" stroke="#17212b" stroke-width="1" filter="url(#w)"/>
+<text x="964" y="538" fill="#17212b" font-size="12" font-weight="500"><tspan x="964" dy="0">3</tspan></text>
+<text x="999" y="528" fill="#667085" font-size="9" font-weight="500"><tspan x="999" dy="0">CONTESTED MONUMENTS</tspan></text>
+<text x="953" y="579" fill="#17212b" font-size="17" font-weight="500"><tspan x="953" dy="0">What happens when a monument</tspan><tspan x="953" dy="21.25">and its community disagree?</tspan></text>
+<rect x="953" y="608" width="92" height="28" rx="7" fill="#dfff58" stroke="#17212b" stroke-width="1"  filter="url(#w)"/>
+<text x="964" y="625" fill="#17212b" font-size="10" font-weight="500"><tspan x="964" dy="0">YOU ARE HERE</tspan></text>
+<polyline points="1090,645 1090,717 970,717" fill="none" stroke="#849c15" stroke-width="2"/>
+<polyline points="1090,645 1090,717 1315,717" fill="none" stroke="#849c15" stroke-width="2"/>
+<rect x="815" y="735" width="310" height="126" rx="7" fill="#efffc4" stroke="#849c15" stroke-width="2" stroke-dasharray="9 7" filter="url(#w)"/>
+<ellipse cx="847" cy="767" rx="14" ry="14" fill="#dfff58" stroke="#849c15" stroke-width="1" filter="url(#w)"/>
+<text x="842" y="771" fill="#506500" font-size="12" font-weight="500"><tspan x="842" dy="0">+</tspan></text>
+<text x="873" y="763" fill="#506500" font-size="9" font-weight="500"><tspan x="873" dy="0">OPEN PATH · OPTION A</tspan></text>
+<text x="833" y="804" fill="#17212b" font-size="16" font-weight="500"><tspan x="833" dy="0">Who gets to rename</tspan><tspan x="833" dy="20">a public place?</tspan></text>
+<text x="833" y="846" fill="#506500" font-size="9" font-weight="500"><tspan x="833" dy="0">EXPLORE THIS  →</tspan></text>
+<rect x="1160" y="735" width="310" height="126" rx="7" fill="#efffc4" stroke="#849c15" stroke-width="2" stroke-dasharray="9 7" filter="url(#w)"/>
+<ellipse cx="1192" cy="767" rx="14" ry="14" fill="#dfff58" stroke="#849c15" stroke-width="1" filter="url(#w)"/>
+<text x="1187" y="771" fill="#506500" font-size="12" font-weight="500"><tspan x="1187" dy="0">+</tspan></text>
+<text x="1218" y="763" fill="#506500" font-size="9" font-weight="500"><tspan x="1218" dy="0">OPEN PATH · OPTION B</tspan></text>
+<text x="1178" y="804" fill="#17212b" font-size="16" font-weight="500"><tspan x="1178" dy="0">Can removal create</tspan><tspan x="1178" dy="20">a stronger memory?</tspan></text>
+<text x="1178" y="846" fill="#506500" font-size="9" font-weight="500"><tspan x="1178" dy="0">EXPLORE THIS  →</tspan></text>
+<rect x="935" y="660" width="310" height="46" rx="7" fill="#17212b" stroke="#17212b" stroke-width="1"  filter="url(#w)"/>
+<text x="970" y="685" fill="#fffdf8" font-size="10" font-weight="500"><tspan x="970" dy="0">OPEN FULL ANSWER</tspan></text>
+<rect x="520" y="920" width="620" height="52" rx="7" fill="#fffdf8" stroke="#849c15" stroke-width="2" stroke-dasharray="9 7" filter="url(#w)"/>
+<text x="550" y="948" fill="#506500" font-size="11" font-weight="500"><tspan x="550" dy="0">OTHER OPEN QUESTIONS FROM EARLIER TURNS (2)</tspan></text>
+<text x="1100" y="949" fill="#506500" font-size="15" font-weight="500"><tspan x="1100" dy="0">⌄</tspan></text>
+<rect x="105" y="1085" width="1400" height="92" rx="7" fill="#e6f4ff" stroke="#3182ce" stroke-width="1"  filter="url(#w)"/>
+<text x="130" y="1116" fill="#1971c2" font-size="10" font-weight="500"><tspan x="130" dy="0">WHY THIS IS DIFFERENT</tspan></text>
+<text x="130" y="1147" fill="#17212b" font-size="14" font-weight="500"><tspan x="130" dy="0">The default view shows one active path and two next choices. Older branches stay collapsed until requested; the complete answer stays in Stage.</tspan></text>
+<text x="1660" y="159" fill="#d64b38" font-size="14" font-weight="500"><tspan x="1660" dy="0">MOBILE · ACTIVE PATH FIRST</tspan></text>
+<rect x="1660" y="180" width="520" height="1080" rx="7" fill="#fffdf8" stroke="#17212b" stroke-width="3"  filter="url(#w)"/>
+<rect x="1660" y="180" width="520" height="52" rx="7" fill="#eeeae2" stroke="#17212b" stroke-width="2"  filter="url(#w)"/>
+<text x="1685" y="211" fill="#17212b" font-size="13" font-weight="500"><tspan x="1685" dy="0">WONDERDRIVE</tspan></text>
+<text x="2070" y="211" fill="#17212b" font-size="12" font-weight="500"><tspan x="2070" dy="0">•••</tspan></text>
+<rect x="1685" y="252" width="235" height="38" rx="7" fill="#fffdf8" stroke="#17212b" stroke-width="1"  filter="url(#w)"/>
+<text x="1776" y="274" fill="#17212b" font-size="10" font-weight="500"><tspan x="1776" dy="0">STAGE</tspan></text>
+<rect x="1920" y="252" width="235" height="38" rx="7" fill="#17212b" stroke="#17212b" stroke-width="1"  filter="url(#w)"/>
+<text x="2013" y="274" fill="#fffdf8" font-size="10" font-weight="500"><tspan x="2013" dy="0">MAP</tspan></text>
+<text x="1685" y="342" fill="#17212b" font-size="22" font-weight="600"><tspan x="1685" dy="0">How does a city remember?</tspan></text>
+<text x="1685" y="364" fill="#667085" font-size="10" font-weight="500"><tspan x="1685" dy="0">Turn 3 of 3 · 4 open paths</tspan></text>
+<polyline points="1685,388 2155,388" fill="none" stroke="#17212b" stroke-width="1"/>
+<text x="1685" y="424" fill="#d64b38" font-size="10" font-weight="500"><tspan x="1685" dy="0">YOUR PATH</tspan></text>
+<rect x="1705" y="452" width="430" height="112" rx="7" fill="#fffdf8" stroke="#17212b" stroke-width="2"  filter="url(#w)"/>
+<ellipse cx="1740" cy="487" rx="15" ry="15" fill="#eeeae2" stroke="#17212b" stroke-width="1" filter="url(#w)"/>
+<text x="1736" y="490" fill="#17212b" font-size="11" font-weight="500"><tspan x="1736" dy="0">1</tspan></text>
+<text x="1770" y="479" fill="#667085" font-size="9" font-weight="500"><tspan x="1770" dy="0">COLLECTIVE MEMORY</tspan></text>
+<text x="1770" y="512" fill="#17212b" font-size="16" font-weight="500"><tspan x="1770" dy="0">How does a city remember?</tspan></text>
+<rect x="1770" y="527" width="73" height="28" rx="7" fill="#eeeae2" stroke="#17212b" stroke-width="1"  filter="url(#w)"/>
+<text x="1781" y="544" fill="#17212b" font-size="10" font-weight="500"><tspan x="1781" dy="0">EXPLORED</tspan></text>
+<polyline points="1740,564 1740,600" fill="none" stroke="#17212b" stroke-width="3"/>
+<rect x="1705" y="600" width="430" height="112" rx="7" fill="#fffdf8" stroke="#17212b" stroke-width="2"  filter="url(#w)"/>
+<ellipse cx="1740" cy="635" rx="15" ry="15" fill="#eeeae2" stroke="#17212b" stroke-width="1" filter="url(#w)"/>
+<text x="1736" y="638" fill="#17212b" font-size="11" font-weight="500"><tspan x="1736" dy="0">2</tspan></text>
+<text x="1770" y="627" fill="#667085" font-size="9" font-weight="500"><tspan x="1770" dy="0">PUBLIC AUTHORITY</tspan></text>
+<text x="1770" y="660" fill="#17212b" font-size="16" font-weight="500"><tspan x="1770" dy="0">Who decides what becomes official?</tspan></text>
+<rect x="1770" y="675" width="73" height="28" rx="7" fill="#eeeae2" stroke="#17212b" stroke-width="1"  filter="url(#w)"/>
+<text x="1781" y="692" fill="#17212b" font-size="10" font-weight="500"><tspan x="1781" dy="0">EXPLORED</tspan></text>
+<polyline points="1740,712 1740,748" fill="none" stroke="#17212b" stroke-width="3"/>
+<rect x="1705" y="748" width="430" height="146" rx="7" fill="#acd8ff" stroke="#17212b" stroke-width="3"  filter="url(#w)"/>
+<ellipse cx="1740" cy="783" rx="15" ry="15" fill="#dfff58" stroke="#17212b" stroke-width="1" filter="url(#w)"/>
+<text x="1736" y="786" fill="#17212b" font-size="11" font-weight="500"><tspan x="1736" dy="0">3</tspan></text>
+<text x="1770" y="775" fill="#667085" font-size="9" font-weight="500"><tspan x="1770" dy="0">CONTESTED MONUMENTS</tspan></text>
+<text x="1770" y="808" fill="#17212b" font-size="16" font-weight="500"><tspan x="1770" dy="0">What happens when a monument</tspan><tspan x="1770" dy="20">and its community disagree?</tspan></text>
+<rect x="1770" y="836" width="95" height="28" rx="7" fill="#dfff58" stroke="#17212b" stroke-width="1"  filter="url(#w)"/>
+<text x="1781" y="853" fill="#17212b" font-size="10" font-weight="500"><tspan x="1781" dy="0">YOU ARE HERE</tspan></text>
+<text x="2070" y="856" fill="#17212b" font-size="14" font-weight="500"><tspan x="2070" dy="0">⌃</tspan></text>
+<rect x="1705" y="910" width="430" height="204" rx="7" fill="#f1f6f8" stroke="#17212b" stroke-width="2"  filter="url(#w)"/>
+<text x="1723" y="937" fill="#d64b38" font-size="9" font-weight="500"><tspan x="1723" dy="0">QUESTIONS FROM THIS TURN</tspan></text>
+<rect x="1723" y="958" width="394" height="58" rx="7" fill="#fffdf8" stroke="#849c15" stroke-width="1"  filter="url(#w)"/>
+<text x="1738" y="980" fill="#506500" font-size="9" font-weight="500"><tspan x="1738" dy="0">A · OPEN</tspan></text>
+<text x="1810" y="984" fill="#17212b" font-size="13" font-weight="500"><tspan x="1810" dy="0">Who gets to rename a public place?</tspan></text>
+<rect x="1723" y="1028" width="394" height="58" rx="7" fill="#efffc4" stroke="#849c15" stroke-width="1"  filter="url(#w)"/>
+<text x="1738" y="1050" fill="#506500" font-size="9" font-weight="500"><tspan x="1738" dy="0">B · OPEN</tspan></text>
+<text x="1810" y="1054" fill="#17212b" font-size="13" font-weight="500"><tspan x="1810" dy="0">Can removal create a stronger memory?</tspan></text>
+<text x="1723" y="1104" fill="#17212b" font-size="9" font-weight="500"><tspan x="1723" dy="0">OPEN FULL ANSWER  →</tspan></text>
+<rect x="1705" y="1132" width="430" height="52" rx="7" fill="#efffc4" stroke="#849c15" stroke-width="2"  filter="url(#w)"/>
+<text x="1723" y="1160" fill="#506500" font-size="11" font-weight="500"><tspan x="1723" dy="0">OTHER OPEN PATHS (2)</tspan></text>
+<text x="2100" y="1161" fill="#506500" font-size="15" font-weight="500"><tspan x="2100" dy="0">⌄</tspan></text>
+<rect x="65" y="1310" width="2115" height="230" rx="7" fill="#f1f6f8" stroke="#c5d0d7" stroke-width="2"  filter="url(#w)"/>
+<text x="95" y="1349" fill="#1971c2" font-size="11" font-weight="500"><tspan x="95" dy="0">THE THREE RULES</tspan></text>
+<ellipse cx="119" cy="1404" rx="19" ry="19" fill="#acd8ff" stroke="#17212b" stroke-width="1" filter="url(#w)"/>
+<text x="114" y="1407" fill="#17212b" font-size="13" font-weight="500"><tspan x="114" dy="0">1</tspan></text>
+<text x="155" y="1398" fill="#17212b" font-size="18" font-weight="500"><tspan x="155" dy="0">Path first</tspan></text>
+<text x="155" y="1422" fill="#667085" font-size="12" font-weight="500"><tspan x="155" dy="0">Show where I am and how I got here before metadata.</tspan></text>
+<ellipse cx="814" cy="1404" rx="19" ry="19" fill="#dfff58" stroke="#17212b" stroke-width="1" filter="url(#w)"/>
+<text x="809" y="1407" fill="#17212b" font-size="13" font-weight="500"><tspan x="809" dy="0">2</tspan></text>
+<text x="850" y="1398" fill="#17212b" font-size="18" font-weight="500"><tspan x="850" dy="0">Show only the next choice</tspan></text>
+<text x="850" y="1422" fill="#667085" font-size="12" font-weight="500"><tspan x="850" dy="0">Two current options are visible; older branches stay collapsed.</tspan></text>
+<ellipse cx="1554" cy="1404" rx="19" ry="19" fill="#ffd2ca" stroke="#17212b" stroke-width="1" filter="url(#w)"/>
+<text x="1549" y="1407" fill="#17212b" font-size="13" font-weight="500"><tspan x="1549" dy="0">3</tspan></text>
+<text x="1590" y="1398" fill="#17212b" font-size="18" font-weight="500"><tspan x="1590" dy="0">Selection expands in place</tspan></text>
+<text x="1590" y="1422" fill="#667085" font-size="12" font-weight="500"><tspan x="1590" dy="0">No permanent panel; Stage still owns the complete researched answer.</tspan></text>
+<polyline points="95,1468 2150,1468" fill="none" stroke="#c5d0d7" stroke-width="1"/>
+<text x="95" y="1504" fill="#17212b" font-size="14" font-weight="500"><tspan x="95" dy="0">No oversized manifesto heading. No ambiguous current + selected status. No flat list pretending to be a graph.</tspan></text>
+</svg>

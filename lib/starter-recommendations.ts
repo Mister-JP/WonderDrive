@@ -10,6 +10,7 @@ import {
   structuredOutput,
 } from "./openai";
 import { hashPayload } from "./request";
+import { recordOpenAIUsage } from "./provider-usage";
 
 const STARTER_SCHEMA = {
   type: "object",
@@ -25,7 +26,7 @@ const STARTER_SCHEMA = {
         additionalProperties: false,
         required: ["question", "topic"],
         properties: {
-          question: { type: "string", minLength: 9, maxLength: 216 },
+          question: { type: "string", minLength: 9, maxLength: 120 },
           topic: { type: "string", minLength: 1, maxLength: 68 },
         },
       },
@@ -56,18 +57,22 @@ export async function getPersonalizedStarters(
 
   if (!openAIConfigured()) return fallbackStarters(performerId);
 
+  const startedAt = Date.now();
+  const purpose = options.refresh ? "manual_refresh" : "cache_miss_or_expired";
+  let usageRecorded = false;
   try {
     const response = await requestOpenAI({
         model: "gpt-5.6-luna",
         instructions: [
-          `WonderDrive prompt ${PROMPT_VERSION}. Create 24 concise, intensely nerdy starting questions for a learner's curiosity ticker.`,
+          `WonderDrive prompt ${PROMPT_VERSION}. Create 24 short, playful starting questions for a learner's curiosity ticker.`,
           "First use web search to scan what is unfolding now across science, computing, space, climate, engineering, archaeology, biology, mathematics, infrastructure, and other knowledge-rich domains.",
-          "Use current events as trapdoors into durable ideas, not as disposable headlines. Prefer hidden mechanisms, strange constraints, unresolved anomalies, obscure dependencies, measurement problems, failure modes, and surprising historical echoes.",
+          "Use current events as trapdoors into durable ideas, not as disposable headlines. Prefer strange abilities, surprising cause-and-effect, tiny mysteries, vivid comparisons, and hidden ways everyday things work.",
           "Use only the ordered topic history supplied below as personalization context. Do not infer private traits, repeat earlier questions, or mention personalization.",
           `Write through the ${performer.name} performer layer: ${performer.cue}`,
           `Voice: ${performer.voiceTraits.join(", ")}. Values: ${performer.values.join(", ")}. Avoid: ${performer.avoids.join(", ")}.`,
           "Mix roughly eight history-adjacent rabbit holes, eight questions sparked by current developments, and eight lateral departures. If there is no history, redistribute those slots across current signals and wildly varied domains.",
-          "Every question must be researchable, vivid, meaningfully different, and specific enough to make a curious person open twelve tabs. Avoid generic prompts, broad explainers, self-help, listicles, celebrity news, and shallow 'what is' framing.",
+          "Every question must be researchable, vivid, meaningfully different, and specific enough to spark a rabbit hole. Use 5–12 words, plain everyday language, one idea at a time, and wording that is fun to say out loud. A curious kid should understand it instantly without the question talking down to them.",
+          "Prefer concrete subjects and a surprising hook: 'Can trees warn each other about bugs?', 'Why do astronauts grow taller in space?', or 'Could a mushroom help build a house?' Avoid academic framing, jargon, stacked clauses, vague abstraction, self-help, listicles, celebrity news, and quiz-like recall.",
           "Do not ask directly about breaking tragedy or turn human suffering into entertainment. Label topics with the underlying domain, not a news outlet or headline.",
           "Return structured output only.",
         ].join("\n"),
@@ -86,8 +91,42 @@ export async function getPersonalizedStarters(
         safety_identifier: `wd_starters_${viewer.identityId}`.slice(0, 64),
         store: false,
     });
-    if (!response.ok) throw new Error(`starter provider status ${response.status}`);
-    const generated = parseStarters(outputText(await response.json()));
+    if (!response.ok) {
+      usageRecorded = true;
+      await recordOpenAIUsage({
+        identityId: viewer.identityId,
+        modelId: "gpt-5.6-luna",
+        operation: "starter_generation",
+        purpose,
+        outcome: "http_error",
+        providerRequestId: response.headers.get("x-request-id"),
+        httpStatus: response.status,
+        latencyMs: Date.now() - startedAt,
+        errorCode: `HTTP_${response.status}`,
+        errorMessage: "Starter generation provider request was rejected.",
+        metadata: { performerId, forcedRefresh: Boolean(options.refresh) },
+      });
+      throw new Error(`starter provider status ${response.status}`);
+    }
+    const payload = await response.json();
+    const generated = parseStarters(outputText(payload));
+    usageRecorded = true;
+    await recordOpenAIUsage({
+      identityId: viewer.identityId,
+      modelId: "gpt-5.6-luna",
+      operation: "starter_generation",
+      purpose,
+      outcome: generated ? "completed" : "validation_failed",
+      response: payload,
+      providerRequestId: response.headers.get("x-request-id"),
+      httpStatus: response.status,
+      latencyMs: Date.now() - startedAt,
+      ...(generated ? {} : {
+        errorCode: "SCHEMA_INVALID",
+        errorMessage: "Starter generation returned an invalid structured response.",
+      }),
+      metadata: { performerId, forcedRefresh: Boolean(options.refresh) },
+    });
     if (!generated) throw new Error("starter output was invalid");
     const now = Date.now();
     await getD1()
@@ -105,6 +144,19 @@ export async function getPersonalizedStarters(
       .run();
     return generated;
   } catch (error) {
+    if (!usageRecorded) {
+      await recordOpenAIUsage({
+        identityId: viewer.identityId,
+        modelId: "gpt-5.6-luna",
+        operation: "starter_generation",
+        purpose,
+        outcome: "transport_error",
+        latencyMs: Date.now() - startedAt,
+        errorCode: error instanceof Error ? error.name : "UNKNOWN_ERROR",
+        errorMessage: error instanceof Error ? error.message : "Starter generation was interrupted.",
+        metadata: { performerId, forcedRefresh: Boolean(options.refresh) },
+      });
+    }
     console.error("WonderDrive starter generation failed", error);
     return fallbackStarters(performerId);
   }
@@ -160,7 +212,7 @@ function parseStarters(value: string | undefined): PersonalizedStarter[] | null 
         question: text(item.question),
         topic: text(item.topic),
       }))
-      .filter((item) => item.question.length >= 10 && item.question.length <= 216 && item.topic.length >= 2);
+      .filter((item) => item.question.length >= 10 && item.question.length <= 120 && item.topic.length >= 2);
     const unique = starters.filter(
       (item, index) => starters.findIndex((candidate) => normalize(candidate.question) === normalize(item.question)) === index,
     );

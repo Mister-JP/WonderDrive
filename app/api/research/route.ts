@@ -73,10 +73,13 @@ export async function POST(request: Request) {
             if (!closed) {
               send({
                 type: "error",
-                error: publicError(
-                  error,
-                  "WonderDrive could not complete live research. No partial journey was saved.",
-                ),
+                error: {
+                  ...publicError(
+                    error,
+                    "WonderDrive could not complete live research. No partial journey was saved.",
+                  ),
+                  diagnosticId: preparation.prepared.requestId,
+                },
               });
             }
           } finally {

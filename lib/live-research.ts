@@ -19,6 +19,7 @@ import {
   requestOpenAI,
   structuredOutput,
 } from "./openai";
+import { recordOpenAIUsage } from "./provider-usage";
 
 export type PreparedLiveResearch = {
   requestId: string;
@@ -116,9 +117,12 @@ type CitationRepairResult = {
 };
 
 const PRESET_LIMITS = {
-  spark: { maxToolCalls: 2, maxOutputTokens: 1_400, reasoning: "low", timeoutMs: 25_000 },
-  standard: { maxToolCalls: 5, maxOutputTokens: 2_400, reasoning: "medium", timeoutMs: 60_000 },
-  deep: { maxToolCalls: 10, maxOutputTokens: 4_000, reasoning: "high", timeoutMs: 120_000 },
+  // max_output_tokens is shared by hidden reasoning and visible output. Keep
+  // enough headroom for the requested reasoning effort to finish before the
+  // model emits the schema-constrained turn; actual usage, not this cap, is billed.
+  spark: { maxToolCalls: 2, maxOutputTokens: 4_000, reasoning: "low", timeoutMs: 25_000 },
+  standard: { maxToolCalls: 5, maxOutputTokens: 8_000, reasoning: "medium", timeoutMs: 60_000 },
+  deep: { maxToolCalls: 10, maxOutputTokens: 16_000, reasoning: "high", timeoutMs: 120_000 },
 } as const;
 
 const TURN_SCHEMA = {
@@ -201,6 +205,32 @@ export async function runLiveResearch(
   let completedResponse: OpenAIResponse | null = null;
   let searchStarted = false;
   let synthesisStarted = false;
+  let usageRecorded = false;
+  let providerRequestId: string | null = null;
+  let providerEventCount = 0;
+  let malformedEventCount = 0;
+  let outputDeltaCount = 0;
+  let lastProviderEventType = "none";
+  let sawProviderDone = false;
+
+  const observeProviderFrame = (kind: "event" | "done" | "malformed", type = "") => {
+    if (kind === "event") {
+      providerEventCount += 1;
+      lastProviderEventType = type || "unknown";
+    } else if (kind === "done") {
+      sawProviderDone = true;
+    } else {
+      malformedEventCount += 1;
+    }
+  };
+  const streamDiagnostics = (stage: string) => ({
+    stage,
+    providerEventCount,
+    malformedEventCount,
+    outputDeltaCount,
+    lastProviderEventType,
+    sawProviderDone,
+  });
 
   const addActivity = (kind: ResearchEvent["kind"], label: string, sourceId: string | null = null) => {
     const event: ResearchEvent = {
@@ -252,12 +282,22 @@ export async function runLiveResearch(
       signal: controller.signal,
       unavailableMessage: "Live research is not configured on this deployment.",
     });
+    providerRequestId = response.headers.get("x-request-id");
 
     if (!response.ok) {
-      const requestId = response.headers.get("x-request-id");
+      usageRecorded = true;
+      await recordOpenAIUsage({
+        ...researchUsageContext(prepared, streamDiagnostics("request_rejected")),
+        outcome: "http_error",
+        providerRequestId,
+        httpStatus: response.status,
+        latencyMs: Date.now() - startedAt,
+        errorCode: `HTTP_${response.status}`,
+        errorMessage: "Live research provider request was rejected.",
+      });
       console.error("OpenAI Responses request failed", {
         status: response.status,
-        requestId,
+        requestId: providerRequestId,
       });
       throw new RepositoryError(
         response.status === 401 || response.status === 403
@@ -272,6 +312,16 @@ export async function runLiveResearch(
     }
 
     if (!response.body) {
+      usageRecorded = true;
+      await recordOpenAIUsage({
+        ...researchUsageContext(prepared, streamDiagnostics("missing_response_body")),
+        outcome: "provider_failed",
+        providerRequestId,
+        httpStatus: response.status,
+        latencyMs: Date.now() - startedAt,
+        errorCode: "MISSING_RESPONSE_BODY",
+        errorMessage: "The live research response did not contain a stream.",
+      });
       throw new RepositoryError(
         "PROVIDER_ERROR",
         "The live research stream ended before it began. The journey was not committed.",
@@ -280,7 +330,7 @@ export async function runLiveResearch(
       );
     }
 
-    for await (const event of readServerSentEvents(response.body)) {
+    for await (const event of readServerSentEvents(response.body, observeProviderFrame)) {
       if (!event || typeof event !== "object") continue;
       const type = typeof event.type === "string" ? event.type : "";
       if (type.includes("web_search_call") && !searchStarted) {
@@ -288,6 +338,7 @@ export async function runLiveResearch(
         addActivity("search", "OpenAI began a live web search for relevant evidence");
       }
       if (type === "response.output_text.delta" && typeof event.delta === "string") {
+        outputDeltaCount += 1;
         outputText += event.delta;
         if (!synthesisStarted) {
           synthesisStarted = true;
@@ -297,7 +348,43 @@ export async function runLiveResearch(
       if (type === "response.completed" && isObject(event.response)) {
         completedResponse = event.response as OpenAIResponse;
       }
+      if (type === "response.incomplete" && isObject(event.response)) {
+        usageRecorded = true;
+        const reason = isObject(event.response.incomplete_details)
+          ? stringValue(event.response.incomplete_details.reason)
+          : "unknown";
+        await recordOpenAIUsage({
+          ...researchUsageContext(prepared, streamDiagnostics("stream_incomplete")),
+          outcome: "incomplete",
+          response: event.response,
+          providerRequestId,
+          httpStatus: response.status,
+          latencyMs: Date.now() - startedAt,
+          errorCode: reason || "INCOMPLETE",
+          errorMessage: `Live research ended incomplete (${reason || "unknown reason"}).`,
+        });
+        throw new RepositoryError(
+          "PROVIDER_ERROR",
+          reason === "max_output_tokens"
+            ? "Live research used its full reasoning and output allowance before the answer was complete. Nothing was saved; please retry."
+            : "The provider ended live research before the answer was complete. Nothing was saved; please retry.",
+          502,
+          true,
+        );
+      }
       if (type === "error" || type === "response.failed") {
+        usageRecorded = true;
+        const failedResponse = isObject(event.response) ? event.response : undefined;
+        await recordOpenAIUsage({
+          ...researchUsageContext(prepared, streamDiagnostics("stream_failed")),
+          outcome: "provider_failed",
+          response: failedResponse,
+          providerRequestId,
+          httpStatus: response.status,
+          latencyMs: Date.now() - startedAt,
+          errorCode: type,
+          errorMessage: "The provider interrupted live research.",
+        });
         throw new RepositoryError(
           "PROVIDER_ERROR",
           "The provider interrupted live research. No partial journey was saved.",
@@ -308,6 +395,20 @@ export async function runLiveResearch(
     }
   } catch (error) {
     if (error instanceof RepositoryError) throw error;
+    if (!usageRecorded) {
+      usageRecorded = true;
+      await recordOpenAIUsage({
+        ...researchUsageContext(prepared, streamDiagnostics("transport_error")),
+        outcome: "transport_error",
+        response: completedResponse ?? undefined,
+        providerRequestId,
+        latencyMs: Date.now() - startedAt,
+        errorCode: controller.signal.aborted ? "ABORTED" : error instanceof Error ? error.name : "UNKNOWN_ERROR",
+        errorMessage: controller.signal.aborted
+          ? String(controller.signal.reason ?? "Live research was aborted.")
+          : error instanceof Error ? error.message : "Live research transport was interrupted.",
+      });
+    }
     if (controller.signal.aborted) {
       throw new RepositoryError(
         "PROVIDER_TIMEOUT",
@@ -328,7 +429,29 @@ export async function runLiveResearch(
     externalSignal?.removeEventListener("abort", abortFromClient);
   }
 
+  if (completedResponse) {
+    usageRecorded = true;
+    await recordOpenAIUsage({
+      ...researchUsageContext(prepared, streamDiagnostics("stream_completed")),
+      outcome: "completed",
+      response: completedResponse,
+      providerRequestId,
+      httpStatus: response.status,
+      latencyMs: Date.now() - startedAt,
+    });
+  }
   if (!completedResponse) {
+    if (!usageRecorded) {
+      await recordOpenAIUsage({
+        ...researchUsageContext(prepared, streamDiagnostics("missing_terminal_event")),
+        outcome: "provider_failed",
+        providerRequestId,
+        httpStatus: response.status,
+        latencyMs: Date.now() - startedAt,
+        errorCode: "MISSING_TERMINAL_EVENT",
+        errorMessage: "The provider stream ended without a terminal response event.",
+      });
+    }
     throw new RepositoryError(
       "PROVIDER_ERROR",
       "Live research finished without a complete provider response. Nothing was saved.",
@@ -458,6 +581,45 @@ export async function runLiveResearch(
   };
 }
 
+function researchUsageContext(
+  prepared: PreparedLiveResearch,
+  diagnosticMetadata: Record<string, string | number | boolean | null> = {},
+) {
+  return {
+    identityId: prepared.identityId,
+    journeyId: prepared.journeyId,
+    turnId: prepared.fromTurnId,
+    researchRequestId: prepared.requestId,
+    modelId: prepared.modelId,
+    operation: "live_research" as const,
+    purpose: prepared.kind === "create" ? "opening_turn" : "follow_up_turn",
+    metadata: {
+      preset: prepared.researchPreset,
+      answerDensity: prepared.answerDensity,
+      imagePreference: prepared.imagePreference,
+      depth: prepared.depth,
+      ...diagnosticMetadata,
+    },
+  };
+}
+
+function supplementalUsageContext(
+  prepared: PreparedLiveResearch,
+  operation: "citation_repair" | "citation_recovery",
+  purpose: string,
+) {
+  return {
+    identityId: prepared.identityId,
+    journeyId: prepared.journeyId,
+    turnId: prepared.fromTurnId,
+    researchRequestId: prepared.requestId,
+    modelId: prepared.modelId,
+    operation,
+    purpose,
+    metadata: { depth: prepared.depth, preset: prepared.researchPreset },
+  };
+}
+
 function buildInstructions(performer: (typeof PERFORMERS)[number]): string {
   return [
     `WonderDrive prompt ${PROMPT_VERSION}. You are the research-performer inside WonderDrive, a curiosity product for learners.`,
@@ -514,6 +676,8 @@ async function runCitationRepair(
   prepared: PreparedLiveResearch,
   externalSignal?: AbortSignal,
 ): Promise<{ repair: CitationRepair; response: OpenAIResponse }> {
+  const startedAt = Date.now();
+  let usageRecorded = false;
   const sourceIds = providerSources.map((_, index) => `S${index + 1}`);
   const blockCount = Math.min(5, modelTurn.answerBlocks.length);
   const schema = {
@@ -577,6 +741,16 @@ async function runCitationRepair(
         signal: controller.signal,
     });
     if (!response.ok) {
+      usageRecorded = true;
+      await recordOpenAIUsage({
+        ...supplementalUsageContext(prepared, "citation_repair", "citation_pointer_mismatch"),
+        outcome: "http_error",
+        providerRequestId: response.headers.get("x-request-id"),
+        httpStatus: response.status,
+        latencyMs: Date.now() - startedAt,
+        errorCode: `HTTP_${response.status}`,
+        errorMessage: "Citation repair provider request was rejected.",
+      });
       console.error("WonderDrive citation repair request failed", {
         status: response.status,
         requestId: response.headers.get("x-request-id"),
@@ -588,11 +762,56 @@ async function runCitationRepair(
     try {
       parsed = JSON.parse(extractOutputText(payload));
     } catch {
+      usageRecorded = true;
+      await recordOpenAIUsage({
+        ...supplementalUsageContext(prepared, "citation_repair", "citation_pointer_mismatch"),
+        outcome: "validation_failed",
+        response: payload,
+        providerRequestId: response.headers.get("x-request-id"),
+        httpStatus: response.status,
+        latencyMs: Date.now() - startedAt,
+        errorCode: "SCHEMA_INVALID",
+        errorMessage: "Citation repair returned invalid structured output.",
+      });
       throw citationRepairFailure();
     }
-    if (!isObject(parsed) || !Array.isArray(parsed.blocks)) throw citationRepairFailure();
+    if (!isObject(parsed) || !Array.isArray(parsed.blocks)) {
+      usageRecorded = true;
+      await recordOpenAIUsage({
+        ...supplementalUsageContext(prepared, "citation_repair", "citation_pointer_mismatch"),
+        outcome: "validation_failed",
+        response: payload,
+        providerRequestId: response.headers.get("x-request-id"),
+        httpStatus: response.status,
+        latencyMs: Date.now() - startedAt,
+        errorCode: "SCHEMA_INVALID",
+        errorMessage: "Citation repair returned an invalid block collection.",
+      });
+      throw citationRepairFailure();
+    }
+    usageRecorded = true;
+    await recordOpenAIUsage({
+      ...supplementalUsageContext(prepared, "citation_repair", "citation_pointer_mismatch"),
+      outcome: "completed",
+      response: payload,
+      providerRequestId: response.headers.get("x-request-id"),
+      httpStatus: response.status,
+      latencyMs: Date.now() - startedAt,
+    });
     return { repair: parsed as CitationRepair, response: payload };
   } catch (error) {
+    if (!usageRecorded) {
+      usageRecorded = true;
+      await recordOpenAIUsage({
+        ...supplementalUsageContext(prepared, "citation_repair", "citation_pointer_mismatch"),
+        outcome: "transport_error",
+        latencyMs: Date.now() - startedAt,
+        errorCode: controller.signal.aborted ? "ABORTED" : error instanceof Error ? error.name : "UNKNOWN_ERROR",
+        errorMessage: controller.signal.aborted
+          ? String(controller.signal.reason ?? "Citation repair was aborted.")
+          : error instanceof Error ? error.message : "Citation repair was interrupted.",
+      });
+    }
     if (error instanceof RepositoryError) throw error;
     console.error("WonderDrive citation repair was interrupted", error);
     throw citationRepairFailure();
@@ -645,6 +864,8 @@ async function runCitationRecovery(
   prepared: PreparedLiveResearch,
   externalSignal?: AbortSignal,
 ): Promise<{ recovery: CitationRecovery; response: OpenAIResponse }> {
+  const startedAt = Date.now();
+  let usageRecorded = false;
   const blockCount = unsupportedIndexes.length;
   const schema = {
     type: "object",
@@ -704,6 +925,16 @@ async function runCitationRecovery(
       store: false,
     }, { signal: controller.signal });
     if (!response.ok) {
+      usageRecorded = true;
+      await recordOpenAIUsage({
+        ...supplementalUsageContext(prepared, "citation_recovery", "unsupported_claim_recovery"),
+        outcome: "http_error",
+        providerRequestId: response.headers.get("x-request-id"),
+        httpStatus: response.status,
+        latencyMs: Date.now() - startedAt,
+        errorCode: `HTTP_${response.status}`,
+        errorMessage: "Citation recovery provider request was rejected.",
+      });
       console.error("WonderDrive citation recovery request failed", {
         status: response.status,
         requestId: response.headers.get("x-request-id"),
@@ -715,11 +946,56 @@ async function runCitationRecovery(
     try {
       parsed = JSON.parse(extractOutputText(payload));
     } catch {
+      usageRecorded = true;
+      await recordOpenAIUsage({
+        ...supplementalUsageContext(prepared, "citation_recovery", "unsupported_claim_recovery"),
+        outcome: "validation_failed",
+        response: payload,
+        providerRequestId: response.headers.get("x-request-id"),
+        httpStatus: response.status,
+        latencyMs: Date.now() - startedAt,
+        errorCode: "SCHEMA_INVALID",
+        errorMessage: "Citation recovery returned invalid structured output.",
+      });
       throw citationRepairFailure();
     }
-    if (!isObject(parsed) || !Array.isArray(parsed.blocks)) throw citationRepairFailure();
+    if (!isObject(parsed) || !Array.isArray(parsed.blocks)) {
+      usageRecorded = true;
+      await recordOpenAIUsage({
+        ...supplementalUsageContext(prepared, "citation_recovery", "unsupported_claim_recovery"),
+        outcome: "validation_failed",
+        response: payload,
+        providerRequestId: response.headers.get("x-request-id"),
+        httpStatus: response.status,
+        latencyMs: Date.now() - startedAt,
+        errorCode: "SCHEMA_INVALID",
+        errorMessage: "Citation recovery returned an invalid block collection.",
+      });
+      throw citationRepairFailure();
+    }
+    usageRecorded = true;
+    await recordOpenAIUsage({
+      ...supplementalUsageContext(prepared, "citation_recovery", "unsupported_claim_recovery"),
+      outcome: "completed",
+      response: payload,
+      providerRequestId: response.headers.get("x-request-id"),
+      httpStatus: response.status,
+      latencyMs: Date.now() - startedAt,
+    });
     return { recovery: parsed as CitationRecovery, response: payload };
   } catch (error) {
+    if (!usageRecorded) {
+      usageRecorded = true;
+      await recordOpenAIUsage({
+        ...supplementalUsageContext(prepared, "citation_recovery", "unsupported_claim_recovery"),
+        outcome: "transport_error",
+        latencyMs: Date.now() - startedAt,
+        errorCode: controller.signal.aborted ? "ABORTED" : error instanceof Error ? error.name : "UNKNOWN_ERROR",
+        errorMessage: controller.signal.aborted
+          ? String(controller.signal.reason ?? "Citation recovery was aborted.")
+          : error instanceof Error ? error.message : "Citation recovery was interrupted.",
+      });
+    }
     if (error instanceof RepositoryError) throw error;
     console.error("WonderDrive citation recovery was interrupted", error);
     throw citationRepairFailure();
@@ -924,7 +1200,10 @@ function densityVerbosity(density: AnswerDensity) {
   return density === "brief" ? "low" : density === "rich" ? "high" : "medium";
 }
 
-async function* readServerSentEvents(stream: ReadableStream<Uint8Array>) {
+async function* readServerSentEvents(
+  stream: ReadableStream<Uint8Array>,
+  observe: (kind: "event" | "done" | "malformed", type?: string) => void = () => {},
+) {
   const reader = stream.getReader();
   const decoder = new TextDecoder();
   let buffer = "";
@@ -935,22 +1214,42 @@ async function* readServerSentEvents(stream: ReadableStream<Uint8Array>) {
       const frames = buffer.split(/\r?\n\r?\n/);
       buffer = frames.pop() ?? "";
       for (const frame of frames) {
-        const data = frame
-          .split(/\r?\n/)
-          .filter((line) => line.startsWith("data:"))
-          .map((line) => line.slice(5).trimStart())
-          .join("\n");
-        if (!data || data === "[DONE]") continue;
-        try {
-          yield JSON.parse(data) as Record<string, unknown>;
-        } catch {
-          // Ignore non-JSON keepalive frames from the upstream stream.
-        }
+        const event = parseServerSentEvent(frame, observe);
+        if (event) yield event;
       }
-      if (done) break;
+      if (done) {
+        const finalEvent = parseServerSentEvent(buffer, observe);
+        if (finalEvent) yield finalEvent;
+        break;
+      }
     }
   } finally {
     reader.releaseLock();
+  }
+}
+
+function parseServerSentEvent(
+  frame: string,
+  observe: (kind: "event" | "done" | "malformed", type?: string) => void,
+): Record<string, unknown> | null {
+  const data = frame
+    .split(/\r?\n/)
+    .filter((line) => line.startsWith("data:"))
+    .map((line) => line.slice(5).trimStart())
+    .join("\n");
+  if (!data) return null;
+  if (data === "[DONE]") {
+    observe("done");
+    return null;
+  }
+  try {
+    const event = JSON.parse(data) as Record<string, unknown>;
+    observe("event", typeof event.type === "string" ? event.type : "unknown");
+    return event;
+  } catch {
+    observe("malformed");
+    // Ignore non-JSON keepalive frames from the upstream stream.
+    return null;
   }
 }
 

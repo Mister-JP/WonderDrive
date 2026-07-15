@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2316" height="1062" viewBox="0 0 2316 1062">
+<rect width="2316" height="1062" fill="#fbf8ef"/>
+<style>text{font-family:"Comic Sans MS","Bradley Hand",cursive}</style>
+<defs><marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="context-stroke"/></marker></defs>
+<rect x="45" y="45" width="2226" height="972" rx="10" fill="#fffdf8" stroke="#202933" stroke-width="3"/>
+<ellipse cx="99.60000000000001" cy="109.80000000000001" rx="25.200000000000003" ry="32.400000000000006" fill="#202933" stroke="#202933" stroke-width="1"/>
+<text x="92.25" y="109.9" fill="#fffdf8" font-size="19" font-weight="500"><tspan x="92.25" dy="0">3</tspan></text>
+<text x="143.7" y="108.4" fill="#202933" font-size="31" font-weight="600"><tspan x="143.7" dy="0">Inside WonderDrive</tspan></text>
+<text x="145.8" y="145.05" fill="#63707c" font-size="15" font-weight="500"><tspan x="145.8" dy="0">A container/component view: which code boundary owns each responsibility</tspan></text>
+<rect x="1908.75" y="77.4" width="309.75" height="56.7" rx="8" fill="#e4ff6a" stroke="#202933" stroke-width="1" transform="rotate(-0.34377467707849396 2063.625 105.75)"/>
+<text x="1937.1000000000001" y="105.6" fill="#202933" font-size="12" font-weight="500" transform="rotate(-0.34377467707849396 2047.6335000000001 102.88125)"><tspan x="1937.1000000000001" dy="0">CURRENT IMPLEMENTATION · JUL 2026</tspan></text>
+<polyline points="74.4,174.60000000000002 2241.6000000000004,174.60000000000002" fill="none" stroke="#63707c" stroke-width="1"/>
+<text x="87" y="228.75" fill="#cf4c38" font-size="15" font-weight="500"><tspan x="87" dy="0">browser</tspan></text>
+<rect x="87" y="254.25" width="315" height="243.00000000000003" rx="8" fill="#ffd8ce" stroke="#cf4c38" stroke-width="2"/>
+<text x="110.10000000000001" y="299.55" fill="#202933" font-size="21" font-weight="600"><tspan x="110.10000000000001" dy="0">React experience</tspan></text>
+<text x="110.10000000000001" y="349.25" fill="#63707c" font-size="14" font-weight="500"><tspan x="110.10000000000001" dy="0">stage · map · library</tspan><tspan x="110.10000000000001" dy="17.5">client API · SSE reader</tspan><tspan x="110.10000000000001" dy="17.5">view state only</tspan></text>
+<text x="110.10000000000001" y="470.45000000000005" fill="#63707c" font-size="11" font-weight="500"><tspan x="110.10000000000001" dy="0">app/wonderdrive-experience.tsx</tspan></text>
+<rect x="459.75" y="207" width="1102.5" height="675" rx="8" fill="#fffdf8" stroke="#2672a8" stroke-width="4"/>
+<text x="491.25" y="263.05" fill="#2672a8" font-size="25" font-weight="600"><tspan x="491.25" dy="0">ChatGPT Sites — trusted application boundary</tspan></text>
+<rect x="496.5" y="308.25" width="315" height="236.25000000000003" rx="8" fill="#dceeff" stroke="#2672a8" stroke-width="2"/>
+<text x="519.6" y="351.55" fill="#202933" font-size="19" font-weight="500"><tspan x="519.6" dy="0">API + identity</tspan></text>
+<text x="519.6" y="402.25" fill="#63707c" font-size="13" font-weight="500"><tspan x="519.6" dy="0">same-origin mutation gate</tspan><tspan x="519.6" dy="16.25">guest / ChatGPT viewer</tspan><tspan x="519.6" dy="16.25">ownership-scoped responses</tspan></text>
+<text x="519.6" y="517.7" fill="#63707c" font-size="11" font-weight="500"><tspan x="519.6" dy="0">lib/api.ts · lib/viewer.ts</tspan></text>
+<rect x="853.5" y="308.25" width="315" height="236.25000000000003" rx="8" fill="#eee6ff" stroke="#7451b8" stroke-width="2"/>
+<text x="876.6" y="351.55" fill="#202933" font-size="19" font-weight="500"><tspan x="876.6" dy="0">Research service</tspan></text>
+<text x="876.6" y="402.25" fill="#63707c" font-size="13" font-weight="500"><tspan x="876.6" dy="0">context assembly</tspan><tspan x="876.6" dy="16.25">OpenAI stream normalization</tspan><tspan x="876.6" dy="16.25">schema + source validation</tspan></text>
+<text x="876.6" y="517.7" fill="#63707c" font-size="11" font-weight="500"><tspan x="876.6" dy="0">lib/live-research.ts</tspan></text>
+<rect x="1210.5" y="308.25" width="315" height="236.25000000000003" rx="8" fill="#ece9e1" stroke="#202933" stroke-width="2"/>
+<text x="1233.6000000000001" y="351.55" fill="#202933" font-size="19" font-weight="500"><tspan x="1233.6000000000001" dy="0">Journey service</tspan></text>
+<text x="1233.6000000000001" y="402.25" fill="#63707c" font-size="13" font-weight="500"><tspan x="1233.6000000000001" dy="0">create · advance · branch</tspan><tspan x="1233.6000000000001" dy="16.25">compare · snapshot · export</tspan><tspan x="1233.6000000000001" dy="16.25">exactly-two path invariant</tspan></text>
+<text x="1233.6000000000001" y="517.7" fill="#63707c" font-size="11" font-weight="500"><tspan x="1233.6000000000001" dy="0">lib/repository.ts</tspan></text>
+<rect x="669.75" y="612" width="651" height="202.5" rx="8" fill="#ddf7e8" stroke="#16815d" stroke-width="2"/>
+<text x="692.85" y="657.3000000000001" fill="#202933" font-size="21" font-weight="600"><tspan x="692.85" dy="0">D1 persistence adapter</tspan></text>
+<text x="692.85" y="706" fill="#63707c" font-size="13" font-weight="500"><tspan x="692.85" dy="0">Sites-managed `DB` binding · prepared SQL · D1 batch transactions</tspan><tspan x="692.85" dy="16.25">optimistic versions · idempotent replay · cost and usage ledgers</tspan></text>
+<text x="692.85" y="787.7" fill="#63707c" font-size="11" font-weight="500"><tspan x="692.85" dy="0">repository boundary</tspan></text>
+<text x="1635.75" y="228.75" fill="#7451b8" font-size="15" font-weight="500"><tspan x="1635.75" dy="0">managed services</tspan></text>
+<rect x="1635.75" y="254.25" width="546" height="229.50000000000003" rx="8" fill="#eee6ff" stroke="#7451b8" stroke-width="2"/>
+<text x="1658.8500000000001" y="299.55" fill="#202933" font-size="21" font-weight="600"><tspan x="1658.8500000000001" dy="0">OpenAI Responses API</tspan></text>
+<text x="1658.8500000000001" y="348.25" fill="#63707c" font-size="13" font-weight="500"><tspan x="1658.8500000000001" dy="0">web research · optional image results</tspan><tspan x="1658.8500000000001" dy="16.25">structured output · source set · usage</tspan></text>
+<text x="1658.8500000000001" y="456.95000000000005" fill="#63707c" font-size="11" font-weight="500"><tspan x="1658.8500000000001" dy="0">OPENAI_API_KEY remains server-only</tspan></text>
+<rect x="1635.75" y="551.25" width="546" height="317.25" rx="8" fill="#ddf7e8" stroke="#16815d" stroke-width="2"/>
+<text x="1658.8500000000001" y="596.5500000000001" fill="#202933" font-size="21" font-weight="600"><tspan x="1658.8500000000001" dy="0">D1 data groups</tspan></text>
+<text x="1658.8500000000001" y="645.25" fill="#63707c" font-size="13" font-weight="500"><tspan x="1658.8500000000001" dy="0">IDENTITY  identities · preferences · upgrades · starter cache</tspan><tspan x="1658.8500000000001" dy="16.25">JOURNEYS  turns · options · actions · edges</tspan><tspan x="1658.8500000000001" dy="16.25">RESEARCH  requests · runs · events · sources · relations</tspan><tspan x="1658.8500000000001" dy="16.25">CONTROL  usage ledgers · idempotency · snapshots</tspan></text>
+<text x="1658.8500000000001" y="841.7" fill="#63707c" font-size="11" font-weight="500"><tspan x="1658.8500000000001" dy="0">D1 is canonical; the browser has no DB binding</tspan></text>
+<polyline points="402,375.75 496.5,375.75" fill="none" stroke="#202933" stroke-width="3" marker-end="url(#arr)"/>
+<text x="417.75" y="322.95000000000005" fill="#63707c" font-size="12" font-weight="500"><tspan x="417.75" dy="0">JSON / SSE</tspan></text>
+<polyline points="811.5,423 853.5,423" fill="none" stroke="#2672a8" stroke-width="3" marker-end="url(#arr)"/>
+<polyline points="811.5,470.25 832.5,470.25 832.5,578.25 1210.5,578.25 1210.5,470.25" fill="none" stroke="#202933" stroke-width="3" marker-end="url(#arr)"/>
+<polyline points="1011,544.5 1011,612" fill="none" stroke="#16815d" stroke-width="3" marker-end="url(#arr)"/>
+<text x="1026.75" y="576.75" fill="#16815d" font-size="12" font-weight="500"><tspan x="1026.75" dy="0">validated turn</tspan></text>
+<polyline points="1368,544.5 1368,679.5 1320.75,679.5" fill="none" stroke="#16815d" stroke-width="3" marker-end="url(#arr)"/>
+<text x="1381.65" y="637.5" fill="#16815d" font-size="12" font-weight="500"><tspan x="1381.65" dy="0">journey state</tspan></text>
+<polyline points="1168.5,456.75 1189.5,456.75 1189.5,571.5 1562.25,571.5 1562.25,429.75 1635.75,429.75" fill="none" stroke="#7451b8" stroke-width="3" marker-end="url(#arr)"/>
+<text x="1488.75" y="493.05" fill="#7451b8" font-size="12" font-weight="500"><tspan x="1488.75" dy="0">provider request</tspan></text>
+<polyline points="1320.75,706.5 1635.75,706.5" fill="none" stroke="#16815d" stroke-width="3" marker-end="url(#arr)"/>
+<text x="1394.25" y="671.25" fill="#16815d" font-size="12" font-weight="500"><tspan x="1394.25" dy="0">prepared SQL / batch</tspan></text>
+<rect x="87" y="571.5" width="315" height="216" rx="8" fill="#ffd8ce" stroke="#cf4c38" stroke-width="2" transform="rotate(-0.5729577951308232 244.5 679.5)"/>
+<text x="110.10000000000001" y="613.8000000000001" fill="#202933" font-size="18" font-weight="500" transform="rotate(-0.5729577951308232 151.512 610.1437500000001)"><tspan x="110.10000000000001" dy="0">Identity</tspan></text>
+<text x="110.10000000000001" y="650.6500000000001" fill="#63707c" font-size="13" font-weight="500" transform="rotate(-0.5729577951308232 237.99 688.2750000000001)"><tspan x="110.10000000000001" dy="0">Guest: HttpOnly cookie</tspan><tspan x="110.10000000000001" dy="16.25">Signed in: hashed ChatGPT subject</tspan><tspan x="110.10000000000001" dy="16.25">Profile: email + optional full name</tspan><tspan x="110.10000000000001" dy="16.25">Upgrade: explicit + idempotent</tspan><tspan x="110.10000000000001" dy="16.25">No app-owned passwords</tspan></text>
+<rect x="87" y="814.5" width="315" height="135" rx="8" fill="#fff2a8" stroke="#202933" stroke-width="2" transform="rotate(0.45836623610465854 244.5 882)"/>
+<text x="110.10000000000001" y="856.8000000000001" fill="#202933" font-size="18" font-weight="500" transform="rotate(0.45836623610465854 208.45350000000002 853.1437500000001)"><tspan x="110.10000000000001" dy="0">Deliberately absent</tspan></text>
+<text x="110.10000000000001" y="893.6500000000001" fill="#63707c" font-size="13" font-weight="500" transform="rotate(0.45836623610465854 237.99 900.9000000000001)"><tspan x="110.10000000000001" dy="0">No queues · schedulers · background</tspan><tspan x="110.10000000000001" dy="16.25">continuation · model fan-out</tspan></text>
+<rect x="1058.25" y="895.5" width="504" height="94.5" rx="8" fill="#dceeff" stroke="#2672a8" stroke-width="2" transform="rotate(-0.45836623610465854 1310.25 942.75)"/>
+<text x="1081.3500000000001" y="937.8000000000001" fill="#202933" font-size="18" font-weight="500" transform="rotate(-0.45836623610465854 1153.8210000000001 934.1437500000001)"><tspan x="1081.3500000000001" dy="0">Trust boundary</tspan></text>
+<text x="1081.3500000000001" y="973.6500000000001" fill="#63707c" font-size="12" font-weight="500" transform="rotate(-0.45836623610465854 1309.1160000000002 970.9312500000001)"><tspan x="1081.3500000000001" dy="0">Secrets, prompts, source validation, and D1 access stay server-side.</tspan></text>
+</svg>

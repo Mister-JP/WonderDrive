@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2316" height="792" viewBox="0 0 2316 792">
+<rect width="2316" height="792" fill="#fbf8ef"/>
+<style>text{font-family:"Comic Sans MS","Bradley Hand",cursive}</style>
+<defs><marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="context-stroke"/></marker></defs>
+<rect x="45" y="45" width="2226" height="702" rx="10" fill="#fffdf8" stroke="#202933" stroke-width="3"/>
+<ellipse cx="99.60000000000001" cy="109.80000000000001" rx="25.200000000000003" ry="32.400000000000006" fill="#202933" stroke="#202933" stroke-width="1"/>
+<text x="92.25" y="109.9" fill="#fffdf8" font-size="19" font-weight="500"><tspan x="92.25" dy="0">4</tspan></text>
+<text x="143.7" y="108.4" fill="#202933" font-size="31" font-weight="600"><tspan x="143.7" dy="0">Deployment topology</tspan></text>
+<text x="145.8" y="145.05" fill="#63707c" font-size="15" font-weight="500"><tspan x="145.8" dy="0">The infrastructure view: how source becomes a public release and where production configuration lives</tspan></text>
+<rect x="1908.75" y="77.4" width="309.75" height="56.7" rx="8" fill="#e4ff6a" stroke="#202933" stroke-width="1" transform="rotate(-0.34377467707849396 2063.625 105.75)"/>
+<text x="1937.1000000000001" y="105.6" fill="#202933" font-size="12" font-weight="500" transform="rotate(-0.34377467707849396 2047.6335000000001 102.88125)"><tspan x="1937.1000000000001" dy="0">CURRENT IMPLEMENTATION · JUL 2026</tspan></text>
+<polyline points="74.4,174.60000000000002 2241.6000000000004,174.60000000000002" fill="none" stroke="#63707c" stroke-width="1"/>
+<rect x="97.5" y="254.25" width="357" height="229.50000000000003" rx="8" fill="#ece9e1" stroke="#202933" stroke-width="2"/>
+<text x="120.60000000000001" y="300.55" fill="#202933" font-size="22" font-weight="600"><tspan x="120.60000000000001" dy="0">GitHub repository</tspan></text>
+<text x="120.60000000000001" y="349.25" fill="#63707c" font-size="14" font-weight="500"><tspan x="120.60000000000001" dy="0">application source</tspan><tspan x="120.60000000000001" dy="17.5">lockfile + tests</tspan><tspan x="120.60000000000001" dy="17.5">database migrations</tspan></text>
+<text x="120.60000000000001" y="456.95000000000005" fill="#63707c" font-size="11" font-weight="500"><tspan x="120.60000000000001" dy="0">public repository</tspan></text>
+<rect x="538.5" y="254.25" width="357" height="229.50000000000003" rx="8" fill="#ffd8ce" stroke="#cf4c38" stroke-width="2"/>
+<text x="561.6" y="300.55" fill="#202933" font-size="22" font-weight="600"><tspan x="561.6" dy="0">GitHub Actions</tspan></text>
+<text x="561.6" y="349.25" fill="#63707c" font-size="14" font-weight="500"><tspan x="561.6" dy="0">architecture check · lint</tspan><tspan x="561.6" dy="17.5">typecheck · production build</tspan><tspan x="561.6" dy="17.5">rendered + adapter tests</tspan></text>
+<text x="561.6" y="456.95000000000005" fill="#63707c" font-size="11" font-weight="500"><tspan x="561.6" dy="0">verification only—no paid provider call</tspan></text>
+<rect x="979.5" y="207" width="493.5" height="324" rx="8" fill="#dceeff" stroke="#2672a8" stroke-width="4"/>
+<text x="1002.6" y="255.3" fill="#202933" font-size="24" font-weight="600"><tspan x="1002.6" dy="0">ChatGPT Sites release</tspan></text>
+<text x="1002.6" y="302" fill="#63707c" font-size="14" font-weight="500"><tspan x="1002.6" dy="0">public WonderDrive URL</tspan><tspan x="1002.6" dy="17.5">Vinext web app + server routes</tspan><tspan x="1002.6" dy="17.5">Sign in with ChatGPT identity seam</tspan><tspan x="1002.6" dy="17.5">reviewed deployment + rollback path</tspan></text>
+<text x="1002.6" y="504.20000000000005" fill="#63707c" font-size="11" font-weight="500"><tspan x="1002.6" dy="0">production application boundary</tspan></text>
+<rect x="1599" y="186.75" width="546" height="209.25" rx="8" fill="#eee6ff" stroke="#7451b8" stroke-width="2"/>
+<text x="1622.1000000000001" y="233.05" fill="#202933" font-size="22" font-weight="600"><tspan x="1622.1000000000001" dy="0">OpenAI project</tspan></text>
+<text x="1622.1000000000001" y="281.75" fill="#63707c" font-size="14" font-weight="500"><tspan x="1622.1000000000001" dy="0">Responses API access</tspan><tspan x="1622.1000000000001" dy="17.5">model/search quota · usage billing</tspan><tspan x="1622.1000000000001" dy="17.5">emergency key disable</tspan></text>
+<text x="1622.1000000000001" y="369.20000000000005" fill="#63707c" font-size="11" font-weight="500"><tspan x="1622.1000000000001" dy="0">called only from Sites server routes</tspan></text>
+<rect x="1599" y="443.25" width="546" height="222.75000000000003" rx="8" fill="#ddf7e8" stroke="#16815d" stroke-width="2"/>
+<text x="1622.1000000000001" y="489.55" fill="#202933" font-size="22" font-weight="600"><tspan x="1622.1000000000001" dy="0">Sites-managed D1</tspan></text>
+<text x="1622.1000000000001" y="538.25" fill="#63707c" font-size="14" font-weight="500"><tspan x="1622.1000000000001" dy="0">canonical SQLite-compatible database</tspan><tspan x="1622.1000000000001" dy="17.5">packaged Drizzle migrations · prepared SQL / batch</tspan><tspan x="1622.1000000000001" dy="17.5">backup and restore verification gate</tspan></text>
+<text x="1622.1000000000001" y="639.2" fill="#63707c" font-size="11" font-weight="500"><tspan x="1622.1000000000001" dy="0">canonical current persistence · DB binding</tspan></text>
+<polyline points="454.5,369 538.5,369" fill="none" stroke="#202933" stroke-width="3" marker-end="url(#arr)"/>
+<text x="472.35" y="336.1" fill="#63707c" font-size="13" font-weight="500"><tspan x="472.35" dy="0">push / PR</tspan></text>
+<polyline points="895.5,369 979.5,369" fill="none" stroke="#202933" stroke-width="3" marker-end="url(#arr)"/>
+<text x="906" y="336.1" fill="#63707c" font-size="13" font-weight="500"><tspan x="906" dy="0">verified release</tspan></text>
+<polyline points="1473,294.75 1599,294.75" fill="none" stroke="#7451b8" stroke-width="3" marker-end="url(#arr)"/>
+<text x="1488.75" y="260.5" fill="#7451b8" font-size="13" font-weight="500"><tspan x="1488.75" dy="0">server request</tspan></text>
+<polyline points="1473,483.75000000000006 1599,483.75000000000006" fill="none" stroke="#16815d" stroke-width="3" marker-end="url(#arr)"/>
+<text x="1504.5" y="449.5" fill="#16815d" font-size="13" font-weight="500"><tspan x="1504.5" dy="0">runtime DB</tspan></text>
+<polyline points="1473,571.5 1599,571.5" fill="none" stroke="#16815d" stroke-width="3" stroke-dasharray="10 8" marker-end="url(#arr)"/>
+<text x="1504.5" y="598" fill="#16815d" font-size="13" font-weight="500"><tspan x="1504.5" dy="0">migrations</tspan></text>
+<rect x="97.5" y="544.5" width="798" height="121.50000000000001" rx="8" fill="#fff2a8" stroke="#202933" stroke-width="2" transform="rotate(-0.2864788975654116 496.5 605.25)"/>
+<text x="120.60000000000001" y="586.8000000000001" fill="#202933" font-size="18" font-weight="500" transform="rotate(-0.2864788975654116 182.71800000000002 583.1437500000001)"><tspan x="120.60000000000001" dy="0">Release rule</tspan></text>
+<text x="120.60000000000001" y="623.6500000000001" fill="#63707c" font-size="13" font-weight="500" transform="rotate(-0.2864788975654116 522.54 620.7750000000001)"><tspan x="120.60000000000001" dy="0">CI proves the build; production secrets are injected by the hosting environment and never committed to GitHub.</tspan></text>
+<rect x="979.5" y="558" width="493.5" height="108" rx="8" fill="#fff2a8" stroke="#202933" stroke-width="2" transform="rotate(0.34377467707849396 1226.25 612)"/>
+<text x="1002.6" y="600.3000000000001" fill="#202933" font-size="18" font-weight="500" transform="rotate(0.34377467707849396 1132.0125 596.6437500000001)"><tspan x="1002.6" dy="0">Server-only configuration</tspan></text>
+<text x="1002.6" y="636.1500000000001" fill="#63707c" font-size="12" font-weight="500" transform="rotate(0.34377467707849396 1210.269 633.4312500000001)"><tspan x="1002.6" dy="0">OPENAI_API_KEY · daily budget limit · Sites-managed DB binding</tspan></text>
+</svg>

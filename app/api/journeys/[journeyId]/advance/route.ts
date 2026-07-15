@@ -14,9 +14,11 @@ export async function POST(request: Request, context: Context) {
     const body = await readJson<AdvanceJourneyRequest>(request);
     return advanceJourney(viewer, journeyId, body, async ({ journey, turn }) =>
       runLiveRedraw({
+        identityId: viewer.identityId,
+        journeyId,
         turn,
         performerId: journey.performerId,
-        modelId: journey.modelId,
+        modelId: body.modelId ?? journey.modelId,
         rejectedQuestions: [
           ...await listRejectedQuestions(viewer, journeyId),
           ...turn.options.map((option) => option.question),

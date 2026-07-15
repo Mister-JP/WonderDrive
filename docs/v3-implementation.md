@@ -7,7 +7,7 @@ This release closes the implementation gaps identified against the final researc
 - Sage, Spark, and Mechanist are versioned performer contracts with visible samples, values, voice traits, failure boundaries, and research posture.
 - The model registry discloses provider, snapshot, capabilities, speed, quality, cost band, price-effective date, and recommendation state. Visitors can select any current general-purpose OpenAI model compatible with WonderDrive's Responses, web-search, and structured-output contract; GPT-5.6 Luna remains the recommended default.
 - Research preset, answer density, and factual-image preference are independent inputs.
-- The same selected model researches and performs each live turn. It receives a bounded context packet with ancestor handoffs and audience signals.
+- The model selected for a live turn researches and performs that entire turn. The audience may switch models before the next turn; committed turns retain their original model metadata.
 - A validated turn contains two to five cited answer blocks and exactly two distinct next paths. Unchosen paths stay open and can create visible branches later.
 
 ## Trust and durability
@@ -29,4 +29,6 @@ This release closes the implementation gaps identified against the final researc
 
 ## Deployment and operations
 
-The Sites build packages `.openai/hosting.json` and all reviewed Drizzle migrations. Deployment applies the migration that preserves existing journeys while mapping retired performer identifiers to the current contracts. The `/api/health` response advertises the V3 capability contract, and CI runs lint, type checking, production build, rendered-shell tests, fixture invariants, and live adapter normalization tests without provider spend.
+The Sites build packages `.openai/hosting.json` and all reviewed Drizzle migrations. The current hosting configuration exposes D1 as the `DB` binding and does not provision R2. Deployment applies the migrations that preserve existing journeys, persist signed-in profile fields, and add provider-call analytics. Live research, citation repair and recovery, starter generation, and live question redraws record normalized provider usage without making analytics persistence a prerequisite for returning a valid provider result. The `/api/health` response advertises the V3 capability contract, and CI runs the architecture check, lint, type checking, production build, rendered-shell tests, fixture invariants, client transport tests, starter tests, and provider-adapter/usage normalization tests without provider spend.
+
+See the [current architecture views](architecture.md#architecture-views) for the system landscape, research sequence, component ownership, and deployment topology.

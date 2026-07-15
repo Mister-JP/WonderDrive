@@ -220,7 +220,7 @@ export const PRESETS: PresetConfig[] = [
     waitBand: "about 25 seconds",
     costBand: "lowest live cost",
     maxToolCalls: 2,
-    maxOutputTokens: 1400,
+    maxOutputTokens: 4000,
     deadlineMs: 25_000,
   },
   {
@@ -231,7 +231,7 @@ export const PRESETS: PresetConfig[] = [
     waitBand: "about 60 seconds",
     costBand: "balanced live cost",
     maxToolCalls: 5,
-    maxOutputTokens: 2400,
+    maxOutputTokens: 8000,
     deadlineMs: 60_000,
   },
   {
@@ -242,7 +242,7 @@ export const PRESETS: PresetConfig[] = [
     waitBand: "up to 120 seconds",
     costBand: "highest live cost",
     maxToolCalls: 10,
-    maxOutputTokens: 4000,
+    maxOutputTokens: 16000,
     deadlineMs: 120_000,
   },
 ];

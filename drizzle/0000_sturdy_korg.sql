@@ -2,6 +2,9 @@ CREATE TABLE `identities` (
 	`id` text PRIMARY KEY NOT NULL,
 	`provider` text NOT NULL,
 	`provider_subject` text NOT NULL,
+	`email` text,
+	`full_name` text,
+	`profile_updated_at` integer,
 	`created_at` integer DEFAULT (unixepoch() * 1000) NOT NULL
 );
 --> statement-breakpoint

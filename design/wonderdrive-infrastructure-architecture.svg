@@ -1,0 +1,211 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2250" height="2890" viewBox="0 0 2250 2890">
+<rect width="2250" height="2890" fill="#fbf8ef"/>
+<style>text{font-family:"Comic Sans MS","Bradley Hand",cursive}</style>
+<defs><marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="context-stroke"/></marker></defs>
+<text x="55" y="78" fill="#202933" font-size="44" font-weight="600"><tspan x="55" dy="0">WonderDrive architecture</tspan></text>
+<text x="58" y="110" fill="#63707c" font-size="18" font-weight="500"><tspan x="58" dy="0">Three views, three questions: what connects, how a turn runs, and what lives inside the app</tspan></text>
+<rect x="1860" y="42" width="310" height="48" rx="8" fill="#e4ff6a" stroke="#202933" stroke-width="2" transform="rotate(-0.5729577951308232 2015 66)"/>
+<text x="1890" y="68" fill="#202933" font-size="11" font-weight="500" transform="rotate(-0.5729577951308232 2004.84 63.875)"><tspan x="1890" dy="0">CURRENT: CHATGPT SITES + OPENAI + D1</tspan></text>
+<rect x="55" y="145" width="2120" height="500" rx="10" fill="#fffdf8" stroke="#202933" stroke-width="3"/>
+<ellipse cx="107" cy="193" rx="24" ry="24" fill="#202933" stroke="#202933" stroke-width="1"/>
+<text x="100" y="197" fill="#fffdf8" font-size="18" font-weight="500"><tspan x="100" dy="0">1</tspan></text>
+<text x="149" y="198" fill="#202933" font-size="29" font-weight="600"><tspan x="149" dy="0">System landscape</tspan></text>
+<text x="151" y="222" fill="#63707c" font-size="14" font-weight="500"><tspan x="151" dy="0">The five-second view: who uses WonderDrive and which managed systems it depends on</tspan></text>
+<rect x="1830" y="169" width="295" height="42" rx="8" fill="#e4ff6a" stroke="#202933" stroke-width="1" transform="rotate(-0.34377467707849396 1977.5 190)"/>
+<text x="1857" y="192" fill="#202933" font-size="11" font-weight="500" transform="rotate(-0.34377467707849396 1962.27 187.875)"><tspan x="1857" dy="0">CURRENT IMPLEMENTATION · JUL 2026</tspan></text>
+<polyline points="83,241 2147,241" fill="none" stroke="#63707c" stroke-width="1"/>
+<ellipse cx="161" cy="311" rx="31" ry="31" fill="#ffd8ce" stroke="#cf4c38" stroke-width="3"/>
+<polyline points="161,342 161,440" fill="none" stroke="#cf4c38" stroke-width="3"/>
+<polyline points="161,375 99,427" fill="none" stroke="#cf4c38" stroke-width="3"/>
+<polyline points="161,375 223,427" fill="none" stroke="#cf4c38" stroke-width="3"/>
+<polyline points="161,440 115,512" fill="none" stroke="#cf4c38" stroke-width="3"/>
+<polyline points="161,440 207,512" fill="none" stroke="#cf4c38" stroke-width="3"/>
+<text x="90" y="554" fill="#cf4c38" font-size="19" font-weight="500"><tspan x="90" dy="0">curious person</tspan></text>
+<rect x="380" y="245" width="650" height="300" rx="8" fill="#dceeff" stroke="#2672a8" stroke-width="4"/>
+<text x="402" y="290" fill="#202933" font-size="27" font-weight="600"><tspan x="402" dy="0">WonderDrive on ChatGPT Sites</tspan></text>
+<text x="402" y="319" fill="#63707c" font-size="14" font-weight="500"><tspan x="402" dy="0">PUBLIC WEB EXPERIENCE</tspan><tspan x="402" dy="17.5">choose a performer, model, question, and next path</tspan><tspan x="402" dy="17.5"></tspan><tspan x="402" dy="17.5">TRUSTED SERVER ROUTES</tspan><tspan x="402" dy="17.5">resolve identity · enforce ownership and limits</tspan><tspan x="402" dy="17.5">assemble research context · validate · persist · stream</tspan><tspan x="402" dy="17.5"></tspan><tspan x="402" dy="17.5">Sites owns the application boundary and server-only secrets.</tspan></text>
+<text x="402" y="527" fill="#63707c" font-size="10" font-weight="500"><tspan x="402" dy="0">React / Vinext application · Sign in with ChatGPT seam</tspan></text>
+<rect x="1325" y="225" width="720" height="165" rx="8" fill="#eee6ff" stroke="#7451b8" stroke-width="2"/>
+<text x="1347" y="266" fill="#202933" font-size="23" font-weight="600"><tspan x="1347" dy="0">OpenAI Responses API</tspan></text>
+<text x="1347" y="298" fill="#63707c" font-size="13" font-weight="500"><tspan x="1347" dy="0">The audience-selected model researches and performs the turn.</tspan><tspan x="1347" dy="16.25">Built-in web search · structured output · provider-returned sources</tspan><tspan x="1347" dy="16.25">No hidden planner, second model, or background agent.</tspan></text>
+<text x="1347" y="372" fill="#63707c" font-size="10" font-weight="500"><tspan x="1347" dy="0">server-to-server · store: false</tspan></text>
+<rect x="1325" y="430" width="720" height="165" rx="8" fill="#ddf7e8" stroke="#16815d" stroke-width="2"/>
+<text x="1347" y="471" fill="#202933" font-size="23" font-weight="600"><tspan x="1347" dy="0">Sites-managed D1</tspan></text>
+<text x="1347" y="503" fill="#63707c" font-size="13" font-weight="500"><tspan x="1347" dy="0">Canonical durable product state: identity, preferences, journeys,</tspan><tspan x="1347" dy="16.25">turns, choices, graph edges, research evidence, usage, and snapshots.</tspan><tspan x="1347" dy="16.25">Only Sites server routes can access the `DB` binding.</tspan></text>
+<text x="1347" y="577" fill="#63707c" font-size="10" font-weight="500"><tspan x="1347" dy="0">Cloudflare D1 through the Sites-managed DB binding</tspan></text>
+<polyline points="225,390 380,390" fill="none" stroke="#202933" stroke-width="4" marker-end="url(#arr)"/>
+<text x="244" y="370" fill="#63707c" font-size="13" font-weight="500"><tspan x="244" dy="0">explore / choose</tspan></text>
+<polyline points="1030,320 1325,320" fill="none" stroke="#7451b8" stroke-width="4" marker-end="url(#arr)"/>
+<text x="1090" y="297" fill="#7451b8" font-size="13" font-weight="500"><tspan x="1090" dy="0">research request</tspan></text>
+<polyline points="1325,365 1030,365" fill="none" stroke="#7451b8" stroke-width="3" stroke-dasharray="10 8" marker-end="url(#arr)"/>
+<text x="1082" y="386" fill="#7451b8" font-size="13" font-weight="500"><tspan x="1082" dy="0">sourced draft</tspan></text>
+<polyline points="1030,500 1325,500" fill="none" stroke="#16815d" stroke-width="4" marker-end="url(#arr)"/>
+<text x="1095" y="476" fill="#16815d" font-size="13" font-weight="500"><tspan x="1095" dy="0">read / atomic write</tspan></text>
+<polyline points="380,445 225,445" fill="none" stroke="#2672a8" stroke-width="3" stroke-dasharray="10 8" marker-end="url(#arr)"/>
+<text x="238" y="466" fill="#2672a8" font-size="12" font-weight="500"><tspan x="238" dy="0">live progress + result</tspan></text>
+<rect x="55" y="690" width="2120" height="760" rx="10" fill="#fffdf8" stroke="#202933" stroke-width="3"/>
+<ellipse cx="107" cy="738" rx="24" ry="24" fill="#202933" stroke="#202933" stroke-width="1"/>
+<text x="100" y="742" fill="#fffdf8" font-size="18" font-weight="500"><tspan x="100" dy="0">2</tspan></text>
+<text x="149" y="743" fill="#202933" font-size="29" font-weight="600"><tspan x="149" dy="0">One research turn</tspan></text>
+<text x="151" y="767" fill="#63707c" font-size="14" font-weight="500"><tspan x="151" dy="0">A sequence view: the same four participants, with time moving downward</tspan></text>
+<rect x="1830" y="714" width="295" height="42" rx="8" fill="#e4ff6a" stroke="#202933" stroke-width="1" transform="rotate(-0.34377467707849396 1977.5 735)"/>
+<text x="1857" y="737" fill="#202933" font-size="11" font-weight="500" transform="rotate(-0.34377467707849396 1962.27 732.875)"><tspan x="1857" dy="0">CURRENT IMPLEMENTATION · JUL 2026</tspan></text>
+<polyline points="83,786 2147,786" fill="none" stroke="#63707c" stroke-width="1"/>
+<rect x="205" y="820" width="250" height="70" rx="8" fill="#ffd8ce" stroke="#cf4c38" stroke-width="2"/>
+<text x="227" y="857" fill="#202933" font-size="19" font-weight="500"><tspan x="227" dy="0">Browser</tspan></text>
+<polyline points="330,890 330,1360" fill="none" stroke="#cf4c38" stroke-width="2" stroke-dasharray="10 8"/>
+<rect x="715" y="820" width="250" height="70" rx="8" fill="#dceeff" stroke="#2672a8" stroke-width="2"/>
+<text x="737" y="857" fill="#202933" font-size="19" font-weight="500"><tspan x="737" dy="0">ChatGPT Sites</tspan></text>
+<polyline points="840,890 840,1360" fill="none" stroke="#2672a8" stroke-width="2" stroke-dasharray="10 8"/>
+<rect x="1245" y="820" width="250" height="70" rx="8" fill="#eee6ff" stroke="#7451b8" stroke-width="2"/>
+<text x="1267" y="857" fill="#202933" font-size="19" font-weight="500"><tspan x="1267" dy="0">OpenAI</tspan></text>
+<polyline points="1370,890 1370,1360" fill="none" stroke="#7451b8" stroke-width="2" stroke-dasharray="10 8"/>
+<rect x="1755" y="820" width="250" height="70" rx="8" fill="#ddf7e8" stroke="#16815d" stroke-width="2"/>
+<text x="1777" y="857" fill="#202933" font-size="19" font-weight="500"><tspan x="1777" dy="0">Sites D1</tspan></text>
+<polyline points="1880,890 1880,1360" fill="none" stroke="#16815d" stroke-width="2" stroke-dasharray="10 8"/>
+<polyline points="330,930 840,930" fill="none" stroke="#202933" stroke-width="3" marker-end="url(#arr)"/>
+<ellipse cx="523" cy="903" rx="18" ry="18" fill="#202933" stroke="#202933" stroke-width="1"/>
+<text x="518" y="906" fill="#fffdf8" font-size="13" font-weight="500"><tspan x="518" dy="0">1</tspan></text>
+<text x="553" y="900" fill="#202933" font-size="18" font-weight="500"><tspan x="553" dy="0">Start or advance</tspan></text>
+<text x="553" y="922" fill="#63707c" font-size="12" font-weight="500"><tspan x="553" dy="0">action + IDs + idempotency key + expected version</tspan></text>
+<rect x="680" y="970" width="320" height="90" rx="8" fill="#ffd8ce" stroke="#cf4c38" stroke-width="2"/>
+<text x="702" y="1004" fill="#202933" font-size="16" font-weight="500"><tspan x="702" dy="0">2. Authorize + reserve</tspan></text>
+<text x="702" y="1030" fill="#63707c" font-size="11" font-weight="500"><tspan x="702" dy="0">identity · ownership · budget · lease · compact context</tspan></text>
+<polyline points="840,1110 1370,1110" fill="none" stroke="#7451b8" stroke-width="3" marker-end="url(#arr)"/>
+<ellipse cx="1043" cy="1078" rx="18" ry="18" fill="#7451b8" stroke="#7451b8" stroke-width="1"/>
+<text x="1038" y="1081" fill="#fffdf8" font-size="13" font-weight="500"><tspan x="1038" dy="0">3</tspan></text>
+<text x="1073" y="1075" fill="#202933" font-size="18" font-weight="500"><tspan x="1073" dy="0">Research</tspan></text>
+<text x="1073" y="1097" fill="#63707c" font-size="12" font-weight="500"><tspan x="1073" dy="0">selected model + web tools + strict turn schema</tspan></text>
+<polyline points="1370,1170 840,1170" fill="none" stroke="#7451b8" stroke-width="3" stroke-dasharray="10 8" marker-end="url(#arr)"/>
+<ellipse cx="1028" cy="1146" rx="18" ry="18" fill="#7451b8" stroke="#7451b8" stroke-width="1"/>
+<text x="1023" y="1149" fill="#fffdf8" font-size="13" font-weight="500"><tspan x="1023" dy="0">4</tspan></text>
+<text x="1058" y="1143" fill="#202933" font-size="18" font-weight="500"><tspan x="1058" dy="0">Normalize and validate</tspan></text>
+<text x="1058" y="1165" fill="#63707c" font-size="12" font-weight="500"><tspan x="1058" dy="0">safe activity · source allowlist · citations · exactly 2 paths</tspan></text>
+<polyline points="840,1255 1880,1255" fill="none" stroke="#16815d" stroke-width="3" marker-end="url(#arr)"/>
+<ellipse cx="1338" cy="1223" rx="18" ry="18" fill="#16815d" stroke="#16815d" stroke-width="1"/>
+<text x="1333" y="1226" fill="#fffdf8" font-size="13" font-weight="500"><tspan x="1333" dy="0">5</tspan></text>
+<text x="1368" y="1220" fill="#202933" font-size="18" font-weight="500"><tspan x="1368" dy="0">Commit atomically</tspan></text>
+<text x="1368" y="1242" fill="#63707c" font-size="12" font-weight="500"><tspan x="1368" dy="0">turn + choices + sources + graph edge + usage + request result</tspan></text>
+<polyline points="1880,1320 840,1320" fill="none" stroke="#16815d" stroke-width="3" stroke-dasharray="10 8" marker-end="url(#arr)"/>
+<ellipse cx="1478" cy="1346" rx="18" ry="18" fill="#16815d" stroke="#16815d" stroke-width="1"/>
+<text x="1473" y="1349" fill="#fffdf8" font-size="13" font-weight="500"><tspan x="1473" dy="0">6</tspan></text>
+<text x="1508" y="1343" fill="#202933" font-size="18" font-weight="500"><tspan x="1508" dy="0">Committed</tspan></text>
+<text x="1508" y="1365" fill="#63707c" font-size="12" font-weight="500"><tspan x="1508" dy="0">the durable journey version is now authoritative</tspan></text>
+<polyline points="840,1390 330,1390" fill="none" stroke="#2672a8" stroke-width="3" stroke-dasharray="10 8" marker-end="url(#arr)"/>
+<ellipse cx="488" cy="1363" rx="18" ry="18" fill="#2672a8" stroke="#2672a8" stroke-width="1"/>
+<text x="483" y="1366" fill="#fffdf8" font-size="13" font-weight="500"><tspan x="483" dy="0">7</tspan></text>
+<text x="518" y="1360" fill="#202933" font-size="18" font-weight="500"><tspan x="518" dy="0">Reveal</tspan></text>
+<text x="518" y="1382" fill="#63707c" font-size="12" font-weight="500"><tspan x="518" dy="0">SSE activity first; visible answer only after commit</tspan></text>
+<rect x="95" y="910" width="185" height="130" rx="8" fill="#fff2a8" stroke="#202933" stroke-width="2" transform="rotate(-0.8594366926962348 187.5 975)"/>
+<text x="117" y="945" fill="#202933" font-size="17" font-weight="500" transform="rotate(-0.8594366926962348 181.08999999999997 938.625)"><tspan x="117" dy="0">Browser sends</tspan></text>
+<text x="117" y="971" fill="#63707c" font-size="12" font-weight="500" transform="rotate(-0.8594366926962348 176.16 981.5)"><tspan x="117" dy="0">IDs and actions—</tspan><tspan x="117" dy="15">not a model-ready</tspan><tspan x="117" dy="15">transcript.</tspan></text>
+<rect x="1915" y="1090" width="205" height="130" rx="8" fill="#ffd8ce" stroke="#cf4c38" stroke-width="2" transform="rotate(0.6875493541569879 2017.5 1155)"/>
+<text x="1937" y="1125" fill="#202933" font-size="17" font-weight="500" transform="rotate(0.6875493541569879 1996.16 1118.625)"><tspan x="1937" dy="0">Failure rule</tspan></text>
+<text x="1937" y="1151" fill="#63707c" font-size="12" font-weight="500" transform="rotate(0.6875493541569879 2017.04 1161.5)"><tspan x="1937" dy="0">Timeout, disconnect,</tspan><tspan x="1937" dy="15">invalid citations, or</tspan><tspan x="1937" dy="15">version race = no turn.</tspan></text>
+<rect x="55" y="1495" width="2120" height="720" rx="10" fill="#fffdf8" stroke="#202933" stroke-width="3"/>
+<ellipse cx="107" cy="1543" rx="24" ry="24" fill="#202933" stroke="#202933" stroke-width="1"/>
+<text x="100" y="1547" fill="#fffdf8" font-size="18" font-weight="500"><tspan x="100" dy="0">3</tspan></text>
+<text x="149" y="1548" fill="#202933" font-size="29" font-weight="600"><tspan x="149" dy="0">Inside WonderDrive</tspan></text>
+<text x="151" y="1572" fill="#63707c" font-size="14" font-weight="500"><tspan x="151" dy="0">A container/component view: which code boundary owns each responsibility</tspan></text>
+<rect x="1830" y="1519" width="295" height="42" rx="8" fill="#e4ff6a" stroke="#202933" stroke-width="1" transform="rotate(-0.34377467707849396 1977.5 1540)"/>
+<text x="1857" y="1542" fill="#202933" font-size="11" font-weight="500" transform="rotate(-0.34377467707849396 1962.27 1537.875)"><tspan x="1857" dy="0">CURRENT IMPLEMENTATION · JUL 2026</tspan></text>
+<polyline points="83,1591 2147,1591" fill="none" stroke="#63707c" stroke-width="1"/>
+<text x="95" y="1634" fill="#cf4c38" font-size="14" font-weight="500"><tspan x="95" dy="0">browser</tspan></text>
+<rect x="95" y="1650" width="300" height="180" rx="8" fill="#ffd8ce" stroke="#cf4c38" stroke-width="2"/>
+<text x="117" y="1687" fill="#202933" font-size="19" font-weight="500"><tspan x="117" dy="0">React experience</tspan></text>
+<text x="117" y="1723" fill="#63707c" font-size="13" font-weight="500"><tspan x="117" dy="0">stage · map · library</tspan><tspan x="117" dy="16.25">client API · SSE reader</tspan><tspan x="117" dy="16.25">view state only</tspan></text>
+<text x="117" y="1812" fill="#63707c" font-size="10" font-weight="500"><tspan x="117" dy="0">app/wonderdrive-experience.tsx</tspan></text>
+<rect x="450" y="1615" width="1050" height="500" rx="8" fill="#fffdf8" stroke="#2672a8" stroke-width="4"/>
+<text x="480" y="1661" fill="#2672a8" font-size="23" font-weight="600"><tspan x="480" dy="0">ChatGPT Sites — trusted application boundary</tspan></text>
+<rect x="485" y="1690" width="300" height="175" rx="8" fill="#dceeff" stroke="#2672a8" stroke-width="2"/>
+<text x="507" y="1726" fill="#202933" font-size="18" font-weight="500"><tspan x="507" dy="0">API + identity</tspan></text>
+<text x="507" y="1762" fill="#63707c" font-size="12" font-weight="500"><tspan x="507" dy="0">same-origin mutation gate</tspan><tspan x="507" dy="15">guest / ChatGPT viewer</tspan><tspan x="507" dy="15">ownership-scoped responses</tspan></text>
+<text x="507" y="1847" fill="#63707c" font-size="10" font-weight="500"><tspan x="507" dy="0">lib/api.ts · lib/viewer.ts</tspan></text>
+<rect x="825" y="1690" width="300" height="175" rx="8" fill="#eee6ff" stroke="#7451b8" stroke-width="2"/>
+<text x="847" y="1726" fill="#202933" font-size="18" font-weight="500"><tspan x="847" dy="0">Research service</tspan></text>
+<text x="847" y="1762" fill="#63707c" font-size="12" font-weight="500"><tspan x="847" dy="0">context assembly</tspan><tspan x="847" dy="15">OpenAI stream normalization</tspan><tspan x="847" dy="15">schema + source validation</tspan></text>
+<text x="847" y="1847" fill="#63707c" font-size="10" font-weight="500"><tspan x="847" dy="0">lib/live-research.ts</tspan></text>
+<rect x="1165" y="1690" width="300" height="175" rx="8" fill="#ece9e1" stroke="#202933" stroke-width="2"/>
+<text x="1187" y="1726" fill="#202933" font-size="18" font-weight="500"><tspan x="1187" dy="0">Journey service</tspan></text>
+<text x="1187" y="1762" fill="#63707c" font-size="12" font-weight="500"><tspan x="1187" dy="0">create · advance · branch</tspan><tspan x="1187" dy="15">compare · snapshot · export</tspan><tspan x="1187" dy="15">exactly-two path invariant</tspan></text>
+<text x="1187" y="1847" fill="#63707c" font-size="10" font-weight="500"><tspan x="1187" dy="0">lib/repository.ts</tspan></text>
+<rect x="650" y="1915" width="620" height="150" rx="8" fill="#ddf7e8" stroke="#16815d" stroke-width="2"/>
+<text x="672" y="1952" fill="#202933" font-size="19" font-weight="500"><tspan x="672" dy="0">D1 persistence adapter</tspan></text>
+<text x="672" y="1987" fill="#63707c" font-size="12" font-weight="500"><tspan x="672" dy="0">Sites-managed `DB` binding · prepared SQL · D1 batch transactions</tspan><tspan x="672" dy="15">optimistic versions · idempotent replay · cost and usage ledgers</tspan></text>
+<text x="672" y="2047" fill="#63707c" font-size="10" font-weight="500"><tspan x="672" dy="0">repository boundary</tspan></text>
+<text x="1570" y="1634" fill="#7451b8" font-size="14" font-weight="500"><tspan x="1570" dy="0">managed services</tspan></text>
+<rect x="1570" y="1650" width="520" height="170" rx="8" fill="#eee6ff" stroke="#7451b8" stroke-width="2"/>
+<text x="1592" y="1687" fill="#202933" font-size="19" font-weight="500"><tspan x="1592" dy="0">OpenAI Responses API</tspan></text>
+<text x="1592" y="1722" fill="#63707c" font-size="12" font-weight="500"><tspan x="1592" dy="0">web research · optional image results</tspan><tspan x="1592" dy="15">structured output · source set · usage</tspan></text>
+<text x="1592" y="1802" fill="#63707c" font-size="10" font-weight="500"><tspan x="1592" dy="0">OPENAI_API_KEY remains server-only</tspan></text>
+<rect x="1570" y="1870" width="520" height="235" rx="8" fill="#ddf7e8" stroke="#16815d" stroke-width="2"/>
+<text x="1592" y="1907" fill="#202933" font-size="19" font-weight="500"><tspan x="1592" dy="0">D1 data groups</tspan></text>
+<text x="1592" y="1942" fill="#63707c" font-size="12" font-weight="500"><tspan x="1592" dy="0">IDENTITY  identities · preferences · upgrades · starter cache</tspan><tspan x="1592" dy="15">JOURNEYS  turns · options · actions · edges</tspan><tspan x="1592" dy="15">RESEARCH  requests · runs · events · sources · relations</tspan><tspan x="1592" dy="15">CONTROL  usage ledgers · idempotency · snapshots</tspan></text>
+<text x="1592" y="2087" fill="#63707c" font-size="10" font-weight="500"><tspan x="1592" dy="0">D1 is canonical; the browser has no DB binding</tspan></text>
+<polyline points="395,1740 485,1740" fill="none" stroke="#202933" stroke-width="3" marker-end="url(#arr)"/>
+<text x="410" y="1703" fill="#63707c" font-size="11" font-weight="500"><tspan x="410" dy="0">JSON / SSE</tspan></text>
+<polyline points="785,1775 825,1775" fill="none" stroke="#2672a8" stroke-width="3" marker-end="url(#arr)"/>
+<polyline points="785,1810 805,1810 805,1890 1165,1890 1165,1810" fill="none" stroke="#202933" stroke-width="3" marker-end="url(#arr)"/>
+<polyline points="975,1865 975,1915" fill="none" stroke="#16815d" stroke-width="3" marker-end="url(#arr)"/>
+<text x="990" y="1891" fill="#16815d" font-size="11" font-weight="500"><tspan x="990" dy="0">validated turn</tspan></text>
+<polyline points="1315,1865 1315,1965 1270,1965" fill="none" stroke="#16815d" stroke-width="3" marker-end="url(#arr)"/>
+<text x="1328" y="1936" fill="#16815d" font-size="11" font-weight="500"><tspan x="1328" dy="0">journey state</tspan></text>
+<polyline points="1125,1800 1145,1800 1145,1885 1500,1885 1500,1780 1570,1780" fill="none" stroke="#7451b8" stroke-width="3" marker-end="url(#arr)"/>
+<text x="1430" y="1829" fill="#7451b8" font-size="11" font-weight="500"><tspan x="1430" dy="0">provider request</tspan></text>
+<polyline points="1270,1985 1570,1985" fill="none" stroke="#16815d" stroke-width="3" marker-end="url(#arr)"/>
+<text x="1340" y="1961" fill="#16815d" font-size="11" font-weight="500"><tspan x="1340" dy="0">prepared SQL / batch</tspan></text>
+<rect x="95" y="1885" width="300" height="160" rx="8" fill="#ffd8ce" stroke="#cf4c38" stroke-width="2" transform="rotate(-0.5729577951308232 245 1965)"/>
+<text x="117" y="1920" fill="#202933" font-size="17" font-weight="500" transform="rotate(-0.5729577951308232 156.44 1913.625)"><tspan x="117" dy="0">Identity</tspan></text>
+<text x="117" y="1946" fill="#63707c" font-size="12" font-weight="500" transform="rotate(-0.5729577951308232 238.8 1971.5)"><tspan x="117" dy="0">Guest: HttpOnly cookie</tspan><tspan x="117" dy="15">Signed in: hashed ChatGPT subject</tspan><tspan x="117" dy="15">Profile: email + optional full name</tspan><tspan x="117" dy="15">Upgrade: explicit + idempotent</tspan><tspan x="117" dy="15">No app-owned passwords</tspan></text>
+<rect x="95" y="2065" width="300" height="100" rx="8" fill="#fff2a8" stroke="#202933" stroke-width="2" transform="rotate(0.45836623610465854 245 2115)"/>
+<text x="117" y="2100" fill="#202933" font-size="17" font-weight="500" transform="rotate(0.45836623610465854 210.67 2093.625)"><tspan x="117" dy="0">Deliberately absent</tspan></text>
+<text x="117" y="2126" fill="#63707c" font-size="12" font-weight="500" transform="rotate(0.45836623610465854 238.8 2129)"><tspan x="117" dy="0">No queues · schedulers · background</tspan><tspan x="117" dy="15">continuation · model fan-out</tspan></text>
+<rect x="1020" y="2125" width="480" height="70" rx="8" fill="#dceeff" stroke="#2672a8" stroke-width="2" transform="rotate(-0.45836623610465854 1260 2160)"/>
+<text x="1042" y="2160" fill="#202933" font-size="17" font-weight="500" transform="rotate(-0.45836623610465854 1111.02 2153.625)"><tspan x="1042" dy="0">Trust boundary</tspan></text>
+<text x="1042" y="2185" fill="#63707c" font-size="11" font-weight="500" transform="rotate(-0.45836623610465854 1258.92 2180.875)"><tspan x="1042" dy="0">Secrets, prompts, source validation, and D1 access stay server-side.</tspan></text>
+<rect x="55" y="2260" width="2120" height="520" rx="10" fill="#fffdf8" stroke="#202933" stroke-width="3"/>
+<ellipse cx="107" cy="2308" rx="24" ry="24" fill="#202933" stroke="#202933" stroke-width="1"/>
+<text x="100" y="2312" fill="#fffdf8" font-size="18" font-weight="500"><tspan x="100" dy="0">4</tspan></text>
+<text x="149" y="2313" fill="#202933" font-size="29" font-weight="600"><tspan x="149" dy="0">Deployment topology</tspan></text>
+<text x="151" y="2337" fill="#63707c" font-size="14" font-weight="500"><tspan x="151" dy="0">The infrastructure view: how source becomes a public release and where production configuration lives</tspan></text>
+<rect x="1830" y="2284" width="295" height="42" rx="8" fill="#e4ff6a" stroke="#202933" stroke-width="1" transform="rotate(-0.34377467707849396 1977.5 2305)"/>
+<text x="1857" y="2307" fill="#202933" font-size="11" font-weight="500" transform="rotate(-0.34377467707849396 1962.27 2302.875)"><tspan x="1857" dy="0">CURRENT IMPLEMENTATION · JUL 2026</tspan></text>
+<polyline points="83,2356 2147,2356" fill="none" stroke="#63707c" stroke-width="1"/>
+<rect x="105" y="2415" width="340" height="170" rx="8" fill="#ece9e1" stroke="#202933" stroke-width="2"/>
+<text x="127" y="2453" fill="#202933" font-size="20" font-weight="600"><tspan x="127" dy="0">GitHub repository</tspan></text>
+<text x="127" y="2488" fill="#63707c" font-size="13" font-weight="500"><tspan x="127" dy="0">application source</tspan><tspan x="127" dy="16.25">lockfile + tests</tspan><tspan x="127" dy="16.25">database migrations</tspan></text>
+<text x="127" y="2567" fill="#63707c" font-size="10" font-weight="500"><tspan x="127" dy="0">public repository</tspan></text>
+<rect x="525" y="2415" width="340" height="170" rx="8" fill="#ffd8ce" stroke="#cf4c38" stroke-width="2"/>
+<text x="547" y="2453" fill="#202933" font-size="20" font-weight="600"><tspan x="547" dy="0">GitHub Actions</tspan></text>
+<text x="547" y="2488" fill="#63707c" font-size="13" font-weight="500"><tspan x="547" dy="0">architecture check · lint</tspan><tspan x="547" dy="16.25">typecheck · production build</tspan><tspan x="547" dy="16.25">rendered + adapter tests</tspan></text>
+<text x="547" y="2567" fill="#63707c" font-size="10" font-weight="500"><tspan x="547" dy="0">verification only—no paid provider call</tspan></text>
+<rect x="945" y="2380" width="470" height="240" rx="8" fill="#dceeff" stroke="#2672a8" stroke-width="4"/>
+<text x="967" y="2420" fill="#202933" font-size="22" font-weight="600"><tspan x="967" dy="0">ChatGPT Sites release</tspan></text>
+<text x="967" y="2453" fill="#63707c" font-size="13" font-weight="500"><tspan x="967" dy="0">public WonderDrive URL</tspan><tspan x="967" dy="16.25">Vinext web app + server routes</tspan><tspan x="967" dy="16.25">Sign in with ChatGPT identity seam</tspan><tspan x="967" dy="16.25">reviewed deployment + rollback path</tspan></text>
+<text x="967" y="2602" fill="#63707c" font-size="10" font-weight="500"><tspan x="967" dy="0">production application boundary</tspan></text>
+<rect x="1535" y="2365" width="520" height="155" rx="8" fill="#eee6ff" stroke="#7451b8" stroke-width="2"/>
+<text x="1557" y="2403" fill="#202933" font-size="20" font-weight="600"><tspan x="1557" dy="0">OpenAI project</tspan></text>
+<text x="1557" y="2438" fill="#63707c" font-size="13" font-weight="500"><tspan x="1557" dy="0">Responses API access</tspan><tspan x="1557" dy="16.25">model/search quota · usage billing</tspan><tspan x="1557" dy="16.25">emergency key disable</tspan></text>
+<text x="1557" y="2502" fill="#63707c" font-size="10" font-weight="500"><tspan x="1557" dy="0">called only from Sites server routes</tspan></text>
+<rect x="1535" y="2555" width="520" height="165" rx="8" fill="#ddf7e8" stroke="#16815d" stroke-width="2"/>
+<text x="1557" y="2593" fill="#202933" font-size="20" font-weight="600"><tspan x="1557" dy="0">Sites-managed D1</tspan></text>
+<text x="1557" y="2628" fill="#63707c" font-size="13" font-weight="500"><tspan x="1557" dy="0">canonical SQLite-compatible database</tspan><tspan x="1557" dy="16.25">packaged Drizzle migrations · prepared SQL / batch</tspan><tspan x="1557" dy="16.25">backup and restore verification gate</tspan></text>
+<text x="1557" y="2702" fill="#63707c" font-size="10" font-weight="500"><tspan x="1557" dy="0">canonical current persistence · DB binding</tspan></text>
+<polyline points="445,2500 525,2500" fill="none" stroke="#202933" stroke-width="3" marker-end="url(#arr)"/>
+<text x="462" y="2478" fill="#63707c" font-size="12" font-weight="500"><tspan x="462" dy="0">push / PR</tspan></text>
+<polyline points="865,2500 945,2500" fill="none" stroke="#202933" stroke-width="3" marker-end="url(#arr)"/>
+<text x="875" y="2478" fill="#63707c" font-size="12" font-weight="500"><tspan x="875" dy="0">verified release</tspan></text>
+<polyline points="1415,2445 1535,2445" fill="none" stroke="#7451b8" stroke-width="3" marker-end="url(#arr)"/>
+<text x="1430" y="2422" fill="#7451b8" font-size="12" font-weight="500"><tspan x="1430" dy="0">server request</tspan></text>
+<polyline points="1415,2585 1535,2585" fill="none" stroke="#16815d" stroke-width="3" marker-end="url(#arr)"/>
+<text x="1445" y="2562" fill="#16815d" font-size="12" font-weight="500"><tspan x="1445" dy="0">runtime DB</tspan></text>
+<polyline points="1415,2650 1535,2650" fill="none" stroke="#16815d" stroke-width="3" stroke-dasharray="10 8" marker-end="url(#arr)"/>
+<text x="1445" y="2672" fill="#16815d" font-size="12" font-weight="500"><tspan x="1445" dy="0">migrations</tspan></text>
+<rect x="105" y="2630" width="760" height="90" rx="8" fill="#fff2a8" stroke="#202933" stroke-width="2" transform="rotate(-0.2864788975654116 485 2675)"/>
+<text x="127" y="2665" fill="#202933" font-size="17" font-weight="500" transform="rotate(-0.2864788975654116 186.16 2658.625)"><tspan x="127" dy="0">Release rule</tspan></text>
+<text x="127" y="2691" fill="#63707c" font-size="12" font-weight="500" transform="rotate(-0.2864788975654116 509.79999999999995 2686.5)"><tspan x="127" dy="0">CI proves the build; production secrets are injected by the hosting environment and never committed to GitHub.</tspan></text>
+<rect x="945" y="2640" width="470" height="80" rx="8" fill="#fff2a8" stroke="#202933" stroke-width="2" transform="rotate(0.34377467707849396 1180 2680)"/>
+<text x="967" y="2675" fill="#202933" font-size="17" font-weight="500" transform="rotate(0.34377467707849396 1090.25 2668.625)"><tspan x="967" dy="0">Server-only configuration</tspan></text>
+<text x="967" y="2700" fill="#63707c" font-size="11" font-weight="500" transform="rotate(0.34377467707849396 1164.78 2695.875)"><tspan x="967" dy="0">OPENAI_API_KEY · daily budget limit · Sites-managed DB binding</tspan></text>
+<text x="58" y="2847" fill="#63707c" font-size="17" font-weight="500"><tspan x="58" dy="0">Architecture intent: one explicit audience action → one bounded foreground turn → one atomic durable result.</tspan></text>
+</svg>

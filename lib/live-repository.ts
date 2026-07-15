@@ -105,7 +105,7 @@ export async function prepareLiveResearch(
     .prepare(
       `SELECT COALESCE(SUM(estimated_cost_microusd), 0) AS project_spend,
               COALESCE(SUM(CASE WHEN identity_id = ? THEN estimated_cost_microusd ELSE 0 END), 0) AS identity_spend
-       FROM usage_events WHERE created_at >= ?`,
+       FROM provider_usage_events WHERE created_at >= ?`,
     )
     .bind(viewer.identityId, now - 86_400_000)
     .first<{ project_spend: number; identity_spend: number }>();
@@ -553,12 +553,13 @@ async function commitLiveAdvance(
         `UPDATE journeys
          SET current_turn_id = ?, turn_count = turn_count + 1,
              source_count = source_count + ?, version = version + 1,
-             last_action = ?, status = 'active', updated_at = ?
+             model_id = ?, last_action = ?, status = 'active', updated_at = ?
          WHERE id = ? AND owner_identity_id = ? AND version = ? AND deleted_at IS NULL`,
       )
       .bind(
         childId,
         draft.sources.length,
+        prepared.modelId,
         prepared.branched ? "branch" : prepared.action,
         now,
         journeyId,
@@ -833,7 +834,8 @@ async function normalizeRequest(viewer: ViewerContext, request: LiveResearchRequ
     throw new RepositoryError("BAD_REQUEST", "A valid journey version is required.", 400);
   }
   const journey = await getJourney(viewer, request.journeyId);
-  if (!MODELS.some((model) => model.id === journey.modelId && model.mode === "live")) {
+  const modelId = request.modelId ?? journey.modelId;
+  if (!MODELS.some((model) => model.id === modelId && model.mode === "live")) {
     throw new RepositoryError(
       "BAD_REQUEST",
       "This saved journey uses a model that is no longer available for live research.",
@@ -866,6 +868,7 @@ async function normalizeRequest(viewer: ViewerContext, request: LiveResearchRequ
       journeyId: journey.id,
       fromTurnId: fromTurn.id,
       action: request.action,
+      modelId,
       optionId: selected.id,
       expectedVersion: request.expectedVersion,
     },
@@ -873,7 +876,7 @@ async function normalizeRequest(viewer: ViewerContext, request: LiveResearchRequ
     seed: journey.seed,
     depth: fromTurn.depth + 1,
     performerId: journey.performerId,
-    modelId: journey.modelId,
+    modelId,
     researchPreset: journey.researchPreset,
     answerDensity: journey.answerDensity,
     imagePreference: journey.imagePreference,
