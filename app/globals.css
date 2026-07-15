@@ -566,9 +566,16 @@ legend > span { align-items: center; border: 1px solid var(--ink); border-radius
 .compact-visual { margin-bottom: 18px; }
 .answer-gallery { align-self: start; display: grid; gap: 6px; grid-template-columns: minmax(0, 1.3fr) minmax(205px, .7fr); min-width: 0; }
 .answer-gallery-selected { background: #eee3ce; border: 1px solid var(--line); margin: 0; min-width: 0; padding: 5px; }
-.answer-gallery-selected > a { background: var(--paper); display: block; overflow: hidden; }
+.answer-gallery-image-stage { background: var(--paper); overflow: hidden; position: relative; }
+.answer-gallery-image-stage > a { display: block; }
 .answer-gallery-selected img { display: block; height: 218px; object-fit: contain; transition: filter 180ms ease; width: 100%; }
-.answer-gallery-selected > a:hover img { filter: saturate(1.05); }
+.answer-gallery-image-stage > a:hover img { filter: saturate(1.05); }
+.answer-gallery-arrows { align-items: center; bottom: 8px; display: flex; gap: 5px; justify-content: space-between; left: 8px; position: absolute; right: 8px; }
+.answer-gallery-arrows button { align-items: center; backdrop-filter: blur(7px); background: color-mix(in srgb, var(--paper-light) 88%, transparent); border: 1px solid var(--ink); box-shadow: 2px 2px 0 rgba(19, 36, 30, .18); display: flex; height: 31px; justify-content: center; padding: 0; transition: background 140ms ease, transform 140ms ease; width: 34px; }
+.answer-gallery-arrows button:hover { background: var(--acid); transform: translateY(-1px); }
+.answer-gallery-arrows button:focus-visible { outline: 2px solid var(--coral); outline-offset: 2px; }
+.answer-gallery-arrows svg { height: 14px; width: 14px; }
+.answer-gallery-arrows span { backdrop-filter: blur(7px); background: color-mix(in srgb, var(--ink) 84%, transparent); color: var(--paper-light); font-size: .45rem; font-weight: 700; letter-spacing: .08em; padding: 5px 7px; }
 .answer-gallery-selected figcaption { align-items: center; display: flex; gap: 12px; justify-content: space-between; min-height: 24px; padding: 5px 3px 0; }
 .answer-gallery-selected figcaption span { color: var(--muted); display: -webkit-box; font-size: .49rem; line-height: 1.25; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 1; }
 .answer-gallery-selected figcaption a { border-bottom: 1px solid var(--ink); flex: 0 0 auto; font-size: .48rem; font-weight: 700; text-transform: uppercase; }

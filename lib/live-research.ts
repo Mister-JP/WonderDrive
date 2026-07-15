@@ -184,14 +184,14 @@ const TURN_SCHEMA = {
           sourcePageUrl: { type: "string", minLength: 6, maxLength: 2_458 },
           title: { type: "string", minLength: 3, maxLength: 116 },
           role: { type: "string", enum: ["object", "process", "result", "context", "comparison", "scale", "primary-source"] },
-          whyIncluded: { type: "string", minLength: 12, maxLength: 288 },
+          whyIncluded: { type: "string", minLength: 72, maxLength: 200 },
           whatToNotice: {
             type: "array",
-            minItems: 1,
-            maxItems: 3,
-            items: { type: "string", minLength: 6, maxLength: 192 },
+            minItems: 2,
+            maxItems: 2,
+            items: { type: "string", minLength: 36, maxLength: 120 },
           },
-          learning: { type: "string", minLength: 12, maxLength: 288 },
+          learning: { type: "string", minLength: 72, maxLength: 200 },
           evidenceRelation: { type: "string", enum: ["shows", "illustrates", "contextualizes", "supports"] },
         },
       },
@@ -674,7 +674,8 @@ function buildInstructions(performer: (typeof PERFORMERS)[number]): string {
     "Write each answer block as complete prose of roughly 100 to 750 characters. Do not put Markdown headings, bold markers, or raw list syntax inside answer blocks.",
     "For every answer block, copy one or more exact source URLs that the web search actually consulted into citationUrls.",
     "When factual images are requested, first decide what the learner would benefit from seeing, then search specifically for that visual rather than merely the broad topic. WonderDrive reads image URLs directly; do not place image URLs in the answer JSON or use generated imagery as evidence.",
-    "For each useful image result, add a visualNotes entry keyed by its exact source page URL. Describe only what is visibly supported, explain why it helps this answer, distinguish direct evidence from illustration or context, and keep whatToNotice concrete. Return an empty visualNotes array when no factual images were used.",
+    "Only keep an image when it adds specific evidence that the prose alone cannot show. Ignore decorative, generic, weakly related, duplicate, or ambiguous results.",
+    "For every image you keep, add one visualNotes entry keyed by its exact source page URL. The title must name the visible subject. whyIncluded must be 18–26 words and connect that specific image to a claim in the answer. whatToNotice must contain exactly two concrete visible observations of 9–15 words each. learning must be 18–26 words and state the takeaway without repeating whyIncluded. Never infer details that are not visibly supported. Return an empty visualNotes array when no image passes this bar.",
     "Return exactly two genuinely different next questions. Each must hook into one concrete fact, object, creature, place, event, or surprising detail in the visible answer—not just the broad topic.",
     "Write each question as a doorway for a curious beginner of any age who may be encountering the subject for the first time. They should not know the answer, but they should immediately understand what the question is asking. Do not reuse specialist terms from the answer unless their meaning is obvious from the question.",
     "Make each question feel like a playable rabbit hole: 5–12 words, plain everyday language, one idea at a time, and fun to say out loud.",
@@ -1445,8 +1446,44 @@ function normalizeGeneratedProse(value: string) {
     .replace(/\s+/g, " ");
 }
 
+const VISUAL_NOTE_WORD_LIMITS = {
+  whyIncluded: [18, 26],
+  notice: [9, 15],
+  learning: [18, 26],
+} as const;
+
+const VISUAL_STOP_WORDS = new Set([
+  "about", "after", "also", "and", "are", "from", "have", "into", "more", "that", "the", "their", "this", "through", "with",
+]);
+
+function words(value: string) {
+  return normalizeGeneratedProse(value).match(/[\p{L}\p{N}][\p{L}\p{N}'’-]*/gu) ?? [];
+}
+
+function withinWordLimit(value: string, [minimum, maximum]: readonly [number, number]) {
+  const count = words(value).length;
+  return count >= minimum && count <= maximum;
+}
+
+function meaningfulWords(value: string) {
+  return new Set(words(value).map((word) => word.toLowerCase()).filter((word) => word.length >= 4 && !VISUAL_STOP_WORDS.has(word)));
+}
+
+function isSpecificVisualNote(note: ModelVisualNote, caption: string) {
+  if (!withinWordLimit(note.whyIncluded, VISUAL_NOTE_WORD_LIMITS.whyIncluded)) return false;
+  if (!Array.isArray(note.whatToNotice) || note.whatToNotice.length !== 2) return false;
+  if (!note.whatToNotice.every((item) => withinWordLimit(item, VISUAL_NOTE_WORD_LIMITS.notice))) return false;
+  if (!withinWordLimit(note.learning, VISUAL_NOTE_WORD_LIMITS.learning)) return false;
+
+  const captionTerms = meaningfulWords(caption);
+  if (!captionTerms.size) return false;
+  const noteTerms = meaningfulWords([note.title, note.whyIncluded, ...note.whatToNotice, note.learning].join(" "));
+  return [...captionTerms].some((term) => noteTerms.has(term));
+}
+
 function validateMediaGallery(values: ProviderImage[], topicLabel: string, notes: ModelVisualNote[] = []): TurnMedia[] {
   const seen = new Set<string>();
+  const seenSources = new Set<string>();
   const gallery: TurnMedia[] = [];
   const notesBySource = new Map(
     notes
@@ -1458,24 +1495,17 @@ function validateMediaGallery(values: ProviderImage[], topicLabel: string, notes
     const imageUrl = canonicalUrl(value.imageUrl);
     const sourcePageUrl = canonicalUrl(value.sourcePageUrl);
     const thumbnailUrl = canonicalUrl(value.thumbnailUrl ?? "");
-    if (!imageUrl || !sourcePageUrl || !isSafePublicImageUrl(imageUrl) || seen.has(imageUrl)) continue;
+    if (!imageUrl || !sourcePageUrl || !isSafePublicImageUrl(imageUrl) || seen.has(imageUrl) || seenSources.has(sourcePageUrl)) continue;
     if (thumbnailUrl && !isSafePublicImageUrl(thumbnailUrl)) continue;
-    seen.add(imageUrl);
     const caption = normalizeGeneratedProse(value.caption).slice(0, 384) || `Visual reference for ${topicLabel}`;
     const note = notesBySource.get(citationComparableUrl(sourcePageUrl) ?? "");
-    const title = note
-      ? normalizeGeneratedProse(note.title).slice(0, 116)
-      : caption.slice(0, 116);
-    const whyIncluded = note
-      ? normalizeGeneratedProse(note.whyIncluded).slice(0, 288)
-      : caption;
-    const whatToNotice = note?.whatToNotice
-      ?.map((item) => normalizeGeneratedProse(item).slice(0, 192))
-      .filter(Boolean)
-      .slice(0, 3) ?? [];
-    const learning = note
-      ? normalizeGeneratedProse(note.learning).slice(0, 288)
-      : `This image provides visual context for ${topicLabel}.`;
+    if (!note || !isSpecificVisualNote(note, caption)) continue;
+    seen.add(imageUrl);
+    seenSources.add(sourcePageUrl);
+    const title = normalizeGeneratedProse(note.title).slice(0, 116);
+    const whyIncluded = normalizeGeneratedProse(note.whyIncluded).slice(0, 200);
+    const whatToNotice = note.whatToNotice.map((item) => normalizeGeneratedProse(item).slice(0, 120));
+    const learning = normalizeGeneratedProse(note.learning).slice(0, 200);
     gallery.push({
       imageUrl,
       ...(thumbnailUrl ? { thumbnailUrl } : {}),
@@ -1483,11 +1513,11 @@ function validateMediaGallery(values: ProviderImage[], topicLabel: string, notes
       caption,
       alt: title.slice(0, 288),
       title,
-      role: note?.role ?? "context",
+      role: note.role,
       whyIncluded,
-      whatToNotice: whatToNotice.length ? whatToNotice : [caption],
+      whatToNotice,
       learning,
-      evidenceRelation: note?.evidenceRelation ?? "contextualizes",
+      evidenceRelation: note.evidenceRelation,
     });
     if (gallery.length === 10) break;
   }

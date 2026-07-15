@@ -181,7 +181,7 @@ const themes: Theme[] = [
         "The fairgrounds are organized as a deliberate sequence of named spaces.",
         "The map turns movement through the city into a curated historical route.",
       ],
-      learning: "Maps do more than record a city; they help decide which places and stories remain legible later.",
+      learning: "Maps do more than record a city; their labels and boundaries influence which places and stories remain legible to later generations.",
       evidenceRelation: "contextualizes",
     },
     sources: [

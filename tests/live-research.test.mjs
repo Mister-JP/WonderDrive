@@ -89,20 +89,40 @@ test("extracts image search results into a graceful media gallery", () => {
           source_website_url: "https://example.org/joints",
           caption: "A close view of an expansion joint.",
         },
+        {
+          type: "image_result",
+          image_url: "https://images.example.org/bridge-crop.jpg",
+          source_website_url: "https://example.org/bridge",
+          caption: "A cropped suspension bridge photograph showing the main cables.",
+        },
       ],
     }],
   };
   const images = liveResearchTestHooks.extractImages(response);
   const annotatedTurn = structuredClone(validTurn);
-  annotatedTurn.visualNotes = [{
-    sourcePageUrl: "https://example.org/bridge",
-    title: "Main cables of a suspension bridge",
-    role: "process",
-    whyIncluded: "It makes the bridge's load-carrying structure visible.",
-    whatToNotice: ["The deck hangs from vertical suspenders connected to the main cables."],
-    learning: "The cable system redirects the deck's load toward the towers and anchorages.",
-    evidenceRelation: "illustrates",
-  }];
+  annotatedTurn.visualNotes = [
+    {
+      sourcePageUrl: "https://example.org/bridge",
+      title: "Main cables of a suspension bridge",
+      role: "process",
+      whyIncluded: "This bridge photograph makes the load-carrying cable system visible, connecting the answer's structural explanation to a specific physical example.",
+      whatToNotice: [
+        "Vertical suspenders connect the roadway deck to the curving main cables.",
+        "The main cables pass over towers before descending toward distant anchorages.",
+      ],
+      learning: "A suspension bridge carries roadway weight through suspenders and main cables, then transfers those forces into towers and anchorages.",
+      evidenceRelation: "illustrates",
+    },
+    {
+      sourcePageUrl: "https://example.org/joints",
+      title: "Expansion joint",
+      role: "object",
+      whyIncluded: "It shows a joint.",
+      whatToNotice: ["Look at the gap."],
+      learning: "Joints move.",
+      evidenceRelation: "shows",
+    },
+  ];
   const mapped = liveResearchTestHooks.validateAndMapTurn(
     annotatedTurn,
     liveResearchTestHooks.extractSources(providerResponse),
@@ -110,10 +130,12 @@ test("extracts image search results into a graceful media gallery", () => {
     images,
   );
 
-  assert.equal(mapped.media.length, 2);
+  assert.equal(mapped.media.length, 1);
   assert.equal(mapped.media[0].thumbnailUrl, "https://images.example.org/bridge-thumb.jpg");
   assert.equal(mapped.media[0].title, "Main cables of a suspension bridge");
-  assert.equal(mapped.media[0].whatToNotice.length, 1);
+  assert.equal(mapped.media[0].whatToNotice.length, 2);
+  assert.ok(mapped.media[0].whyIncluded.split(/\s+/).length >= 18);
+  assert.ok(mapped.media[0].learning.split(/\s+/).length <= 26);
   assert.ok(mapped.sources.some((source) => source.relation === "image"));
 });
 

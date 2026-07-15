@@ -11,6 +11,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { ArrowLeft, ArrowRight } from "@phosphor-icons/react";
 import {
   BOOTSTRAP_CATALOG,
   DEFAULT_PREFERENCES,
@@ -1114,12 +1115,18 @@ function AnswerVisual({
   const [failedUrls, setFailedUrls] = useState<string[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const thumbnailRefs = useRef<Array<HTMLButtonElement | null>>([]);
-  const visible = media.filter((item) => !failedUrls.includes(item.imageUrl)).slice(0, compact ? 4 : 8);
+  const visible = media
+    .filter((item) => !failedUrls.includes(item.imageUrl) && hasBalancedVisualNotes(item))
+    .slice(0, compact ? 4 : 8);
   if (!visible.length) return null;
   const activeIndex = Math.min(selectedIndex, visible.length - 1);
   const selected = visible[activeIndex];
   const noticeItems = selected.whatToNotice?.length ? selected.whatToNotice : [selected.caption];
   const roleLabel = (selected.role ?? "context").replace("-", " ");
+
+  function selectImage(nextIndex: number) {
+    setSelectedIndex((nextIndex + visible.length) % visible.length);
+  }
 
   function selectFromKeyboard(index: number, event: KeyboardEvent<HTMLButtonElement>) {
     if (event.key !== "ArrowLeft" && event.key !== "ArrowRight" && event.key !== "Home" && event.key !== "End") return;
@@ -1138,16 +1145,29 @@ function AnswerVisual({
   return (
     <section className={`answer-gallery ${compact ? "compact-visual" : ""}`} aria-label="Visual evidence">
       <figure className="answer-gallery-selected">
-        <a href={selected.sourcePageUrl} target="_blank" rel="noreferrer" aria-label={`${selected.title ?? selected.caption}. Open source.`}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={selected.imageUrl}
-            alt={selected.alt}
-            loading="eager"
-            referrerPolicy="no-referrer"
-            onError={() => setFailedUrls((current) => current.includes(selected.imageUrl) ? current : [...current, selected.imageUrl])}
-          />
-        </a>
+        <div className="answer-gallery-image-stage">
+          <a href={selected.sourcePageUrl} target="_blank" rel="noreferrer" aria-label={`${selected.title ?? selected.caption}. Open source.`}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={selected.imageUrl}
+              alt={selected.alt}
+              loading="eager"
+              referrerPolicy="no-referrer"
+              onError={() => setFailedUrls((current) => current.includes(selected.imageUrl) ? current : [...current, selected.imageUrl])}
+            />
+          </a>
+          {visible.length > 1 && (
+            <div className="answer-gallery-arrows" aria-label="Browse visual evidence">
+              <button type="button" onClick={() => selectImage(activeIndex - 1)} aria-label="Previous image">
+                <ArrowLeft aria-hidden="true" weight="bold" />
+              </button>
+              <span aria-live="polite">{activeIndex + 1} / {visible.length}</span>
+              <button type="button" onClick={() => selectImage(activeIndex + 1)} aria-label="Next image">
+                <ArrowRight aria-hidden="true" weight="bold" />
+              </button>
+            </div>
+          )}
+        </div>
         <figcaption><span>{selected.title ?? selected.caption}</span><a href={selected.sourcePageUrl} target="_blank" rel="noreferrer">Source ↗</a></figcaption>
       </figure>
 
@@ -1184,6 +1204,21 @@ function AnswerVisual({
       </div>
     </section>
   );
+}
+
+function hasBalancedVisualNotes(item: JourneyTurn["media"][number]) {
+  const wordCount = (value: string) => value.match(/[\p{L}\p{N}][\p{L}\p{N}'’-]*/gu)?.length ?? 0;
+  const whyCount = wordCount(item.whyIncluded ?? "");
+  const learningCount = wordCount(item.learning ?? "");
+  return whyCount >= 18
+    && whyCount <= 26
+    && learningCount >= 18
+    && learningCount <= 26
+    && item.whatToNotice?.length === 2
+    && item.whatToNotice.every((notice) => {
+      const count = wordCount(notice);
+      return count >= 9 && count <= 15;
+    });
 }
 
 function JourneyMap({
