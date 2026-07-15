@@ -20,6 +20,8 @@ export type LiveResearchState = {
   result: JourneyDetail | null;
   error: string | null;
   diagnosticId: string | null;
+  retryAttempt: number;
+  maxRetries: number;
 };
 
 export function starterRecommendationsUrl(performerId: PerformerId, forceRefresh = false) {
@@ -79,6 +81,16 @@ export async function streamLiveResearch(
             question: event.question,
             message: event.message,
             diagnosticId: event.requestId,
+            retryAttempt: 0,
+            maxRetries: 0,
+          });
+        } else if (event.type === "retry") {
+          setState((current) => current && {
+            ...current,
+            message: event.message,
+            events: [],
+            retryAttempt: event.attempt,
+            maxRetries: event.maxRetries,
           });
         } else if (event.type === "activity") {
           setState((current) => current && {

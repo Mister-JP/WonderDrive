@@ -174,6 +174,8 @@ export function WonderDriveExperience() {
         result: null,
         error: null,
         diagnosticId: null,
+        retryAttempt: 0,
+        maxRetries: 0,
       });
       const complete = await streamLiveResearch(
         { kind: "create", ...config, idempotencyKey: crypto.randomUUID() },
@@ -216,6 +218,8 @@ export function WonderDriveExperience() {
           result: null,
           error: null,
           diagnosticId: null,
+          retryAttempt: 0,
+          maxRetries: 0,
         });
         const complete = await streamLiveResearch(
           {
@@ -839,8 +843,8 @@ function JourneyBufferingStage({
         </div>
         <div className={`buffering-status ${state.status}`} role="status" aria-live="polite">
           <span className="buffering-dot" aria-hidden="true" />
-          <strong>{state.status === "complete" ? "Answer ready" : state.status === "error" ? "Research stopped" : "Buffering answer"}</strong>
-          <small>{state.status === "running" ? "The page stays exactly where it is" : state.status === "complete" ? "Placing the answer into this card" : "Nothing incomplete was saved"}</small>
+          <strong>{state.status === "complete" ? "Answer ready" : state.status === "error" ? "Research stopped" : state.retryAttempt > 0 ? `Retrying ${state.retryAttempt} of ${state.maxRetries}` : "Buffering answer"}</strong>
+          <small>{state.status === "running" ? state.message : state.status === "complete" ? "Placing the answer into this card" : "Nothing incomplete was saved"}</small>
         </div>
       </header>
 

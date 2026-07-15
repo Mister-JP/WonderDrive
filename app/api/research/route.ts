@@ -9,10 +9,20 @@ import {
   prepareLiveResearch,
 } from "../../../lib/live-repository";
 import { runLiveResearch } from "../../../lib/live-research";
-import { publicError } from "../../../lib/errors";
+import { publicError, RepositoryError } from "../../../lib/errors";
 import { publicViewer, resolveViewer } from "../../../lib/viewer";
 
 export const dynamic = "force-dynamic";
+
+const MAX_RETRIES = 5;
+
+function retryDelay(attempt: number) {
+  return Math.min(500 * 2 ** (attempt - 1), 4_000);
+}
+
+function wait(milliseconds: number) {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
 
 export async function POST(request: Request) {
   try {
@@ -60,24 +70,48 @@ export async function POST(request: Request) {
             controller.close();
             return;
           }
+          let retriesUsed = 0;
           try {
-            const draft = await runLiveResearch(
-              preparation.prepared,
-              (event) => send({ type: "activity", event }),
-              abortController.signal,
-            );
+            let draft: Awaited<ReturnType<typeof runLiveResearch>> | undefined;
+            while (!draft) {
+              try {
+                draft = await runLiveResearch(
+                  preparation.prepared,
+                  (event) => send({ type: "activity", event }),
+                  abortController.signal,
+                );
+              } catch (error) {
+                const retryable = error instanceof RepositoryError ? error.retryable : true;
+                if (!retryable || retriesUsed >= MAX_RETRIES || abortController.signal.aborted) {
+                  throw error;
+                }
+                retriesUsed += 1;
+                send({
+                  type: "retry",
+                  attempt: retriesUsed,
+                  maxRetries: MAX_RETRIES,
+                  message: `Temporary research failure. Automatic retry ${retriesUsed} of ${MAX_RETRIES} will begin shortly.`,
+                });
+                await wait(retryDelay(retriesUsed));
+                if (abortController.signal.aborted) throw error;
+              }
+            }
             const journey = await commitLiveResearch(viewer, preparation.prepared, draft);
             send({ type: "complete", data: journey, viewer: publicViewer(viewer) });
           } catch (error) {
             await markLiveResearchFailed(viewer, preparation.prepared.requestId, error);
             if (!closed) {
+              const failure = publicError(
+                error,
+                "WonderDrive could not complete live research. No partial journey was saved.",
+              );
               send({
                 type: "error",
                 error: {
-                  ...publicError(
-                    error,
-                    "WonderDrive could not complete live research. No partial journey was saved.",
-                  ),
+                  ...failure,
+                  message: retriesUsed === MAX_RETRIES
+                    ? `${failure.message} WonderDrive tried ${MAX_RETRIES} automatic retries before stopping.`
+                    : failure.message,
                   diagnosticId: preparation.prepared.requestId,
                 },
               });

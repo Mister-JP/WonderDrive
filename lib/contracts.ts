@@ -287,6 +287,7 @@ export type LiveResearchRequest =
 
 export type LiveResearchStreamEvent =
   | { type: "started"; requestId: string; question: string; message: string }
+  | { type: "retry"; attempt: number; maxRetries: number; message: string }
   | { type: "heartbeat"; at: number }
   | { type: "activity"; event: ResearchEvent }
   | { type: "complete"; data: JourneyDetail; viewer: Viewer }
