@@ -1,3 +1,4 @@
-ALTER TABLE `identities` ADD `email` text;--> statement-breakpoint
-ALTER TABLE `identities` ADD `full_name` text;--> statement-breakpoint
-ALTER TABLE `identities` ADD `profile_updated_at` integer;
+-- These profile columns already exist in the deployed database. They are part
+-- of the initial identities table for clean installs, so this migration only
+-- advances existing deployments past the previously unrecorded schema change.
+SELECT 1;
