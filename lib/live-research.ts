@@ -187,14 +187,14 @@ const TURN_SCHEMA = {
           sourcePageUrl: { type: "string", minLength: 6, maxLength: 2_458 },
           title: { type: "string", minLength: 3, maxLength: 116 },
           role: { type: "string", enum: ["object", "process", "result", "context", "comparison", "scale", "primary-source"] },
-          whyIncluded: { type: "string", minLength: 20, maxLength: 200 },
+          whyIncluded: { type: "string", minLength: 72, maxLength: 200 },
           whatToNotice: {
             type: "array",
             minItems: 2,
             maxItems: 2,
-            items: { type: "string", minLength: 8, maxLength: 120 },
+            items: { type: "string", minLength: 36, maxLength: 120 },
           },
-          learning: { type: "string", minLength: 20, maxLength: 200 },
+          learning: { type: "string", minLength: 72, maxLength: 200 },
           evidenceRelation: { type: "string", enum: ["shows", "illustrates", "contextualizes", "supports"] },
         },
       },
@@ -678,7 +678,7 @@ function buildInstructions(performer: (typeof PERFORMERS)[number]): string {
     "For every answer block, copy one or more exact source URLs that the web search actually consulted into citationUrls.",
     "When factual images are requested, first decide what the learner would benefit from seeing, then search specifically for that visual rather than merely the broad topic. WonderDrive reads image URLs directly; do not place image URLs in the answer JSON or use generated imagery as evidence.",
     "Only keep an image when it adds specific evidence that the prose alone cannot show. Ignore decorative, generic, weakly related, duplicate, or ambiguous results.",
-    "For every image you keep, add one visualNotes entry keyed by its exact source page URL. The title must name the visible subject. whyIncluded and learning should each have the natural-language length of a concise 18–26-word English sentence. whatToNotice must contain exactly two similarly concise visible observations. Use the output language's normal segmentation and syntax. Never infer details that are not visibly supported. Return an empty visualNotes array when no image passes this bar.",
+    "For every image you keep, add one visualNotes entry keyed by its exact source page URL. The title must name the visible subject. whyIncluded must use the natural-language length of an 18–26-word English sentence and connect that specific image to a claim in the answer. whatToNotice must contain exactly two concrete visible observations with the natural-language length of 9–15 English words each. learning must use the natural-language length of 18–26 English words and state the takeaway without repeating whyIncluded. Use the output language's normal segmentation and syntax. Never infer details that are not visibly supported. Return an empty visualNotes array when no image passes this bar.",
     "Return exactly two genuinely different next questions. Each must hook into one concrete fact, object, creature, place, event, or surprising detail in the visible answer—not just the broad topic.",
     "Write each question as a doorway for a curious beginner of any age who may be encountering the subject for the first time. They should not know the answer, but they should immediately understand what the question is asking. Do not reuse specialist terms from the answer unless their meaning is obvious from the question.",
     "Make each question feel like a playable rabbit hole: about as short as a natural 5–12-word English question, using the output language's normal segmentation and syntax; use plain everyday language, one idea at a time, and wording that is fun to say out loud.",
@@ -1485,8 +1485,8 @@ function meaningfulWords(value: string) {
 }
 
 function isSpecificVisualNote(note: ModelVisualNote, caption: string, locale: SupportedLocale) {
-  const proseLimit = locale === "en" ? VISUAL_NOTE_WORD_LIMITS.whyIncluded : [8, 40] as const;
-  const noticeLimit = locale === "en" ? VISUAL_NOTE_WORD_LIMITS.notice : [4, 25] as const;
+  const proseLimit = VISUAL_NOTE_WORD_LIMITS.whyIncluded;
+  const noticeLimit = VISUAL_NOTE_WORD_LIMITS.notice;
   if (!withinWordLimit(note.whyIncluded, proseLimit, locale)) return false;
   if (!Array.isArray(note.whatToNotice) || note.whatToNotice.length !== 2) return false;
   if (!note.whatToNotice.every((item) => withinWordLimit(item, noticeLimit, locale))) return false;

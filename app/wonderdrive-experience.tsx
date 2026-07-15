@@ -1233,10 +1233,10 @@ function hasBalancedVisualNotes(item: JourneyTurn["media"][number], locale: Jour
   const wordCount = (value: string) => [...new Intl.Segmenter(locale, { granularity: "word" }).segment(value)].filter((segment) => segment.isWordLike).length;
   const whyCount = wordCount(item.whyIncluded ?? "");
   const learningCount = wordCount(item.learning ?? "");
-  const proseMinimum = locale === "en" ? 18 : 8;
-  const proseMaximum = locale === "en" ? 26 : 40;
-  const noticeMinimum = locale === "en" ? 9 : 4;
-  const noticeMaximum = locale === "en" ? 15 : 25;
+  const proseMinimum = 18;
+  const proseMaximum = 26;
+  const noticeMinimum = 9;
+  const noticeMaximum = 15;
   return whyCount >= proseMinimum
     && whyCount <= proseMaximum
     && learningCount >= proseMinimum
