@@ -109,8 +109,11 @@ export async function resolveViewer(): Promise<ViewerContext> {
         identityId: identity.id,
         mode: "guest",
         displayName: "Guest explorer",
-        journeyLimit: 5,
-        guestExpiresAt: identity.expires_at ?? now + GUEST_MAX_AGE_SECONDS * 1000,
+        journeyLimit: 50,
+        // Older guest rows may not have an expiry recorded. Do not present a
+        // newly calculated (and therefore endlessly moving) date as a fixed
+        // session expiration.
+        guestExpiresAt: identity.expires_at ?? undefined,
       };
     }
   }
@@ -129,7 +132,7 @@ export async function resolveViewer(): Promise<ViewerContext> {
     identityId,
     mode: "guest",
     displayName: "Guest explorer",
-    journeyLimit: 5,
+    journeyLimit: 50,
     guestExpiresAt: now + GUEST_MAX_AGE_SECONDS * 1000,
     setCookie: sessionCookie(token, requestHeaders),
   };

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { env } from "cloudflare:workers";
+import { PERFORMERS, REAL_WORLD_DISCOVERY_STARTERS, STARTERS } from "../lib/catalog.ts";
 import { liveResearchTestHooks, runLiveResearch } from "../lib/live-research.ts";
 
 const providerResponse = {
@@ -105,21 +106,14 @@ test("extracts image search results into a graceful media gallery", () => {
       sourcePageUrl: "https://example.org/bridge",
       title: "Main cables of a suspension bridge",
       role: "process",
-      whyIncluded: "This bridge photograph makes the load-carrying cable system visible, connecting the answer's structural explanation to a specific physical example.",
-      whatToNotice: [
-        "Vertical suspenders connect the roadway deck to the curving main cables.",
-        "The main cables pass over towers before descending toward distant anchorages.",
-      ],
-      learning: "A suspension bridge carries roadway weight through suspenders and main cables, then transfers those forces into towers and anchorages.",
+      commentary: "Look at how the slim vertical suspenders connect the roadway to the sweeping main cables above. Those main cables pass over the towers before descending toward distant anchorages, making the bridge's load path visible: roadway weight moves through the suspenders and cables, then into the towers and anchorages.",
       evidenceRelation: "illustrates",
     },
     {
       sourcePageUrl: "https://example.org/joints",
       title: "Expansion joint",
       role: "object",
-      whyIncluded: "It shows a joint.",
-      whatToNotice: ["Look at the gap."],
-      learning: "Joints move.",
+      commentary: "Look at the gap.",
       evidenceRelation: "shows",
     },
   ];
@@ -133,13 +127,12 @@ test("extracts image search results into a graceful media gallery", () => {
   assert.equal(mapped.media.length, 1);
   assert.equal(mapped.media[0].thumbnailUrl, "https://images.example.org/bridge-thumb.jpg");
   assert.equal(mapped.media[0].title, "Main cables of a suspension bridge");
-  assert.equal(mapped.media[0].whatToNotice.length, 2);
-  assert.ok(mapped.media[0].whyIncluded.split(/\s+/).length >= 18);
-  assert.ok(mapped.media[0].learning.split(/\s+/).length <= 26);
+  assert.ok(mapped.media[0].commentary.split(/\s+/).length >= 30);
+  assert.doesNotMatch(mapped.media[0].commentary, /answer block|block 1/i);
   assert.ok(mapped.sources.some((source) => source.relation === "image"));
 });
 
-test("keeps provider images visible when the user prefers images but visual notes are unavailable", () => {
+test("requires validated visual notes when factual images are mandatory", () => {
   const images = liveResearchTestHooks.extractImages({
     output: [{
       type: "web_search_call",
@@ -153,11 +146,14 @@ test("keeps provider images visible when the user prefers images but visual note
     }],
   });
 
-  const preferred = liveResearchTestHooks.validateAndMapTurn(
-    validTurn,
-    liveResearchTestHooks.extractSources(providerResponse),
-    "prefer",
-    images,
+  assert.throws(
+    () => liveResearchTestHooks.validateAndMapTurn(
+      validTurn,
+      liveResearchTestHooks.extractSources(providerResponse),
+      "prefer",
+      images,
+    ),
+    (error) => error?.code === "RESEARCH_VALIDATION_FAILED" && error?.retryable === true,
   );
   const optional = liveResearchTestHooks.validateAndMapTurn(
     validTurn,
@@ -166,9 +162,6 @@ test("keeps provider images visible when the user prefers images but visual note
     images,
   );
 
-  assert.equal(preferred.media.length, 1);
-  assert.equal(preferred.media[0].imageUrl, "https://images.example.org/bridge.jpg");
-  assert.equal(preferred.media[0].caption, "Golden Gate Bridge at sunset from the shoreline.");
   assert.equal(optional.media.length, 0);
 });
 
@@ -184,6 +177,18 @@ test("treats an explicit photograph request as an image preference", () => {
   assert.equal(
     liveResearchTestHooks.imagePreferenceForQuestion("avoid", "Show me photos of the bridge."),
     "avoid",
+  );
+});
+
+test("requires sourced real-world media when the visual contract is preferred", () => {
+  assert.throws(
+    () => liveResearchTestHooks.validateAndMapTurn(
+      validTurn,
+      liveResearchTestHooks.extractSources(providerResponse),
+      "prefer",
+      [],
+    ),
+    (error) => error?.code === "RESEARCH_VALIDATION_FAILED" && error?.retryable === true,
   );
 });
 
@@ -205,12 +210,7 @@ test("repairs mismatched model image URLs with server-owned provider image IDs",
     sourcePageUrl: "https://different.example.net/model-selected-page",
     title: "Main cables of a suspension bridge",
     role: "process",
-    whyIncluded: "This bridge photograph makes the load-carrying cable system visible, connecting the answer's structural explanation to a specific physical example.",
-    whatToNotice: [
-      "Vertical suspenders connect the roadway deck to the curving main cables.",
-      "The main cables pass over towers before descending toward distant anchorages.",
-    ],
-    learning: "A suspension bridge carries roadway weight through suspenders and main cables, then transfers those forces into towers and anchorages.",
+    commentary: "Look at how the slim vertical suspenders connect the roadway to the sweeping main cables above. Those main cables pass over the towers before descending toward distant anchorages, making the bridge's load path visible: roadway weight moves through the suspenders and cables, then into the towers and anchorages.",
     evidenceRelation: "illustrates",
   }];
 
@@ -220,9 +220,7 @@ test("repairs mismatched model image URLs with server-owned provider image IDs",
       noteNumber: 1,
       title: mismatched.visualNotes[0].title,
       role: mismatched.visualNotes[0].role,
-      whyIncluded: mismatched.visualNotes[0].whyIncluded,
-      whatToNotice: mismatched.visualNotes[0].whatToNotice,
-      learning: mismatched.visualNotes[0].learning,
+      commentary: mismatched.visualNotes[0].commentary,
       evidenceRelation: mismatched.visualNotes[0].evidenceRelation,
     }],
   });
@@ -249,12 +247,7 @@ test("repairs a provider image URL when the host and page slug strongly overlap"
     sourcePageUrl: "https://dylanstours.com/open-air-city-tour-alcatraz/",
     title: "Golden Gate Bridge glowing above the bay",
     role: "context",
-    whyIncluded: "The sunset photograph shows the bridge's orange structure holding its color while warmer light spreads across the surrounding bay and sky.",
-    whatToNotice: [
-      "The orange bridge remains distinct against the softer sunset colors.",
-      "Reflected light breaks into smaller patches across the moving water.",
-    ],
-    learning: "The bridge remains visually prominent because its saturated orange paint contrasts with changing atmospheric light, distant water, and the evening sky.",
+    commentary: "Notice how the orange bridge stays distinct against the softer sunset colors while reflected light breaks into smaller patches across the moving water. Its saturated paint remains visually prominent because it contrasts with the changing atmospheric light, distant bay, and evening sky.",
     evidenceRelation: "illustrates",
   }];
 
@@ -414,6 +407,31 @@ test("sends only the ordered topic trail as prior-content context", () => {
   assert.doesNotMatch(input, /Who invented Bluetooth\?|PRIVATE STARTING QUESTION|PRIVATE OLD ANSWER|PRIVATE OLD SOURCE/);
 });
 
+test("makes each answer-density preference explicit and schema-enforced", () => {
+  const base = {
+    question: "Why do whales sing?",
+    researchPreset: "standard",
+    imagePreference: "when-useful",
+    outputLocale: "en",
+    topicTrail: [],
+  };
+
+  const brief = liveResearchTestHooks.buildResearchInput({ ...base, answerDensity: "brief" });
+  const balanced = liveResearchTestHooks.buildResearchInput({ ...base, answerDensity: "balanced" });
+  const rich = liveResearchTestHooks.buildResearchInput({ ...base, answerDensity: "rich" });
+
+  assert.match(brief, /exactly 2 compact answer blocks and about 2–4 sentences total/);
+  assert.match(balanced, /2–3 answer blocks and about 5–7 sentences total/);
+  assert.match(rich, /4–5 substantial answer blocks and about 8–12 sentences total/);
+  assert.deepEqual(
+    ["brief", "balanced", "rich"].map((density) => {
+      const schema = liveResearchTestHooks.turnSchemaForDensity(density);
+      return [schema.properties.answerBlocks.minItems, schema.properties.answerBlocks.maxItems];
+    }),
+    [[2, 2], [2, 3], [4, 5]],
+  );
+});
+
 test("prompts research for source fitness, beginner clarity, and intentional visuals", () => {
   const instructions = liveResearchTestHooks.buildInstructions({
     name: "Mechanist",
@@ -422,17 +440,69 @@ test("prompts research for source fitness, beginner clarity, and intentional vis
     voiceTraits: ["clear"],
     avoids: ["jargon"],
     toolPosture: "Search for first-party descriptions and measured evidence.",
+    questionPosture: "Keep every question grounded in documented reality.",
   });
 
   assert.match(instructions, /Choose sources for what they are qualified to establish/);
   assert.match(instructions, /not to maximize the source count/);
   assert.match(instructions, /first answer block a direct, self-contained answer/);
   assert.match(instructions, /curious learner with no assumed specialist knowledge/);
-  assert.match(instructions, /first decide what the learner would benefit from seeing/);
+  assert.match(instructions, /beautifully edited children's encyclopedia or science-museum exhibit/);
+  assert.match(instructions, /most visually surprising, beautiful, strange, enormous, tiny, ancient, dynamic, or counterintuitive/);
+  assert.match(instructions, /one strong hero image/);
+  assert.match(instructions, /small intentional visual story/);
+  assert.match(instructions, /Do not choose a chart, bar graph/);
+  assert.match(instructions, /one natural, conversational paragraph/);
+  assert.match(instructions, /Return no more than three visualNotes/);
+  assert.match(instructions, /Creating the visual notes is part of selecting an image, not an optional follow-up/);
+  assert.match(instructions, /Never leave a selected image without notes/);
+  assert.match(instructions, /Do not use headings, labels, lists/);
+  assert.match(instructions, /phrases such as 'answer block' or 'block 1'/);
+  assert.match(instructions, /Every WonderDrive turn must select at least one sourced factual real-world image/);
+  assert.match(instructions, /never return an empty visualNotes array/);
   assert.match(instructions, /doorway for a curious beginner of any age/);
   assert.match(instructions, /Research posture: Search for first-party descriptions and measured evidence/);
+  assert.match(instructions, /Question posture: Keep every question grounded in documented reality/);
   assert.match(instructions, /Research and select sources in whichever languages provide the strongest evidence/);
   assert.match(instructions, /Write every reader-facing natural-language field in that output language/);
+});
+
+test("Atlas keeps generated paths on documented real-world subjects", () => {
+  const atlas = PERFORMERS.find((performer) => performer.id === "atlas");
+  assert.ok(atlas);
+  assert.match(atlas.questionPosture, /Every generated question must concern something real and researchable/);
+  assert.match(atlas.questionPosture, /Never invent fictional premises, imaginary worlds/);
+  assert.match(atlas.toolPosture, /Search first/);
+  const instructions = liveResearchTestHooks.buildInstructions(atlas);
+  assert.match(instructions, /do not turn that guidance into hypothetical or counterfactual paths/);
+  assert.match(instructions, /make answer block 2 a sourced real-world relevance paragraph/);
+  assert.match(instructions, /topicLabel as a concise subject label, not as a repetition/);
+  assert.equal(STARTERS.atlas.length, 4);
+  assert.equal(REAL_WORLD_DISCOVERY_STARTERS.length, 20);
+  assert.ok([...STARTERS.atlas, ...REAL_WORLD_DISCOVERY_STARTERS.map((item) => item.question)]
+    .every((question) => /\?$/.test(question)));
+});
+
+test("turn input makes image preference operational", () => {
+  const base = {
+    question: "Why did some dinosaurs grow feathers?",
+    researchPreset: "standard",
+    answerDensity: "balanced",
+    outputLocale: "en",
+    topicTrail: [],
+  };
+  assert.match(
+    liveResearchTestHooks.buildResearchInput({ ...base, imagePreference: "when-useful" }),
+    /animals, space, archaeology, geology, machines, architecture, microscopic life/,
+  );
+  assert.match(
+    liveResearchTestHooks.buildResearchInput({ ...base, imagePreference: "prefer" }),
+    /Actively search for a compelling factual hero image/,
+  );
+  assert.match(
+    liveResearchTestHooks.buildResearchInput({ ...base, imagePreference: "avoid" }),
+    /Do not search for or return images/,
+  );
 });
 
 test("repairs citation pointers with source IDs without rewriting prose", () => {

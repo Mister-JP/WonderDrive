@@ -1,4 +1,4 @@
-export type PerformerId = "sage" | "spark" | "mechanist";
+export type PerformerId = "sage" | "spark" | "mechanist" | "atlas";
 export type ModelId =
   | "gpt-5.6-sol"
   | "gpt-5.6-terra"
@@ -16,10 +16,10 @@ export type SupportedLocale = "en" | "es" | "fr" | "de" | "pt" | "hi" | "bn" | "
 export type UserPreferences = {
   interfaceLocale: SupportedLocale;
   defaultOutputLocale: SupportedLocale;
+  defaultModelId: ModelId;
   answerDensity: AnswerDensity;
   textSize: TextSize;
   imagePreference: ImagePreference;
-  speechRate: number;
   reduceMotion: boolean;
 };
 
@@ -36,6 +36,7 @@ export type Performer = {
   voiceTraits: string[];
   avoids: string[];
   toolPosture: string;
+  questionPosture: string;
   recommendedModelId: ModelId;
 };
 
@@ -154,6 +155,8 @@ export type TurnMedia = {
   alt: string;
   title?: string;
   role?: "object" | "process" | "result" | "context" | "comparison" | "scale" | "primary-source";
+  commentary?: string;
+  /** Legacy visual-note fields retained so older saved journeys still render. */
   whyIncluded?: string;
   whatToNotice?: string[];
   learning?: string;
@@ -304,6 +307,7 @@ export type LiveResearchRequest =
       imagePreference: ImagePreference;
       outputLocale: SupportedLocale;
       idempotencyKey: string;
+      takeoverExisting?: boolean;
     }
   | {
       kind: "advance";
@@ -314,6 +318,7 @@ export type LiveResearchRequest =
       optionId?: string;
       expectedVersion: number;
       idempotencyKey: string;
+      takeoverExisting?: boolean;
     };
 
 export type LiveResearchStreamEvent =

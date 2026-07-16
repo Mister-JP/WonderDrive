@@ -57,6 +57,20 @@
       "when": 1784081358164,
       "tag": "0007_mute_scourge",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1784208432052,
+      "tag": "0008_loud_rattler",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "6",
+      "when": 1784210625743,
+      "tag": "0009_watery_annihilus",
+      "breakpoints": true
     }
   ]
 }

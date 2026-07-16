@@ -60,11 +60,13 @@ export async function api<T>(url: string, init?: RequestInit): Promise<ApiSucces
 export async function streamLiveResearch(
   request: LiveResearchRequest,
   setState: Dispatch<SetStateAction<LiveResearchState | null>>,
+  signal?: AbortSignal,
 ) {
   const response = await fetch("/api/research", {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify(request),
+    signal,
   });
   if (!response.ok) {
     const payload = (await response.json()) as ApiFailure;

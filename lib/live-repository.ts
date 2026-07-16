@@ -90,13 +90,24 @@ export async function prepareLiveResearch(
     )
     .bind(viewer.identityId, now - 130_000)
     .first<{ id: string }>();
-  if (activeLease) {
+  if (activeLease && !request.takeoverExisting) {
     throw new RepositoryError(
       "ALREADY_IN_PROGRESS",
       "Another foreground research run is active for this identity. Return to that tab or wait for its lease to expire.",
       409,
       true,
     );
+  }
+  if (activeLease) {
+    await db
+      .prepare(
+        `UPDATE research_requests
+         SET status = 'failed', error_code = 'TAKEN_OVER',
+             error_message = 'This run was moved to another tab.', completed_at = ?
+         WHERE id = ? AND identity_id = ? AND status IN ('reserved', 'researching')`,
+      )
+      .bind(now, activeLease.id, viewer.identityId)
+      .run();
   }
 
   const configuredProjectBudget = Number(process.env.WONDERDRIVE_DAILY_BUDGET_USD ?? "25");
@@ -240,6 +251,7 @@ async function commitLiveCreate(
   draft: LiveTurnDraft,
 ) {
   const db = getD1();
+  await assertLiveResearchOwnsLease(db, viewer, prepared.requestId);
   const now = Date.now();
   const journeyId = crypto.randomUUID();
   const turnId = crypto.randomUUID();
@@ -386,6 +398,7 @@ async function commitLiveAdvance(
     throw new RepositoryError("INTERNAL_ERROR", "The live turn reservation was incomplete.", 500);
   }
   const db = getD1();
+  await assertLiveResearchOwnsLease(db, viewer, prepared.requestId);
   const now = Date.now();
   const childId = crypto.randomUUID();
   const runId = crypto.randomUUID();
@@ -610,6 +623,28 @@ async function commitLiveAdvance(
   return getJourney(viewer, journeyId);
 }
 
+async function assertLiveResearchOwnsLease(
+  db: D1Database,
+  viewer: ViewerContext,
+  requestId: string,
+) {
+  const request = await db
+    .prepare(
+      `SELECT status FROM research_requests
+       WHERE id = ? AND identity_id = ? LIMIT 1`,
+    )
+    .bind(requestId, viewer.identityId)
+    .first<{ status: string }>();
+  if (request?.status !== "researching") {
+    throw new RepositoryError(
+      "ALREADY_IN_PROGRESS",
+      "This research run was moved to another tab before it could be saved.",
+      409,
+      false,
+    );
+  }
+}
+
 function liveResearchStatements(
   db: D1Database,
   prepared: PreparedLiveResearch,
@@ -810,7 +845,7 @@ async function normalizeRequest(viewer: ViewerContext, request: LiveResearchRequ
         modelId: request.modelId,
         researchPreset: request.researchPreset,
         answerDensity: request.answerDensity,
-        imagePreference: request.imagePreference,
+        imagePreference: "prefer",
         outputLocale,
       },
       question: seed,
@@ -820,7 +855,7 @@ async function normalizeRequest(viewer: ViewerContext, request: LiveResearchRequ
       modelId: request.modelId,
       researchPreset: request.researchPreset,
       answerDensity: request.answerDensity,
-      imagePreference: request.imagePreference,
+      imagePreference: "prefer",
       outputLocale,
       topicTrail: [],
       journeyId: undefined,
@@ -888,7 +923,7 @@ async function normalizeRequest(viewer: ViewerContext, request: LiveResearchRequ
     modelId,
     researchPreset: journey.researchPreset,
     answerDensity: journey.answerDensity,
-    imagePreference: journey.imagePreference,
+    imagePreference: "prefer",
     outputLocale: journey.outputLocale,
     topicTrail,
     journeyId: journey.id,

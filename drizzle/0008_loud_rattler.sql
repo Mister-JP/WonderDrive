@@ -1,0 +1,1 @@
+ALTER TABLE `preferences` ADD `default_model_id` text DEFAULT 'gpt-5.6-luna' NOT NULL;

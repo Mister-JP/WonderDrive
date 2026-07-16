@@ -14,18 +14,18 @@ import type { ViewerContext } from "./viewer";
 type PreferencesRow = {
   interface_locale: UserPreferences["interfaceLocale"];
   default_output_locale: UserPreferences["defaultOutputLocale"];
+  default_model_id: UserPreferences["defaultModelId"];
   answer_density: UserPreferences["answerDensity"];
   text_size: UserPreferences["textSize"];
   image_preference: UserPreferences["imagePreference"];
-  speech_rate_percent: number;
   reduce_motion: number;
 };
 
 export async function getPreferences(viewer: ViewerContext): Promise<UserPreferences> {
   const row = await getD1()
     .prepare(
-      `SELECT interface_locale, default_output_locale, answer_density, text_size,
-              image_preference, speech_rate_percent, reduce_motion
+      `SELECT interface_locale, default_output_locale, default_model_id, answer_density, text_size,
+              image_preference, reduce_motion
        FROM preferences WHERE identity_id = ? LIMIT 1`,
     )
     .bind(viewer.identityId)
@@ -34,10 +34,10 @@ export async function getPreferences(viewer: ViewerContext): Promise<UserPrefere
       ? {
         interfaceLocale: row.interface_locale,
         defaultOutputLocale: row.default_output_locale,
+        defaultModelId: row.default_model_id,
         answerDensity: row.answer_density,
         textSize: row.text_size,
-        imagePreference: row.image_preference,
-        speechRate: Math.min(2, Math.max(0.5, row.speech_rate_percent / 100)),
+        imagePreference: "prefer",
         reduceMotion: Boolean(row.reduce_motion),
       }
     : DEFAULT_PREFERENCES;
@@ -51,16 +51,16 @@ export async function updatePreferences(
   await getD1()
     .prepare(
       `INSERT INTO preferences
-        (identity_id, interface_locale, default_output_locale, answer_density, text_size,
-         image_preference, speech_rate_percent, reduce_motion, updated_at)
+        (identity_id, interface_locale, default_output_locale, default_model_id, answer_density, text_size,
+         image_preference, reduce_motion, updated_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
        ON CONFLICT(identity_id) DO UPDATE SET
          interface_locale = excluded.interface_locale,
          default_output_locale = excluded.default_output_locale,
+         default_model_id = excluded.default_model_id,
          answer_density = excluded.answer_density,
          text_size = excluded.text_size,
          image_preference = excluded.image_preference,
-         speech_rate_percent = excluded.speech_rate_percent,
          reduce_motion = excluded.reduce_motion,
          updated_at = excluded.updated_at`,
     )
@@ -68,10 +68,10 @@ export async function updatePreferences(
       viewer.identityId,
       preferences.interfaceLocale,
       preferences.defaultOutputLocale,
+      preferences.defaultModelId,
       preferences.answerDensity,
       preferences.textSize,
       preferences.imagePreference,
-      Math.round(preferences.speechRate * 100),
       preferences.reduceMotion ? 1 : 0,
       Date.now(),
     )
@@ -244,22 +244,18 @@ function validatePreferences(value: unknown): UserPreferences {
   const body = asRecord(value);
   const interfaceLocale = normalizeLocale(body.interfaceLocale, "interface language");
   const defaultOutputLocale = normalizeLocale(body.defaultOutputLocale, "learning language");
+  const defaultModelId = String(body.defaultModelId);
   const answerDensity = body.answerDensity;
   const textSize = body.textSize;
-  const imagePreference = body.imagePreference;
-  const speechRate = body.speechRate;
   const reduceMotion = body.reduceMotion;
+  if (!BOOTSTRAP_CATALOG.models.some((model) => model.id === defaultModelId)) {
+    throw new RepositoryError("BAD_REQUEST", "Choose a supported default model.", 400);
+  }
   if (!["brief", "balanced", "rich"].includes(String(answerDensity))) {
     throw new RepositoryError("BAD_REQUEST", "Choose a supported answer density.", 400);
   }
   if (!["s", "m", "l", "xl"].includes(String(textSize))) {
     throw new RepositoryError("BAD_REQUEST", "Choose a supported text size.", 400);
-  }
-  if (!["avoid", "when-useful", "prefer"].includes(String(imagePreference))) {
-    throw new RepositoryError("BAD_REQUEST", "Choose a supported image preference.", 400);
-  }
-  if (typeof speechRate !== "number" || !Number.isFinite(speechRate) || speechRate < 0.5 || speechRate > 2) {
-    throw new RepositoryError("BAD_REQUEST", "Speech speed must be between 0.5× and 2×.", 400);
   }
   if (typeof reduceMotion !== "boolean") {
     throw new RepositoryError("BAD_REQUEST", "Reduced motion must be true or false.", 400);
@@ -267,10 +263,10 @@ function validatePreferences(value: unknown): UserPreferences {
   return {
     interfaceLocale,
     defaultOutputLocale,
+    defaultModelId: defaultModelId as UserPreferences["defaultModelId"],
     answerDensity: answerDensity as UserPreferences["answerDensity"],
     textSize: textSize as UserPreferences["textSize"],
-    imagePreference: imagePreference as UserPreferences["imagePreference"],
-    speechRate,
+    imagePreference: "prefer",
     reduceMotion,
   };
 }

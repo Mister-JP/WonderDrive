@@ -8,16 +8,16 @@ import type {
   UserPreferences,
 } from "./contracts";
 
-export const PROMPT_VERSION = "wonder-research-turn@3.3.0";
+export const PROMPT_VERSION = "wonder-research-turn@3.8.0";
 export const TURN_SCHEMA_VERSION = "wonder-turn-draft@4";
 
 export const DEFAULT_PREFERENCES: UserPreferences = {
   interfaceLocale: "en",
   defaultOutputLocale: "en",
+  defaultModelId: "gpt-5.6-luna",
   answerDensity: "balanced",
   textSize: "m",
   imagePreference: "when-useful",
-  speechRate: 1,
   reduceMotion: false,
 };
 
@@ -35,6 +35,7 @@ export const PERFORMERS: Performer[] = [
     voiceTraits: ["patient", "warm", "precise"],
     avoids: ["rigid roleplay", "false certainty", "ornament without evidence"],
     toolPosture: "Search when evidence helps; prefer primary sources and make uncertainty visible.",
+    questionPosture: "Keep generated questions researchable and grounded in concrete subjects.",
     recommendedModelId: "gpt-5.6-luna",
   },
   {
@@ -50,6 +51,7 @@ export const PERFORMERS: Performer[] = [
     voiceTraits: ["playful", "nimble", "vivid"],
     avoids: ["gimmicks", "unsupported leaps", "performing certainty"],
     toolPosture: "Follow one surprising lead, then cross-check it before bringing it on stage.",
+    questionPosture: "Keep generated questions researchable, even when their framing is playful or surprising.",
     recommendedModelId: "gpt-5.6-luna",
   },
   {
@@ -65,6 +67,23 @@ export const PERFORMERS: Performer[] = [
     voiceTraits: ["clear-eyed", "tactile", "structured"],
     avoids: ["slogans", "personality theater", "mechanism without context"],
     toolPosture: "Search for first-party descriptions, measured evidence, and competing causal accounts.",
+    questionPosture: "Generate questions about real mechanisms, systems, objects, and observed effects.",
+    recommendedModelId: "gpt-5.6-luna",
+  },
+  {
+    id: "atlas",
+    version: "atlas@1.0.0",
+    name: "Atlas",
+    role: "Real-world fact hunter",
+    cue: "Treats reality like an endlessly surprising encyclopedia, anchoring every path in documented people, places, events, organisms, objects, technologies, or observable phenomena.",
+    mark: "◎",
+    accent: "coral",
+    sampleOpening: "Start with what is documented, then follow the strangest verified fact as far as the evidence goes.",
+    values: ["factual depth", "specificity", "primary evidence"],
+    voiceTraits: ["fact-hungry", "specific", "evidence-led"],
+    avoids: ["fictional premises", "unsupported what-ifs", "vague abstraction"],
+    toolPosture: "Search first, favor primary and institutional sources, cross-check striking claims, and distinguish established fact from uncertainty.",
+    questionPosture: "Every generated question must concern something real and researchable: a documented event, person, place, organism, object, technology, institution, discovery, or observed natural or social phenomenon. Never invent fictional premises, imaginary worlds, counterfactual histories, speculative creatures, or unsupported what-if scenarios. Questions may ask how or why something real works, but the subject and premise must already exist or have happened.",
     recommendedModelId: "gpt-5.6-luna",
   },
 ];
@@ -184,7 +203,36 @@ export const STARTERS: Record<PerformerId, string[]> = {
     "How does a repeated route become infrastructure?",
     "What makes a city develop its own sound?",
   ],
+  atlas: [
+    "Why did the 1815 eruption change weather worldwide?",
+    "How do octopuses edit messages inside their cells?",
+    "What makes ancient Roman concrete survive seawater?",
+    "How did accurate clocks reshape everyday city life?",
+  ],
 };
+
+export const REAL_WORLD_DISCOVERY_STARTERS = [
+  { question: "Why do wombats produce cube-shaped droppings?", topic: "animal biology" },
+  { question: "How did Polynesian navigators cross the Pacific without compasses?", topic: "navigation history" },
+  { question: "What keeps the Voyager probes communicating with Earth?", topic: "space engineering" },
+  { question: "Why does the Atacama Desert preserve ancient remains?", topic: "desert archaeology" },
+  { question: "How can trees record volcanic eruptions in their rings?", topic: "dendrochronology" },
+  { question: "What caused London's Great Smog of 1952?", topic: "environmental history" },
+  { question: "How do archerfish knock insects from branches?", topic: "animal behavior" },
+  { question: "Why did medieval builders bury shoes inside walls?", topic: "folk archaeology" },
+  { question: "How does the Svalbard seed vault protect crops?", topic: "food security" },
+  { question: "What made the Antikythera mechanism an ancient computer?", topic: "ancient technology" },
+  { question: "Why can glass behave differently over immense timescales?", topic: "materials science" },
+  { question: "How did cholera maps change public health?", topic: "epidemiology history" },
+  { question: "What lets geckos walk across ceilings?", topic: "biomechanics" },
+  { question: "How do scientists weigh the Greenland ice sheet?", topic: "climate measurement" },
+  { question: "Why are some Antarctic lakes buried under ice?", topic: "polar science" },
+  { question: "How did purple dye become a symbol of power?", topic: "material culture" },
+  { question: "What makes the Bay of Fundy tides so extreme?", topic: "oceanography" },
+  { question: "How did semaphore towers send messages across countries?", topic: "communication history" },
+  { question: "Why do some fungi turn insects into spore carriers?", topic: "fungal biology" },
+  { question: "How did scientists discover Earth's moving tectonic plates?", topic: "geology history" },
+] as const;
 
 export const DISCOVERY_STARTERS = [
   { question: "How does a memory become part of a place?", topic: "memory and place" },

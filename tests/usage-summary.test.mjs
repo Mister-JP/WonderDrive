@@ -18,7 +18,7 @@ test("maps rolling guest usage to exact slot-return times", () => {
       identityId: "guest-1",
       mode: "guest",
       displayName: "Guest explorer",
-      journeyLimit: 5,
+      journeyLimit: 50,
       guestExpiresAt: now + 10 * 24 * HOUR,
     },
     now,
@@ -34,7 +34,7 @@ test("maps rolling guest usage to exact slot-return times", () => {
   assert.equal(summary.liveResearch.releasesAt.length, 25);
   assert.equal(summary.spend.usedUsd, 0.25);
   assert.equal(summary.spend.nextReleaseAt, now + 12 * HOUR);
-  assert.deepEqual(summary.library, { used: 4, limit: 5, remaining: 1 });
+  assert.deepEqual(summary.library, { used: 4, limit: 50, remaining: 46 });
 });
 
 test("keeps next-slot timing empty while signed-in runs remain available", () => {

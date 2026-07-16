@@ -43,6 +43,7 @@ export const preferences = sqliteTable("preferences", {
     .references(() => identities.id),
   interfaceLocale: text("interface_locale").notNull().default("en"),
   defaultOutputLocale: text("default_output_locale").notNull().default("en"),
+  defaultModelId: text("default_model_id").notNull().default("gpt-5.6-luna"),
   answerDensity: text("answer_density", {
     enum: ["brief", "balanced", "rich"],
   })
@@ -56,7 +57,6 @@ export const preferences = sqliteTable("preferences", {
   })
     .notNull()
     .default("when-useful"),
-  speechRate: integer("speech_rate_percent").notNull().default(100),
   reduceMotion: integer("reduce_motion", { mode: "boolean" }).notNull().default(false),
   updatedAt: integer("updated_at", { mode: "timestamp_ms" })
     .notNull()

@@ -1,4 +1,4 @@
-import { DISCOVERY_STARTERS, PROMPT_VERSION, STARTERS, performerById } from "./catalog";
+import { DISCOVERY_STARTERS, PROMPT_VERSION, REAL_WORLD_DISCOVERY_STARTERS, STARTERS, performerById } from "./catalog";
 import type { PersonalizedStarter, PerformerId, SupportedLocale } from "./contracts";
 import { getD1 } from "../db";
 import type { ViewerContext } from "./viewer";
@@ -73,9 +73,12 @@ export async function getPersonalizedStarters(
           "Use only the ordered topic history supplied below as personalization context. Treat past topics as signs of curiosity, not evidence of knowledge or proficiency. Do not infer private traits, repeat earlier questions, or mention personalization.",
           `Write through the ${performer.name} performer layer: ${performer.cue}`,
           `Voice: ${performer.voiceTraits.join(", ")}. Values: ${performer.values.join(", ")}. Avoid: ${performer.avoids.join(", ")}.`,
+          `Question posture: ${performer.questionPosture}`,
           "Mix roughly eight history-adjacent rabbit holes, eight questions sparked by current developments, and eight lateral departures. If there is no history, redistribute those slots across current signals and wildly varied domains.",
           "Every question must be researchable, vivid, meaningfully different, and specific enough to spark a rabbit hole. Write it as a doorway for a curious beginner of any age who may never have encountered the subject: they should not know the answer, but should immediately understand what the question is asking. Use the natural-language length of 5–12 English words with the output language's normal segmentation and syntax, plain everyday language, one idea at a time, and wording that is fun to say out loud.",
-          "Prefer concrete subjects and a surprising hook: 'Can trees warn each other about bugs?', 'Why do astronauts grow taller in space?', or 'Could a mushroom help build a house?' Avoid academic framing, jargon, stacked clauses, vague abstraction, self-help, listicles, celebrity news, and quiz-like recall.",
+          performer.id === "atlas"
+            ? "Prefer concrete real-world subjects and verified hooks: 'Why do astronauts grow taller in space?', 'How did cholera maps change public health?', or 'What lets geckos walk across ceilings?' Avoid hypothetical premises, academic framing, jargon, stacked clauses, vague abstraction, self-help, listicles, celebrity news, and quiz-like recall."
+            : "Prefer concrete subjects and a surprising hook: 'Can trees warn each other about bugs?', 'Why do astronauts grow taller in space?', or 'Could a mushroom help build a house?' Avoid academic framing, jargon, stacked clauses, vague abstraction, self-help, listicles, celebrity news, and quiz-like recall.",
           "Do not ask directly about breaking tragedy or turn human suffering into entertainment. Label topics with the underlying domain, not a news outlet or headline.",
           `Write every question and topic label in ${localeName(outputLocale)} (${outputLocale}). Search may use sources in any language.`,
           "Return structured output only.",
@@ -172,7 +175,8 @@ function fallbackStarters(performerId: PerformerId): PersonalizedStarter[] {
     question,
     topic: `${performer.name} pick`,
   }));
-  const combined = [...featured, ...DISCOVERY_STARTERS];
+  const discovery = performerId === "atlas" ? REAL_WORLD_DISCOVERY_STARTERS : DISCOVERY_STARTERS;
+  const combined = [...featured, ...discovery];
   return combined.filter(
     (item, index) => combined.findIndex((candidate) => normalize(candidate.question) === normalize(item.question)) === index,
   ).slice(0, 24);
