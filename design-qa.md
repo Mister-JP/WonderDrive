@@ -75,6 +75,70 @@ final result: passed
 
 ---
 
+# Full-width question-redraw control design QA
+
+## Comparison target
+
+- Source visual truth: `/Users/jignasupathak/.codex/generated_images/019f6bcb-8d7b-7e62-b81c-0b07a9e4a700/exec-2f2c2f75-b48b-4e8d-9324-82bc72c0e073.png`
+- Browser implementation: `/Users/jignasupathak/Documents/Codex/hackathon-brainstorming/WonderDrive/.codex-redraw-inline-qa-1774x888.jpg`
+- Combined comparison: `/Users/jignasupathak/Documents/Codex/hackathon-brainstorming/WonderDrive/.codex-redraw-inline-comparison.jpg`
+- Matched comparison viewport: 1774 × 888
+- Responsive verification viewport: 390 × 844 (375 CSS px page width)
+- State: one researched turn with both next-direction choices visible and the replacement-question controls open
+
+## Full-view comparison evidence
+
+The implementation preserves the selected compact interaction: clicking “Try two different questions” transforms the existing secondary-action row in place instead of opening a popover or inserting another panel. The user's follow-up direction intentionally supersedes the earlier mock in one respect: the open controls now replace both secondary actions, including “Pick a path for me,” and use the full 580 px row.
+
+The closed and open states both measure 46 px tall. At the matched desktop viewport, the direction region remains 210.59 px tall and the document remains exactly one viewport high (`scrollHeight = clientHeight = 888`). The inline control has no clipped content (`scrollHeight 44` inside a 46 px frame) and the document has no horizontal overflow.
+
+## Required fidelity surfaces
+
+- Interaction model: one click swaps the complete secondary-action row in place; close restores both original actions.
+- Density: Practical, Surprising, Different direction, Optional note, close, and submit all fit in the original 46 px footprint.
+- Optional note: the note input replaces the choice controls within the same frame; Enter submits and Escape returns to the choice controls.
+- Visual language: existing paper, ink, sky, coral, border, typography, and Phosphor icon treatments are reused.
+- Accessibility: the mode buttons expose `aria-pressed`; the opener exposes `aria-expanded` and `aria-controls`; icon-only close and submit actions have localized accessible names.
+- Responsive behavior: at the mobile viewport, the full-width control measures 343 × 46 px with no internal or document-level horizontal overflow.
+
+## Comparison history
+
+### Iteration 1
+
+- [P1] The earlier implementation inserted a large optional form below the choices and increased page height.
+- Fix: replace the secondary-action row in place with a fixed-height inline control.
+
+### Iteration 2
+
+- [P2] The selected mock only replaced the “Two new questions” half of the row.
+- Fix: apply the user's follow-up direction and replace the entire row, including “Pick a path for me,” so the controls use all available width.
+
+### Iteration 3
+
+- [P1] A broad inherited `.journey-secondary-actions button` rule forced nested mode/action buttons to 46 px each, producing 72 px of internal content inside the 46 px frame.
+- Fix: scope the original card-button treatment to direct children only. Post-fix internal content measures 44 px and no longer clips.
+
+## Interaction and browser verification
+
+- Opened state replaces both secondary actions and preserves the exact closed-state height.
+- Practical selection reports `aria-pressed="true"`.
+- Optional note opens, accepts text, and returns to choices with Escape without changing geometry.
+- Close restores the original two-button row.
+- Desktop document remains 1774 px wide with no horizontal overflow; mobile document remains 375 px wide with no horizontal overflow.
+- Browser console errors and warnings checked: none during feature verification.
+
+## Validation
+
+- `npm run typecheck`: passed.
+- `npm run build`: passed as part of the full test command.
+- Feature browser QA at desktop and mobile viewports: passed.
+- Repository-wide lint remains blocked by two unrelated existing errors in the reduced-motion effect and `lib/live-research.ts`, plus three generator-script warnings.
+- Repository-wide tests reach the existing localization completeness failure for “Taking over research in this tab…” and “Use this tab”; this feature introduces no missing localization keys.
+
+final result: passed
+
+---
+
 # Journey tree implementation design QA
 
 ## Comparison target
