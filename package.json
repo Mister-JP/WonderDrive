@@ -16,7 +16,7 @@
     "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
     "architecture:update": "node scripts/architecture-index.mjs",
     "architecture:check": "node scripts/architecture-index.mjs --check",
-    "test": "npm run build && node --experimental-loader ./tests/cloudflare-loader.mjs --test tests/rendered-html.test.mjs && tsx --test tests/fixtures.test.mjs tests/client-api.test.mjs tests/i18n.test.mjs tests/routes.test.mjs tests/curiosity-quotes.test.ts && node --experimental-loader ./tests/cloudflare-loader.mjs --import tsx --test tests/diagnostics.test.mjs tests/live-research.test.mjs tests/provider-usage.test.mjs tests/starter-recommendations.test.mjs tests/usage-summary.test.mjs",
+    "test": "npm run build && node --experimental-loader ./tests/cloudflare-loader.mjs --test tests/rendered-html.test.mjs && tsx --test tests/fixtures.test.mjs tests/client-api.test.mjs tests/i18n.test.mjs tests/routes.test.mjs tests/curiosity-quotes.test.ts && node --experimental-loader ./tests/cloudflare-loader.mjs --import tsx --test tests/diagnostics.test.mjs tests/live-redraw.test.mjs tests/live-research.test.mjs tests/provider-usage.test.mjs tests/starter-recommendations.test.mjs tests/usage-summary.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate"

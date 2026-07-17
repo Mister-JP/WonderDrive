@@ -154,7 +154,8 @@ export type TurnMedia = {
   caption: string;
   alt: string;
   title?: string;
-  role?: "object" | "process" | "result" | "context" | "comparison" | "scale" | "primary-source";
+  role?: "phenomenon" | "mechanism" | "scale" | "anchor" | "comparison"
+    | "object" | "process" | "result" | "context" | "primary-source";
   commentary?: string;
   /** Legacy visual-note fields retained so older saved journeys still render. */
   whyIncluded?: string;

@@ -162,6 +162,7 @@ export function WonderDriveExperience() {
   const [usageLoading, setUsageLoading] = useState(false);
   const [usageError, setUsageError] = useState<string | null>(null);
   const [nextModelId, setNextModelId] = useState<ModelId | null>(null);
+  const [nextPerformerId, setNextPerformerId] = useState<PerformerId | null>(null);
   const [personalizedStarters, setPersonalizedStarters] = useState<PersonalizedStarter[]>(
     BOOTSTRAP_CATALOG.discoveryStarters,
   );
@@ -255,6 +256,7 @@ export function WonderDriveExperience() {
     setViewer(nextViewer);
     setActiveJourney(detail);
     setNextModelId(detail.modelId);
+    setNextPerformerId(detail.performerId);
     setActiveTurnId(turnId);
     setView(view);
     if (syncLibrary) setJourneys((current) => upsertSummary(current, detail));
@@ -481,6 +483,19 @@ export function WonderDriveExperience() {
     });
   }
 
+  async function retryActiveQuestion() {
+    if (!activeJourney || !activeTurn) return;
+    await create({
+      seed: activeTurn.question,
+      performerId: nextPerformerId ?? activeJourney.performerId,
+      modelId: nextModelId ?? activeJourney.modelId,
+      researchPreset: "standard",
+      answerDensity: preferences.answerDensity,
+      imagePreference: preferences.imagePreference,
+      outputLocale: preferences.defaultOutputLocale,
+    });
+  }
+
   async function takeOverResearch() {
     const pending = pendingResearchRef.current;
     if (!pending) return;
@@ -563,6 +578,12 @@ export function WonderDriveExperience() {
     () => activeJourney?.turns.find((turn) => turn.id === activeTurnId) ?? null,
     [activeJourney, activeTurnId],
   );
+  const retryConfigChanged = Boolean(
+    activeJourney && (
+      (nextModelId ?? activeJourney.modelId) !== activeJourney.modelId
+      || (nextPerformerId ?? activeJourney.performerId) !== activeJourney.performerId
+    ),
+  );
 
   function toggleTurnBookmark(journeyId: string, turnId: string) {
     const key = `${journeyId}::${turnId}`;
@@ -634,13 +655,6 @@ export function WonderDriveExperience() {
           ) : null}
         </div>
       </header>
-
-      {view !== "start" && (
-        <div className="phase-ribbon" role="note">
-          <span>{t("Research first")}</span>
-          {t("Same selected model researches and performs · inspectable sources · durable branching graph")}
-        </div>
-      )}
 
       {viewer?.mode === "chatgpt" && viewer.hasGuestUpgrade && (
         <div className="upgrade-banner" role="status">
@@ -760,21 +774,45 @@ export function WonderDriveExperience() {
       ) : activeJourney && activeTurn ? (
         <div className="active-journey-shell">
           <nav className="journey-view-switcher" aria-label={t("Current journey views")}>
-            <span>{activeJourney.title}</span>
-            <label className="journey-model-switcher">
-              <span>{t("Next turn model")}</span>
-              <select
-                aria-label={t("Model for the next research turn")}
-                disabled={mutation !== null}
-                value={nextModelId ?? activeJourney.modelId}
-                onChange={(event) => setNextModelId(event.target.value as ModelId)}
-              >
-                {catalog.models.map((model) => (
-                  <option key={model.id} value={model.id}>{model.name}</option>
-                ))}
-              </select>
-            </label>
-            <div>
+            <div className="journey-run-controls">
+              <label className="journey-model-switcher">
+                <span>{t("Model")}</span>
+                <select
+                  aria-label={t("Model for the next research turn")}
+                  disabled={mutation !== null}
+                  value={nextModelId ?? activeJourney.modelId}
+                  onChange={(event) => setNextModelId(event.target.value as ModelId)}
+                >
+                  {catalog.models.map((model) => (
+                    <option key={model.id} value={model.id}>{model.name}</option>
+                  ))}
+                </select>
+              </label>
+              <label className="journey-model-switcher journey-performer-switcher">
+                <span>{t("Performer")}</span>
+                <select
+                  aria-label={t("Performer")}
+                  disabled={mutation !== null}
+                  value={nextPerformerId ?? activeJourney.performerId}
+                  onChange={(event) => setNextPerformerId(event.target.value as PerformerId)}
+                >
+                  {catalog.performers.map((performer) => (
+                    <option key={performer.id} value={performer.id}>{performer.name}</option>
+                  ))}
+                </select>
+              </label>
+              {retryConfigChanged && (
+                <button
+                  className="retry-question"
+                  type="button"
+                  disabled={mutation !== null}
+                  onClick={() => void retryActiveQuestion()}
+                >
+                  Retry this question
+                </button>
+              )}
+            </div>
+            <div className="journey-view-controls">
               <button type="button" className={view === "journey" ? "active" : ""} aria-current={view === "journey" ? "page" : undefined} onClick={() => navigate("journey")}>{t("Stage")}</button>
               <button type="button" className={view === "map" ? "active" : ""} aria-current={view === "map" ? "page" : undefined} onClick={() => navigate("map")}>{t("Journey map")}</button>
             </div>
@@ -852,7 +890,7 @@ function StartStage({
   const { locale, t } = useI18n();
   const [seed, setSeed] = useState("");
   const [performerId, setPerformerId] = useState<PerformerId>("sage");
-  const [modelId] = useState<ModelId>(preferences.defaultModelId);
+  const [modelId, setModelId] = useState<ModelId>(preferences.defaultModelId);
   const performerIdRef = useRef<PerformerId>("sage");
   const starterCache = useRef(new Map<PerformerId, PersonalizedStarter[]>([["sage", starters]]));
   const [visibleStarters, setVisibleStarters] = useState<PersonalizedStarter[]>(
@@ -860,7 +898,6 @@ function StartStage({
   );
   const [startersLoading, setStartersLoading] = useState(false);
   const performer = catalog.performers.find((item) => item.id === performerId)!;
-  const model = catalog.models.find((item) => item.id === modelId)!;
   const placeholderQuestions = useMemo(
     () => visibleStarters.slice(0, 8).map((starter) => starter.question),
     [visibleStarters],
@@ -1040,18 +1077,18 @@ function StartStage({
                   </select>
                 </span>
               </label>
+              <label>
+                <span>{t("Model")}</span>
+                <span className="start-select-wrap model-select-wrap">
+                  <select value={modelId} onChange={(event) => setModelId(event.target.value as ModelId)}>
+                    {catalog.models.map((item) => (
+                      <option value={item.id} key={item.id}>{item.name}</option>
+                    ))}
+                  </select>
+                </span>
+              </label>
             </div>
 
-            <div className={`performer-layer ${performer.accent}`}>
-              <span>{t("{performer} will carry this question", { performer: performer.name })}</span>
-              <p>{t(performer.cue)}</p>
-              <small>{performer.voiceTraits.map((trait) => t(trait)).join(" · ")}</small>
-            </div>
-
-            <p className="honesty-note">
-              <span aria-hidden="true">◉</span>
-              {t(model.disclosure)} Change the default model in Settings.
-            </p>
           </div>
             <CuriosityStickerWall />
           </div>
@@ -1322,7 +1359,6 @@ function PerformanceStage({
           <h1 id="performance-title">{turn.question}</h1>
         </div>
         <div className="stage-metrics">
-          <span>{t("{count} turns", { count: journey.turnCount })}</span>
           <span>{t("{count} sources", { count: journey.sourceCount })}</span>
         </div>
       </header>
@@ -1435,7 +1471,7 @@ function PerformanceStage({
                           if (event.key === "Enter") submitRedraw();
                           if (event.key === "Escape") setRedrawNoteOpen(false);
                         }}
-                        maxLength={280}
+                        maxLength={240}
                         placeholder={t("What should change about the next two questions?")}
                       />
                     </label>

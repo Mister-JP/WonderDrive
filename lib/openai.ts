@@ -12,6 +12,19 @@ declare global {
 
 const RESPONSES_URL = "https://api.openai.com/v1/responses";
 
+export const OPENAI_PROMPT_LIMITS = {
+  liveResearch: {
+    spark: { maxToolCalls: 2, maxOutputTokens: 4_000, reasoning: "low", timeoutMs: 25_000 },
+    standard: { maxToolCalls: 5, maxOutputTokens: 8_000, reasoning: "medium", timeoutMs: 120_000 },
+    deep: { maxToolCalls: 10, maxOutputTokens: 16_000, reasoning: "high", timeoutMs: 120_000 },
+  },
+  starterGeneration: { maxOutputTokens: 6_000, reasoning: "high" },
+  questionRedraw: { maxOutputTokens: 4_000, reasoning: "high" },
+  imageNoteRepair: { maxOutputTokens: 3_000, reasoning: "medium", timeoutMs: 30_000 },
+  citationRepair: { maxOutputTokens: 2_000, reasoning: "medium", timeoutMs: 30_000 },
+  citationRecovery: { maxOutputTokens: 6_000, reasoning: "high", timeoutMs: 60_000 },
+} as const;
+
 export function openAIConfigured(): boolean {
   return Boolean(env.OPENAI_API_KEY?.trim());
 }
@@ -40,6 +53,15 @@ export function requestOpenAI(
 
 export function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object";
+}
+
+export function responseIncompleteReason(value: unknown): string | null {
+  if (!isRecord(value) || value.status !== "incomplete" || !isRecord(value.incomplete_details)) {
+    return null;
+  }
+  return typeof value.incomplete_details.reason === "string"
+    ? value.incomplete_details.reason
+    : "unknown";
 }
 
 export function structuredOutput(

@@ -209,7 +209,7 @@ test("repairs mismatched model image URLs with server-owned provider image IDs",
   mismatched.visualNotes = [{
     sourcePageUrl: "https://different.example.net/model-selected-page",
     title: "Main cables of a suspension bridge",
-    role: "process",
+    role: "mechanism",
     commentary: "Look at how the slim vertical suspenders connect the roadway to the sweeping main cables above. Those main cables pass over the towers before descending toward distant anchorages, making the bridge's load path visible: roadway weight moves through the suspenders and cables, then into the towers and anchorages.",
     evidenceRelation: "illustrates",
   }];
@@ -219,7 +219,7 @@ test("repairs mismatched model image URLs with server-owned provider image IDs",
       imageId: "I1",
       noteNumber: 1,
       title: mismatched.visualNotes[0].title,
-      role: mismatched.visualNotes[0].role,
+      role: "mechanism",
       commentary: mismatched.visualNotes[0].commentary,
       evidenceRelation: mismatched.visualNotes[0].evidenceRelation,
     }],
@@ -432,7 +432,7 @@ test("makes each answer-density preference explicit and schema-enforced", () => 
   );
 });
 
-test("prompts research for source fitness, beginner clarity, and intentional visuals", () => {
+test("implements the v4 phenomenon-first three-pass editorial system", () => {
   const instructions = liveResearchTestHooks.buildInstructions({
     name: "Mechanist",
     cue: "Makes hidden mechanisms legible.",
@@ -444,23 +444,27 @@ test("prompts research for source fitness, beginner clarity, and intentional vis
   });
 
   assert.match(instructions, /Choose sources for what they are qualified to establish/);
-  assert.match(instructions, /not to maximize the source count/);
-  assert.match(instructions, /first answer block a direct, self-contained answer/);
+  assert.match(instructions, /not to maximize fact or source count/);
   assert.match(instructions, /curious learner with no assumed specialist knowledge/);
-  assert.match(instructions, /beautifully edited children's encyclopedia or science-museum exhibit/);
-  assert.match(instructions, /most visually surprising, beautiful, strange, enormous, tiny, ancient, dynamic, or counterintuitive/);
-  assert.match(instructions, /one strong hero image/);
-  assert.match(instructions, /small intentional visual story/);
-  assert.match(instructions, /Do not choose a chart, bar graph/);
-  assert.match(instructions, /one natural, conversational paragraph/);
+  assert.match(instructions, /research editor inside a curiosity product/);
+  assert.match(instructions, /not writing an encyclopedia entry/);
+  assert.match(instructions, /short illustrated explanation/);
+  assert.match(instructions, /PASS 1 — EDITORIAL DESK/);
+  assert.match(instructions, /at least eight questionCandidates/);
+  assert.match(instructions, /PASS 2 — READER-FACING EDIT/);
+  assert.match(instructions, /PASS 3 — EDITORIAL CHECK/);
+  assert.match(instructions, /phenomenon-first order/);
+  assert.match(instructions, /first 45 words/);
+  assert.match(instructions, /one big idea specific enough/);
+  assert.match(instructions, /Search for the needed visual claim, not the article topic/);
+  assert.match(instructions, /commentary would still make sense beneath ten other images/);
+  assert.match(instructions, /LOCATE exactly what is shown/);
   assert.match(instructions, /Return no more than three visualNotes/);
-  assert.match(instructions, /Creating the visual notes is part of selecting an image, not an optional follow-up/);
-  assert.match(instructions, /Never leave a selected image without notes/);
-  assert.match(instructions, /Do not use headings, labels, lists/);
-  assert.match(instructions, /phrases such as 'answer block' or 'block 1'/);
-  assert.match(instructions, /Every WonderDrive turn must select at least one sourced factual real-world image/);
-  assert.match(instructions, /never return an empty visualNotes array/);
-  assert.match(instructions, /doorway for a curious beginner of any age/);
+  assert.match(instructions, /return no image rather than a weak one/);
+  assert.match(instructions, /Silently generate at least eight candidates/);
+  assert.match(instructions, /could be answered with a definition/);
+  assert.match(instructions, /EDITORIAL FAILURE CHECKS/);
+  assert.match(instructions, /Can the reader not state one changed mental model/);
   assert.match(instructions, /Research posture: Search for first-party descriptions and measured evidence/);
   assert.match(instructions, /Question posture: Keep every question grounded in documented reality/);
   assert.match(instructions, /Research and select sources in whichever languages provide the strongest evidence/);
@@ -475,7 +479,7 @@ test("Atlas keeps generated paths on documented real-world subjects", () => {
   assert.match(atlas.toolPosture, /Search first/);
   const instructions = liveResearchTestHooks.buildInstructions(atlas);
   assert.match(instructions, /do not turn that guidance into hypothetical or counterfactual paths/);
-  assert.match(instructions, /make answer block 2 a sourced real-world relevance paragraph/);
+  assert.match(instructions, /documented real-world anchor is mandatory/);
   assert.match(instructions, /topicLabel as a concise subject label, not as a repetition/);
   assert.equal(STARTERS.atlas.length, 4);
   assert.equal(REAL_WORLD_DISCOVERY_STARTERS.length, 20);
@@ -493,11 +497,11 @@ test("turn input makes image preference operational", () => {
   };
   assert.match(
     liveResearchTestHooks.buildResearchInput({ ...base, imagePreference: "when-useful" }),
-    /animals, space, archaeology, geology, machines, architecture, microscopic life/,
+    /return an empty visual set rather than weak, decorative, or merely topical images/,
   );
   assert.match(
     liveResearchTestHooks.buildResearchInput({ ...base, imagePreference: "prefer" }),
-    /Actively search for a compelling factual hero image/,
+    /Actively search for one strong factual hero image/,
   );
   assert.match(
     liveResearchTestHooks.buildResearchInput({ ...base, imagePreference: "avoid" }),
@@ -678,6 +682,8 @@ test("runs exactly one no-search repair after an initial citation mismatch", asy
     assert.equal(requests[0].max_output_tokens, 8_000);
     assert.deepEqual(requests[0].reasoning, { effort: "medium" });
     assert.equal(requests[1].tools, undefined);
+    assert.equal(requests[1].max_output_tokens, 2_000);
+    assert.deepEqual(requests[1].reasoning, { effort: "medium" });
     assert.equal(draft.answerBlocks[0].sourceIds.length, 1);
     assert.equal(draft.usage.inputTokens, 120);
     assert.equal(draft.usage.outputTokens, 60);
@@ -778,7 +784,11 @@ test("recovers an unsupported block with a targeted web search", async () => {
 
     assert.equal(requests.length, 3);
     assert.equal(requests[1].tools, undefined);
+    assert.equal(requests[1].max_output_tokens, 2_000);
+    assert.deepEqual(requests[1].reasoning, { effort: "medium" });
     assert.deepEqual(requests[2].tools, [{ type: "web_search" }]);
+    assert.equal(requests[2].max_output_tokens, 6_000);
+    assert.deepEqual(requests[2].reasoning, { effort: "high" });
     assert.equal(draft.answerBlocks[0].text, recoveredText);
     assert.ok(draft.sources.some((source) => source.url === "https://recovery.example.edu/finding"));
     assert.equal(draft.usage.inputTokens, 150);

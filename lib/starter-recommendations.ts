@@ -4,9 +4,11 @@ import { getD1 } from "../db";
 import type { ViewerContext } from "./viewer";
 import {
   isRecord,
+  OPENAI_PROMPT_LIMITS,
   openAIConfigured,
   outputText,
   requestOpenAI,
+  responseIncompleteReason,
   structuredOutput,
 } from "./openai";
 import { hashPayload } from "./request";
@@ -71,7 +73,7 @@ export async function getPersonalizedStarters(
           "Ground current developments in sources qualified to establish them, favoring original announcements or data and reputable independent reporting over novelty alone.",
           "Use current events as trapdoors into durable ideas, not as disposable headlines. Prefer strange abilities, surprising cause-and-effect, tiny mysteries, vivid comparisons, and hidden ways everyday things work.",
           "Use only the ordered topic history supplied below as personalization context. Treat past topics as signs of curiosity, not evidence of knowledge or proficiency. Do not infer private traits, repeat earlier questions, or mention personalization.",
-          `Write through the ${performer.name} performer layer: ${performer.cue}`,
+          `Use the ${performer.name} cue as a light editorial lens that changes what you notice and prioritize, not as character roleplay: ${performer.cue}`,
           `Voice: ${performer.voiceTraits.join(", ")}. Values: ${performer.values.join(", ")}. Avoid: ${performer.avoids.join(", ")}.`,
           `Question posture: ${performer.questionPosture}`,
           "Mix roughly eight history-adjacent rabbit holes, eight questions sparked by current developments, and eight lateral departures. If there is no history, redistribute those slots across current signals and wildly varied domains.",
@@ -89,11 +91,11 @@ export async function getPersonalizedStarters(
             ? `Topics this learner has explored, oldest to newest:\n${topics.map((topic, index) => `${index + 1}. ${topic}`).join("\n")}`
             : "This learner has no topic history yet. Offer a broad, varied first set.",
         ].join("\n\n"),
-        max_output_tokens: 1_800,
+        max_output_tokens: OPENAI_PROMPT_LIMITS.starterGeneration.maxOutputTokens,
         tools: [{ type: "web_search" }],
         tool_choice: "auto",
         max_tool_calls: 2,
-        reasoning: { effort: "low" },
+        reasoning: { effort: OPENAI_PROMPT_LIMITS.starterGeneration.reasoning },
         text: structuredOutput("wonderdrive_starters", STARTER_SCHEMA),
         safety_identifier: `wd_starters_${viewer.identityId}`.slice(0, 64),
         store: false,
@@ -116,6 +118,25 @@ export async function getPersonalizedStarters(
       throw new Error(`starter provider status ${response.status}`);
     }
     const payload = await response.json();
+    const incompleteReason = responseIncompleteReason(payload);
+    if (incompleteReason) {
+      usageRecorded = true;
+      await recordOpenAIUsage({
+        identityId: viewer.identityId,
+        modelId: "gpt-5.6-luna",
+        operation: "starter_generation",
+        purpose,
+        outcome: "incomplete",
+        response: payload,
+        providerRequestId: response.headers.get("x-request-id"),
+        httpStatus: response.status,
+        latencyMs: Date.now() - startedAt,
+        errorCode: incompleteReason === "max_output_tokens" ? "OUTPUT_LIMIT" : "INCOMPLETE",
+        errorMessage: `Starter generation ended incomplete (${incompleteReason}).`,
+        metadata: { performerId, outputLocale, forcedRefresh: Boolean(options.refresh) },
+      });
+      throw new Error(`starter generation incomplete: ${incompleteReason}`);
+    }
     const generated = parseStarters(outputText(payload));
     usageRecorded = true;
     await recordOpenAIUsage({

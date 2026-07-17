@@ -8,7 +8,7 @@ import type {
   UserPreferences,
 } from "./contracts";
 
-export const PROMPT_VERSION = "wonder-research-turn@3.8.0";
+export const PROMPT_VERSION = "wonder-research-turn@4.0.0";
 export const TURN_SCHEMA_VERSION = "wonder-turn-draft@4";
 
 export const DEFAULT_PREFERENCES: UserPreferences = {
