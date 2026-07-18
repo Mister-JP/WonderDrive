@@ -9,14 +9,13 @@
 
 This document defines the intended product before implementation details constrain it. It describes the user experience, learning behavior, information model, visual structure, game loop, and development sequence in enough detail to guide product decisions and conceptual UX generation.
 
-This document does not authorize an immediate rewrite of the current application. The existing product remains the behavioral baseline until a scoped implementation plan changes a specific part of it. Security, privacy, cost, account, deletion, licensing, accessibility, and paid-product readiness requirements in the existing roadmap remain binding.
+This document does not authorize an immediate rewrite of the current application. The existing product remains the behavioral baseline until a scoped implementation changes a specific part of it. Security, privacy, cost, account, deletion, licensing, accessibility, and paid-product readiness remain mandatory constraints.
 
 When another document conflicts with this vision:
 
 - Existing production behavior remains true until code changes.
 - This document controls the intended curiosity-learning experience.
 - `docs/architecture.md` controls the current technical architecture.
-- `docs/post-reset-product-roadmap.md` controls previously approved sequencing and readiness gates until it is reconciled with this vision.
 - A future implementation specification must identify every intentional departure from this document.
 
 Normative language in this document is deliberate:
@@ -230,7 +229,7 @@ One full round is:
 
 1. **Arrive** — enter through a new encounter, a previous thread, or something from the user's life.
 2. **Warm up** — react to concrete material instead of filling an empty question field.
-3. **Select an encounter** — choose what pulls attention.
+3. **Browse and select an encounter** — scan the image-rich concept grid and choose what pulls attention.
 4. **Zoom in** — enter an image-rich Knowledge Session.
 5. **Read and look** — move through a visual explanation and inspect sources as desired.
 6. **Zoom out** — enter the Curiosity Session with the completed Concept at the center.
@@ -247,22 +246,48 @@ The loop repeats without a predetermined end.
 
 ## 10. Arrival experience
 
+### 10.0 Approved landing-page direction
+
+> **Owner approval — July 18, 2026:** The owner loved this concept. The dense, image-rich encyclopedia grid is the approved landing-page direction and supersedes all earlier landing concepts.
+
+![Approved dense CuriosityPedia encyclopedia landing page](./curiositypedia-approved-dense-encyclopedia-landing.png)
+
+This image is the visual authority for landing-page implementation. The implementation must preserve its compact navigation, small utility header, category index, dense multi-concept image grid, catalog-like metadata, broad subject mix, and tactile CuriosityPedia design language.
+
+Implementation must refine the approved image in these ways:
+
+- replace the refresh-button copy shown in the mockup with **Show me something new** or an equally compact action that updates the multi-concept grid;
+- keep source and institution text visually subordinate to the concept title and teaser;
+- keep source links separate from the tile's primary **Explore** action so ordinary exploration never redirects to an external website;
+- open external sources in a new browser tab and label that behavior with an external-link icon and accessible name;
+- use the smallest practical amount of whitespace, hero copy, and explanatory text while preserving readable type, keyboard focus, touch targets, and scanning clarity;
+- devote most above-the-fold space to eye-catching factual images and useful concept choices;
+- preserve broad category access, including **All**, **Nature**, **Science**, **History**, **Culture**, **Systems**, and **Surprise me**, with room for additional categories as the catalog grows.
+
 ### 10.1 First visit
 
-The first screen must not require a question. Recommended copy:
+The first screen must not require a question and must not spend the viewport on a large marketing hero. Recommended compact copy:
 
-> **Ready to find something worth wondering about?**
+> **Find something worth wondering about**
 >
-> One encounter. A few questions. Your next rabbit hole.
+> Choose what pulls you in. No question required.
 
-Primary action:
+The dominant surface is the dense multi-concept encyclopedia grid. Each visible Concept entry must include:
 
-> **Deal me three wonders**
+- an eye-catching factual image or other licensed preview media;
+- a concise category label;
+- a short question or title;
+- one brief factual teaser;
+- a compact source or institution label;
+- a clear **Explore** action.
 
-Secondary actions:
+Compact utility actions may include:
 
-- **Choose the kind of round**
+- **Show me something new**
+- **Round type**
 - **Bring something with me**
+
+The initial viewport should show many materially different Concepts at once. The grid should balance natural history, science, history, culture, systems, maps, engineering, architecture, and other fields without presenting academic categories as the primary content.
 
 ### 10.2 Returning visit
 
@@ -273,28 +298,30 @@ Recommended copy:
 Actions:
 
 - **Continue my last thread**
-- **Deal me three new wonders**
+- **Show me new concepts**
 - **Revisit something I once wondered about**
 
 The system may use the time since the last visit to choose a greeting, but it must not guilt the user or emphasize absence. For a long gap, preferred copy is:
 
 > **Your notebook kept your place.**
 
-### 10.3 The three-wonder deal
+### 10.3 The multi-concept discovery grid
 
-The default deal contains three concrete encounters, not three academic categories:
+The landing page presents a dense, refreshable set of concrete encounters across many fields so the user can scan many possibilities at once.
 
-- one connected to a previous interest when history exists;
-- one from a distant field;
-- one wildcard.
+The visible mix should include:
 
-Each card must show a real preview: an image, object, place, short audio excerpt where licensed, or concise story lead. It must not be a text-only label such as “science.”
+- some encounters connected to previous interests when history exists;
+- adjacent encounters that create plausible bridges;
+- distant encounters from other fields;
+- wildcard material that resists predictable personalization;
+- enough simultaneous variety for the user to scan by image, category, or question.
 
-Prompt:
+Each entry must show a real preview: an image, object, place, map, diagram, short audio excerpt where licensed, or concise story lead. It must not be a text-only topic label.
 
-> **Which one pulls you in? Do not choose what seems useful.**
+The user may refresh the grid without penalty, filter by category, select **Surprise me**, or bring their own starting material. Refresh must preserve the dense encyclopedia surface without transitioning to a separate selection screen.
 
-The user may request another deal without penalty.
+Selecting the entry or its **Explore** action begins CuriosityPedia's internal encounter. Selecting the small external-source link opens the source in a new tab and never hijacks the primary exploration action.
 
 ### 10.4 Optional experiential doors
 
@@ -1049,11 +1076,7 @@ CuriosityPedia may personalize from explicit product history:
 
 It must not claim to know the user's mood, personality, intelligence, political identity, mental health, or private life from ordinary choices.
 
-Personalization should balance:
-
-- one familiar or connected encounter;
-- one adjacent encounter;
-- one wildcard.
+Personalization should balance familiar, adjacent, distant, and wildcard encounters across the visible grid without imposing a fixed quota or a three-item layout.
 
 The user must be able to view, correct, disable, or delete saved personalization inputs where feasible.
 
@@ -1309,7 +1332,9 @@ The vision should be implemented in behavior-preserving slices. Do not combine d
 ### Phase 7 — Arrival game
 
 - Replace the empty question-first landing with the arrival ritual.
-- Add three-wonder deals, experiential doors, returning states, and optional personal starting material.
+- Add the approved dense multi-concept discovery grid, category index, refresh behavior, experiential doors, returning states, and optional personal starting material.
+- Keep external source links visually small, separate from internal exploration, and configured to open in a new tab.
+- Maximize factual imagery and useful choices above the fold while minimizing hero copy and unused space.
 - Maintain a direct expert path for users who already have a question.
 
 ### Phase 8 — Economy and rewards
@@ -1332,20 +1357,25 @@ Generate and compare concepts for these states:
 Must show:
 
 - stable CuriosityPedia navigation;
-- “Ready to find something worth wondering about?”;
-- primary **Deal me three wonders** action;
-- **Choose the kind of round** and **Bring something with me**;
-- enough atmosphere to communicate play without preselecting a subject.
+- compact “Find something worth wondering about” utility copy, never an oversized hero;
+- **Show me something new**, **Round type**, and **Bring something with me** controls;
+- a dense, image-rich grid of many materially different Concepts;
+- broad category access including **All**, **Nature**, **Science**, **History**, **Culture**, **Systems**, and **Surprise me**;
+- catalog-like titles, short teasers, and compact source or institution metadata;
+- minimal unused whitespace and minimal explanatory copy.
 
-### Frame 2 — Three-wonder deal
+The approved visual target is `docs/curiositypedia-approved-dense-encyclopedia-landing.png`.
+
+### Frame 2 — Discovery-grid interaction states
 
 Must show:
 
-- three real, materially different encounter cards;
-- one familiar or connected item, one distant item, one wildcard;
-- real preview media and source/creator context;
-- **Which one pulls you in?**;
-- redeal and experiential-door controls.
+- hover, keyboard-focus, and selected states that preserve image visibility and readable metadata;
+- grid refresh without a separate deal screen;
+- category filtering and **Surprise me** behavior;
+- a primary internal **Explore** action for each Concept;
+- a visually subordinate external-source link that opens in a new tab;
+- responsive density that retains many useful choices without crowding or clipped text.
 
 ### Frame 3 — Image-rich Knowledge Session
 
@@ -1432,7 +1462,7 @@ Must show:
 
 - “Your notebook kept your place.” or “Ready for another round?”;
 - continue last thread;
-- deal new wonders;
+- show new concepts in the dense discovery grid;
 - revisit an unresolved Frontier;
 - one compact reflection from previous history supported by a real artifact.
 
@@ -1441,6 +1471,9 @@ Must show:
 Reject a concept when:
 
 - it replaces the encyclopedia with chat;
+- it uses a large marketing hero, oversized headline, or decorative whitespace instead of useful concept discovery;
+- it replaces the approved dense multi-concept grid with a sparse fixed-choice selector;
+- source links dominate a tile or redirect users away from CuriosityPedia when they intended to explore internally;
 - the Knowledge Session contains only one hero image;
 - brainstorming looks like a mandatory form;
 - Notes cannot be traced to images or passages;

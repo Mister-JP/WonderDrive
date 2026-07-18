@@ -2,7 +2,6 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { env } from "cloudflare:workers";
 import { updateJourneyManagement } from "../lib/journey-management-repository.ts";
-import { updateJourneyManagement as compatibilityUpdateJourneyManagement } from "../lib/product-repository.ts";
 
 const viewer = {
   identityId: "identity-owner",
@@ -82,10 +81,6 @@ function normalizedSql(call) {
 function isUpdate(call) {
   return normalizedSql(call).startsWith("UPDATE journeys SET");
 }
-
-test("product repository preserves the journey-management compatibility export", () => {
-  assert.equal(compatibilityUpdateJourneyManagement, updateJourneyManagement);
-});
 
 test("journey management preserves validation before D1 access", async () => {
   const cases = [

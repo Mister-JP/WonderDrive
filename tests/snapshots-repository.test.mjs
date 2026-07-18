@@ -6,11 +6,6 @@ import {
   exportJourney,
   listSnapshots,
 } from "../lib/snapshots-repository.ts";
-import {
-  createSnapshot as compatibilityCreateSnapshot,
-  exportJourney as compatibilityExportJourney,
-  listSnapshots as compatibilityListSnapshots,
-} from "../lib/product-repository.ts";
 
 const viewer = {
   identityId: "identity-owner",
@@ -174,12 +169,6 @@ function installFixedGlobals({ now = 1_784_395_445_000, dateLabel = "7/18/2026",
 function journeyAuthorizationCalls(db) {
   return db.calls.filter((call) => normalizedSql(call).includes("FROM journeys") && call.methods.includes("first"));
 }
-
-test("product repository preserves the snapshots and export compatibility surface", () => {
-  assert.equal(compatibilityCreateSnapshot, createSnapshot);
-  assert.equal(compatibilityListSnapshots, listSnapshots);
-  assert.equal(compatibilityExportJourney, exportJourney);
-});
 
 test("snapshot creation preserves label normalization, summary, generated values, stored JSON, SQL, and bind order", async () => {
   const db = createSnapshotD1();

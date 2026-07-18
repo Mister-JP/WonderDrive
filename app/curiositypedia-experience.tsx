@@ -851,7 +851,7 @@ export function CuriosityPediaExperience() {
           <p><span aria-hidden="true">W/V3</span> {t("One performer. One researched turn. Exactly two ways forward.")}</p>
           <div>
             <a href="https://github.com/Mister-JP/CuriosityPedia">{t("Source")}</a>
-            <a href="https://github.com/Mister-JP/CuriosityPedia/blob/main/docs/CuriosityPedia_Final_Product_and_Engineering_Blueprint_v3_Research_First.docx">{t("Product book")}</a>
+            <a href="https://github.com/Mister-JP/CuriosityPedia/blob/main/docs/curiosity-learning-north-star.md">{t("Product book")}</a>
           </div>
         </footer>
       )}

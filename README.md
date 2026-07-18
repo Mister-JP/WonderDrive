@@ -84,7 +84,7 @@ npm run architecture:update
 | `db/` | Current D1 schema and database binding helper |
 | `drizzle/` | Generated SQL migrations and migration metadata |
 | `tests/` | Build-level and module-level automated tests |
-| `scripts/` | Dependency-index and design-asset generators |
+| `scripts/` | Dependency-index generator |
 | `.openai/hosting.json` | Sites project identifier and logical storage bindings |
 | `.github/workflows/ci.yml` | Validation workflow for pull requests and pushes to `main` |
 

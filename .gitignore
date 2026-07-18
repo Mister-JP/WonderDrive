@@ -31,6 +31,7 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 !.env.example
+.dev.vars*
 
 # vercel
 .vercel
@@ -45,3 +46,10 @@ next-env.d.ts
 /audit/
 /.playwright-cli/
 /work/
+
+# local tooling and generated design artifacts
+/.vite/
+/.codex-*
+/artifacts/
+/design/
+/docs/concept-ui-artifacts/

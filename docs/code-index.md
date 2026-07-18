@@ -77,7 +77,6 @@ Read [architecture.md](architecture.md) for system boundaries and change rules. 
 | [`lib/live-research.ts`](../lib/live-research.ts) | [`lib/catalog.ts`](../lib/catalog.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/errors.ts`](../lib/errors.ts)<br>[`lib/fixtures.ts`](../lib/fixtures.ts)<br>[`lib/i18n.ts`](../lib/i18n.ts)<br>[`lib/openai.ts`](../lib/openai.ts)<br>[`lib/provider-cost-control.ts`](../lib/provider-cost-control.ts)<br>[`lib/provider-usage.ts`](../lib/provider-usage.ts)<br>[`lib/research/prompt-policy.ts`](../lib/research/prompt-policy.ts)<br>[`lib/research/provider-response.ts`](../lib/research/provider-response.ts)<br>[`lib/research/provider-stream.ts`](../lib/research/provider-stream.ts)<br>[`lib/research/turn-validation.ts`](../lib/research/turn-validation.ts) |
 | [`lib/openai.ts`](../lib/openai.ts) | [`lib/errors.ts`](../lib/errors.ts) |
 | [`lib/preferences-repository.ts`](../lib/preferences-repository.ts) | [`db/index.ts`](../db/index.ts)<br>[`lib/catalog.ts`](../lib/catalog.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/errors.ts`](../lib/errors.ts)<br>[`lib/i18n.ts`](../lib/i18n.ts)<br>[`lib/request.ts`](../lib/request.ts)<br>[`lib/viewer.ts`](../lib/viewer.ts) |
-| [`lib/product-repository.ts`](../lib/product-repository.ts) | [`lib/journey-management-repository.ts`](../lib/journey-management-repository.ts)<br>[`lib/preferences-repository.ts`](../lib/preferences-repository.ts)<br>[`lib/research-status-repository.ts`](../lib/research-status-repository.ts)<br>[`lib/snapshots-repository.ts`](../lib/snapshots-repository.ts) |
 | [`lib/provider-cost-control.ts`](../lib/provider-cost-control.ts) | [`db/index.ts`](../db/index.ts)<br>[`lib/catalog.ts`](../lib/catalog.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/errors.ts`](../lib/errors.ts)<br>[`lib/openai.ts`](../lib/openai.ts)<br>[`lib/usage-policy.ts`](../lib/usage-policy.ts) |
 | [`lib/provider-usage.ts`](../lib/provider-usage.ts) | [`db/index.ts`](../db/index.ts)<br>[`lib/catalog.ts`](../lib/catalog.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/openai.ts`](../lib/openai.ts)<br>[`lib/provider-cost-control.ts`](../lib/provider-cost-control.ts) |
 | [`lib/repository.ts`](../lib/repository.ts) | [`db/index.ts`](../db/index.ts)<br>[`lib/catalog.ts`](../lib/catalog.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/errors.ts`](../lib/errors.ts)<br>[`lib/fixtures.ts`](../lib/fixtures.ts)<br>[`lib/i18n.ts`](../lib/i18n.ts)<br>[`lib/journeys/comparison.ts`](../lib/journeys/comparison.ts)<br>[`lib/journeys/read-model.ts`](../lib/journeys/read-model.ts)<br>[`lib/request.ts`](../lib/request.ts)<br>[`lib/turn-options.ts`](../lib/turn-options.ts)<br>[`lib/usage-policy.ts`](../lib/usage-policy.ts)<br>[`lib/viewer.ts`](../lib/viewer.ts) |
@@ -96,21 +95,6 @@ Read [architecture.md](architecture.md) for system boundaries and change rules. 
 | [`next.config.ts`](../next.config.ts) | — |
 | [`postcss.config.mjs`](../postcss.config.mjs) | — |
 | [`scripts/architecture-index.mjs`](../scripts/architecture-index.mjs) | — |
-| [`scripts/generate-answer-evidence-no-scroll-board.mjs`](../scripts/generate-answer-evidence-no-scroll-board.mjs) | — |
-| [`scripts/generate-card-journey-screen.mjs`](../scripts/generate-card-journey-screen.mjs) | — |
-| [`scripts/generate-content-template-set.mjs`](../scripts/generate-content-template-set.mjs) | — |
-| [`scripts/generate-editorial-journey-screen.mjs`](../scripts/generate-editorial-journey-screen.mjs) | — |
-| [`scripts/generate-infrastructure-architecture-views.mjs`](../scripts/generate-infrastructure-architecture-views.mjs) | [`scripts/generate-infrastructure-architecture.mjs`](../scripts/generate-infrastructure-architecture.mjs) |
-| [`scripts/generate-infrastructure-architecture.mjs`](../scripts/generate-infrastructure-architecture.mjs) | — |
-| [`scripts/generate-journey-atlas-concept.mjs`](../scripts/generate-journey-atlas-concept.mjs) | — |
-| [`scripts/generate-journey-graph-vision.mjs`](../scripts/generate-journey-graph-vision.mjs) | — |
-| [`scripts/generate-journey-map-redesign-board.mjs`](../scripts/generate-journey-map-redesign-board.mjs) | — |
-| [`scripts/generate-landing-wireframe.mjs`](../scripts/generate-landing-wireframe.mjs) | — |
-| [`scripts/generate-mobile-tree-v2.mjs`](../scripts/generate-mobile-tree-v2.mjs) | — |
-| [`scripts/generate-prompt-flow-board.mjs`](../scripts/generate-prompt-flow-board.mjs) | — |
-| [`scripts/generate-question-loading-board.mjs`](../scripts/generate-question-loading-board.mjs) | — |
-| [`scripts/generate-simple-progressive-journey-board.mjs`](../scripts/generate-simple-progressive-journey-board.mjs) | — |
-| [`scripts/generate-unified-information-loading-board.mjs`](../scripts/generate-unified-information-loading-board.mjs) | — |
 | [`tests/client-api.test.mjs`](../tests/client-api.test.mjs) | [`app/client-api.ts`](../app/client-api.ts) |
 | [`tests/cloudflare-loader.mjs`](../tests/cloudflare-loader.mjs) | — |
 | [`tests/curiosity-quotes.test.ts`](../tests/curiosity-quotes.test.ts) | [`lib/curiosity-quotes.ts`](../lib/curiosity-quotes.ts) |
@@ -118,7 +102,7 @@ Read [architecture.md](architecture.md) for system boundaries and change rules. 
 | [`tests/fixtures.test.mjs`](../tests/fixtures.test.mjs) | [`lib/catalog.ts`](../lib/catalog.ts)<br>[`lib/fixtures.ts`](../lib/fixtures.ts) |
 | [`tests/i18n.test.mjs`](../tests/i18n.test.mjs) | [`app/i18n.tsx`](../app/i18n.tsx)<br>[`lib/catalog.ts`](../lib/catalog.ts)<br>[`lib/i18n.ts`](../lib/i18n.ts) |
 | [`tests/journey-graph.test.ts`](../tests/journey-graph.test.ts) | [`app/experience/journey-graph.ts`](../app/experience/journey-graph.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts) |
-| [`tests/journey-management-repository.test.mjs`](../tests/journey-management-repository.test.mjs) | [`lib/journey-management-repository.ts`](../lib/journey-management-repository.ts)<br>[`lib/product-repository.ts`](../lib/product-repository.ts) |
+| [`tests/journey-management-repository.test.mjs`](../tests/journey-management-repository.test.mjs) | [`lib/journey-management-repository.ts`](../lib/journey-management-repository.ts) |
 | [`tests/journey-map-loader.mjs`](../tests/journey-map-loader.mjs) | — |
 | [`tests/journey-map.test.ts`](../tests/journey-map.test.ts) | [`app/experience/journey-map.tsx`](../app/experience/journey-map.tsx)<br>[`lib/contracts.ts`](../lib/contracts.ts) |
 | [`tests/leaf-view-harness.ts`](../tests/leaf-view-harness.ts) | — |
@@ -135,7 +119,7 @@ Read [architecture.md](architecture.md) for system boundaries and change rules. 
 | [`tests/repository-read-model.test.mjs`](../tests/repository-read-model.test.mjs) | [`lib/repository.ts`](../lib/repository.ts) |
 | [`tests/research-status-repository.test.mjs`](../tests/research-status-repository.test.mjs) | [`lib/research-status-repository.ts`](../lib/research-status-repository.ts) |
 | [`tests/routes.test.mjs`](../tests/routes.test.mjs) | [`app/routes.ts`](../app/routes.ts) |
-| [`tests/snapshots-repository.test.mjs`](../tests/snapshots-repository.test.mjs) | [`lib/product-repository.ts`](../lib/product-repository.ts)<br>[`lib/snapshots-repository.ts`](../lib/snapshots-repository.ts) |
+| [`tests/snapshots-repository.test.mjs`](../tests/snapshots-repository.test.mjs) | [`lib/snapshots-repository.ts`](../lib/snapshots-repository.ts) |
 | [`tests/starter-recommendations.test.mjs`](../tests/starter-recommendations.test.mjs) | [`lib/starter-recommendations.ts`](../lib/starter-recommendations.ts) |
 | [`tests/usage-summary.test.mjs`](../tests/usage-summary.test.mjs) | [`lib/catalog.ts`](../lib/catalog.ts)<br>[`lib/usage-policy.ts`](../lib/usage-policy.ts)<br>[`lib/usage-summary.ts`](../lib/usage-summary.ts) |
 | [`vite.config.ts`](../vite.config.ts) | [`build/sites-vite-plugin.ts`](../build/sites-vite-plugin.ts) |
