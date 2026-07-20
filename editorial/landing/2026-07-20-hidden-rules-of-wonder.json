@@ -1,0 +1,225 @@
+{
+  "title": "Hidden rules of wonder — July 20, 2026",
+  "recommendations": [
+    {
+      "id": "giants-causeway-cooling",
+      "category": "Nature",
+      "question": "Why does cooling lava build a pavement of stone polygons?",
+      "teaser": "As a thick lava flow contracts, cracks compete for space and settle into an efficient near-hexagonal network that grows downward into columns.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Giant%27s_Causeway_%2814%29.JPG/1280px-Giant%27s_Causeway_%2814%29.JPG",
+      "imageAlt": "Interlocking basalt columns stepping toward the Atlantic Ocean at Giant's Causeway",
+      "sourceLabel": "UNESCO World Heritage Centre",
+      "sourceUrl": "https://whc.unesco.org/en/list/369",
+      "size": "wide"
+    },
+    {
+      "id": "racetrack-sailing-stones",
+      "category": "Science",
+      "question": "How can rocks sail across a desert without anyone pushing them?",
+      "teaser": "On rare cold mornings, thin floating ice panels catch the wind and nudge stones across wet clay, engraving long trails behind them.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Death_Valley_NP_-_Racetrack_Playa_-_sailing_stone_race.JPG/1280px-Death_Valley_NP_-_Racetrack_Playa_-_sailing_stone_race.JPG",
+      "imageAlt": "A dark rock at Racetrack Playa with a long curved track across cracked desert mud",
+      "sourceLabel": "U.S. National Park Service",
+      "sourceUrl": "https://www.nps.gov/deva/planyourvisit/the-racetrack.htm",
+      "size": "wide"
+    },
+    {
+      "id": "living-blue-waves",
+      "category": "Nature",
+      "question": "Why can a breaking wave glow electric blue?",
+      "teaser": "Disturbed dinoflagellates trigger a rapid chemical reaction, turning each crash, footprint, and swirl into a flash of living light.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Bioluminescent_dinoflagellates.jpg/1280px-Bioluminescent_dinoflagellates.jpg",
+      "imageAlt": "Electric-blue bioluminescence glowing along waves on a dark shoreline",
+      "sourceLabel": "NOAA Ocean Exploration",
+      "sourceUrl": "https://oceanexplorer.noaa.gov/ocean-fact/bioluminescence/",
+      "size": "wide"
+    },
+    {
+      "id": "socotra-dragon-blood-trees",
+      "category": "Nature",
+      "question": "Why do Socotra's dragon blood trees grow like umbrellas?",
+      "teaser": "Their densely packed crowns shade roots, reduce evaporation, and gather mist in an island landscape where conserving water shapes every branch.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Dragon%27s_Blood_Tree%2C_Socotra_Is.jpg/1280px-Dragon%27s_Blood_Tree%2C_Socotra_Is.jpg",
+      "imageAlt": "Umbrella-shaped dragon blood trees scattered across Socotra's rocky highlands",
+      "sourceLabel": "UNESCO World Heritage Centre",
+      "sourceUrl": "https://whc.unesco.org/en/list/1263",
+      "size": "tall"
+    },
+    {
+      "id": "synchronous-fireflies",
+      "category": "Systems",
+      "question": "How do thousands of fireflies agree when to flash?",
+      "teaser": "Each insect adjusts its rhythm to flashes nearby, and a forest full of local responses can lock into waves of shared light.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Synchronous_Fireflies%2C_June_2013--Warren_Bielenberg_%2828337897949%29.jpg/1280px-Synchronous_Fireflies%2C_June_2013--Warren_Bielenberg_%2828337897949%29.jpg",
+      "imageAlt": "Hundreds of synchronous firefly flashes tracing golden lights through a dark forest",
+      "sourceLabel": "Great Smoky Mountains National Park",
+      "sourceUrl": "https://www.nps.gov/grsm/learn/nature/fireflies.htm",
+      "size": "wide"
+    },
+    {
+      "id": "starling-murmuration",
+      "category": "Systems",
+      "question": "How does a murmuration turn thousands of birds into one moving shape?",
+      "teaser": "A starling tracks only a handful of neighbors, yet those fast local reactions ripple across the flock as a fluid-looking cloud.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Murmuration_11-2025.jpg/1280px-Murmuration_11-2025.jpg",
+      "imageAlt": "A vast starling murmuration folding into a dark flowing shape across the evening sky",
+      "sourceLabel": "Natural History Museum",
+      "sourceUrl": "https://www.nhm.ac.uk/discover/spot-a-starling-murmuration-this-winter.html",
+      "size": "wide"
+    },
+    {
+      "id": "archerfish-refraction",
+      "category": "Nature",
+      "question": "How does an archerfish aim through water's bent view?",
+      "teaser": "The fish compensates for refraction at the water-air boundary, then shapes its mouth and times a jet to knock insects from branches.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Toxotes_jaculatrix_%28banded_archerfish%29_4_%2815533393159%29.jpg/1280px-Toxotes_jaculatrix_%28banded_archerfish%29_4_%2815533393159%29.jpg",
+      "imageAlt": "A silver banded archerfish poised just beneath the surface of the water",
+      "sourceLabel": "San Diego Zoo Wildlife Alliance",
+      "sourceUrl": "https://animals.sandiegozoo.org/animals/banded-archer-fish",
+      "size": "standard"
+    },
+    {
+      "id": "mantis-shrimp-polarized-vision",
+      "category": "Science",
+      "question": "What colors can a mantis shrimp see that humans cannot?",
+      "teaser": "Specialized photoreceptors detect ultraviolet light and polarization, revealing underwater signals that remain invisible to our eyes.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Camar%C3%B3n_mantis_%28Odontodactylus_scyllarus%29%2C_Anilao%2C_Filipinas%2C_2023-08-24%2C_DD_164.jpg/1280px-Camar%C3%B3n_mantis_%28Odontodactylus_scyllarus%29%2C_Anilao%2C_Filipinas%2C_2023-08-24%2C_DD_164.jpg",
+      "imageAlt": "A vividly colored peacock mantis shrimp facing the camera on a coral reef",
+      "sourceLabel": "Smithsonian Ocean",
+      "sourceUrl": "https://ocean.si.edu/ocean-life/invertebrates/built-underwater-polarized-lenses",
+      "size": "standard"
+    },
+    {
+      "id": "vampire-squid-glowing-defense",
+      "category": "Nature",
+      "question": "Why does a vampire squid throw glowing mucus instead of ink?",
+      "teaser": "In the oxygen-poor deep sea, it feeds on drifting marine snow and escapes danger behind a sticky cloud of bioluminescent particles.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Vampyroteuthis_infernalis.jpg/1280px-Vampyroteuthis_infernalis.jpg",
+      "imageAlt": "A deep-red vampire squid suspended against black water with webbing between its arms",
+      "sourceLabel": "NOAA Ocean Service",
+      "sourceUrl": "https://oceanservice.noaa.gov/facts/vampire-squid-fish.html",
+      "size": "standard"
+    },
+    {
+      "id": "comb-jelly-rainbow",
+      "category": "Science",
+      "question": "Why does a comb jelly carry a rainbow through the dark?",
+      "teaser": "Rows of beating cilia split the vehicle's light into shifting colors; the rainbow is optical scattering, not the animal's bioluminescence.",
+      "imageUrl": "https://oceanexplorer.noaa.gov/wp-content/uploads/2020/10/20201015-hires.jpg",
+      "imageAlt": "A transparent comb jelly shimmering with bands of rainbow color above the seafloor",
+      "sourceLabel": "NOAA Ocean Exploration",
+      "sourceUrl": "https://oceanexplorer.noaa.gov/multimedia/daily-image-media-20201015/",
+      "size": "tall"
+    },
+    {
+      "id": "webb-pillars-creation",
+      "category": "Space",
+      "question": "Are the Pillars of Creation building stars or being destroyed by them?",
+      "teaser": "Dense knots collapse into newborn stars while radiation and stellar winds erode the same towering clouds of gas and dust.",
+      "imageUrl": "https://assets.science.nasa.gov/content/dam/science/missions/webb/science/2022/10/STScI-01GGF8H15VZ09MET9HFBRQX4S3.png/jcr:content/renditions/cq5dam.web.1280.1280.png",
+      "imageAlt": "James Webb's infrared view of the rust-red Pillars of Creation filled with newborn stars",
+      "sourceLabel": "NASA Webb",
+      "sourceUrl": "https://science.nasa.gov/asset/webb/pillars-of-creation-nircam-image/",
+      "size": "tall"
+    },
+    {
+      "id": "cosmic-horseshoe-lensing",
+      "category": "Space",
+      "question": "How can one galaxy bend another into a ring?",
+      "teaser": "A massive foreground galaxy curves spacetime, magnifying and wrapping light from a distant galaxy into a blue Einstein ring.",
+      "imageUrl": "https://science.nasa.gov/wp-content/uploads/2024/01/hubble-lrg3757-potw1151a-med.jpg",
+      "imageAlt": "A reddish foreground galaxy encircled by the blue arc of the Cosmic Horseshoe Einstein ring",
+      "sourceLabel": "NASA Hubble",
+      "sourceUrl": "https://science.nasa.gov/image-detail/einstein-ring-lrg-3-757/",
+      "size": "standard"
+    },
+    {
+      "id": "pulsar-cosmic-lighthouse",
+      "category": "Space",
+      "question": "Why does a dead star blink like a lighthouse?",
+      "teaser": "A city-sized neutron star spins powerful beams from its magnetic poles; we detect a pulse whenever one sweeps past Earth.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Artist%27s_Impression_of_Pulsar_Wind_from_a_Neutron_Star_%282018-43-4232%29.png/1280px-Artist%27s_Impression_of_Pulsar_Wind_from_a_Neutron_Star_%282018-43-4232%29.png",
+      "imageAlt": "An artist's view of a spinning neutron star sending beams and energetic wind into space",
+      "sourceLabel": "NASA",
+      "sourceUrl": "https://www.nasa.gov/universe/stars/neutron-stars/pulsars/",
+      "size": "wide"
+    },
+    {
+      "id": "ferrofluid-spikes",
+      "category": "Technology",
+      "question": "Why does magnetic liquid grow a crown of spikes?",
+      "teaser": "A magnetic field pulls nanoparticles upward while gravity and surface tension resist, balancing the liquid into repeating peaks.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Ferrofluid_spikes_-_%282%29.jpg/1280px-Ferrofluid_spikes_-_%282%29.jpg",
+      "imageAlt": "Glossy black ferrofluid rising into dense sharp spikes around a magnet",
+      "sourceLabel": "NASA History",
+      "sourceUrl": "https://www.nasa.gov/history/novel-rocket-fuel-spawned-ferrofluid-industry/",
+      "size": "standard"
+    },
+    {
+      "id": "chladni-sound-patterns",
+      "category": "Art",
+      "question": "How can sound draw geometry in sand?",
+      "teaser": "At resonant frequencies, a metal plate divides into moving regions and still nodal lines where bouncing grains collect into intricate figures.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Chladni_plate_18.jpg/1280px-Chladni_plate_18.jpg",
+      "imageAlt": "Fine sand arranged into an intricate symmetrical Chladni pattern on a dark vibrating plate",
+      "sourceLabel": "Harvard Natural Sciences",
+      "sourceUrl": "https://sciencedemonstrations.fas.harvard.edu/presentations/chladni-plates",
+      "size": "standard"
+    },
+    {
+      "id": "blue-morpho-structural-color",
+      "category": "Science",
+      "question": "How can a butterfly be blue without blue pigment?",
+      "teaser": "Microscopic ridges on morpho wing scales make light waves reinforce blue and cancel other colors, creating brilliance from structure alone.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Morpho_didius_Male_Dos_MHNT.jpg/1920px-Morpho_didius_Male_Dos_MHNT.jpg",
+      "imageAlt": "A blue morpho butterfly with both intensely iridescent wings spread open",
+      "sourceLabel": "Smithsonian Institution",
+      "sourceUrl": "https://www.si.edu/collections/snapshot/beautiful-blue-morpho",
+      "size": "wide"
+    },
+    {
+      "id": "gobekli-tepe-monuments",
+      "category": "History",
+      "question": "Why did hunter-gatherers raise stone monuments before cities?",
+      "teaser": "At Göbekli Tepe, communities gathered to carve and move enormous animal-covered pillars during the transition toward settled farming life.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Gobekli_Tepe_2.jpg/1280px-Gobekli_Tepe_2.jpg",
+      "imageAlt": "Tall T-shaped carved stone pillars standing inside a circular enclosure at Göbekli Tepe",
+      "sourceLabel": "UNESCO World Heritage Centre",
+      "sourceUrl": "https://whc.unesco.org/en/list/1572",
+      "size": "tall"
+    },
+    {
+      "id": "lycurgus-cup-color-change",
+      "category": "Culture",
+      "question": "Why does one Roman glass cup change from green to red?",
+      "teaser": "Tiny particles of gold and silver interact with light differently depending on whether the fourth-century cup is lit from the front or behind.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/British_Museum_The_Lycurgus_Cup_03_15022019_4320.jpg/1280px-British_Museum_The_Lycurgus_Cup_03_15022019_4320.jpg",
+      "imageAlt": "The carved Roman Lycurgus Cup glowing translucent red under transmitted light",
+      "sourceLabel": "The British Museum",
+      "sourceUrl": "https://www.britishmuseum.org/collection/object/H_1958-1202-1",
+      "size": "tall"
+    },
+    {
+      "id": "egyptian-blue-pigment",
+      "category": "Art",
+      "question": "How did ancient makers invent a blue that nature did not provide?",
+      "teaser": "Egyptian artisans fired sand, lime, alkali, and copper compounds into the earliest widely used synthetic pigment.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Fragment_of_blue_pigment%2C_mineral_-_Museo_Egizio%2C_Turin_S_9927_ND_p01.jpg/1280px-Fragment_of_blue_pigment%2C_mineral_-_Museo_Egizio%2C_Turin_S_9927_ND_p01.jpg",
+      "imageAlt": "A vivid fragment of ancient Egyptian blue pigment against a dark background",
+      "sourceLabel": "The Metropolitan Museum of Art",
+      "sourceUrl": "https://www.metmuseum.org/art/collection/search/568012",
+      "size": "compact"
+    },
+    {
+      "id": "antarctica-blood-falls",
+      "category": "Science",
+      "question": "Why does an Antarctic glacier appear to bleed?",
+      "teaser": "Iron-rich ancient brine escapes Taylor Glacier and rusts when it meets air, staining the blue-white ice a startling red.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Blood_Falls_by_Peter_Rejcek.jpg/1280px-Blood_Falls_by_Peter_Rejcek.jpg",
+      "imageAlt": "Rust-red brine spilling from the face of Taylor Glacier onto white Antarctic ice",
+      "sourceLabel": "NASA Earth Observatory",
+      "sourceUrl": "https://science.nasa.gov/earth/earth-observatory/blood-falls-antarcticas-dry-valleys-35535/",
+      "size": "wide"
+    }
+  ]
+}

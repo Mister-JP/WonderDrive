@@ -32,6 +32,7 @@ type JourneyRow = {
   source_count: number;
   status: "active" | "paused";
   version: number;
+  created_at: number;
   updated_at: number;
   open_branch_count: number;
 };
@@ -119,7 +120,7 @@ export async function listJourneys(viewer: ViewerContext): Promise<JourneySummar
     .prepare(
       `SELECT id, seed, title, performer_id, model_id, research_preset, answer_density,
               image_preference, output_locale, pinned, hidden, current_turn_id, turn_count, source_count,
-              status, version, updated_at,
+              status, version, created_at, updated_at,
               (SELECT COUNT(*) FROM turn_options o JOIN turns t ON t.id = o.turn_id
                WHERE t.journey_id = journeys.id AND o.state = 'proposed') AS open_branch_count
        FROM journeys
@@ -131,21 +132,30 @@ export async function listJourneys(viewer: ViewerContext): Promise<JourneySummar
   if (!journeys.results.length) return [];
 
   const placeholders = journeys.results.map(() => "?").join(",");
-  const topics = await db
+  const turns = await db
     .prepare(
-      `SELECT journey_id, topic_label FROM turns
+      `SELECT journey_id, parent_turn_id, topic_label, answer_json FROM turns
        WHERE journey_id IN (${placeholders}) AND status = 'ready'
        ORDER BY created_at`,
     )
     .bind(...journeys.results.map((journey) => journey.id))
-    .all<{ journey_id: string; topic_label: string }>();
+    .all<{ journey_id: string; parent_turn_id: string | null; topic_label: string; answer_json: string | null }>();
   const byJourney = new Map<string, string[]>();
-  for (const topic of topics.results) {
-    const values = byJourney.get(topic.journey_id) ?? [];
-    if (topic.topic_label && !values.includes(topic.topic_label)) values.push(topic.topic_label);
-    byJourney.set(topic.journey_id, values);
+  const leadMediaByJourney = new Map<string, JourneyTurn["media"][number]>();
+  for (const turn of turns.results) {
+    const values = byJourney.get(turn.journey_id) ?? [];
+    if (turn.topic_label && !values.includes(turn.topic_label)) values.push(turn.topic_label);
+    byJourney.set(turn.journey_id, values);
+    if (turn.parent_turn_id === null && !leadMediaByJourney.has(turn.journey_id)) {
+      const leadMedia = parseAnswerPayload(turn.answer_json, "").media[0];
+      if (leadMedia) leadMediaByJourney.set(turn.journey_id, leadMedia);
+    }
   }
-  return journeys.results.map((journey) => summaryFromRow(journey, byJourney.get(journey.id) ?? []));
+  return journeys.results.map((journey) => summaryFromRow(
+    journey,
+    byJourney.get(journey.id) ?? [],
+    leadMediaByJourney.get(journey.id),
+  ));
 }
 
 export async function getJourney(
@@ -158,7 +168,7 @@ export async function getJourney(
     .prepare(
       `SELECT id, seed, title, performer_id, model_id, research_preset, answer_density,
               image_preference, output_locale, pinned, hidden, current_turn_id, turn_count, source_count,
-              status, version, updated_at,
+              status, version, created_at, updated_at,
               (SELECT COUNT(*) FROM turn_options o JOIN turns t ON t.id = o.turn_id
                WHERE t.journey_id = journeys.id AND o.state = 'proposed') AS open_branch_count
        FROM journeys
@@ -309,7 +319,7 @@ export async function getJourney(
         modelSnapshot: turn.model_snapshot ?? modelById(journey.model_id).snapshot,
         researchPreset: journey.research_preset,
         answerDensity: turn.turn_answer_density ?? journey.answer_density,
-        imagePreference: turn.turn_image_preference ?? journey.image_preference,
+        imagePreference: "prefer",
         outputLocale: turn.turn_output_locale ?? journey.output_locale,
         promptVersion: turn.prompt_version ?? PROMPT_VERSION,
         researchedAt: turn.created_at,
@@ -356,7 +366,11 @@ export async function listRejectedQuestions(
   return result.results.map((item) => item.question);
 }
 
-function summaryFromRow(row: JourneyRow, topicLabels: string[]): JourneySummary {
+function summaryFromRow(
+  row: JourneyRow,
+  topicLabels: string[],
+  leadMedia?: JourneyTurn["media"][number],
+): JourneySummary {
   return {
     id: row.id,
     title: row.title,
@@ -365,7 +379,7 @@ function summaryFromRow(row: JourneyRow, topicLabels: string[]): JourneySummary 
     modelId: row.model_id,
     researchPreset: row.research_preset,
     answerDensity: row.answer_density,
-    imagePreference: row.image_preference,
+    imagePreference: "prefer",
     outputLocale: row.output_locale,
     currentTurnId: row.current_turn_id,
     turnCount: row.turn_count,
@@ -374,8 +388,10 @@ function summaryFromRow(row: JourneyRow, topicLabels: string[]): JourneySummary 
     version: row.version,
     pinned: Boolean(row.pinned),
     hidden: Boolean(row.hidden),
+    createdAt: row.created_at,
     updatedAt: row.updated_at,
     topicLabels,
+    leadMedia,
   };
 }
 

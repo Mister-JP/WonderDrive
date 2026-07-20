@@ -15,7 +15,7 @@ export async function updateJourneyManagement(
   const pinned = typeof body.pinned === "boolean" ? body.pinned : undefined;
   const hidden = typeof body.hidden === "boolean" ? body.hidden : undefined;
   if (title !== undefined && (title.length < 1 || title.length > 100)) {
-    throw new RepositoryError("BAD_REQUEST", "Keep the journey title between 1 and 100 characters.", 400);
+    throw new RepositoryError("BAD_REQUEST", "Keep the journey label between 1 and 100 characters.", 400);
   }
   if (title === undefined && pinned === undefined && hidden === undefined) {
     throw new RepositoryError("BAD_REQUEST", "Choose a journey setting to update.", 400);

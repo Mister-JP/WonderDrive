@@ -6,6 +6,7 @@ import type {
   SupportedLocale,
   TurnMedia,
 } from "../contracts";
+import { standaloneKnowledgeQuestion } from "../knowledge-check-contracts";
 import { RepositoryError } from "../errors";
 import { stableKey } from "../fixtures";
 import { usesCompactWordSegmentation } from "../i18n";
@@ -64,7 +65,7 @@ export function applyImageNoteRepair(
   outputLocale: SupportedLocale = "en",
 ): ModelTurn {
   const notes = modelTurn.visualNotes ?? [];
-  if (!Array.isArray(repair.notes) || repair.notes.length > Math.min(providerImages.length, notes.length, 10)) {
+  if (!Array.isArray(repair.notes) || repair.notes.length > Math.min(providerImages.length, notes.length, 12)) {
     throw imageNoteRepairFailure();
   }
   const usedImages = new Set<number>();
@@ -74,7 +75,7 @@ export function applyImageNoteRepair(
     if (!isProviderRecord(match) || typeof match.imageId !== "string" || typeof match.noteNumber !== "number") {
       throw imageNoteRepairFailure();
     }
-    const imageMatch = /^I([1-9]|10)$/.exec(match.imageId);
+    const imageMatch = /^I([1-9]|1[0-2])$/.exec(match.imageId);
     const imageIndex = imageMatch ? Number(imageMatch[1]) - 1 : -1;
     const noteIndex = match.noteNumber - 1;
     if (
@@ -84,7 +85,7 @@ export function applyImageNoteRepair(
       throw imageNoteRepairFailure();
     }
     if (
-      !["phenomenon", "mechanism", "scale", "anchor", "comparison"].includes(stringValue(match.role))
+      !["phenomenon", "mechanism", "scale", "anchor", "comparison", "object", "process", "result", "context", "primary-source"].includes(stringValue(match.role))
       || !["shows", "illustrates", "contextualizes", "supports"].includes(stringValue(match.evidenceRelation))
     ) {
       throw imageNoteRepairFailure();
@@ -97,6 +98,8 @@ export function applyImageNoteRepair(
       role: match.role as ModelVisualNote["role"],
       commentary: stringValue(match.commentary),
       evidenceRelation: match.evidenceRelation as ModelVisualNote["evidenceRelation"],
+      ...(notes[noteIndex].curiosityQuestion ? { curiosityQuestion: notes[noteIndex].curiosityQuestion } : {}),
+      ...(notes[noteIndex].knowledgeCheck ? { knowledgeCheck: notes[noteIndex].knowledgeCheck } : {}),
     };
     if (!isSpecificVisualNote(repairedNote, providerImages[imageIndex].caption, outputLocale)) {
       throw imageNoteRepairFailure();
@@ -432,6 +435,46 @@ export function visualNoteCommentary(note: ModelVisualNote | TurnMedia) {
   return [note.whyIncluded, ...(note.whatToNotice ?? []), note.learning].filter(Boolean).join(" ");
 }
 
+function normalizedCuriosityQuestion(value: unknown) {
+  const question = normalizeGeneratedProse(stringValue(value)).slice(0, 140).trim();
+  if (
+    question.length < 8
+    || /\b(?:according to|which (?:option|choice)|encyclopedia|knowledge check|panel|answer above)\b/i.test(question)
+  ) return undefined;
+  return question.endsWith("?") ? question : `${question}?`;
+}
+
+function normalizedKnowledgeCheck(value: unknown, canonicalQuestion?: string): TurnMedia["knowledgeCheck"] | undefined {
+  if (!isProviderRecord(value) || !Array.isArray(value.options)) return undefined;
+  const declarationQuestion = normalizeGeneratedProse(stringValue(value.declarationQuestion)).slice(0, 260);
+  const question = standaloneKnowledgeQuestion(
+    canonicalQuestion || normalizeGeneratedProse(stringValue(value.question)),
+  ).slice(0, 140);
+  const options = value.options
+    .map((option) => normalizeGeneratedProse(stringValue(option)).slice(0, 260))
+    .filter((option) => option.length >= 8);
+  const explanation = normalizeGeneratedProse(stringValue(value.explanation)).slice(0, 420);
+  const correctOptionIndex = value.correctOptionIndex;
+  if (
+    question.length < 8
+    || /\b(?:according to|do you understand|which (?:option|choice)|best matches|what does (?:this|the) (?:image|panel)|encyclopedia|knowledge check)\b/i.test(question)
+    || options.length !== 8
+    || new Set(options.map((option) => option.toLocaleLowerCase())).size !== 8
+    || typeof correctOptionIndex !== "number"
+    || !Number.isInteger(correctOptionIndex)
+    || correctOptionIndex < 0
+    || correctOptionIndex > 7
+    || explanation.length < 12
+  ) return undefined;
+  return {
+    ...(declarationQuestion ? { declarationQuestion } : {}),
+    question,
+    options,
+    correctOptionIndex,
+    explanation,
+  };
+}
+
 export function validateMediaGallery(
   values: ProviderImage[],
   topicLabel: string,
@@ -440,6 +483,7 @@ export function validateMediaGallery(
 ): TurnMedia[] {
   const seen = new Set<string>();
   const seenSources = new Set<string>();
+  const seenQuestions = new Set<string>();
   const gallery: TurnMedia[] = [];
   const notesBySource = new Map(
     notes
@@ -456,10 +500,21 @@ export function validateMediaGallery(
     const caption = normalizeGeneratedProse(value.caption).slice(0, 384) || `Visual reference for ${topicLabel}`;
     const note = notesBySource.get(citationComparableUrl(sourcePageUrl) ?? "");
     if (!note || !isSpecificVisualNote(note, caption, outputLocale)) continue;
-    seen.add(imageUrl);
-    seenSources.add(sourcePageUrl);
     const title = normalizeGeneratedProse(note.title).slice(0, 116);
     const commentary = normalizeGeneratedProse(visualNoteCommentary(note)).slice(0, 520);
+    const curiosityQuestion = normalizedCuriosityQuestion(note.curiosityQuestion);
+    const knowledgeCheck = normalizedKnowledgeCheck(note.knowledgeCheck, curiosityQuestion);
+    if (Object.prototype.hasOwnProperty.call(note, "knowledgeCheck") && !knowledgeCheck) continue;
+    if (knowledgeCheck) {
+      const questionKey = knowledgeCheck.question
+        .toLocaleLowerCase()
+        .replace(/[^\p{L}\p{N}]+/gu, " ")
+        .trim();
+      if (!questionKey || seenQuestions.has(questionKey)) continue;
+      seenQuestions.add(questionKey);
+    }
+    seen.add(imageUrl);
+    seenSources.add(sourcePageUrl);
     gallery.push({
       imageUrl,
       ...(thumbnailUrl ? { thumbnailUrl } : {}),
@@ -470,8 +525,10 @@ export function validateMediaGallery(
       role: note.role,
       commentary,
       evidenceRelation: note.evidenceRelation,
+      ...(curiosityQuestion ? { curiosityQuestion } : {}),
+      ...(knowledgeCheck ? { knowledgeCheck } : {}),
     });
-    if (gallery.length === 10) break;
+    if (gallery.length === 12) break;
   }
   return gallery;
 }
@@ -503,7 +560,7 @@ export function fallbackMediaGallery(values: ProviderImage[], topicLabel: string
       title: caption.slice(0, 116),
       role: "context",
     });
-    if (gallery.length === 3) break;
+    if (gallery.length === 12) break;
   }
   return gallery;
 }

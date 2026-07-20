@@ -33,6 +33,14 @@ export type ModelVisualNote = {
   whatToNotice?: string[];
   learning?: string;
   evidenceRelation: "shows" | "illustrates" | "contextualizes" | "supports";
+  curiosityQuestion?: string;
+  knowledgeCheck?: {
+    declarationQuestion?: string;
+    question: string;
+    options: string[];
+    correctOptionIndex: number;
+    explanation: string;
+  };
 };
 
 export type ModelTurn = {

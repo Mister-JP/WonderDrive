@@ -13,6 +13,7 @@ import ko from "./locales/ko";
 import pt from "./locales/pt";
 import zhCN from "./locales/zh-CN";
 import { journeyTreeMessages } from "./locales/journey-tree";
+import journeyMessages from "./locales/journeys";
 
 type Values = Record<string, string | number>;
 type Translator = (key: string, values?: Values) => string;
@@ -22,7 +23,7 @@ const translations: Record<Exclude<SupportedLocale, "en">, Record<string, string
     "New drive": "Nueva ruta", Library: "Biblioteca", Compare: "Comparar", Usage: "Uso", Settings: "Ajustes", "CuriosityPedia views": "Vistas de CuriosityPedia",
     "ChatGPT account": "Cuenta de ChatGPT", "Opening library…": "Abriendo biblioteca…", "{count}/{limit} saved": "{count}/{limit} guardadas", "durable session": "sesión duradera",
     "Sign in": "Iniciar sesión", "Sign out": "Cerrar sesión", "Research first": "Investigar primero", "Your guest library is still separate.": "Tu biblioteca de invitado sigue separada.", Reconnect: "Reconectar", Dismiss: "Descartar",
-    "Current journey views": "Vistas del recorrido actual", "Next turn model": "Modelo del próximo turno", "Model for the next research turn": "Modelo para el próximo turno de investigación", Stage: "Escenario", "Journey map": "Mapa del recorrido",
+    "Current journey views": "Vistas del recorrido actual", "Next turn model": "Modelo del próximo turno", "Model for the next research turn": "Modelo para el próximo turno de investigación", Stage: "Escenario", "Full answer": "Respuesta completa", "Journey map": "Mapa del recorrido",
     "One performer. One researched turn. Exactly two ways forward.": "Un intérprete. Un turno investigado. Exactamente dos caminos.", Source: "Código", "Product book": "Libro del producto",
     "Scanning what’s unfolding now…": "Explorando lo que ocurre ahora…", "Current signals + {performer} + {context}": "Señales actuales + {performer} + {context}", "your history": "tu historial", "wild-card domains": "temas inesperados", "Hunting…": "Buscando…", "Find new questions": "Buscar nuevas preguntas", "Questions suggested for {performer}": "Preguntas sugeridas para {performer}",
     "What are you curious about?": "¿Qué te da curiosidad?", "Starting question": "Pregunta inicial", "Ask anything…": "Pregunta lo que quieras…", "Tab to complete": "Tab para completar", "Recommended match": "Coincidencia recomendada", "Start typing for recommendation matches": "Empieza a escribir para ver recomendaciones", Performer: "Intérprete", Model: "Modelo", "Researching in the foreground…": "Investigando ahora…", "Begin the wonder": "Empezar a explorar",
@@ -195,11 +196,28 @@ const settingsMessages: Record<Exclude<SupportedLocale, "en">, Record<string, st
 };
 
 for (const locale of Object.keys(simplerPageHeadings) as Array<Exclude<SupportedLocale, "en">>) {
-  Object.assign(translations[locale], simplerPageHeadings[locale], bookmarkMessages[locale], settingsMessages[locale]);
+  Object.assign(translations[locale], simplerPageHeadings[locale], bookmarkMessages[locale], settingsMessages[locale], journeyMessages[locale]);
 }
 
 for (const locale of Object.keys(journeyTreeMessages) as Array<Exclude<SupportedLocale, "en">>) {
   Object.assign(translations[locale], journeyTreeMessages[locale]);
+}
+
+const questionJourneyMessages: Record<Exclude<SupportedLocale, "en">, Record<string, string>> = {
+  es: { Close: "Cerrar", "Deep dive into this question?": "¿Profundizar en esta pregunta?", "Full answer": "Respuesta completa", "New research path": "Nueva ruta de investigación", "Not now": "Ahora no", "Open question": "Pregunta abierta", "Preview journey": "Vista previa del recorrido", Question: "Pregunta", "Questions from this session": "Preguntas de esta sesión", "This starts one new researched answer from Turn {number}. Your current journey stays intact.": "Esto inicia una nueva respuesta investigada desde el turno {number}. Tu recorrido actual permanece intacto." },
+  fr: { Close: "Fermer", "Deep dive into this question?": "Approfondir cette question ?", "Full answer": "Réponse complète", "New research path": "Nouveau parcours de recherche", "Not now": "Pas maintenant", "Open question": "Question ouverte", "Preview journey": "Aperçu du parcours", Question: "Question", "Questions from this session": "Questions de cette session", "This starts one new researched answer from Turn {number}. Your current journey stays intact.": "Une nouvelle réponse documentée sera lancée à partir de l’étape {number}. Votre parcours actuel reste intact." },
+  de: { Close: "Schließen", "Deep dive into this question?": "Diese Frage vertiefen?", "Full answer": "Vollständige Antwort", "New research path": "Neuer Recherchepfad", "Not now": "Jetzt nicht", "Open question": "Offene Frage", "Preview journey": "Vorschau der Journey", Question: "Frage", "Questions from this session": "Fragen aus dieser Sitzung", "This starts one new researched answer from Turn {number}. Your current journey stays intact.": "Dadurch beginnt eine neue recherchierte Antwort ab Runde {number}. Deine aktuelle Journey bleibt erhalten." },
+  pt: { Close: "Fechar", "Deep dive into this question?": "Aprofundar esta pergunta?", "Full answer": "Resposta completa", "New research path": "Novo caminho de pesquisa", "Not now": "Agora não", "Open question": "Pergunta aberta", "Preview journey": "Prévia da jornada", Question: "Pergunta", "Questions from this session": "Perguntas desta sessão", "This starts one new researched answer from Turn {number}. Your current journey stays intact.": "Isso inicia uma nova resposta pesquisada a partir da etapa {number}. Sua jornada atual permanece intacta." },
+  hi: { Close: "बंद करें", "Deep dive into this question?": "इस प्रश्न में गहराई से जाएँ?", "Full answer": "पूरा उत्तर", "New research path": "नया शोध पथ", "Not now": "अभी नहीं", "Open question": "खुला प्रश्न", "Preview journey": "यात्रा का पूर्वावलोकन", Question: "प्रश्न", "Questions from this session": "इस सत्र के प्रश्न", "This starts one new researched answer from Turn {number}. Your current journey stays intact.": "इससे चरण {number} से एक नया शोध-आधारित उत्तर शुरू होगा। आपकी वर्तमान यात्रा सुरक्षित रहेगी।" },
+  bn: { Close: "বন্ধ করুন", "Deep dive into this question?": "এই প্রশ্নটি গভীরভাবে জানবেন?", "Full answer": "সম্পূর্ণ উত্তর", "New research path": "নতুন গবেষণার পথ", "Not now": "এখন নয়", "Open question": "খোলা প্রশ্ন", "Preview journey": "যাত্রার পূর্বরূপ", Question: "প্রশ্ন", "Questions from this session": "এই সেশনের প্রশ্নসমূহ", "This starts one new researched answer from Turn {number}. Your current journey stays intact.": "এটি ধাপ {number} থেকে একটি নতুন গবেষণাভিত্তিক উত্তর শুরু করবে। আপনার বর্তমান যাত্রা অক্ষত থাকবে।" },
+  ar: { Close: "إغلاق", "Deep dive into this question?": "هل تريد التعمق في هذا السؤال؟", "Full answer": "الإجابة الكاملة", "New research path": "مسار بحث جديد", "Not now": "ليس الآن", "Open question": "سؤال مفتوح", "Preview journey": "معاينة الرحلة", Question: "سؤال", "Questions from this session": "أسئلة هذه الجلسة", "This starts one new researched answer from Turn {number}. Your current journey stays intact.": "سيبدأ هذا إجابة بحثية جديدة من الجولة {number}. ستبقى رحلتك الحالية كما هي." },
+  "zh-CN": { Close: "关闭", "Deep dive into this question?": "深入探索这个问题？", "Full answer": "完整回答", "New research path": "新的研究路径", "Not now": "暂不", "Open question": "开放问题", "Preview journey": "预览探索", Question: "问题", "Questions from this session": "本次学习的问题", "This starts one new researched answer from Turn {number}. Your current journey stays intact.": "这将从第 {number} 轮开始一个新的研究答案。你当前的探索保持不变。" },
+  ja: { Close: "閉じる", "Deep dive into this question?": "この質問をさらに掘り下げますか？", "Full answer": "回答全文", "New research path": "新しいリサーチ経路", "Not now": "今はしない", "Open question": "未探索の質問", "Preview journey": "探究をプレビュー", Question: "質問", "Questions from this session": "このセッションの質問", "This starts one new researched answer from Turn {number}. Your current journey stays intact.": "ターン{number}から新しい調査回答を開始します。現在の探究はそのまま残ります。" },
+  ko: { Close: "닫기", "Deep dive into this question?": "이 질문을 더 깊이 살펴볼까요?", "Full answer": "전체 답변", "New research path": "새 리서치 경로", "Not now": "나중에", "Open question": "열린 질문", "Preview journey": "탐색 미리보기", Question: "질문", "Questions from this session": "이 세션의 질문", "This starts one new researched answer from Turn {number}. Your current journey stays intact.": "턴 {number}에서 새로운 리서치 답변을 시작합니다. 현재 탐색은 그대로 유지됩니다." },
+};
+
+for (const locale of Object.keys(questionJourneyMessages) as Array<Exclude<SupportedLocale, "en">>) {
+  Object.assign(translations[locale], questionJourneyMessages[locale]);
 }
 
 export const interfaceMessageKeys = Object.freeze(Object.keys(translations.es));

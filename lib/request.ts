@@ -1,4 +1,5 @@
 import { RepositoryError } from "./errors";
+import { STARTING_QUESTION_MAX_LENGTH } from "./contracts";
 
 /** Shared boundary validation keeps fixture and live requests behaviorally aligned. */
 export function asRecord(value: unknown): Record<string, unknown> {
@@ -23,8 +24,12 @@ export function assertIdempotencyKey(value: unknown): asserts value is string {
 export function normalizeSeed(value: unknown): string {
   if (typeof value !== "string") throw new RepositoryError("BAD_REQUEST", "Start with a question.", 400);
   const seed = value.trim().replace(/\s+/g, " ");
-  if (seed.length < 3 || seed.length > 280) {
-    throw new RepositoryError("BAD_REQUEST", "Keep the starting question between 3 and 280 characters.", 400);
+  if (seed.length < 3 || seed.length > STARTING_QUESTION_MAX_LENGTH) {
+    throw new RepositoryError(
+      "BAD_REQUEST",
+      `Keep the starting question between 3 and ${STARTING_QUESTION_MAX_LENGTH.toLocaleString("en-US")} characters.`,
+      400,
+    );
   }
   return seed;
 }

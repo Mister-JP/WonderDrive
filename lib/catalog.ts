@@ -8,8 +8,8 @@ import type {
   UserPreferences,
 } from "./contracts";
 
-export const PROMPT_VERSION = "wonder-research-turn@4.0.0";
-export const TURN_SCHEMA_VERSION = "wonder-turn-draft@4";
+export const PROMPT_VERSION = "wonder-research-turn@4.1.0";
+export const TURN_SCHEMA_VERSION = "wonder-turn-draft@5";
 
 export const DEFAULT_PREFERENCES: UserPreferences = {
   interfaceLocale: "en",
@@ -17,7 +17,6 @@ export const DEFAULT_PREFERENCES: UserPreferences = {
   defaultModelId: "gpt-5.6-luna",
   answerDensity: "balanced",
   textSize: "m",
-  imagePreference: "when-useful",
   reduceMotion: false,
 };
 
@@ -211,55 +210,6 @@ export const STARTERS: Record<PerformerId, string[]> = {
   ],
 };
 
-export const REAL_WORLD_DISCOVERY_STARTERS = [
-  { question: "Why do wombats produce cube-shaped droppings?", topic: "animal biology" },
-  { question: "How did Polynesian navigators cross the Pacific without compasses?", topic: "navigation history" },
-  { question: "What keeps the Voyager probes communicating with Earth?", topic: "space engineering" },
-  { question: "Why does the Atacama Desert preserve ancient remains?", topic: "desert archaeology" },
-  { question: "How can trees record volcanic eruptions in their rings?", topic: "dendrochronology" },
-  { question: "What caused London's Great Smog of 1952?", topic: "environmental history" },
-  { question: "How do archerfish knock insects from branches?", topic: "animal behavior" },
-  { question: "Why did medieval builders bury shoes inside walls?", topic: "folk archaeology" },
-  { question: "How does the Svalbard seed vault protect crops?", topic: "food security" },
-  { question: "What made the Antikythera mechanism an ancient computer?", topic: "ancient technology" },
-  { question: "Why can glass behave differently over immense timescales?", topic: "materials science" },
-  { question: "How did cholera maps change public health?", topic: "epidemiology history" },
-  { question: "What lets geckos walk across ceilings?", topic: "biomechanics" },
-  { question: "How do scientists weigh the Greenland ice sheet?", topic: "climate measurement" },
-  { question: "Why are some Antarctic lakes buried under ice?", topic: "polar science" },
-  { question: "How did purple dye become a symbol of power?", topic: "material culture" },
-  { question: "What makes the Bay of Fundy tides so extreme?", topic: "oceanography" },
-  { question: "How did semaphore towers send messages across countries?", topic: "communication history" },
-  { question: "Why do some fungi turn insects into spore carriers?", topic: "fungal biology" },
-  { question: "How did scientists discover Earth's moving tectonic plates?", topic: "geology history" },
-] as const;
-
-export const DISCOVERY_STARTERS = [
-  { question: "How does a memory become part of a place?", topic: "memory and place" },
-  { question: "What makes a useful standard survive its makers?", topic: "living standards" },
-  { question: "Where does a city hide the work that keeps it alive?", topic: "urban systems" },
-  { question: "Why do some sounds make a room feel larger?", topic: "acoustic space" },
-  { question: "What can an accurate map still leave out?", topic: "maps and power" },
-  { question: "How does a repeated shortcut become infrastructure?", topic: "emergent infrastructure" },
-  { question: "Can a public space teach people how to behave?", topic: "behavioral design" },
-  { question: "What does an ecosystem remember after a disturbance?", topic: "ecological memory" },
-  { question: "Why do tools change the questions we are able to ask?", topic: "tools and inquiry" },
-  { question: "How does a rumor acquire the shape of evidence?", topic: "information systems" },
-  { question: "What makes a machine feel predictable to a person?", topic: "human-machine trust" },
-  { question: "When does convenience become dependency?", topic: "systems dependency" },
-  { question: "How do archives decide what the future can remember?", topic: "archives" },
-  { question: "What can a boundary reveal by failing?", topic: "boundaries" },
-  { question: "Why do networks become fragile as they become efficient?", topic: "network resilience" },
-  { question: "How does an image become evidence?", topic: "visual evidence" },
-  { question: "What keeps a tradition recognizable while it changes?", topic: "cultural continuity" },
-  { question: "How does a neighborhood develop its own rhythm?", topic: "urban rhythm" },
-  { question: "What makes one explanation easier to believe than another?", topic: "explanation and belief" },
-  { question: "Where does uncertainty belong in a good decision?", topic: "decision-making" },
-  { question: "How can a system be fair without treating everyone the same?", topic: "fair systems" },
-  { question: "What does a measurement change simply by being watched?", topic: "measurement" },
-  { question: "Why do invisible systems become visible when they break?", topic: "failure modes" },
-  { question: "How does curiosity change after the first answer?", topic: "curiosity" },
-] as const;
 
 export const PRESETS: PresetConfig[] = [
   {
@@ -306,7 +256,6 @@ export const BOOTSTRAP_CATALOG: BootstrapCatalog = {
   models: MODELS.filter((model) => model.status === "enabled"),
   presets: PRESETS,
   starters: STARTERS,
-  discoveryStarters: [...DISCOVERY_STARTERS],
   promptVersion: PROMPT_VERSION,
   schemaVersion: TURN_SCHEMA_VERSION,
 };

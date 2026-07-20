@@ -46,7 +46,6 @@ function validPreferences(changes = {}) {
     defaultModelId: "gpt-5.6-luna",
     answerDensity: "rich",
     textSize: "xl",
-    imagePreference: "avoid",
     reduceMotion: true,
     ...changes,
   };
@@ -60,12 +59,12 @@ test("getPreferences preserves its identity-bound query and default fallback", a
   assert.equal(db.calls.length, 1);
   assert.match(
     normalizedSql(db.calls[0]),
-    /^SELECT interface_locale, default_output_locale, default_model_id, answer_density, text_size, image_preference, reduce_motion FROM preferences WHERE identity_id = \? LIMIT 1$/,
+    /^SELECT interface_locale, default_output_locale, default_model_id, answer_density, text_size, reduce_motion FROM preferences WHERE identity_id = \? LIMIT 1$/,
   );
   assert.deepEqual(db.calls[0].bindings, [viewer.identityId]);
 });
 
-test("getPreferences preserves stored fields while forcing the current image preference", async () => {
+test("getPreferences omits the retired image setting", async () => {
   const db = createScriptedD1({
     row: {
       interface_locale: "ar",
@@ -73,7 +72,6 @@ test("getPreferences preserves stored fields while forcing the current image pre
       default_model_id: "gpt-5.6-terra",
       answer_density: "brief",
       text_size: "s",
-      image_preference: "avoid",
       reduce_motion: 2,
     },
   });
@@ -85,12 +83,11 @@ test("getPreferences preserves stored fields while forcing the current image pre
     defaultModelId: "gpt-5.6-terra",
     answerDensity: "brief",
     textSize: "s",
-    imagePreference: "prefer",
     reduceMotion: true,
   });
 });
 
-test("updatePreferences preserves normalization, forced image preference, SQL, and bind order", async () => {
+test("updatePreferences preserves normalization and always persists the product image contract", async () => {
   const db = createScriptedD1();
   env.DB = db;
   const originalNow = Date.now;
@@ -105,7 +102,6 @@ test("updatePreferences preserves normalization, forced image preference, SQL, a
       defaultModelId: "gpt-5.6-luna",
       answerDensity: "rich",
       textSize: "xl",
-      imagePreference: "prefer",
       reduceMotion: true,
     });
   } finally {

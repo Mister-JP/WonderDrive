@@ -15,12 +15,13 @@ const RESPONSES_URL = "https://api.openai.com/v1/responses";
 
 export const OPENAI_PROMPT_LIMITS = {
   liveResearch: {
-    spark: { maxToolCalls: 2, maxOutputTokens: 4_000, reasoning: "low", timeoutMs: 25_000 },
-    standard: { maxToolCalls: 5, maxOutputTokens: 8_000, reasoning: "medium", timeoutMs: 120_000 },
-    deep: { maxToolCalls: 10, maxOutputTokens: 16_000, reasoning: "high", timeoutMs: 120_000 },
+    spark: { maxToolCalls: 3, maxOutputTokens: 10_000, reasoning: "low", timeoutMs: 60_000 },
+    standard: { maxToolCalls: 8, maxOutputTokens: 18_000, reasoning: "medium", timeoutMs: 150_000 },
+    deep: { maxToolCalls: 12, maxOutputTokens: 26_000, reasoning: "high", timeoutMs: 180_000 },
   },
   starterGeneration: { maxOutputTokens: 6_000, reasoning: "high" },
   questionRedraw: { maxOutputTokens: 4_000, reasoning: "high" },
+  visualCuration: { maxToolCalls: 12, maxOutputTokens: 14_000, reasoning: "medium", timeoutMs: 120_000 },
   imageNoteRepair: { maxOutputTokens: 3_000, reasoning: "medium", timeoutMs: 30_000 },
   citationRepair: { maxOutputTokens: 2_000, reasoning: "medium", timeoutMs: 30_000 },
   citationRecovery: { maxOutputTokens: 6_000, reasoning: "high", timeoutMs: 60_000 },
@@ -57,15 +58,62 @@ export function assertOpenAIAvailable(unavailableMessage?: string) {
 /** The single server-only transport for every OpenAI Responses request. */
 export function requestOpenAI(
   body: object,
-  options: { signal?: AbortSignal; unavailableMessage?: string } = {},
+  options: { signal?: AbortSignal; unavailableMessage?: string; idempotencyKey?: string } = {},
 ): Promise<Response> {
   assertOpenAIAvailable(options.unavailableMessage);
   const apiKey = env.OPENAI_API_KEY?.trim();
   if (!apiKey) throw new Error("OpenAI availability changed during request preparation.");
   return fetch(RESPONSES_URL, {
     method: "POST",
-    headers: { authorization: `Bearer ${apiKey}`, "content-type": "application/json" },
+    headers: {
+      authorization: `Bearer ${apiKey}`,
+      "content-type": "application/json",
+      ...(options.idempotencyKey ? { "idempotency-key": options.idempotencyKey } : {}),
+    },
     body: JSON.stringify(body),
+    signal: options.signal,
+  });
+}
+
+/** Retrieves a stored Responses API result by its server-side identifier. */
+export function retrieveOpenAIResponse(
+  responseId: string,
+  options: {
+    signal?: AbortSignal;
+    unavailableMessage?: string;
+    include?: readonly string[];
+  } = {},
+): Promise<Response> {
+  assertOpenAIAvailable(options.unavailableMessage);
+  const apiKey = env.OPENAI_API_KEY?.trim();
+  if (!apiKey) throw new Error("OpenAI availability changed during response retrieval.");
+  if (!/^resp_[A-Za-z0-9_-]+$/.test(responseId)) {
+    throw new RepositoryError("BAD_REQUEST", "The stored provider response identifier is invalid.", 400);
+  }
+  const url = new URL(`${RESPONSES_URL}/${encodeURIComponent(responseId)}`);
+  for (const include of options.include ?? []) {
+    url.searchParams.append("include[]", include);
+  }
+  return fetch(url, {
+    headers: { authorization: `Bearer ${apiKey}` },
+    signal: options.signal,
+  });
+}
+
+/** Cancels a stored background Responses API request. The operation is idempotent upstream. */
+export function cancelOpenAIResponse(
+  responseId: string,
+  options: { signal?: AbortSignal; unavailableMessage?: string } = {},
+): Promise<Response> {
+  assertOpenAIAvailable(options.unavailableMessage);
+  const apiKey = env.OPENAI_API_KEY?.trim();
+  if (!apiKey) throw new Error("OpenAI availability changed during response cancellation.");
+  if (!/^resp_[A-Za-z0-9_-]+$/.test(responseId)) {
+    throw new RepositoryError("BAD_REQUEST", "The stored provider response identifier is invalid.", 400);
+  }
+  return fetch(`${RESPONSES_URL}/${encodeURIComponent(responseId)}/cancel`, {
+    method: "POST",
+    headers: { authorization: `Bearer ${apiKey}` },
     signal: options.signal,
   });
 }

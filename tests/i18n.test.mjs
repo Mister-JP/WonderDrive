@@ -11,7 +11,7 @@ test("every interface message has a complete locale catalog with matching placeh
     "../app/experience/bookmarks-view.tsx",
     "../app/experience/empty-stage.tsx",
     "../app/experience/journey-map.tsx",
-    "../app/experience/library-view.tsx",
+    "../app/experience/journeys-view.tsx",
     "../app/experience/settings-view.tsx",
     "../app/experience/usage-view.tsx",
   ].map((path) => readFile(new URL(path, import.meta.url), "utf8")));

@@ -33,6 +33,7 @@ function journeyRow(changes = {}) {
     source_count: 3,
     status: "active",
     version: 7,
+    created_at: 700,
     updated_at: 900,
     open_branch_count: 2,
     ...changes,
@@ -112,7 +113,7 @@ function emptyHydrationResponse(call, method) {
   throw new Error(`Unexpected ${method} query: ${sql}`);
 }
 
-test("listJourneys preserves ownership, soft-delete filtering, ordering, and topic projection", async () => {
+test("listJourneys preserves ownership, creation time, soft-delete filtering, ordering, and topic projection", async () => {
   const db = createScriptedD1((call, method) => {
     const sql = normalizedSql(call);
     if (method === "all" && sql.includes("FROM journeys")) {
@@ -128,13 +129,13 @@ test("listJourneys preserves ownership, soft-delete filtering, ordering, and top
         }),
       ];
     }
-    if (method === "all" && sql.includes("SELECT journey_id, topic_label FROM turns")) {
+    if (method === "all" && sql.includes("SELECT journey_id, parent_turn_id, topic_label, answer_json FROM turns")) {
       return [
-        { journey_id: "journey-alpha", topic_label: "Bioluminescence" },
-        { journey_id: "journey-alpha", topic_label: "Bioluminescence" },
-        { journey_id: "journey-alpha", topic_label: "Evolution" },
-        { journey_id: "journey-beta", topic_label: "" },
-        { journey_id: "journey-beta", topic_label: "Oceanography" },
+        { journey_id: "journey-alpha", parent_turn_id: null, topic_label: "Bioluminescence", answer_json: JSON.stringify({ blocks: [], media: [{ imageUrl: "https://images.example/firefly.jpg", sourcePageUrl: "https://example.org/fireflies", caption: "A firefly", alt: "A glowing firefly" }] }) },
+        { journey_id: "journey-alpha", parent_turn_id: "turn-root", topic_label: "Bioluminescence", answer_json: null },
+        { journey_id: "journey-alpha", parent_turn_id: "turn-root", topic_label: "Evolution", answer_json: null },
+        { journey_id: "journey-beta", parent_turn_id: null, topic_label: "", answer_json: null },
+        { journey_id: "journey-beta", parent_turn_id: "turn-beta", topic_label: "Oceanography", answer_json: null },
       ];
     }
     throw new Error(`Unexpected ${method} query: ${sql}`);
@@ -143,24 +144,28 @@ test("listJourneys preserves ownership, soft-delete filtering, ordering, and top
 
   const result = await listJourneys(viewer);
 
-  assert.deepEqual(result.map(({ id, pinned, hidden, topicLabels }) => ({ id, pinned, hidden, topicLabels })), [
+  assert.deepEqual(result.map(({ id, pinned, hidden, createdAt, topicLabels }) => ({ id, pinned, hidden, createdAt, topicLabels })), [
     {
       id: "journey-alpha",
       pinned: true,
       hidden: false,
+      createdAt: 700,
       topicLabels: ["Bioluminescence", "Evolution"],
     },
     {
       id: "journey-beta",
       pinned: false,
       hidden: true,
+      createdAt: 700,
       topicLabels: ["Oceanography"],
     },
   ]);
   assert.match(normalizedSql(db.calls[0]), /owner_identity_id = \? AND deleted_at IS NULL ORDER BY updated_at DESC/);
+  assert.match(normalizedSql(db.calls[0]), /version, created_at, updated_at/);
   assert.deepEqual(db.calls[0].bindings, [viewer.identityId]);
   assert.match(normalizedSql(db.calls[1]), /status = 'ready' ORDER BY created_at/);
   assert.deepEqual(db.calls[1].bindings, ["journey-alpha", "journey-beta"]);
+  assert.equal(result[0].leadMedia?.imageUrl, "https://images.example/firefly.jpg");
 });
 
 test("listJourneys does not issue a topic query for an empty owned library", async () => {

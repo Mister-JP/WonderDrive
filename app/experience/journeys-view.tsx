@@ -1,0 +1,233 @@
+"use client";
+
+import { useState } from "react";
+import type { JourneySummary, ResearchActivity, TurnMedia, Viewer } from "../../lib/contracts";
+import { useI18n } from "../i18n";
+
+export function JourneysView({
+  journeys,
+  activities,
+  viewer,
+  busy,
+  onOpen,
+  onDelete,
+  onManage,
+  onSnapshot,
+  onRetry,
+  onCancel,
+  onNew,
+}: {
+  journeys: JourneySummary[];
+  activities: ResearchActivity[];
+  viewer: Viewer | null;
+  busy: string | null;
+  onOpen: (id: string) => void;
+  onDelete: (id: string) => void;
+  onManage: (id: string, changes: { title?: string; pinned?: boolean; hidden?: boolean }) => void;
+  onSnapshot: (id: string) => void;
+  onRetry: (id: string) => void;
+  onCancel: (id: string) => void;
+  onNew: () => void;
+}) {
+  const { t, locale } = useI18n();
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const [confirmCancel, setConfirmCancel] = useState<string | null>(null);
+  const [query, setQuery] = useState("");
+  const [showHidden, setShowHidden] = useState(false);
+  const normalizedQuery = query.trim().toLocaleLowerCase(locale);
+  const formatter = new Intl.DateTimeFormat(locale, {
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
+  const visibleJourneys = journeys
+    .filter((journey) => showHidden || !journey.hidden)
+    .filter((journey) => !normalizedQuery || `${journey.seed} ${journey.title}`.toLocaleLowerCase(locale).includes(normalizedQuery))
+    .sort((left, right) => Number(right.pinned) - Number(left.pinned) || right.updatedAt - left.updatedAt);
+  const unfinished = activities.filter((activity) => activity.status !== "ready");
+
+  return (
+    <section className="journeys-view" aria-labelledby="journeys-title">
+      <header className="view-heading journeys-heading">
+        <div>
+          <p className="eyebrow"><span /> {t("Your journeys")}</p>
+          <h1 id="journeys-title">{t("Journeys")}</h1>
+          <p className="journeys-intro">{t("Each journey follows the path from your first question through every question you explored afterward.")}</p>
+        </div>
+        <div>
+          <p>{t("{count} of {limit} journeys", { count: journeys.length, limit: viewer?.journeyLimit ?? "—" })}</p>
+          <button type="button" className="compact-action" onClick={onNew}>{t("New journey")}</button>
+        </div>
+      </header>
+
+      <div className="journeys-filters" aria-label={t("Journey filters")}>
+        <label>
+          <span>{t("Search")}</span>
+          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t("First question or journey label")} />
+        </label>
+        <label className="check-setting"><input type="checkbox" checked={showHidden} onChange={(event) => setShowHidden(event.target.checked)} /><span>{t("Show hidden")}</span></label>
+      </div>
+
+      {unfinished.length > 0 && (
+        <section className="research-activity-list" aria-labelledby="research-activity-title">
+          <div className="research-activity-heading">
+            <p className="eyebrow"><span /> {t("In progress")}</p>
+            <h2 id="research-activity-title">{t("Research activity")}</h2>
+          </div>
+          <div className="journeys-grid">
+            {unfinished.map((activity) => (
+              <article key={activity.id} className={`journey-card research-activity-card ${activity.status}`}>
+                <p className="journey-card-kicker">
+                  {activity.status === "researching" ? t("Researching now") : t("Research stopped")}
+                </p>
+                <h2>{activity.question}</h2>
+                {activity.status === "researching" ? (
+                  <>
+                    <p className="research-activity-copy">
+                      <span className="research-activity-pulse" aria-hidden="true" />
+                      {activity.phase === "finalizing"
+                        ? t("Checking citations and finding images")
+                        : t("Searching sources and writing the answer")}
+                    </p>
+                    {activity.timeoutAt && (
+                      <p className="research-timeout">
+                        {t("Automatic timeout at {time}", { time: formatter.format(activity.timeoutAt) })}
+                      </p>
+                    )}
+                    <div className="research-cancel">
+                      {confirmCancel === activity.id ? (
+                        <span className="research-cancel-confirm" role="group" aria-label={t("Confirm research cancellation")}>
+                          <span>{t("Stop this research?")}</span>
+                          <button
+                            type="button"
+                            disabled={busy !== null}
+                            onClick={() => {
+                              setConfirmCancel(null);
+                              onCancel(activity.id);
+                            }}
+                          >{t("Stop")}</button>
+                          <button type="button" onClick={() => setConfirmCancel(null)}>{t("Keep")}</button>
+                        </span>
+                      ) : (
+                        <button
+                          type="button"
+                          className="research-cancel-button"
+                          aria-label={t("Stop research")}
+                          disabled={busy !== null}
+                          onClick={() => setConfirmCancel(activity.id)}
+                        >{t("Stop research")} <span aria-hidden="true">×</span></button>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <p className="research-activity-copy">{activity.error ?? t("This research could not be completed.")}</p>
+                    <button
+                      type="button"
+                      className="show-journey"
+                      disabled={busy !== null}
+                      onClick={() => onRetry(activity.id)}
+                    >
+                      {t("Retry research")} <span aria-hidden="true">↻</span>
+                    </button>
+                  </>
+                )}
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {journeys.length ? (
+        visibleJourneys.length ? (
+          <div className="journeys-grid">
+            {visibleJourneys.map((journey) => {
+              const customLabel = journey.title !== generatedTitle(journey.seed) ? journey.title : null;
+              return (
+                <article key={journey.id} className="journey-card">
+                  <JourneyCardImage media={journey.leadMedia} question={journey.seed} />
+                  <div className="journey-card-body">
+                    <div className="journey-card-state">
+                      {journey.pinned && <span>{t("Pinned")}</span>}
+                      {journey.hidden && <span>{t("Hidden")}</span>}
+                    </div>
+                    <p className="journey-card-kicker">{t("First explored")}</p>
+                    <h2>{journey.seed}</h2>
+                    <p className="journey-started"><span>{t("Started")}</span> <time dateTime={new Date(journey.createdAt).toISOString()}>{formatter.format(journey.createdAt)}</time></p>
+                    <button
+                      type="button"
+                      className="show-journey"
+                      disabled={busy !== null}
+                      aria-label={t("Show journey: {question}", { question: journey.seed })}
+                      onClick={() => onOpen(journey.id)}
+                    >
+                      {t("Show Journey")} <span aria-hidden="true">↗</span>
+                    </button>
+
+                    <details className="journey-manage">
+                      <summary>{t("Manage journey")}</summary>
+                      {customLabel && <p className="journey-label">{t("Label: {label}", { label: customLabel })}</p>}
+                      <div>
+                        <button type="button" onClick={() => {
+                          const title = window.prompt(t("Rename journey label"), journey.title);
+                          if (title?.trim()) onManage(journey.id, { title: title.trim() });
+                        }}>{t("Rename label")}</button>
+                        <button type="button" onClick={() => onManage(journey.id, { pinned: !journey.pinned })}>{t(journey.pinned ? "Unpin" : "Pin")}</button>
+                        <button type="button" onClick={() => onManage(journey.id, { hidden: !journey.hidden })}>{t(journey.hidden ? "Unhide" : "Hide")}</button>
+                        <button type="button" onClick={() => onSnapshot(journey.id)}>{t("Snapshot")}</button>
+                        <a href={`/api/journeys/${journey.id}/export`}>{t("Export")}</a>
+                      </div>
+                    </details>
+
+                    <div className="journey-remove">
+                      {confirmDelete === journey.id ? (
+                        <span className="delete-confirm" role="group" aria-label={t("Confirm journey removal")}>
+                          <span>{t("Remove this journey?")}</span>
+                          <button type="button" disabled={busy !== null} onClick={() => onDelete(journey.id)}>{t("Delete")}</button>
+                          <button type="button" onClick={() => setConfirmDelete(null)}>{t("Keep")}</button>
+                        </span>
+                      ) : (
+                        <button type="button" className="text-button" onClick={() => setConfirmDelete(journey.id)}>{t("Remove")}</button>
+                      )}
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="journeys-empty"><h2>{t("No journeys match these filters")}</h2><p>{t("Try another search or show hidden journeys.")}</p></div>
+        )
+      ) : (
+        <div className="journeys-empty"><h2>{t("No journeys yet")}</h2><p>{t("Explore a question to begin your first journey.")}</p><button type="button" onClick={onNew}>{t("Start a journey")} →</button></div>
+      )}
+    </section>
+  );
+}
+
+function JourneyCardImage({ media, question }: { media?: TurnMedia; question: string }) {
+  const [src, setSrc] = useState(media?.thumbnailUrl ?? media?.imageUrl ?? null);
+
+  return (
+    <figure className={`journey-card-image${src ? "" : " unavailable"}`}>
+      {src ? (
+        <img
+          src={src}
+          alt={media?.alt || question}
+          loading="lazy"
+          referrerPolicy="no-referrer"
+          onError={() => {
+            if (media?.imageUrl && src !== media.imageUrl) setSrc(media.imageUrl);
+            else setSrc(null);
+          }}
+        />
+      ) : (
+        <span aria-hidden="true">C</span>
+      )}
+      {media?.caption && <figcaption>{media.caption}</figcaption>}
+    </figure>
+  );
+}
+
+function generatedTitle(seed: string) {
+  return seed.length <= 62 ? seed : `${seed.slice(0, 59).trimEnd()}…`;
+}

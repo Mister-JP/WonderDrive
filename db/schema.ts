@@ -56,13 +56,14 @@ export const preferences = sqliteTable("preferences", {
     enum: ["avoid", "when-useful", "prefer"],
   })
     .notNull()
-    .default("when-useful"),
+    .default("prefer"),
   reduceMotion: integer("reduce_motion", { mode: "boolean" }).notNull().default(false),
   updatedAt: integer("updated_at", { mode: "timestamp_ms" })
     .notNull()
     .default(sql`(unixepoch() * 1000)`),
 });
 
+/** Legacy per-viewer starter cache. Retained for migration safety; no runtime route writes to it. */
 export const starterRecommendations = sqliteTable("starter_recommendations", {
   identityId: text("identity_id")
     .primaryKey()
@@ -72,6 +73,50 @@ export const starterRecommendations = sqliteTable("starter_recommendations", {
   generatedAt: integer("generated_at", { mode: "timestamp_ms" }).notNull(),
   expiresAt: integer("expires_at", { mode: "timestamp_ms" }).notNull(),
 });
+
+export const landingRecommendationBatches = sqliteTable(
+  "landing_recommendation_batches",
+  {
+    id: text("id").primaryKey(),
+    title: text("title").notNull(),
+    status: text("status", { enum: ["draft", "published"] })
+      .notNull()
+      .default("draft"),
+    createdAt,
+    publishedAt: integer("published_at", { mode: "timestamp_ms" }),
+  },
+  (table) => [
+    index("landing_recommendation_batches_published_idx").on(table.status, table.publishedAt),
+  ],
+);
+
+export const landingRecommendations = sqliteTable(
+  "landing_recommendations",
+  {
+    id: text("id").primaryKey(),
+    batchId: text("batch_id")
+      .notNull()
+      .references(() => landingRecommendationBatches.id, { onDelete: "cascade" }),
+    position: integer("position").notNull(),
+    category: text("category", {
+      enum: ["Nature", "Science", "History", "Culture", "Systems", "Space", "Technology", "Art"],
+    }).notNull(),
+    question: text("question").notNull(),
+    teaser: text("teaser").notNull(),
+    imageUrl: text("image_url").notNull(),
+    imageAlt: text("image_alt").notNull(),
+    sourceLabel: text("source_label").notNull(),
+    sourceUrl: text("source_url").notNull(),
+    size: text("size", { enum: ["wide", "tall", "standard", "compact"] })
+      .notNull()
+      .default("standard"),
+    createdAt,
+  },
+  (table) => [
+    uniqueIndex("landing_recommendations_batch_position_unique").on(table.batchId, table.position),
+    index("landing_recommendations_batch_idx").on(table.batchId),
+  ],
+);
 
 export const journeys = sqliteTable(
   "journeys",
@@ -96,7 +141,7 @@ export const journeys = sqliteTable(
       enum: ["avoid", "when-useful", "prefer"],
     })
       .notNull()
-      .default("when-useful"),
+      .default("prefer"),
     outputLocale: text("output_locale").notNull().default("en"),
     pinned: integer("pinned", { mode: "boolean" }).notNull().default(false),
     hidden: integer("hidden", { mode: "boolean" }).notNull().default(false),
@@ -154,7 +199,7 @@ export const turns = sqliteTable(
     }),
     imagePreference: text("image_preference", {
       enum: ["avoid", "when-useful", "prefer"],
-    }),
+    }).default("prefer"),
     outputLocale: text("output_locale").notNull().default("en"),
     createdAt,
     readyAt: integer("ready_at", { mode: "timestamp_ms" }),
@@ -162,6 +207,28 @@ export const turns = sqliteTable(
   (table) => [
     index("turns_journey_created_idx").on(table.journeyId, table.createdAt),
     index("turns_parent_idx").on(table.parentTurnId),
+  ],
+);
+
+export const bookmarks = sqliteTable(
+  "bookmarks",
+  {
+    id: text("id").primaryKey(),
+    identityId: text("identity_id")
+      .notNull()
+      .references(() => identities.id),
+    journeyId: text("journey_id")
+      .notNull()
+      .references(() => journeys.id),
+    turnId: text("turn_id")
+      .notNull()
+      .references(() => turns.id),
+    createdAt,
+  },
+  (table) => [
+    uniqueIndex("bookmarks_identity_turn_unique").on(table.identityId, table.turnId),
+    index("bookmarks_identity_created_idx").on(table.identityId, table.createdAt),
+    index("bookmarks_journey_idx").on(table.journeyId),
   ],
 );
 
@@ -202,7 +269,7 @@ export const turnActions = sqliteTable(
       .notNull()
       .references(() => turns.id),
     kind: text("kind", {
-      enum: ["choose", "reject", "delegate", "branch", "pause"],
+      enum: ["choose", "reject", "delegate", "explore", "branch", "pause"],
     }).notNull(),
     optionId: text("option_id").references(() => turnOptions.id),
     idempotencyKey: text("idempotency_key").notNull(),
@@ -272,12 +339,16 @@ export const researchRequests = sqliteTable(
     idempotencyKey: text("idempotency_key").notNull(),
     payloadHash: text("payload_hash").notNull(),
     requestJson: text("request_json").notNull(),
+    executionMode: text("execution_mode", { enum: ["foreground", "background"] })
+      .notNull()
+      .default("foreground"),
     status: text("status", {
       enum: ["reserved", "researching", "committed", "failed"],
     })
       .notNull()
       .default("reserved"),
     providerResponseId: text("provider_response_id"),
+    costReservationId: text("cost_reservation_id"),
     resultJourneyId: text("result_journey_id").references(() => journeys.id),
     resultTurnId: text("result_turn_id").references(() => turns.id),
     errorCode: text("error_code"),
@@ -309,7 +380,7 @@ export const researchRequests = sqliteTable(
     ),
     uniqueIndex("research_requests_identity_active_unique")
       .on(table.identityId)
-      .where(sql`${table.status} IN ('reserved', 'researching')`),
+      .where(sql`${table.executionMode} = 'foreground' AND ${table.status} IN ('reserved', 'researching')`),
   ],
 );
 

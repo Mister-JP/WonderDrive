@@ -81,8 +81,10 @@ function summaryFromDetail(detail: JourneyDetail): JourneySummary {
     version: detail.version,
     pinned: detail.pinned,
     hidden: detail.hidden,
+    createdAt: detail.createdAt,
     updatedAt: detail.updatedAt,
     topicLabels: detail.topicLabels,
+    leadMedia: detail.turns.find((turn) => turn.parentTurnId === null)?.media[0],
   };
 }
 

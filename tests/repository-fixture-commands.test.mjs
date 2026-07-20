@@ -17,7 +17,6 @@ const request = {
   modelId: "gpt-5.6-terra",
   researchPreset: "standard",
   answerDensity: "balanced",
-  imagePreference: "when-useful",
   outputLocale: "en",
   idempotencyKey: "fixture-create-characterization",
 };

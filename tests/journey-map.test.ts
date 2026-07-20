@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { register } from "node:module";
 import test from "node:test";
 
-import type { JourneyDetail, JourneyTurn, TurnOption } from "../lib/contracts";
+import type { JourneyDetail, JourneyTurn, KnowledgeJourneySeed, TurnOption } from "../lib/contracts";
 
 register(new URL("./journey-map-loader.mjs", import.meta.url));
 
@@ -18,6 +18,7 @@ type JourneyMapComponent = (props: {
   onSelect: (id: string) => void;
   onContinue: (id: string) => void;
   onChoose: (turnId: string, optionId: string) => void;
+  onExploreKnowledge: (turnId: string, seed: KnowledgeJourneySeed) => void;
 }) => TestElement;
 
 const { JourneyMap } = await import("../app/experience/journey-map") as unknown as {
@@ -114,6 +115,7 @@ function journeyFixture(): JourneyDetail {
     version: 1,
     pinned: false,
     hidden: false,
+    createdAt: 1,
     updatedAt: 1,
     topicLabels: [],
     status: "active",
@@ -199,6 +201,7 @@ function render(overrides: Partial<Parameters<JourneyMapComponent>[0]> = {}) {
     onSelect: (id: string) => selected.push(id),
     onContinue: (id: string) => continued.push(id),
     onChoose: (turnId: string, optionId: string) => chosen.push([turnId, optionId]),
+    onExploreKnowledge() {},
     ...overrides,
   };
   const rerender = () => {
@@ -221,38 +224,67 @@ test("renders the current route, open questions, folded branch, inspector, and o
   assert.match(text(root), /Turns8Open paths5Sources3/);
 });
 
-test("preserves selection, continue, and open-question confirmation callbacks", () => {
+test("opens explored cards directly and confirms open questions in a modal", () => {
   const rendered = render();
 
   (find(rendered.root, (element) => element.props["data-turn-id"] === "root").props.onClick as () => void)();
   (byText(rendered.root, "Open full answer").props.onClick as () => void)();
   (find(rendered.root, (element) => element.props["aria-label"] === "Open path: Question current-a?").props.onClick as () => void)();
   const preview = rendered.rerender();
-  assert.equal(find(preview, (element) => element.type === "aside").props["aria-label"], "Confirm new branch");
+  assert.equal(find(preview, (element) => element.type === "aside").props["aria-label"], "Selected turn details");
+  assert.equal(find(preview, (element) => element.props.role === "dialog").props["aria-modal"], "true");
+  assert.match(text(preview), /Deep dive into this question\?/);
   (byText(preview, "Start research").props.onClick as () => void)();
 
-  assert.deepEqual(rendered.selected, ["root", "current"]);
-  assert.deepEqual(rendered.continued, ["current"]);
+  assert.deepEqual(rendered.selected, []);
+  assert.deepEqual(rendered.continued, ["root", "current"]);
   assert.deepEqual(rendered.chosen, [["current", "current-a"]]);
 });
 
-test("preserves density and graph-outline toggles", () => {
-  const rendered = render();
+test("numbers image curiosity questions sequentially and explores them in their parent journey", () => {
+  const journey = journeyFixture();
+  const current = journey.turns.find((turn) => turn.id === "current")!;
+  current.media = Array.from({ length: 4 }, (_, index) => ({
+    imageUrl: `https://images.example.org/${index}.jpg`,
+    sourcePageUrl: `https://example.org/${index}`,
+    caption: `Image ${index}`,
+    alt: `Image ${index}`,
+    title: `Subject ${index}`,
+    knowledgeCheck: {
+      question: `Why does subject ${index} change?`,
+      options: Array.from({ length: 8 }, (_, optionIndex) => `Answer ${optionIndex}`),
+      correctOptionIndex: 0,
+      explanation: `Explanation ${index}`,
+    },
+  }));
+  const explored: Array<[string, KnowledgeJourneySeed]> = [];
+  const rendered = render({
+    journey,
+    onExploreKnowledge: (turnId, seed) => explored.push([turnId, seed]),
+  });
 
-  (byText(rendered.root, "Overview").props.onClick as () => void)();
-  let root = rendered.rerender();
-  assert.equal(byText(root, "Overview").props["aria-pressed"], true);
-  assert.equal(find(root, (element) => element.props["data-turn-id"] === "current").props.children instanceof Array, true);
-  assert.doesNotMatch(text(find(root, (element) => element.props["data-turn-id"] === "current")), /Question current\?/);
+  const fourth = find(rendered.root, (element) => element.props["aria-label"] === "Open path: Why does subject 3 change?");
+  assert.match(text(fourth), /^4Open path/);
+  (fourth.props.onClick as () => void)();
+  const preview = rendered.rerender();
+  (byText(preview, "Start research").props.onClick as () => void)();
+  assert.equal(explored[0]?.[0], "current");
+  assert.equal(explored[0]?.[1].question, "Why does subject 3 change?");
+  assert.equal(explored[0]?.[1].imageUrl, "https://images.example.org/3.jpg");
+});
 
-  (byText(root, "Full cards").props.onClick as () => void)();
-  root = rendered.rerender();
-  assert.match(text(find(root, (element) => element.props["data-turn-id"] === "current")), /Answer current/);
+test("keeps a single useful map view without density and outline controls", () => {
+  const { root } = render();
+  const labels = elements(root).filter((element) => element.type === "button").map((element) => text(element).trim());
 
-  (byText(root, "Outline").props.onClick as () => void)();
-  root = rendered.rerender();
-  assert.ok(elements(root).some((element) => element.props.className === "journey-outline"));
-  assert.equal(byText(root, "Graph").props["aria-pressed"], true);
+  assert.equal(labels.includes("Overview"), false);
+  assert.equal(labels.includes("Topics"), false);
+  assert.equal(labels.includes("Full cards"), false);
+  assert.equal(labels.includes("Open paths"), false);
+  assert.equal(labels.includes("Outline"), false);
+  assert.equal(find(root, (element) => element.type === "input").props.placeholder, "Find a turn or open question");
+  assert.match(text(find(root, (element) => element.props["data-turn-id"] === "current")), /Question current\?/);
+  assert.doesNotMatch(text(find(root, (element) => element.props["data-turn-id"] === "current")), /Answer current/);
 });
 
 test("preserves cluster expansion and focused-branch navigation", () => {

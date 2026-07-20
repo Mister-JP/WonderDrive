@@ -39,7 +39,7 @@ test("server-renders the honest CuriosityPedia V3 product shell", async () => {
   assert.match(html, /CuriosityPedia/);
   assert.doesNotMatch(html, /curiosity, performed/i);
   assert.match(html, /exactly two/i);
-  assert.match(html, /Opening your CuriosityPedia library/i);
+  assert.match(html, /Opening your CuriosityPedia journeys/i);
   assert.match(html, /Resolving a durable guest identity/i);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton|Starter Project/i);
 });
@@ -48,6 +48,7 @@ test("server-renders stable deep-link entry points", async () => {
   const app = await worker();
   for (const path of [
     "/library",
+    "/journeys",
     "/bookmarks",
     "/usage",
     "/settings",
@@ -60,10 +61,15 @@ test("server-renders stable deep-link entry points", async () => {
       env,
       context,
     );
+    if (path === "/library") {
+      assert.ok([301, 302, 307, 308].includes(response.status), path);
+      assert.equal(new URL(response.headers.get("location"), "http://localhost").pathname, "/journeys");
+      continue;
+    }
     assert.equal(response.status, 200, path);
     const html = await response.text();
     assert.match(html, /CuriosityPedia/i, path);
-    assert.match(html, /Opening your CuriosityPedia library/i, path);
+    assert.match(html, /Opening your CuriosityPedia journeys/i, path);
   }
 });
 

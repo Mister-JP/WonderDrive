@@ -1,14 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { api, starterRecommendationsUrl, streamLiveResearch } from "../app/client-api.ts";
-
-test("starter recommendations use cache unless a person explicitly refreshes", () => {
-  assert.equal(starterRecommendationsUrl("sage"), "/api/starters?performer=sage");
-  assert.equal(
-    starterRecommendationsUrl("mechanist", true),
-    "/api/starters?performer=mechanist&refresh=1",
-  );
-});
+import { api, streamLiveResearch } from "../app/client-api.ts";
 
 test("live research makes automatic retries visible and clears stale activity", async (context) => {
   const originalFetch = globalThis.fetch;

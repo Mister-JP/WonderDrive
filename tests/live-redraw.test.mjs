@@ -62,9 +62,9 @@ test("recognizes incomplete Responses API output across prompt paths", () => {
 
 test("allocates scaled reasoning and output budgets to every prompt path", () => {
   assert.deepEqual(OPENAI_PROMPT_LIMITS.liveResearch, {
-    spark: { maxToolCalls: 2, maxOutputTokens: 4_000, reasoning: "low", timeoutMs: 25_000 },
-    standard: { maxToolCalls: 5, maxOutputTokens: 8_000, reasoning: "medium", timeoutMs: 120_000 },
-    deep: { maxToolCalls: 10, maxOutputTokens: 16_000, reasoning: "high", timeoutMs: 120_000 },
+    spark: { maxToolCalls: 3, maxOutputTokens: 10_000, reasoning: "low", timeoutMs: 60_000 },
+    standard: { maxToolCalls: 8, maxOutputTokens: 18_000, reasoning: "medium", timeoutMs: 150_000 },
+    deep: { maxToolCalls: 12, maxOutputTokens: 26_000, reasoning: "high", timeoutMs: 180_000 },
   });
   assert.deepEqual(OPENAI_PROMPT_LIMITS.starterGeneration, { maxOutputTokens: 6_000, reasoning: "high" });
   assert.deepEqual(OPENAI_PROMPT_LIMITS.imageNoteRepair, { maxOutputTokens: 3_000, reasoning: "medium", timeoutMs: 30_000 });

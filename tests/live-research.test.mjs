@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { env } from "cloudflare:workers";
-import { PERFORMERS, REAL_WORLD_DISCOVERY_STARTERS, STARTERS } from "../lib/catalog.ts";
+import { PERFORMERS, STARTERS } from "../lib/catalog.ts";
 import { runLiveResearch } from "../lib/live-research.ts";
 import {
   TURN_SCHEMA,
@@ -159,6 +159,23 @@ const validTurn = {
   ],
 };
 
+const knowledgeCheckFixture = {
+  declarationQuestion: "Do you understand how the bridge cables carry the roadway load?",
+  question: "Why do suspension bridge cables curve?",
+  options: [
+    "The roadway transfers weight through suspenders into the main cables, towers, anchorages, and ground.",
+    "The roadway floats independently while the cables serve only as wind markers above it.",
+    "The towers pull the roadway upward magnetically, so the main cables carry almost no force.",
+    "The anchorages push the entire bridge sideways, while the suspenders prevent any vertical movement.",
+    "The main cables support only the towers, and the roadway carries its own weight without them.",
+    "The vertical suspenders hold decorative lighting but do not connect the roadway to the main cables.",
+    "The bridge load travels only along the roadway until it reaches the far shoreline at either end.",
+    "The towers and cables block river currents, and water pressure below supports the roadway deck.",
+  ],
+  correctOptionIndex: 0,
+  explanation: "The visible suspenders, main cables, towers, and anchorages form a continuous path that carries the roadway load into the ground.",
+};
+
 test("normalizes and deduplicates provider-returned web sources", () => {
   const sources = liveResearchTestHooks.extractSources(providerResponse);
   assert.equal(sources.length, 2);
@@ -236,6 +253,7 @@ test("extracts image search results into a graceful media gallery", () => {
       role: "process",
       commentary: "Look at how the slim vertical suspenders connect the roadway to the sweeping main cables above. Those main cables pass over the towers before descending toward distant anchorages, making the bridge's load path visible: roadway weight moves through the suspenders and cables, then into the towers and anchorages.",
       evidenceRelation: "illustrates",
+      knowledgeCheck: knowledgeCheckFixture,
     },
     {
       sourcePageUrl: "https://example.org/joints",
@@ -255,6 +273,7 @@ test("extracts image search results into a graceful media gallery", () => {
   assert.equal(mapped.media.length, 1);
   assert.equal(mapped.media[0].thumbnailUrl, "https://images.example.org/bridge-thumb.jpg");
   assert.equal(mapped.media[0].title, "Main cables of a suspension bridge");
+  assert.deepEqual(mapped.media[0].knowledgeCheck, knowledgeCheckFixture);
   assert.ok(mapped.media[0].commentary.split(/\s+/).length >= 30);
   assert.doesNotMatch(mapped.media[0].commentary, /answer block|block 1/i);
   assert.ok(mapped.sources.some((source) => source.relation === "image"));
@@ -670,7 +689,19 @@ test("publishes the exact structured-turn schema policy", () => {
     "scale",
     "anchor",
     "comparison",
+    "object",
+    "process",
+    "result",
+    "context",
+    "primary-source",
   ]);
+  assert.ok(TURN_SCHEMA.properties.visualNotes.items.required.includes("knowledgeCheck"));
+  assert.ok(!TURN_SCHEMA.properties.visualNotes.items.required.includes("curiosityQuestion"));
+  assert.ok(!TURN_SCHEMA.properties.visualNotes.items.properties.knowledgeCheck.required.includes("declarationQuestion"));
+  assert.equal(TURN_SCHEMA.properties.visualNotes.items.properties.knowledgeCheck.properties.question.maxLength, 140);
+  assert.equal(TURN_SCHEMA.properties.visualNotes.items.properties.knowledgeCheck.properties.options.minItems, 8);
+  assert.equal(TURN_SCHEMA.properties.visualNotes.items.properties.knowledgeCheck.properties.options.maxItems, 8);
+  assert.equal(TURN_SCHEMA.properties.visualNotes.maxItems, 12);
   assert.deepEqual(TURN_SCHEMA.properties.researchHandoff.required, [
     "discoveries",
     "uncertainties",
@@ -720,7 +751,8 @@ test("implements the v4 phenomenon-first three-pass editorial system", () => {
   assert.match(instructions, /Search for the needed visual claim, not the article topic/);
   assert.match(instructions, /commentary would still make sense beneath ten other images/);
   assert.match(instructions, /LOCATE exactly what is shown/);
-  assert.match(instructions, /Return no more than three visualNotes/);
+  assert.match(instructions, /no more than twelve/);
+  assert.match(instructions, /encyclopedia-grade sequence of 8–12 factual images/);
   assert.match(instructions, /return no image rather than a weak one/);
   assert.match(instructions, /Silently generate at least eight candidates/);
   assert.match(instructions, /could be answered with a definition/);
@@ -743,9 +775,7 @@ test("Atlas keeps generated paths on documented real-world subjects", () => {
   assert.match(instructions, /documented real-world anchor is mandatory/);
   assert.match(instructions, /topicLabel as a concise subject label, not as a repetition/);
   assert.equal(STARTERS.atlas.length, 4);
-  assert.equal(REAL_WORLD_DISCOVERY_STARTERS.length, 20);
-  assert.ok([...STARTERS.atlas, ...REAL_WORLD_DISCOVERY_STARTERS.map((item) => item.question)]
-    .every((question) => /\?$/.test(question)));
+  assert.ok(STARTERS.atlas.every((question) => /\?$/.test(question)));
 });
 
 test("turn input makes image preference operational", () => {
@@ -762,7 +792,7 @@ test("turn input makes image preference operational", () => {
   );
   assert.match(
     buildResearchInput({ ...base, imagePreference: "prefer" }),
-    /Actively search for one strong factual hero image/,
+    /encyclopedia-grade visual sequence of 8–12 high-resolution factual images/,
   );
   assert.match(
     buildResearchInput({ ...base, imagePreference: "avoid" }),
@@ -1111,7 +1141,7 @@ test("runs exactly one no-search repair after an initial citation mismatch", asy
       "web_search_call.results",
     ]);
     assert.equal(requests[0].tool_choice, "auto");
-    assert.equal(requests[0].max_output_tokens, 8_000);
+    assert.equal(requests[0].max_output_tokens, 18_000);
     assert.deepEqual(requests[0].reasoning, { effort: "medium" });
     assert.deepEqual(requests[0].text, {
       format: {

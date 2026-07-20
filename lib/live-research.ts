@@ -30,11 +30,13 @@ import {
   buildInstructions,
   buildResearchInput,
   densityVerbosity,
+  KNOWLEDGE_CHECK_SCHEMA,
   turnSchemaForDensity,
 } from "./research/prompt-policy";
 import {
   countPageFetches,
   countWebSearchCalls,
+  citationComparableUrl,
   dedupeSources,
   extractImages,
   extractSources,
@@ -44,6 +46,7 @@ import {
 import { runProviderStream } from "./research/provider-stream";
 import type {
   ModelTurn,
+  ModelVisualNote,
   OpenAIResponse,
   ProviderImage,
   ProviderSource,
@@ -91,8 +94,9 @@ export type PreparedLiveResearch = {
   topicTrail: string[];
   journeyId?: string;
   fromTurnId?: string;
+  sourcePageUrl?: string;
   selectedOptionId?: string;
-  action?: "choose" | "delegate";
+  action?: "choose" | "delegate" | "explore";
   branched?: boolean;
   expectedVersion?: number;
   idempotencyKey: string;
@@ -132,6 +136,11 @@ type ActivityEmitter = (event: ResearchEvent) => void;
 // centralized limits leave room for both before schema validation begins.
 const PRESET_LIMITS = OPENAI_PROMPT_LIMITS.liveResearch;
 
+export const LIVE_RESEARCH_RESPONSE_INCLUDES = [
+  "web_search_call.action.sources",
+  "web_search_call.results",
+] as const;
+
 const LIVE_TURN_VALIDATION_DIAGNOSTICS: TurnValidationDiagnostics = {
   validationFailure: (detail) => console.error("CuriosityPedia live response validation failed", detail),
   citationMismatch: (detail) => console.error("CuriosityPedia citation mismatch", detail),
@@ -146,7 +155,6 @@ export async function runLiveResearch(
 ): Promise<LiveTurnDraft> {
   await assertProviderAttempt();
   const limits = PRESET_LIMITS[prepared.researchPreset];
-  const performer = PERFORMERS.find((candidate) => candidate.id === prepared.performerId)!;
   const events: ResearchEvent[] = [];
   const startedAt = Date.now();
   let searchStarted = false;
@@ -166,33 +174,7 @@ export async function runLiveResearch(
 
   addActivity("status", `Prepared a ${prepared.researchPreset} foreground research run`);
   const streamed = await runProviderStream({
-    requestBody: {
-      model: prepared.modelId,
-      instructions: buildInstructions(performer),
-      input: buildResearchInput(prepared),
-      tools: [prepared.imagePreference === "avoid"
-        ? { type: "web_search" }
-        : {
-            type: "web_search",
-            search_content_types: ["image", "text"],
-            image_settings: { max_results: 10, caption: true },
-          }],
-      tool_choice: "auto",
-      include: prepared.imagePreference === "avoid"
-        ? ["web_search_call.action.sources"]
-        : ["web_search_call.action.sources", "web_search_call.results"],
-      max_tool_calls: limits.maxToolCalls,
-      max_output_tokens: limits.maxOutputTokens,
-      reasoning: { effort: limits.reasoning },
-      text: structuredOutput(
-        "curiositypedia_turn",
-        turnSchemaForDensity(prepared.answerDensity),
-        densityVerbosity(prepared.answerDensity),
-      ),
-      safety_identifier: `wd_${prepared.identityId}`.slice(0, 64),
-      store: false,
-      stream: true,
-    },
+    requestBody: liveResearchRequestBody(prepared),
     timeoutMs: limits.timeoutMs,
     startedAt,
     usageContext: researchUsageContext(prepared),
@@ -212,6 +194,84 @@ export async function runLiveResearch(
   let outputText = streamed.outputText;
   if (!outputText) outputText = extractOutputText(completedResponse);
 
+  return finalizeLiveResearchResponse(
+    prepared,
+    completedResponse,
+    emit,
+    externalSignal,
+    assertProviderAttempt,
+    { events, outputText, startedAt },
+  );
+}
+
+export function liveResearchRequestBody(
+  prepared: PreparedLiveResearch,
+  { background = false }: { background?: boolean } = {},
+) {
+  const limits = PRESET_LIMITS[prepared.researchPreset];
+  const performer = PERFORMERS.find((candidate) => candidate.id === prepared.performerId)!;
+  return {
+    model: prepared.modelId,
+    instructions: buildInstructions(performer),
+    input: buildResearchInput(prepared),
+    tools: [prepared.imagePreference === "avoid"
+      ? { type: "web_search" }
+      : {
+          type: "web_search",
+          search_content_types: ["image", "text"],
+          image_settings: { max_results: 10, caption: true },
+        }],
+    tool_choice: "auto",
+    include: prepared.imagePreference === "avoid"
+      ? [LIVE_RESEARCH_RESPONSE_INCLUDES[0]]
+      : [...LIVE_RESEARCH_RESPONSE_INCLUDES],
+    max_tool_calls: limits.maxToolCalls,
+    max_output_tokens: limits.maxOutputTokens,
+    reasoning: { effort: limits.reasoning },
+    text: structuredOutput(
+      "curiositypedia_turn",
+      turnSchemaForDensity(prepared.answerDensity),
+      densityVerbosity(prepared.answerDensity),
+    ),
+    safety_identifier: `wd_${prepared.identityId}`.slice(0, 64),
+    store: background,
+    stream: !background,
+    ...(background ? { background: true } : {}),
+  };
+}
+
+export async function finalizeLiveResearchResponse(
+  prepared: PreparedLiveResearch,
+  completedResponse: OpenAIResponse,
+  emit: ActivityEmitter = () => {},
+  externalSignal?: AbortSignal,
+  assertProviderAttempt: () => Promise<void> = async () => {},
+  context: {
+    events?: ResearchEvent[];
+    outputText?: string;
+    startedAt?: number;
+    allowSupplemental?: boolean;
+    maxVisualCurationAttempts?: number;
+  } = {},
+): Promise<LiveTurnDraft> {
+  const events = context.events ?? [];
+  const startedAt = context.startedAt ?? Date.now();
+  const allowSupplemental = context.allowSupplemental ?? true;
+  const maxVisualCurationAttempts = context.maxVisualCurationAttempts ?? 2;
+  const addActivity = (kind: ResearchEvent["kind"], label: string, sourceId: string | null = null) => {
+    const event: ResearchEvent = {
+      id: crypto.randomUUID(),
+      sequence: events.length,
+      kind,
+      label,
+      sourceId,
+    };
+    events.push(event);
+    emit(event);
+  };
+  if (!events.length) addActivity("status", "Retrieved completed background research for validation");
+  const outputText = context.outputText || extractOutputText(completedResponse);
+
   let providerSources = extractSources(completedResponse);
   if (providerSources.length < 2) {
     throw validationFailure("The research run did not return enough inspectable web sources.");
@@ -222,7 +282,7 @@ export async function runLiveResearch(
   });
   addActivity("check", "Checked that citations resolve to sources consulted in this run");
 
-  const providerImages = prepared.imagePreference === "avoid" ? [] : extractImages(completedResponse);
+  let providerImages = prepared.imagePreference === "avoid" ? [] : extractImages(completedResponse);
   const renderedImagePreference = imagePreferenceForQuestion(prepared.imagePreference, prepared.question);
   let modelTurn = parseModelTurn(
     outputText,
@@ -230,12 +290,62 @@ export async function runLiveResearch(
     (error) => console.error("OpenAI structured output was not JSON", error),
   );
   const supplementalResponses: OpenAIResponse[] = [];
-  const initialMedia = validateMediaGallery(
+  let initialMedia = validateMediaGallery(
     providerImages,
     normalizeGeneratedProse(modelTurn.topicLabel),
     modelTurn.visualNotes,
     prepared.outputLocale,
   );
+  if (allowSupplemental && renderedImagePreference === "prefer" && initialMedia.length < 8) {
+    addActivity("search", "Curating a broader set of evidence-grade images for the visual story");
+    for (
+      let curationAttempt = 0;
+      curationAttempt < maxVisualCurationAttempts && initialMedia.length < 8;
+      curationAttempt += 1
+    ) {
+      await assertProviderAttempt();
+      try {
+        const curated = await runVisualCuration(
+          modelTurn,
+          providerImages,
+          prepared,
+          curationAttempt,
+          externalSignal,
+        );
+        supplementalResponses.push(curated.response);
+        providerImages = dedupeProviderImages([...providerImages, ...extractImages(curated.response)]).slice(0, 30);
+        providerSources = dedupeSources([...providerSources, ...extractSources(curated.response)]);
+        modelTurn = {
+          ...modelTurn,
+          visualNotes: dedupeVisualNotes([...(modelTurn.visualNotes ?? []), ...curated.visualNotes]),
+        };
+        initialMedia = validateMediaGallery(
+          providerImages,
+          normalizeGeneratedProse(modelTurn.topicLabel),
+          modelTurn.visualNotes,
+          prepared.outputLocale,
+        );
+      } catch (curationError) {
+        console.error("CuriosityPedia supplemental visual curation was not applied", {
+          attempt: curationAttempt + 1,
+          error: curationError instanceof Error ? curationError.name : "UNKNOWN_ERROR",
+        });
+      }
+    }
+    addActivity(
+      "check",
+      `Selected ${initialMedia.length} source-matched visual${initialMedia.length === 1 ? "" : "s"} for the finished session`,
+    );
+    const acceptedVisualSources = new Set(
+      initialMedia.map((media) => citationComparableUrl(media.sourcePageUrl)).filter(Boolean),
+    );
+    modelTurn = {
+      ...modelTurn,
+      visualNotes: (modelTurn.visualNotes ?? [])
+        .filter((note) => acceptedVisualSources.has(citationComparableUrl(note.sourcePageUrl)))
+        .slice(0, 12),
+    };
+  }
   if (providerImages.length && (modelTurn.visualNotes?.length ?? 0) > 0 && !initialMedia.length) {
     addActivity("check", "Matched selected visual notes to the provider's factual image results");
     const deterministicRepair = repairImageNotesBySourcePath(modelTurn, providerImages, prepared.outputLocale);
@@ -247,7 +357,7 @@ export async function runLiveResearch(
     );
     if (deterministicMedia.length) {
       modelTurn = deterministicRepair;
-    } else {
+    } else if (allowSupplemental) {
       await assertProviderAttempt();
       try {
         const repaired = await runImageNoteRepair(modelTurn, providerImages, prepared, externalSignal);
@@ -274,50 +384,56 @@ export async function runLiveResearch(
     if (!(error instanceof RepositoryError) || error.code !== "CITATION_INVALID") throw error;
     addActivity("check", "A citation pointer did not match the consulted source set; repairing pointers once");
     const invalidIndexes = invalidCitationIndexes(modelTurn, providerSources);
-    let repairResult: CitationRepairResult = { turn: modelTurn, unsupportedIndexes: invalidIndexes };
-    try {
-      await assertProviderAttempt();
-      const repaired = await runCitationRepair(modelTurn, providerSources, prepared, externalSignal);
-      supplementalResponses.push(repaired.response);
-      repairResult = applyCitationRepair(modelTurn, providerSources, repaired.repair);
-    } catch (repairError) {
-      if (!(repairError instanceof RepositoryError) || repairError.code !== "CITATION_INVALID") {
-        throw repairError;
-      }
-      console.error("CuriosityPedia citation pointer repair could not be applied; recovering evidence", {
-        invalidBlocks: invalidIndexes.map((index) => index + 1),
-      });
-    }
-    modelTurn = repairResult.turn;
-
-    if (repairResult.unsupportedIndexes.length) {
-      addActivity("search", "Checked the remaining claims against fresh supporting evidence");
+    if (!allowSupplemental) {
+      modelTurn = pruneUnsupportedBlocks(modelTurn, invalidIndexes);
+      providerSources = prioritizeTurnSources(modelTurn, providerSources);
+      addActivity("check", "Removed an unsupported answer block before saving the background result");
+    } else {
+      let repairResult: CitationRepairResult = { turn: modelTurn, unsupportedIndexes: invalidIndexes };
       try {
         await assertProviderAttempt();
-        const recovered = await runCitationRecovery(
-          modelTurn,
-          repairResult.unsupportedIndexes,
-          prepared,
-          externalSignal,
-        );
-        supplementalResponses.push(recovered.response);
-        const recoverySources = extractSources(recovered.response);
-        const expandedSources = dedupeSources([...providerSources, ...recoverySources]);
-        modelTurn = applyCitationRecovery(
-          modelTurn,
-          expandedSources,
-          repairResult.unsupportedIndexes,
-          recovered.recovery,
-        );
-        providerSources = prioritizeTurnSources(modelTurn, expandedSources);
-      } catch (recoveryError) {
-        if (!(recoveryError instanceof RepositoryError) || recoveryError.code !== "CITATION_INVALID") {
-          throw recoveryError;
+        const repaired = await runCitationRepair(modelTurn, providerSources, prepared, externalSignal);
+        supplementalResponses.push(repaired.response);
+        repairResult = applyCitationRepair(modelTurn, providerSources, repaired.repair);
+      } catch (repairError) {
+        if (!(repairError instanceof RepositoryError) || repairError.code !== "CITATION_INVALID") {
+          throw repairError;
         }
-        console.error("CuriosityPedia targeted citation recovery failed; pruning unsupported blocks", {
-          unsupportedBlocks: repairResult.unsupportedIndexes.map((index) => index + 1),
+        console.error("CuriosityPedia citation pointer repair could not be applied; recovering evidence", {
+          invalidBlocks: invalidIndexes.map((index) => index + 1),
         });
-        modelTurn = pruneUnsupportedBlocks(modelTurn, repairResult.unsupportedIndexes);
+      }
+      modelTurn = repairResult.turn;
+
+      if (repairResult.unsupportedIndexes.length) {
+        addActivity("search", "Checked the remaining claims against fresh supporting evidence");
+        try {
+          await assertProviderAttempt();
+          const recovered = await runCitationRecovery(
+            modelTurn,
+            repairResult.unsupportedIndexes,
+            prepared,
+            externalSignal,
+          );
+          supplementalResponses.push(recovered.response);
+          const recoverySources = extractSources(recovered.response);
+          const expandedSources = dedupeSources([...providerSources, ...recoverySources]);
+          modelTurn = applyCitationRecovery(
+            modelTurn,
+            expandedSources,
+            repairResult.unsupportedIndexes,
+            recovered.recovery,
+          );
+          providerSources = prioritizeTurnSources(modelTurn, expandedSources);
+        } catch (recoveryError) {
+          if (!(recoveryError instanceof RepositoryError) || recoveryError.code !== "CITATION_INVALID") {
+            throw recoveryError;
+          }
+          console.error("CuriosityPedia targeted citation recovery failed; pruning unsupported blocks", {
+            unsupportedBlocks: repairResult.unsupportedIndexes.map((index) => index + 1),
+          });
+          modelTurn = pruneUnsupportedBlocks(modelTurn, repairResult.unsupportedIndexes);
+        }
       }
     }
     draft = validateAndMapTurn(
@@ -430,6 +546,136 @@ function providerCallKey(prepared: PreparedLiveResearch, operation: string) {
   return `${prepared.requestId}:${prepared.providerAttempt ?? 0}:${operation}`;
 }
 
+const VISUAL_NOTE_SCHEMA = {
+  type: "object",
+  additionalProperties: false,
+  required: ["visualNotes"],
+  properties: {
+    visualNotes: {
+      type: "array",
+      minItems: 8,
+      maxItems: 12,
+      items: {
+        type: "object",
+        additionalProperties: false,
+        required: ["sourcePageUrl", "title", "role", "commentary", "evidenceRelation", "knowledgeCheck"],
+        properties: {
+          sourcePageUrl: { type: "string", minLength: 6, maxLength: 2_458 },
+          title: { type: "string", minLength: 3, maxLength: 116 },
+          role: { type: "string", enum: ["phenomenon", "mechanism", "scale", "anchor", "comparison", "object", "process", "result", "context", "primary-source"] },
+          commentary: { type: "string", minLength: 40, maxLength: 520 },
+          evidenceRelation: { type: "string", enum: ["shows", "illustrates", "contextualizes", "supports"] },
+          knowledgeCheck: KNOWLEDGE_CHECK_SCHEMA,
+        },
+      },
+    },
+  },
+} as const;
+
+async function runVisualCuration(
+  modelTurn: ModelTurn,
+  existingImages: ProviderImage[],
+  prepared: PreparedLiveResearch,
+  curationAttempt: number,
+  externalSignal?: AbortSignal,
+): Promise<{ visualNotes: ModelVisualNote[]; response: OpenAIResponse }> {
+  const limits = OPENAI_PROMPT_LIMITS.visualCuration;
+  const startedAt = Date.now();
+  const streamed = await runProviderStream({
+    requestBody: {
+      model: prepared.modelId,
+      instructions: [
+        `CuriosityPedia prompt ${PROMPT_VERSION}. Act only as a visual editor for an encyclopedia-grade knowledge session.`,
+        "VISUAL QUALITY GATE",
+        "Search an oversized pool of at least 20 plausible images before selecting 8–12.",
+        "Judge the actual visible image or thumbnail—not merely its caption, filename, source reputation, or topical relevance. Keep an image only if it is visually compelling at the intended display size and the important subject is immediately legible.",
+        "Silently reject any candidate that:",
+        "- is low-resolution, blurry, badly compressed, watermarked, poorly cropped, or visibly dated web graphics;",
+        "- contains important text in a language different from the reader output language;",
+        "- is a text-heavy infographic whose labels cannot be comfortably read;",
+        "- is merely relevant rather than visually interesting;",
+        "- substantially duplicates the subject, viewpoint, composition, or teaching value of another selected image;",
+        "- requires the commentary to explain what the reader cannot actually see;",
+        "- fails to render or does not expose a usable direct image asset.",
+        "Prefer images with strong composition, clear subjects, rich visible detail, trustworthy provenance, and an exact feature worth pausing to inspect. Visual excellence is an acceptance requirement, not a preference.",
+        "Issue at least six focused image searches, not one broad query. Search separately for an orientation hero, the phenomenon, mechanism or process, scale, comparison, physical context, an illuminating object or detail, and primary-source or institutional evidence when available.",
+        "Return 8–12 distinct factual images. Prefer high-resolution, legible, aesthetically strong photography, diagrams, maps, specimens, archival records, and institutional media. Never fill the quota with weak, decorative, near-duplicate, watermarked, or merely topical images; change the query until you have eight strong candidates.",
+        "Every visual note must correspond to an image result actually returned during this call. Copy its source website URL exactly into sourcePageUrl. Do not invent URLs or describe details that are not visible in the image result and caption.",
+        "Give one image the anchor role so it can serve as the dominant hero. Give every other image a distinct editorial job. Avoid any source URLs listed as already accepted.",
+        `Write titles and commentary in ${localeName(prepared.outputLocale)} (${prepared.outputLocale}). Commentary must be one natural 45–85 word paragraph that says what is visible, what to notice, and why it changes or sharpens the reader's mental model.`,
+        "For every visual note, create exactly one knowledgeCheck object. Its question is the single canonical image question reused in the projector, answer choices, result card, Journey Map, and child turn.",
+        "Write that question as a short, direct, open-ended curiosity inspired by looking at the image, usually 4–12 plain words and one idea. It must invite wondering, not ask whether the learner understood the reading or test recall.",
+        "Good shapes include 'Why are there so many tiny root tips?' and 'Why does this root tangle look so dense?' Never mention an encyclopedia, answer, page, panel, lesson, knowledge check, understanding, option, or choice. Never use 'according to', 'do you understand', 'which choice', 'which option', 'best matches', or 'what does this image show'. Do not generate a separate declaration or curiosity question.",
+        "Every selected image must have a distinct question in both subject and wording. Never repeat or lightly paraphrase another image's question; if two images invite the same question, keep the stronger image and replace the other image.",
+        "Do not ask the same kind of question more than once in a session.",
+        "Across the session, use some visible details as doorways into surprising adjacent topics—such as history, materials, craft, ecology, culture, or physics—so the questions expand beyond the starting subject instead of all staying narrowly focused on what the object looks like.",
+        "Give exactly eight clear options answering that same curiosity question and exactly one unambiguously correct option. Use meaningful plausible alternatives, not tricks, obscure trivia, near-duplicates, all/none-of-the-above, or an I-don't-know option.",
+        "Keep the options grounded in the supplied answer, image result, caption, and visible evidence. Briefly explain the correct option without mentioning the encyclopedia or shaming an incorrect choice.",
+      ].join("\n"),
+      input: JSON.stringify({
+        question: prepared.question,
+        topicLabel: modelTurn.topicLabel,
+        answer: modelTurn.answerBlocks.slice(0, 5).map((block) => block.text),
+        alreadyAcceptedSourcePageUrls: existingImages.map((image) => image.sourcePageUrl).slice(0, 12),
+      }),
+      tools: [{
+        type: "web_search",
+        search_content_types: ["image", "text"],
+        image_settings: { max_results: 10, caption: true },
+      }],
+      tool_choice: "auto",
+      include: ["web_search_call.action.sources", "web_search_call.results"],
+      max_tool_calls: limits.maxToolCalls,
+      max_output_tokens: limits.maxOutputTokens,
+      reasoning: { effort: limits.reasoning },
+      text: structuredOutput("curiositypedia_visual_curation", VISUAL_NOTE_SCHEMA, "medium"),
+      safety_identifier: `wd_visual_${prepared.identityId}`.slice(0, 64),
+      store: false,
+      stream: true,
+    },
+    timeoutMs: limits.timeoutMs,
+    startedAt,
+    usageContext: {
+      ...researchUsageContext(prepared, { phase: "visual_curation", curationAttempt: curationAttempt + 1 }),
+      purpose: "visual_curation_shortfall",
+      callKey: providerCallKey(prepared, `visual_curation_${curationAttempt + 1}`),
+    },
+    externalSignal,
+  });
+  const response = streamed.completedResponse;
+  const text = streamed.outputText || extractOutputText(response);
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    throw validationFailure("The visual curator returned invalid structured output.");
+  }
+  if (!isObject(parsed) || !Array.isArray(parsed.visualNotes)) {
+    throw validationFailure("The visual curator returned an invalid visual collection.");
+  }
+  return { visualNotes: parsed.visualNotes as ModelVisualNote[], response };
+}
+
+function dedupeProviderImages(images: ProviderImage[]): ProviderImage[] {
+  const seenImages = new Set<string>();
+  const seenSources = new Set<string>();
+  return images.filter((image) => {
+    if (seenImages.has(image.imageUrl) || seenSources.has(image.sourcePageUrl)) return false;
+    seenImages.add(image.imageUrl);
+    seenSources.add(image.sourcePageUrl);
+    return true;
+  });
+}
+
+function dedupeVisualNotes(notes: ModelVisualNote[]): ModelVisualNote[] {
+  const seen = new Set<string>();
+  return notes.filter((note) => {
+    if (!note || typeof note.sourcePageUrl !== "string" || seen.has(note.sourcePageUrl)) return false;
+    seen.add(note.sourcePageUrl);
+    return true;
+  });
+}
+
 
 async function runImageNoteRepair(
   modelTurn: ModelTurn,
@@ -437,8 +683,8 @@ async function runImageNoteRepair(
   prepared: PreparedLiveResearch,
   externalSignal?: AbortSignal,
 ): Promise<{ repair: ImageNoteRepair; response: OpenAIResponse }> {
-  const images = providerImages.slice(0, 10);
-  const notes = (modelTurn.visualNotes ?? []).slice(0, 10);
+  const images = providerImages.slice(0, 12);
+  const notes = (modelTurn.visualNotes ?? []).slice(0, 12);
   const imageIds = images.map((_, index) => `I${index + 1}`);
   const noteNumbers = notes.map((_, index) => index + 1);
   const schema = {
@@ -458,7 +704,7 @@ async function runImageNoteRepair(
             imageId: { type: "string", enum: imageIds },
             noteNumber: { type: "integer", enum: noteNumbers },
             title: { type: "string", minLength: 3, maxLength: 116 },
-            role: { type: "string", enum: ["phenomenon", "mechanism", "scale", "anchor", "comparison"] },
+            role: { type: "string", enum: ["phenomenon", "mechanism", "scale", "anchor", "comparison", "object", "process", "result", "context", "primary-source"] },
             commentary: { type: "string", minLength: 40, maxLength: 520 },
             evidenceRelation: { type: "string", enum: ["shows", "illustrates", "contextualizes", "supports"] },
           },
@@ -485,7 +731,7 @@ async function runImageNoteRepair(
         "Each imageId and noteNumber may appear at most once. Omit uncertain matches.",
         "The server owns imageId values; copy them exactly instead of returning URLs.",
         `Write repaired reader-facing fields in ${localeName(prepared.outputLocale)} (${prepared.outputLocale}). Preserve the supplied note's visible claims. Write commentary as one natural paragraph of 45–85 English words: locate exactly what is shown, point out one or two visible details, decode what they mean physically, and connect them to the changed answer or mental model. Use no headings, labels, lists, field names, numbered sections, or references to answer blocks; follow the output language's normal segmentation and syntax.`,
-        "Assign exactly one primary image job: phenomenon, mechanism, scale, anchor, or comparison.",
+        "Assign exactly one primary image job: phenomenon, mechanism, scale, anchor, comparison, object, process, result, context, or primary-source.",
         "Include at least one concrete subject term from the matched image caption in the repaired title or prose. Never add a detail absent from the supplied note and caption.",
       ].join("\n"),
       input: JSON.stringify({

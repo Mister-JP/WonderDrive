@@ -12,7 +12,6 @@ type PreferencesRow = {
   default_model_id: UserPreferences["defaultModelId"];
   answer_density: UserPreferences["answerDensity"];
   text_size: UserPreferences["textSize"];
-  image_preference: UserPreferences["imagePreference"];
   reduce_motion: number;
 };
 
@@ -20,7 +19,7 @@ export async function getPreferences(viewer: ViewerContext): Promise<UserPrefere
   const row = await getD1()
     .prepare(
       `SELECT interface_locale, default_output_locale, default_model_id, answer_density, text_size,
-              image_preference, reduce_motion
+              reduce_motion
        FROM preferences WHERE identity_id = ? LIMIT 1`,
     )
     .bind(viewer.identityId)
@@ -32,7 +31,6 @@ export async function getPreferences(viewer: ViewerContext): Promise<UserPrefere
         defaultModelId: row.default_model_id,
         answerDensity: row.answer_density,
         textSize: row.text_size,
-        imagePreference: "prefer",
         reduceMotion: Boolean(row.reduce_motion),
       }
     : DEFAULT_PREFERENCES;
@@ -66,7 +64,7 @@ export async function updatePreferences(
       preferences.defaultModelId,
       preferences.answerDensity,
       preferences.textSize,
-      preferences.imagePreference,
+      "prefer",
       preferences.reduceMotion ? 1 : 0,
       Date.now(),
     )
@@ -100,7 +98,6 @@ function validatePreferences(value: unknown): UserPreferences {
     defaultModelId: defaultModelId as UserPreferences["defaultModelId"],
     answerDensity: answerDensity as UserPreferences["answerDensity"],
     textSize: textSize as UserPreferences["textSize"],
-    imagePreference: "prefer",
     reduceMotion,
   };
 }

@@ -124,6 +124,7 @@ function journeyFixture(): JourneyDetail {
     version: 1,
     pinned: false,
     hidden: false,
+    createdAt: 1,
     updatedAt: 1,
     topicLabels: [],
     status: "active",
@@ -244,6 +245,66 @@ test("finds selected nodes and paths and preserves missing-node results", () => 
   assert.deepEqual(findGraphPath(graph, "current")?.map((node) => node.id), ["root", "chosen", "current"]);
   assert.deepEqual(findGraphPath(graph, "open:current:current-b")?.map((node) => node.id), ["root", "chosen", "current", "open:current:current-b"]);
   assert.equal(findGraphPath(graph, "missing"), null);
+});
+
+test("uses every generated image question as an open journey instead of the two fallback options", () => {
+  const journey = journeyFixture();
+  const current = journey.turns.find((candidate) => candidate.id === "current")!;
+  current.media = Array.from({ length: 10 }, (_, index) => ({
+    imageUrl: `https://images.example.org/${index}.jpg`,
+    sourcePageUrl: `https://example.org/${index}`,
+    caption: `Image ${index}`,
+    alt: `Image ${index}`,
+    knowledgeCheck: {
+      declarationQuestion: `Do you understand idea ${index}?`,
+      question: index === 0 ? "Why does this process happen?" : `What changes process ${index}?`,
+      options: Array.from({ length: 8 }, (_, optionIndex) => `Answer ${optionIndex}`),
+      correctOptionIndex: 0,
+      explanation: `Explanation ${index}`,
+    },
+  }));
+
+  const graph = buildJourneyGraph(journey);
+  const currentNode = findGraphNode(graph, "current")!;
+  assert.equal(currentNode.children.length, 10);
+  assert.deepEqual(
+    currentNode.children.map((child) => child.option?.id),
+    Array.from({ length: 10 }, (_, index) => `curiosity:${index}`),
+  );
+  assert.equal(currentNode.children[0]?.option?.question, "Why does this process happen?");
+});
+
+test("keeps one question node for every displayed image even when legacy question text repeats", () => {
+  const journey = journeyFixture();
+  const current = journey.turns.find((candidate) => candidate.id === "current")!;
+  const questions = [
+    "How can pale trenches last for centuries?",
+    "How can pale trenches last for centuries?",
+    "Why are these channels so straight?",
+    "How can pale trenches last for centuries?",
+    "What made the surface turn white?",
+    "How can pale trenches last for centuries?",
+  ];
+  current.media = questions.map((question, index) => ({
+    imageUrl: `https://images.example.org/repeated-${index}.jpg`,
+    sourcePageUrl: `https://example.org/repeated-${index}`,
+    caption: `Image ${index}`,
+    alt: `Image ${index}`,
+    knowledgeCheck: {
+      question,
+      options: Array.from({ length: 8 }, (_, optionIndex) => `Answer ${optionIndex}`),
+      correctOptionIndex: 0,
+      explanation: `Explanation ${index}`,
+    },
+  }));
+
+  const currentNode = findGraphNode(buildJourneyGraph(journey), "current")!;
+  assert.equal(currentNode.children.length, 6);
+  assert.deepEqual(currentNode.children.map((child) => child.option?.question), questions);
+  assert.deepEqual(
+    currentNode.children.map((child) => child.option?.id),
+    ["curiosity:0", "curiosity:1", "curiosity:2", "curiosity:3", "curiosity:4", "curiosity:5"],
+  );
 });
 
 test("folds only off-route branches at the current density and mobile thresholds", () => {

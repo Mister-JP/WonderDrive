@@ -1,3 +1,5 @@
+export const STARTING_QUESTION_MAX_LENGTH = 5_000;
+
 export type PerformerId = "sage" | "spark" | "mechanist" | "atlas";
 export type ModelId =
   | "gpt-5.6-sol"
@@ -19,7 +21,6 @@ export type UserPreferences = {
   defaultModelId: ModelId;
   answerDensity: AnswerDensity;
   textSize: TextSize;
-  imagePreference: ImagePreference;
   reduceMotion: boolean;
 };
 
@@ -80,14 +81,45 @@ export type BootstrapCatalog = {
   models: ModelConfig[];
   presets: PresetConfig[];
   starters: Record<PerformerId, string[]>;
-  discoveryStarters: PersonalizedStarter[];
   promptVersion: string;
   schemaVersion: string;
 };
 
-export type PersonalizedStarter = {
+export const LANDING_RECOMMENDATION_CATEGORIES = [
+  "Nature",
+  "Science",
+  "History",
+  "Culture",
+  "Systems",
+  "Space",
+  "Technology",
+  "Art",
+] as const;
+
+export type LandingRecommendationCategory = (typeof LANDING_RECOMMENDATION_CATEGORIES)[number];
+export type LandingRecommendationSize = "wide" | "tall" | "standard" | "compact";
+
+export type LandingRecommendation = {
+  id: string;
+  category: LandingRecommendationCategory;
   question: string;
-  topic: string;
+  teaser: string;
+  imageUrl: string;
+  imageAlt: string;
+  sourceLabel: string;
+  sourceUrl: string;
+  size: LandingRecommendationSize;
+};
+
+export type LandingRecommendationPage = {
+  batchId: string | null;
+  batchTitle: string | null;
+  publishedAt: number | null;
+  page: number;
+  pageSize: number;
+  totalItems: number;
+  totalPages: number;
+  items: LandingRecommendation[];
 };
 
 export type Viewer = {
@@ -164,6 +196,23 @@ export type TurnMedia = {
   whatToNotice?: string[];
   learning?: string;
   evidenceRelation?: "shows" | "illustrates" | "contextualizes" | "supports";
+  curiosityQuestion?: string;
+  knowledgeCheck?: {
+    declarationQuestion?: string;
+    question: string;
+    options: string[];
+    correctOptionIndex: number;
+    explanation: string;
+  };
+};
+
+export type KnowledgeJourneySeed = {
+  question: string;
+  imageUrl: string;
+  imageAlt: string;
+  imageCaption: string;
+  imageSourceUrl: string;
+  imageSourceLabel: string;
 };
 
 export type ResearchHandoff = {
@@ -184,7 +233,7 @@ export type TurnOption = {
 export type JourneyAction = {
   id: string;
   turnId: string;
-  kind: "choose" | "reject" | "delegate" | "branch" | "pause";
+  kind: "choose" | "reject" | "delegate" | "explore" | "branch" | "pause";
   optionId: string | null;
   resultTurnId: string | null;
   reason: string | null;
@@ -258,8 +307,11 @@ export type JourneySummary = {
   version: number;
   pinned: boolean;
   hidden: boolean;
+  createdAt: number;
   updatedAt: number;
   topicLabels: string[];
+  /** Lead visual from the first researched question, used by library-style journey cards. */
+  leadMedia?: TurnMedia;
 };
 
 export type JourneyDetail = JourneySummary & {
@@ -277,13 +329,43 @@ export type JourneySnapshot = {
   createdAt: number;
 };
 
+export type Bookmark = {
+  id: string;
+  journeyId: string;
+  turnId: string;
+  bookmarkedAt: number;
+  question: string;
+  topicLabel: string;
+  journeySeed: string;
+  journeyTitle: string;
+  performerId: PerformerId;
+  sourceCount: number;
+};
+
+export type AddBookmarkRequest = {
+  journeyId: string;
+  turnId: string;
+};
+
+export type LegacyBookmarkImportEntry = AddBookmarkRequest & {
+  savedAt: number;
+};
+
+export type ImportBookmarksRequest = {
+  entries: LegacyBookmarkImportEntry[];
+};
+
+export type ImportBookmarksResult = {
+  imported: number;
+  bookmarks: Bookmark[];
+};
+
 export type CreateJourneyRequest = {
   seed: string;
   performerId: PerformerId;
   modelId: ModelId;
   researchPreset: ResearchPreset;
   answerDensity: AnswerDensity;
-  imagePreference: ImagePreference;
   outputLocale: SupportedLocale;
   idempotencyKey: string;
 };
@@ -307,7 +389,6 @@ export type LiveResearchRequest =
       modelId: ModelId;
       researchPreset: ResearchPreset;
       answerDensity: AnswerDensity;
-      imagePreference: ImagePreference;
       outputLocale: SupportedLocale;
       idempotencyKey: string;
       takeoverExisting?: boolean;
@@ -317,9 +398,11 @@ export type LiveResearchRequest =
       kind: "advance";
       journeyId: string;
       fromTurnId: string;
-      action: "choose" | "delegate";
+      action: "choose" | "delegate" | "explore";
       modelId?: ModelId;
       optionId?: string;
+      question?: string;
+      sourcePageUrl?: string;
       expectedVersion: number;
       idempotencyKey: string;
       takeoverExisting?: boolean;
@@ -333,6 +416,20 @@ export type LiveResearchStreamEvent =
   | { type: "activity"; event: ResearchEvent }
   | { type: "complete"; data: JourneyDetail; viewer: Viewer }
   | { type: "error"; error: ApiFailure["error"] };
+
+export type ResearchActivity = {
+  id: string;
+  question: string;
+  performerId: PerformerId;
+  status: "researching" | "ready" | "failed";
+  phase: "researching" | "finalizing" | null;
+  journeyId: string | null;
+  error: string | null;
+  createdAt: number;
+  startedAt: number | null;
+  timeoutAt: number | null;
+  completedAt: number | null;
+};
 
 export type CompareJourneyDetail = JourneySummary & {
   performerName: string;

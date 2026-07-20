@@ -46,6 +46,7 @@ next-env.d.ts
 /audit/
 /.playwright-cli/
 /work/
+/tmp/
 
 # local tooling and generated design artifacts
 /.vite/

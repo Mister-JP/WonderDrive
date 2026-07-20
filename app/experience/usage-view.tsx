@@ -9,14 +9,14 @@ export function UsageView({
   loading,
   error,
   onRefresh,
-  onOpenLibrary,
+  onOpenJourneys,
 }: {
   usage: UsageSummary | null;
   viewer: Viewer | null;
   loading: boolean;
   error: string | null;
   onRefresh: () => void;
-  onOpenLibrary: () => void;
+  onOpenJourneys: () => void;
 }) {
   const { t, locale } = useI18n();
   const time = (value: number) => new Intl.DateTimeFormat(locale, {
@@ -29,7 +29,7 @@ export function UsageView({
   const researchPercent = usage?.liveResearch.limit
     ? Math.min(100, Math.round((usage.liveResearch.used / usage.liveResearch.limit) * 100))
     : 0;
-  const libraryPercent = usage?.library.limit
+  const journeyPercent = usage?.library.limit
     ? Math.min(100, Math.round((usage.library.used / usage.library.limit) * 100))
     : 0;
 
@@ -76,11 +76,11 @@ export function UsageView({
           </article>
 
           <div className="usage-secondary-column">
-            <article className="usage-secondary library-capacity">
-              <header><div><span>{t("Saved journeys")}</span><h2>Library capacity</h2></div><strong>{usage.library.remaining}<small>places left</small></strong></header>
-              <div className="usage-meter light"><div><span>Used: <b>{usage.library.used}</b></span><span>Limit: <b>{usage.library.limit}</b></span></div><progress value={usage.library.used} max={usage.library.limit || 1} aria-label={t("Saved journey capacity used")} /><p>{libraryPercent}% used · Does not reset</p></div>
+            <article className="usage-secondary journey-capacity">
+              <header><div><span>{t("Saved journeys")}</span><h2>{t("Journey capacity")}</h2></div><strong>{usage.library.remaining}<small>places left</small></strong></header>
+              <div className="usage-meter light"><div><span>Used: <b>{usage.library.used}</b></span><span>Limit: <b>{usage.library.limit}</b></span></div><progress value={usage.library.used} max={usage.library.limit || 1} aria-label={t("Saved journey capacity used")} /><p>{journeyPercent}% used · Does not reset</p></div>
               {usage.library.remaining === 0 && <p>Delete a journey to free a place.</p>}
-              <button type="button" onClick={onOpenLibrary}>{t("Manage saved journeys")}</button>
+              <button type="button" onClick={onOpenJourneys}>{t("Manage saved journeys")}</button>
             </article>
 
             <details className="usage-spend">

@@ -175,15 +175,63 @@ export async function upgradeGuestJourneys(
     .first<{ count: number }>();
   const transferred = count?.count ?? 0;
   const now = Date.now();
-  await db.batch([
+  await db.batch(guestDataUpgradeStatements(
+    db,
+    viewer.pendingGuestIdentityId,
+    viewer.identityId,
+    idempotencyKey,
+    transferred,
+    now,
+  ));
+  return { transferred, setCookie: expiredCookie(await headers()) };
+}
+
+export function guestDataUpgradeStatements(
+  db: D1Database,
+  guestIdentityId: string,
+  accountIdentityId: string,
+  idempotencyKey: string,
+  transferred: number,
+  now: number,
+): D1PreparedStatement[] {
+  return [
+    db
+      .prepare(
+        `DELETE FROM bookmarks
+         WHERE identity_id = ?
+           AND journey_id IN (
+             SELECT id FROM journeys
+             WHERE owner_identity_id = ? AND deleted_at IS NULL
+           )
+           AND EXISTS (
+             SELECT 1 FROM bookmarks account_bookmark
+             WHERE account_bookmark.identity_id = ?
+               AND account_bookmark.turn_id = bookmarks.turn_id
+           )`,
+      )
+      .bind(guestIdentityId, guestIdentityId, accountIdentityId),
+    db
+      .prepare(
+        `UPDATE bookmarks
+         SET identity_id = ?
+         WHERE identity_id = ?
+           AND journey_id IN (
+             SELECT id FROM journeys
+             WHERE owner_identity_id = ? AND deleted_at IS NULL
+           )`,
+      )
+      .bind(accountIdentityId, guestIdentityId, guestIdentityId),
     db
       .prepare(
         "UPDATE journeys SET owner_identity_id = ?, updated_at = ? WHERE owner_identity_id = ? AND deleted_at IS NULL",
       )
-      .bind(viewer.identityId, now, viewer.pendingGuestIdentityId),
+      .bind(accountIdentityId, now, guestIdentityId),
+    db
+      .prepare("DELETE FROM bookmarks WHERE identity_id = ?")
+      .bind(guestIdentityId),
     db
       .prepare("UPDATE identities SET upgraded_to_identity_id = ? WHERE id = ? AND provider = 'guest'")
-      .bind(viewer.identityId, viewer.pendingGuestIdentityId),
+      .bind(accountIdentityId, guestIdentityId),
     db
       .prepare(
         `INSERT INTO identity_upgrades
@@ -192,14 +240,13 @@ export async function upgradeGuestJourneys(
       )
       .bind(
         crypto.randomUUID(),
-        viewer.pendingGuestIdentityId,
-        viewer.identityId,
+        guestIdentityId,
+        accountIdentityId,
         idempotencyKey,
         transferred,
         now,
       ),
-  ]);
-  return { transferred, setCookie: expiredCookie(await headers()) };
+  ];
 }
 
 function readCookie(cookieHeader: string | null, name: string): string | null {

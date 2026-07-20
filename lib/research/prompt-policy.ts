@@ -16,6 +16,23 @@ export type ResearchPromptInput = {
   topicTrail: string[];
 };
 
+export const KNOWLEDGE_CHECK_SCHEMA = {
+  type: "object",
+  additionalProperties: false,
+  required: ["question", "options", "correctOptionIndex", "explanation"],
+  properties: {
+    question: { type: "string", minLength: 8, maxLength: 140 },
+    options: {
+      type: "array",
+      minItems: 8,
+      maxItems: 8,
+      items: { type: "string", minLength: 12, maxLength: 260 },
+    },
+    correctOptionIndex: { type: "integer", minimum: 0, maximum: 7 },
+    explanation: { type: "string", minLength: 18, maxLength: 420 },
+  },
+} as const;
+
 export const TURN_SCHEMA = {
   type: "object",
   additionalProperties: false,
@@ -55,17 +72,18 @@ export const TURN_SCHEMA = {
     },
     visualNotes: {
       type: "array",
-      maxItems: 3,
+      maxItems: 12,
       items: {
         type: "object",
         additionalProperties: false,
-        required: ["sourcePageUrl", "title", "role", "commentary", "evidenceRelation"],
+        required: ["sourcePageUrl", "title", "role", "commentary", "evidenceRelation", "knowledgeCheck"],
         properties: {
           sourcePageUrl: { type: "string", minLength: 6, maxLength: 2_458 },
           title: { type: "string", minLength: 3, maxLength: 116 },
-          role: { type: "string", enum: ["phenomenon", "mechanism", "scale", "anchor", "comparison"] },
+          role: { type: "string", enum: ["phenomenon", "mechanism", "scale", "anchor", "comparison", "object", "process", "result", "context", "primary-source"] },
           commentary: { type: "string", minLength: 40, maxLength: 520 },
           evidenceRelation: { type: "string", enum: ["shows", "illustrates", "contextualizes", "supports"] },
+          knowledgeCheck: KNOWLEDGE_CHECK_SCHEMA,
         },
       },
     },
@@ -140,7 +158,7 @@ export function buildInstructions(performer: (typeof PERFORMERS)[number]): strin
     "",
     "RESEARCH AND EVIDENCE",
     "Research when live evidence benefits the question. If it is genuinely creative or subjective, you may use no search and make that evidence posture explicit in researchSummary.",
-    "Search to establish the visible phenomenon, resolve the surprise, explain the mechanism, and find the strongest concrete anchor—not to maximize fact or source count.",
+    "Search to establish the visible phenomenon, resolve the surprise, explain the mechanism, and find the strongest concrete anchor. When imagery is preferred, also search by distinct editorial job until you have an oversized candidate pool—not to maximize fact or source count.",
     "Choose sources for what they are qualified to establish. Prefer original evidence, official documentation, first-party records, research institutions, museums, archives, or primary data for factual claims, and reputable independent sources for explanation and context. Cross-check claims that are current, surprising, or contested.",
     "Use recent developments when they materially change the answer, provide the clearest demonstration, or connect a durable idea to something unfolding now. Do not force recency when an older event or observation explains the idea better.",
     "Every retained fact must support the one big idea by making the phenomenon visible, explaining a causal step, clarifying a necessary distinction, reconstructing the concrete anchor, establishing a boundary or uncertainty, producing the model shift, or opening a worthwhile next path. Delete facts that are merely relevant.",
@@ -164,18 +182,44 @@ export function buildInstructions(performer: (typeof PERFORMERS)[number]): strin
     "For every answer block, copy one or more exact source URLs that the web search actually consulted into citationUrls.",
     "",
     "VISUAL EDITING",
-    "An image is not required merely because a factual image exists. Select one only when looking teaches something that prose alone does not teach as efficiently.",
-    "Give every selected image exactly one primary job: Phenomenon (show the event or behavior), Mechanism (reveal a hidden part, process, pattern, or signal), Scale (make magnitude legible), Anchor (document the concrete subject), or Comparison (place meaningfully different states or systems together).",
+    "VISUAL QUALITY GATE",
+    "Search an oversized pool of at least 20 plausible images before selecting 8–12.",
+    "Judge the actual visible image or thumbnail—not merely its caption, filename, source reputation, or topical relevance. Keep an image only if it is visually compelling at the intended display size and the important subject is immediately legible.",
+    "Silently reject any candidate that:",
+    "- is low-resolution, blurry, badly compressed, watermarked, poorly cropped, or visibly dated web graphics;",
+    "- contains important text in a language different from the reader output language;",
+    "- is a text-heavy infographic whose labels cannot be comfortably read;",
+    "- is merely relevant rather than visually interesting;",
+    "- substantially duplicates the subject, viewpoint, composition, or teaching value of another selected image;",
+    "- requires the commentary to explain what the reader cannot actually see;",
+    "- fails to render or does not expose a usable direct image asset.",
+    "Prefer images with strong composition, clear subjects, rich visible detail, trustworthy provenance, and an exact feature worth pausing to inspect. Visual excellence is an acceptance requirement, not a preference.",
+    "",
+    "An image is not required merely because a factual image exists. Select an image only when looking teaches something that prose alone does not teach as efficiently.",
+    "Give every selected image exactly one primary job: Phenomenon, Mechanism, Scale, Anchor, Comparison, Object, Process, Result, Context, or Primary Source. Across an 8–12 image sequence, cover several distinct jobs instead of repeating generic context views.",
     "A photograph of equipment mounted in place is usually context, not a hero. Do not promote it unless the installation itself is the central phenomenon.",
     "Search for the needed visual claim, not the article topic. Use exact names, missions, organisms, structures, locations, dates, processes, instruments, viewpoints, or institutions. Prefer labeled sequences, before/after images, annotated photographs, maps, instrument outputs paired with the physical object, and truthful comparisons when they make the mechanism legible.",
     "Verify that a general learner can see the relevant feature without unsupported inference. Reject an image when its commentary would still make sense beneath ten other images on the same broad topic.",
     "Prefer original or well-provenanced images from qualified institutions, official missions, scientific organizations, museums, archives, researchers, or reputable documentary sources. Prefer images with useful captions or metadata that establish what is visible, where or when it was recorded, and why it is trustworthy.",
     "Reject images that are merely topical, generic, decorative, sensational, misleading, AI-generated, weakly sourced, duplicated, visually ambiguous, too complex to interpret, or useful only after unsupported inference.",
-    "For image preference \"prefer\", select one strong factual hero and at most two genuinely distinct supports. For \"when-useful\", return no image rather than a weak one. For \"avoid\", do not search for or return images.",
+    "For image preference \"prefer\", curate an encyclopedia-grade sequence of 8–12 factual images: one exceptional hero plus 7–11 genuinely distinct supports. Search by editorial job rather than broad topic, favor high-resolution and aesthetically strong evidence, and reject duplicates or quota-filling. If fewer than eight evidence-grade images survive, return only the strong images; never weaken the set to hit a number. For \"when-useful\", return no image rather than a weak one. For \"avoid\", do not search for or return images.",
     "CuriosityPedia reads image URLs directly; do not place image URLs in the answer JSON or use generated imagery as evidence.",
     "For every image kept, add one visualNotes entry keyed by its exact source page URL. Name the visible subject precisely.",
     "Write commentary as one natural paragraph of 45-85 English words in this order: LOCATE exactly what is shown; NOTICE one or two visible details; DECODE what those details mean physically; CONNECT them to the changed answer or mental model.",
-    "Do not fill space by describing obvious objects, repeat the main answer, or claim that an invisible measurement is visible in an ordinary installation photograph. Never infer a detail the image, caption, or source page does not establish. Return no more than three visualNotes.",
+    "Do not fill space by describing obvious objects, repeat the main answer, or claim that an invisible measurement is visible in an ordinary installation photograph. Never infer a detail the image, caption, or source page does not establish. Return one visualNotes entry for every selected image and no more than twelve.",
+    "",
+    "IMAGE CURIOSITY QUESTION EDITING",
+    "For every selected visualNotes image, create exactly one knowledgeCheck object. Its question is the single canonical question for that image everywhere in CuriosityPedia: the projector, answer choices, result card, Journey Map, and any child turn.",
+    "Write question as one short, direct, open-ended question naturally inspired by looking at that image. Its job is to model everyday curiosity and invite exploration—not to ask whether the learner understood the reading or to test recall.",
+    "The question should sound like a person wondering aloud: usually 4–12 plain words and one idea. Good shapes include 'Why are there so many tiny root tips?' and 'Why does this root tangle look so dense?'",
+    "Every selected image must have a distinct question in both subject and wording. Never repeat or lightly paraphrase another image's question; if two images invite the same question, keep the stronger image and replace the other image.",
+    "Do not ask the same kind of question more than once in a session.",
+    "Across the session, use some visible details as doorways into surprising adjacent topics—such as history, materials, craft, ecology, culture, or physics—so the questions expand beyond the starting subject instead of all staying narrowly focused on what the object looks like.",
+    "Never mention an encyclopedia, answer, page, panel, lesson, knowledge check, understanding, option, or choice. Never use 'according to', 'do you understand', 'which choice', 'which option', 'best matches', or 'what does this image show'. Do not generate any second declaration or curiosity question elsewhere in the visual note.",
+    "Give exactly eight clear answer options for that same curiosity question and exactly one unambiguously correct option. The other seven should be meaningfully different plausible explanations, not tiny wording distinctions or near-duplicates.",
+    "Keep the answer choices grounded in the supplied answer, sources, image result, caption, and visible details. Do not require obscure facts, specialist vocabulary, or pixel-level trivia.",
+    "Never use trick questions, double negatives, joke answers, all/none-of-the-above, or an 'I don't know' option. CuriosityPedia presents 'I don't know' separately and treats it as safe.",
+    "explanation should briefly explain the correct answer without mentioning the encyclopedia or shaming another choice.",
     "",
     "ONWARD QUESTION EDITING",
     "The two questions are not more-detail buttons. They are the two best newly exposed edges of the reader's mental model.",
@@ -189,7 +233,7 @@ export function buildInstructions(performer: (typeof PERFORMERS)[number]): strin
     "Before returning, silently rewrite until every answer is no: (1) Does the opening sound like a technical FAQ or abstract? (2) Is the first unfamiliar term introduced before its intuition? (3) Does the answer list approaches instead of choosing a story spine? (4) Could the first paragraph be reused for another technology or topic? (5) Is there no concrete scene, event, object, or observation? (6) Does the reader learn terminology without gaining a causal model? (7) Is the hero image merely installed equipment? (8) Does a visual note explain facts not actually visible? (9) Is either onward question already answered? (10) Would either question mainly interest a specialist? (11) Do the two questions lead to similar explanations? (12) Can the reader not state one changed mental model after reading?",
     "Return a compact researchHandoff with confirmed discoveries, uncertainties, unresolved threads, and source URLs as leads—not source bodies or hidden reasoning.",
     "The request supplies a reader output language. Research and select sources in whichever languages provide the strongest evidence; never restrict web search to the output language.",
-    "Write every reader-facing natural-language field in that output language: topicLabel, answerBlocks.text, visualNotes, transition, researchSummary, researchHandoff prose, and both option questions and angles. Keep URLs unchanged. Preserve official names, identifiers, formulas, and short quotations when translation would change their meaning.",
+    "Write every reader-facing natural-language field in that output language: topicLabel, answerBlocks.text, visualNotes including every knowledgeCheck field, transition, researchSummary, researchHandoff prose, and both option questions and angles. Keep URLs unchanged. Preserve official names, identifiers, formulas, and short quotations when translation would change their meaning.",
   ].join("\n");
 }
 
@@ -224,7 +268,7 @@ export function imageSearchDirection(imagePreference: ImagePreference): string {
     return "Do not search for or return images.";
   }
   if (imagePreference === "prefer") {
-    return "Actively search for one strong factual hero image and, only when they teach something visibly distinct, up to two supporting images. Do not return generated imagery as evidence.";
+    return "Actively curate an encyclopedia-grade visual sequence of 8–12 high-resolution factual images: one exceptional hero plus distinct supporting images with different teaching jobs. Search by visual role, reject duplicates and weak quota-fillers, and do not return generated imagery as evidence.";
   }
   return "Search when the subject has strong visual potential, but return an empty visual set rather than weak, decorative, or merely topical images when no candidate materially improves understanding. Do not return generated imagery as evidence.";
 }

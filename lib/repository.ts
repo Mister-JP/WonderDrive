@@ -63,7 +63,7 @@ export async function createJourney(
     modelId: request.modelId,
     researchPreset: request.researchPreset,
     answerDensity: request.answerDensity,
-    imagePreference: request.imagePreference,
+    imagePreference: "prefer",
     outputLocale: request.outputLocale,
   });
   const prior = await db
@@ -92,7 +92,7 @@ export async function createJourney(
   if ((count?.count ?? 0) >= viewer.journeyLimit) {
     throw new RepositoryError(
       "JOURNEY_LIMIT",
-      `Your saved-journey library is full (${count?.count ?? viewer.journeyLimit}/${viewer.journeyLimit}). Delete one journey to make room.`,
+      `Your journey capacity is full (${count?.count ?? viewer.journeyLimit}/${viewer.journeyLimit}). Delete one journey to make room.`,
       409,
     );
   }
@@ -124,7 +124,7 @@ export async function createJourney(
         request.modelId,
         request.researchPreset,
         request.answerDensity,
-        request.imagePreference,
+        "prefer",
         request.outputLocale,
         turnId,
         draft.sources.length,
@@ -157,7 +157,7 @@ export async function createJourney(
         performerById(request.performerId).version,
         modelById(request.modelId).snapshot,
         request.answerDensity,
-        request.imagePreference,
+        "prefer",
         request.outputLocale,
         now,
         now,
@@ -440,7 +440,7 @@ export async function advanceJourney(
         performerById(journey.performerId).version,
         modelById(journey.modelId).snapshot,
         journey.answerDensity,
-        journey.imagePreference,
+        "prefer",
         journey.outputLocale,
         now,
         now,
@@ -552,13 +552,24 @@ export async function advanceJourney(
 
 export async function deleteJourney(viewer: ViewerContext, journeyId: string): Promise<{ id: string }> {
   assertId(journeyId, "journey");
-  const result = await getD1()
-    .prepare(
+  const db = getD1();
+  const now = Date.now();
+  const results = await db.batch([
+    db.prepare(
       `UPDATE journeys SET status = 'deleted', deleted_at = ?, updated_at = ?, version = version + 1
        WHERE id = ? AND owner_identity_id = ? AND deleted_at IS NULL`,
     )
-    .bind(Date.now(), Date.now(), journeyId, viewer.identityId)
-    .run();
+      .bind(now, now, journeyId, viewer.identityId),
+    db.prepare(
+      `DELETE FROM bookmarks
+       WHERE identity_id = ? AND journey_id = ?
+         AND EXISTS (
+           SELECT 1 FROM journeys
+           WHERE id = ? AND owner_identity_id = ? AND deleted_at = ?
+         )`,
+    ).bind(viewer.identityId, journeyId, journeyId, viewer.identityId, now),
+  ]);
+  const result = results[0];
   if ((result.meta.changes ?? 0) === 0) {
     throw new RepositoryError("NOT_FOUND", "That saved journey was not found.", 404);
   }
@@ -745,9 +756,6 @@ function validateCreateRequest(request: CreateJourneyRequest) {
   }
   if (!["brief", "balanced", "rich"].includes(request.answerDensity)) {
     throw new RepositoryError("BAD_REQUEST", "Choose a supported answer density.", 400);
-  }
-  if (!["avoid", "when-useful", "prefer"].includes(request.imagePreference)) {
-    throw new RepositoryError("BAD_REQUEST", "Choose a supported factual-image preference.", 400);
   }
   normalizeLocale(request.outputLocale, "learning language");
   assertIdempotencyKey(request.idempotencyKey);

@@ -22,4 +22,5 @@ jobs:
       - run: npm run architecture:check
       - run: npm run lint
       - run: npm run typecheck
+      - run: npm run audit
       - run: npm test

@@ -7,7 +7,7 @@
 3. Preserve API idempotency, ownership checks, atomic turn commits, citation allowlisting, and the two-option turn invariant.
 4. Add or update automated tests for behavioral changes.
 5. Run `npm run architecture:update` after adding, deleting, or changing local module imports.
-6. Run `npm run architecture:check`, `npm run lint`, `npm run typecheck`, and `npm test`.
+6. Run `npm run architecture:check`, `npm run lint`, `npm run typecheck`, `npm run audit`, and `npm test`.
 7. For schema changes, run `npm run db:generate` and inspect the generated SQL.
 
 ## Pull requests

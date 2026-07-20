@@ -17,12 +17,12 @@ import {
   ListBullets,
   MagnifyingGlass,
   Minus,
-  Path,
   Plus,
-  TreeStructure,
   X,
 } from "@phosphor-icons/react";
-import type { JourneyDetail } from "../../lib/contracts";
+import type { JourneyDetail, JourneyTurn, KnowledgeJourneySeed } from "../../lib/contracts";
+import { validateDisplayImage } from "../../lib/image-validation";
+import { questionBearingMedia } from "../../lib/knowledge-check-contracts";
 import { useI18n } from "../i18n";
 import {
   buildJourneyGraph,
@@ -30,6 +30,8 @@ import {
   findGraphNode,
   findGraphPath,
   mobileGraphLayout,
+  CURIOSITY_OPTION_PREFIX,
+  openQuestionsForTurn,
   visibleJourneyGraph,
   type GraphDensity,
   type JourneyGraphNode,
@@ -38,34 +40,82 @@ import {
 
 type GraphViewMode = "graph" | "outline";
 
+function useJourneyImageUrls(urls: string[]) {
+  const validationKey = JSON.stringify([...new Set(urls)]);
+  const candidates = useMemo(() => JSON.parse(validationKey) as string[], [validationKey]);
+  const [validation, setValidation] = useState<{ key: string; validUrls: Set<string> }>(() => ({
+    key: validationKey,
+    // Keep the map stable while probes run, then remove the same failed images
+    // that the book omits from its atlas and Knowledge Session.
+    validUrls: new Set(candidates),
+  }));
+
+  useEffect(() => {
+    let cancelled = false;
+    if (candidates.length === 0) {
+      return () => { cancelled = true; };
+    }
+
+    void Promise.all(candidates.map(async (url) => ({
+      url,
+      result: await validateDisplayImage(url),
+    }))).then((results) => {
+      if (cancelled) return;
+      setValidation({
+        key: validationKey,
+        validUrls: new Set(results.filter(({ result }) => result.valid).map(({ url }) => url)),
+      });
+    });
+
+    return () => { cancelled = true; };
+  }, [candidates, validationKey]);
+
+  return validation.key === validationKey ? validation.validUrls : new Set(candidates);
+}
+
 export function JourneyMap({
   journey,
   activeTurnId,
   onSelect,
   onContinue,
   onChoose,
+  onExploreKnowledge,
 }: {
   journey: JourneyDetail;
   activeTurnId: string;
   onSelect: (id: string) => void;
   onContinue: (id: string) => void;
   onChoose: (turnId: string, optionId: string) => void;
+  onExploreKnowledge: (turnId: string, seed: KnowledgeJourneySeed) => void;
 }) {
   const { t } = useI18n();
   const viewportRef = useRef<HTMLDivElement>(null);
   const panRef = useRef<{ pointerId: number; x: number; y: number; left: number; top: number } | null>(null);
   const responsiveInitializedRef = useRef(false);
-  const [density, setDensity] = useState<GraphDensity>("topics");
-  const [viewMode, setViewMode] = useState<GraphViewMode>("graph");
+  const [density] = useState<GraphDensity>("topics");
+  const [viewMode] = useState<GraphViewMode>("graph");
   const [focusRootId, setFocusRootId] = useState<string | null>(null);
   const [expandedBranches, setExpandedBranches] = useState<Set<string>>(() => new Set());
   const [outlineExpanded, setOutlineExpanded] = useState<Set<string>>(() => new Set());
   const [query, setQuery] = useState("");
-  const [openOnly, setOpenOnly] = useState(false);
+  const [openOnly] = useState(false);
   const [scale, setScale] = useState(.86);
   const [inspectorOpen, setInspectorOpen] = useState(true);
   const [pendingBranch, setPendingBranch] = useState<{ turnId: string; optionId: string } | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+
+  const journeyMediaUrls = useMemo(
+    () => journey.turns.flatMap((turn) => turn.media.map((item) => item.imageUrl)),
+    [journey.turns],
+  );
+  const validJourneyImageUrls = useJourneyImageUrls(journeyMediaUrls);
+  const mapJourney = useMemo<JourneyDetail>(() => ({
+    ...journey,
+    turns: journey.turns.map((turn) => ({
+      ...turn,
+      media: turn.media.filter((item) => validJourneyImageUrls.has(item.imageUrl)),
+    })),
+  }), [journey, validJourneyImageUrls]);
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 720px)");
@@ -81,9 +131,9 @@ export function JourneyMap({
     return () => media.removeEventListener("change", update);
   }, []);
 
-  const fullGraph = useMemo(() => buildJourneyGraph(journey), [journey]);
-  const turnIndex = useMemo(() => new Map(journey.turns.map((turn, index) => [turn.id, index + 1])), [journey.turns]);
-  const activeTurn = journey.turns.find((turn) => turn.id === activeTurnId) ?? journey.turns[0];
+  const fullGraph = useMemo(() => buildJourneyGraph(mapJourney), [mapJourney]);
+  const turnIndex = useMemo(() => new Map(mapJourney.turns.map((turn, index) => [turn.id, index + 1])), [mapJourney.turns]);
+  const activeTurn = mapJourney.turns.find((turn) => turn.id === activeTurnId) ?? mapJourney.turns[0];
   const focusRoot = focusRootId ? findGraphNode(fullGraph, focusRootId) ?? fullGraph : fullGraph;
   const currentPath = useMemo(() => findGraphPath(fullGraph, journey.currentTurnId) ?? [fullGraph], [fullGraph, journey.currentTurnId]);
   const currentPathIds = new Set(currentPath.map((node) => node.id));
@@ -116,16 +166,16 @@ export function JourneyMap({
   const normalizedQuery = query.trim().toLocaleLowerCase();
   const searchResults = useMemo(() => {
     if (!normalizedQuery) return [];
-    return journey.turns.flatMap((turn) => {
+    return mapJourney.turns.flatMap((turn) => {
       const turnMatch = `${turn.question} ${turn.topicLabel} ${turn.answer}`.toLocaleLowerCase().includes(normalizedQuery)
         ? [{ kind: "turn" as const, turn, option: null }]
         : [];
-      const options = turn.options
+      const options = openQuestionsForTurn(turn)
         .filter((option) => option.question.toLocaleLowerCase().includes(normalizedQuery))
         .map((option) => ({ kind: "open" as const, turn, option }));
       return [...turnMatch, ...options];
     }).slice(0, 8);
-  }, [journey.turns, normalizedQuery]);
+  }, [mapJourney.turns, normalizedQuery]);
   const matchingIds = new Set(searchResults.flatMap((result) => result.kind === "turn"
     ? [result.turn.id]
     : [`open:${result.turn.id}:${result.option?.id}`]));
@@ -152,9 +202,23 @@ export function JourneyMap({
   }, [fullGraph, onSelect]);
 
   function previewBranch(turnId: string, optionId: string) {
-    onSelect(turnId);
     setPendingBranch({ turnId, optionId });
-    setInspectorOpen(true);
+  }
+
+  function knowledgeSeedForOption(turn: JourneyTurn, optionId: string): KnowledgeJourneySeed | null {
+    if (!optionId.startsWith(CURIOSITY_OPTION_PREFIX)) return null;
+    const mediaIndex = Number(optionId.slice(CURIOSITY_OPTION_PREFIX.length));
+    const media = questionBearingMedia(turn.media, turn.topicLabel)[mediaIndex];
+    const option = openQuestionsForTurn(turn).find((candidate) => candidate.id === optionId);
+    if (!media || !option) return null;
+    return {
+      question: option.question,
+      imageUrl: media.imageUrl,
+      imageAlt: media.alt,
+      imageCaption: media.caption,
+      imageSourceUrl: media.sourcePageUrl,
+      imageSourceLabel: media.title ?? turn.topicLabel,
+    };
   }
 
   function graphConnector(parent: PositionedGraphNode, child: PositionedGraphNode) {
@@ -264,11 +328,15 @@ export function JourneyMap({
     );
   };
 
-  const selectedParent = activeTurn.parentTurnId ? journey.turns.find((turn) => turn.id === activeTurn.parentTurnId) : null;
+  const selectedParent = activeTurn.parentTurnId ? mapJourney.turns.find((turn) => turn.id === activeTurn.parentTurnId) : null;
   const selectedNode = findGraphNode(fullGraph, activeTurn.id);
-  const pendingOption = pendingBranch && pendingBranch.turnId === activeTurn.id
-    ? activeTurn.options.find((option) => option.id === pendingBranch.optionId)
+  const pendingTurn = pendingBranch ? mapJourney.turns.find((turn) => turn.id === pendingBranch.turnId) : null;
+  const pendingNode = pendingTurn ? findGraphNode(fullGraph, pendingTurn.id) : null;
+  const pendingOption = pendingBranch && pendingTurn
+    ? pendingNode?.children.find((child) => child.kind === "open" && child.option?.id === pendingBranch.optionId)?.option
+      ?? openQuestionsForTurn(pendingTurn).find((option) => option.id === pendingBranch.optionId)
     : null;
+  const openQuestionCount = fullGraph.openCount;
 
   return (
     <section className="map-view journey-tree-view" aria-labelledby="map-title">
@@ -280,7 +348,7 @@ export function JourneyMap({
         </div>
         <dl aria-label={t("Journey overview")}>
           <div><dt>{t("Turns")}</dt><dd>{journey.turnCount}</dd></div>
-          <div><dt>{t("Open paths")}</dt><dd>{journey.openBranchCount}</dd></div>
+          <div><dt>{t("Open paths")}</dt><dd>{openQuestionCount}</dd></div>
           <div><dt>{t("Sources")}</dt><dd>{journey.sourceCount}</dd></div>
         </dl>
       </header>
@@ -316,19 +384,6 @@ export function JourneyMap({
             </div>
           )}
         </div>
-        <div className="journey-tree-control-group density-control" aria-label={t("Detail level")}>
-          {(["overview", "topics", "detail"] as GraphDensity[]).map((level) => (
-            <button type="button" key={level} className={density === level ? "active" : ""} aria-pressed={density === level} onClick={() => setDensity(level)}>
-              {t(level === "overview" ? "Overview" : level === "topics" ? "Topics" : "Full cards")}
-            </button>
-          ))}
-        </div>
-        <div className="journey-tree-control-group">
-          <button type="button" className={openOnly ? "active" : ""} aria-pressed={openOnly} onClick={() => setOpenOnly((current) => !current)}><Path aria-hidden="true" /> {t("Open paths")}</button>
-          <button type="button" className={viewMode === "outline" ? "active" : ""} aria-pressed={viewMode === "outline"} onClick={() => setViewMode((current) => current === "graph" ? "outline" : "graph")}>
-            {viewMode === "graph" ? <ListBullets aria-hidden="true" /> : <TreeStructure aria-hidden="true" />} {t(viewMode === "graph" ? "Outline" : "Graph")}
-          </button>
-        </div>
       </div>
 
       {focusRootId && (
@@ -345,12 +400,12 @@ export function JourneyMap({
         </nav>
       )}
 
-      <div className={`journey-tree-workspace ${viewMode}`}>
+      <div className={`journey-tree-workspace ${viewMode} ${inspectorOpen ? "" : "inspector-closed"}`}>
         {viewMode === "graph" ? (
           <div className="journey-graph-shell">
             <div className="journey-graph-statusbar">
               <span><Crosshair aria-hidden="true" /> {t("Turn {number}", { number: turnIndex.get(journey.currentTurnId) ?? journey.turnCount })} · {t("You are here")}</span>
-              <span>{focusRootId ? t("Focused branch") : t("Whole tree")} · {t("{count} open questions", { count: journey.openBranchCount })}</span>
+              <span>{focusRootId ? t("Focused branch") : t("Whole tree")} · {t("{count} open questions", { count: openQuestionCount })}</span>
             </div>
             <div
               className="journey-graph-viewport"
@@ -397,6 +452,9 @@ export function JourneyMap({
                       );
                     }
                     if (node.kind === "open") {
+                      const questionNumber = node.option?.id.startsWith(CURIOSITY_OPTION_PREFIX)
+                        ? Number(node.option.id.slice(CURIOSITY_OPTION_PREFIX.length)) + 1
+                        : (node.option?.position ?? 0) + 1;
                       return (
                         <button
                           type="button"
@@ -406,7 +464,7 @@ export function JourneyMap({
                           aria-label={`${t("Open path")}: ${node.option?.question}`}
                           onClick={() => previewBranch(node.turn.id, node.option?.id ?? "")}
                         >
-                          <span className="journey-node-number">{preview ? <Plus aria-hidden="true" /> : (node.option?.position ?? 0) + 1}</span>
+                          <span className="journey-node-number">{preview ? <Plus aria-hidden="true" /> : questionNumber}</span>
                           <small>{preview ? t("New turn preview") : t("Open path")}</small>
                           <strong>{node.option?.question}</strong>
                         </button>
@@ -421,7 +479,7 @@ export function JourneyMap({
                         style={{ left: x, top: y, width, height }}
                         aria-pressed={selected}
                         aria-current={current ? "step" : undefined}
-                        onClick={() => { onSelect(node.turn.id); setInspectorOpen(true); setPendingBranch(null); }}
+                        onClick={() => onContinue(node.turn.id)}
                       >
                         <span className="journey-node-number">{turnIndex.get(node.turn.id)}</span>
                         <small>{node.turn.topicLabel}</small>
@@ -468,30 +526,16 @@ export function JourneyMap({
         )}
 
         {inspectorOpen && (
-          <aside className={`journey-node-inspector ${pendingOption ? "confirming" : ""}`} aria-label={pendingOption ? t("Confirm new branch") : t("Selected turn details")}>
+          <aside className="journey-node-inspector" aria-label={t("Selected turn details")}>
             <div className="journey-inspector-handle" aria-hidden="true" />
             <header>
               <div>
-                <span>{pendingOption ? t("New branch preview") : t("Turn {number}", { number: turnIndex.get(activeTurn.id) ?? 1 })}</span>
-                <strong>{pendingOption?.question ?? activeTurn.topicLabel}</strong>
+                <span>{t("Turn {number}", { number: turnIndex.get(activeTurn.id) ?? 1 })}</span>
+                <strong>{activeTurn.topicLabel}</strong>
               </div>
               <button type="button" aria-label={t("Close details")} onClick={() => { setInspectorOpen(false); setPendingBranch(null); }}><X aria-hidden="true" /></button>
             </header>
-            {pendingOption ? (
-              <div className="journey-branch-confirmation" role="dialog" aria-modal="false" aria-labelledby="branch-confirmation-title">
-                <p id="branch-confirmation-title">{t("This will grow a new child from Turn {number}.", { number: turnIndex.get(activeTurn.id) ?? 1 })}</p>
-                <ul>
-                  <li>{t("Your current route stays intact.")}</li>
-                  <li>{t("One live research turn will begin.")}</li>
-                  <li>{t("The result will appear at the previewed position in this tree.")}</li>
-                </ul>
-                <div>
-                  <button type="button" className="primary" onClick={() => { const branch = pendingBranch; setPendingBranch(null); if (branch) onChoose(branch.turnId, branch.optionId); }}>{t("Start research")}</button>
-                  <button type="button" onClick={() => setPendingBranch(null)}>{t("Keep exploring")}</button>
-                </div>
-              </div>
-            ) : (
-              <>
+            <>
                 <div className="journey-inspector-context">
                   {selectedParent ? <button type="button" onClick={() => selectAndReveal(selectedParent.id)}><ArrowLeft aria-hidden="true" /> {selectedParent.topicLabel}</button> : <span>{t("Journey root")}</span>}
                   <span>{currentPathIds.has(activeTurn.id) ? t("On current route") : t("Earlier branch")}</span>
@@ -506,22 +550,50 @@ export function JourneyMap({
                   )}
                 </div>
                 <div className="journey-inspector-directions">
-                  <span>{t("Two directions from here")}</span>
-                  {activeTurn.options.map((option) => {
+                  <span>{t("Questions from this session")}</span>
+                  {openQuestionsForTurn(activeTurn).map((option, optionIndex) => {
                     const action = journey.actions.find((item) => item.turnId === activeTurn.id && item.optionId === option.id && item.resultTurnId);
-                    const resultTurn = action?.resultTurnId ? journey.turns.find((turn) => turn.id === action.resultTurnId) : null;
+                    const resultTurn = action?.resultTurnId ? mapJourney.turns.find((turn) => turn.id === action.resultTurnId) : null;
                     if (option.state === "proposed") {
-                      return <button type="button" className="open" key={option.id} onClick={() => previewBranch(activeTurn.id, option.id)}><small>{t("Option")} {option.position === 0 ? "A" : "B"} · {t("Open")}</small><strong>{option.question}</strong><em>{t("Preview branch")}</em></button>;
+                      return <button type="button" className="open" key={option.id} onClick={() => previewBranch(activeTurn.id, option.id)}><small>{t("Question")} {String(optionIndex + 1).padStart(2, "0")} · {t("Open")}</small><strong>{option.question}</strong><em>{t("Preview journey")}</em></button>;
                     }
                     return <button type="button" key={option.id} disabled={!resultTurn} onClick={() => resultTurn && selectAndReveal(resultTurn.id)}><small>{t("Option")} {option.position === 0 ? "A" : "B"} · {t(option.state === "chosen" ? "path taken" : option.state)}</small><strong>{option.question}</strong><em>{resultTurn ? t("Show result") : t("Closed")}</em></button>;
                   })}
                 </div>
               </>
-            )}
           </aside>
         )}
       </div>
+
+      {pendingBranch && pendingTurn && pendingOption && (
+        <div className="journey-research-modal-backdrop" role="presentation" onMouseDown={(event) => {
+          if (event.target === event.currentTarget) setPendingBranch(null);
+        }}>
+          <div className="journey-research-modal" role="dialog" aria-modal="true" aria-labelledby="journey-research-title" aria-describedby="journey-research-description">
+            <header>
+              <span>{t("Open question")}</span>
+              <button type="button" aria-label={t("Close")} onClick={() => setPendingBranch(null)}><X aria-hidden="true" /></button>
+            </header>
+            <div>
+              <p className="eyebrow"><span /> {t("New research path")}</p>
+              <h2 id="journey-research-title">{t("Deep dive into this question?")}</h2>
+              <p className="journey-research-question">{pendingOption.question}</p>
+              <p id="journey-research-description">{t("This starts one new researched answer from Turn {number}. Your current journey stays intact.", { number: turnIndex.get(pendingTurn.id) ?? 1 })}</p>
+            </div>
+            <footer>
+              <button type="button" className="primary" onClick={() => {
+                const branch = pendingBranch;
+                const turn = pendingTurn;
+                setPendingBranch(null);
+                const seed = knowledgeSeedForOption(turn, branch.optionId);
+                if (seed) onExploreKnowledge(branch.turnId, seed);
+                else onChoose(branch.turnId, branch.optionId);
+              }}>{t("Start research")}</button>
+              <button type="button" onClick={() => setPendingBranch(null)}>{t("Not now")}</button>
+            </footer>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
-

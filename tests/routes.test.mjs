@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 import {
   journeyMapPath,
@@ -9,10 +10,12 @@ import {
 
 test("parses stable product routes", () => {
   assert.deepEqual(parseCuriosityPediaRoute("/"), { name: "start" });
-  assert.deepEqual(parseCuriosityPediaRoute("/library/"), { name: "library" });
+  assert.deepEqual(parseCuriosityPediaRoute("/journeys/"), { name: "journeys" });
+  assert.deepEqual(parseCuriosityPediaRoute("/library/"), { name: "journeys" });
   assert.deepEqual(parseCuriosityPediaRoute("/bookmarks"), { name: "bookmarks" });
   assert.deepEqual(parseCuriosityPediaRoute("/usage"), { name: "usage" });
   assert.deepEqual(parseCuriosityPediaRoute("/settings"), { name: "settings" });
+  assert.deepEqual(parseCuriosityPediaRoute("/about"), { name: "about" });
 });
 
 test("round trips journey stage and map routes", () => {
@@ -36,10 +39,38 @@ test("round trips journey stage and map routes", () => {
 });
 
 test("rejects paths outside the product route contract", () => {
-  assert.equal(parseCuriosityPediaRoute("/journeys"), null);
   assert.equal(parseCuriosityPediaRoute("/journeys/id/unknown"), null);
   assert.equal(parseCuriosityPediaRoute("/not-a-route"), null);
   assert.equal(staticRoutePath("start"), "/");
-  assert.equal(staticRoutePath("library"), "/library");
+  assert.equal(staticRoutePath("journeys"), "/journeys");
   assert.equal(staticRoutePath("bookmarks"), "/bookmarks");
+  assert.equal(staticRoutePath("about"), "/about");
+});
+
+test("orchestration exposes Journeys navigation and opens cards on the map", async () => {
+  const source = await readFile(new URL("../app/curiositypedia-experience.tsx", import.meta.url), "utf8");
+  assert.match(source, /\{ id: "journeys", label: "Journeys" \}/);
+  assert.doesNotMatch(source, /label: "Library"/);
+  assert.doesNotMatch(source, /New drive/);
+  assert.match(source, /onOpen=\{\(id\) => void openJourney\(id, "map"\)\}/);
+});
+
+test("the page-flip atlas waits for image validation before mounting its imperative child list", async () => {
+  const source = await readFile(new URL("../app/curiositypedia-experience.tsx", import.meta.url), "utf8");
+  const settledGuard = source.indexOf("!mediaValidation.settled");
+  const flipBook = source.indexOf("<HTMLFlipBook", settledGuard);
+
+  assert.ok(settledGuard >= 0);
+  assert.ok(flipBook > settledGuard);
+  assert.match(source, /useImageValidation\(turn\.media\.map\(\(item\) => item\.imageUrl\), false\)/);
+});
+
+test("the page-flip atlas leaves the final media page readable until the user continues", async () => {
+  const source = await readFile(new URL("../app/curiositypedia-experience.tsx", import.meta.url), "utf8");
+
+  assert.doesNotMatch(source, /Keep the gaps worth exploring/);
+  assert.doesNotMatch(source, /kind: "run" as const/);
+  assert.match(source, /if \(index >= panelCount\) \{\s*setKnowledgeDeclarationOpen\(true\);/);
+  assert.match(source, /activePanel === panelCount - 1 \? "Continue to the knowledge questions"/);
+  assert.match(source, /knowledgeDeclarationOpen \? setKnowledgeDeclarationOpen\(false\)/);
 });

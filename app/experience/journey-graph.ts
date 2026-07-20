@@ -1,6 +1,26 @@
 import type { JourneyDetail, JourneyTurn } from "../../lib/contracts";
+import { canonicalImageQuestion, questionBearingMedia } from "../../lib/knowledge-check-contracts";
 
 export type GraphDensity = "overview" | "topics" | "detail";
+
+export const CURIOSITY_OPTION_PREFIX = "curiosity:";
+
+export function openQuestionsForTurn(turn: JourneyTurn): JourneyTurn["options"] {
+  const curiosityQuestions = questionBearingMedia(turn.media, turn.topicLabel).flatMap((media, mediaIndex) => {
+    const question = canonicalImageQuestion(media, turn.topicLabel);
+    if (!question) return [];
+    return [{
+      id: `${CURIOSITY_OPTION_PREFIX}${mediaIndex}`,
+      position: (mediaIndex % 2) as 0 | 1,
+      question,
+      angle: media.role ?? "question",
+      state: "proposed" as const,
+    }];
+  });
+  return curiosityQuestions.length
+    ? curiosityQuestions
+    : turn.options.filter((option) => option.state === "proposed");
+}
 
 export type JourneyGraphNode = {
   id: string;
@@ -48,13 +68,41 @@ export function buildJourneyGraph(journey: JourneyDetail): JourneyGraphNode {
     const usedChildren = new Set<string>();
     const children: JourneyGraphNode[] = [];
 
+    // A completed child consumes one matching image question, not every legacy
+    // image that happened to receive the same generated wording.
+    const unmatchedDirectChildren = [...directChildren];
+    const openQuestions = openQuestionsForTurn(turn).filter((option) => {
+      const matchingChildIndex = unmatchedDirectChildren.findIndex(
+        (child) => child.question.localeCompare(option.question, turn.metadata.outputLocale, { sensitivity: "base", ignorePunctuation: true }) === 0,
+      );
+      if (matchingChildIndex < 0) return true;
+      unmatchedDirectChildren.splice(matchingChildIndex, 1);
+      return false;
+    });
+    const hasCuriosityQuestions = openQuestions.some((option) => option.id.startsWith(CURIOSITY_OPTION_PREFIX));
     for (const option of [...turn.options].sort((left, right) => left.position - right.position)) {
       const resultId = resultByOption.get(`${turn.id}:${option.id}`);
       const resultTurn = resultId ? turnById.get(resultId) : undefined;
       if (resultTurn && resultTurn.parentTurnId === turn.id) {
         usedChildren.add(resultTurn.id);
         children.push(buildTurn(resultTurn, turn.id, option.position));
-      } else if (option.state === "proposed") {
+      } else if (option.state === "proposed" && !hasCuriosityQuestions) {
+        children.push({
+          id: `open:${turn.id}:${option.id}`,
+          parentId: turn.id,
+          kind: "open",
+          turn,
+          option,
+          branchPosition: option.position,
+          children: [],
+          turnCount: 0,
+          openCount: 1,
+        });
+      }
+    }
+
+    if (hasCuriosityQuestions) {
+      for (const option of openQuestions) {
         children.push({
           id: `open:${turn.id}:${option.id}`,
           parentId: turn.id,

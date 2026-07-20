@@ -124,7 +124,7 @@ export function SettingsView({
 }) {
   const { t } = useI18n();
   const [draft, setDraft] = useState(preferences);
-  const displayName = viewer?.displayName ?? t("Opening library…");
+  const displayName = viewer?.displayName ?? t("Opening journeys…");
   const initials = displayName
     .split(/\s+/)
     .filter(Boolean)
@@ -183,11 +183,6 @@ export function SettingsView({
               <p id="preference-help">{t("These choices change presentation, never research quality.")}</p>
             </header>
             <div className="preference-scales">
-              <div className="visual-contract-setting">
-                <span>Real-world visual evidence</span>
-                <strong>Always on</strong>
-                <p>Every new answer includes at least one sourced factual image. Generated artwork is never used as evidence.</p>
-              </div>
               <label className="preference-scale">
                 <span>{t("Answer detail")}</span>
                 <output>{t(detailPreference === 0 ? "Quick read" : detailPreference === 1 ? "Just right" : "Deep dive")}</output>

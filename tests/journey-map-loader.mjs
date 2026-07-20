@@ -20,7 +20,7 @@ export const jsxs = jsx;
 `);
 
 const icons = [
-  "ArrowLeft", "ArrowRight", "ArrowsClockwise", "BookmarkSimple", "CaretDown",
+  "ArrowLeft", "ArrowRight", "ArrowsClockwise", "BookmarkSimple", "CaretDown", "Check",
   "CaretRight", "CornersOut", "Crosshair", "ListBullets", "MagnifyingGlass",
   "MagicWand", "Minus", "Path", "PencilSimple", "Plus", "TreeStructure", "X",
 ];

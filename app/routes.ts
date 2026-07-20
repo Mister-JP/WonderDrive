@@ -1,9 +1,10 @@
 export type CuriosityPediaRoute =
   | { name: "start" }
-  | { name: "library" }
+  | { name: "journeys" }
   | { name: "bookmarks" }
   | { name: "usage" }
   | { name: "settings" }
+  | { name: "about" }
   | {
       name: "journey";
       journeyId: string;
@@ -13,10 +14,12 @@ export type CuriosityPediaRoute =
 
 const STATIC_ROUTES = new Map<string, CuriosityPediaRoute>([
   ["/", { name: "start" }],
-  ["/library", { name: "library" }],
+  ["/journeys", { name: "journeys" }],
+  ["/library", { name: "journeys" }],
   ["/bookmarks", { name: "bookmarks" }],
   ["/usage", { name: "usage" }],
   ["/settings", { name: "settings" }],
+  ["/about", { name: "about" }],
 ]);
 
 export function parseCuriosityPediaRoute(
@@ -57,7 +60,7 @@ export function parseCuriosityPediaRoute(
   return null;
 }
 
-export function staticRoutePath(name: "start" | "library" | "bookmarks" | "usage" | "settings") {
+export function staticRoutePath(name: "start" | "journeys" | "bookmarks" | "usage" | "settings" | "about") {
   return name === "start" ? "/" : `/${name}`;
 }
 

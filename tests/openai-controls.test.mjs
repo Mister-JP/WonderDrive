@@ -5,6 +5,7 @@ import {
   openAIConfigured,
   openAIEnabled,
   requestOpenAI,
+  retrieveOpenAIResponse,
 } from "../lib/openai.ts";
 
 test("the emergency switch blocks every OpenAI transport call and configuration check", async () => {
@@ -41,5 +42,29 @@ test("the emergency switch blocks every OpenAI transport call and configuration 
     globalThis.fetch = originalFetch;
     delete env.OPENAI_API_KEY;
     delete env.CURIOSITYPEDIA_OPENAI_ENABLED;
+  }
+});
+
+test("stored response retrieval preserves requested web evidence expansions", async () => {
+  const originalFetch = globalThis.fetch;
+  let requestedUrl = null;
+  globalThis.fetch = async (input) => {
+    requestedUrl = new URL(input);
+    return Response.json({ status: "completed" });
+  };
+  env.OPENAI_API_KEY = "test-key";
+
+  try {
+    await retrieveOpenAIResponse("resp_background_evidence", {
+      include: ["web_search_call.action.sources", "web_search_call.results"],
+    });
+    assert.equal(requestedUrl.pathname, "/v1/responses/resp_background_evidence");
+    assert.deepEqual(
+      requestedUrl.searchParams.getAll("include[]"),
+      ["web_search_call.action.sources", "web_search_call.results"],
+    );
+  } finally {
+    globalThis.fetch = originalFetch;
+    delete env.OPENAI_API_KEY;
   }
 });

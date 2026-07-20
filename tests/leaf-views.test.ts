@@ -3,7 +3,7 @@ import { register } from "node:module";
 import test from "node:test";
 
 import { BOOTSTRAP_CATALOG, DEFAULT_PREFERENCES } from "../lib/catalog";
-import type { JourneyDetail, JourneySummary, TextSize, UsageSummary, UserPreferences, Viewer } from "../lib/contracts";
+import type { Bookmark, JourneySummary, KnowledgeJourneySeed, ResearchActivity, TextSize, UsageSummary, UserPreferences, Viewer } from "../lib/contracts";
 import { buttonByText, elements, find, HookHarness, text, type TestElement } from "./leaf-view-harness";
 
 register(new URL("./journey-map-loader.mjs", import.meta.url));
@@ -18,26 +18,27 @@ type UsageViewComponent = (props: {
   loading: boolean;
   error: string | null;
   onRefresh: () => void;
-  onOpenLibrary: () => void;
+  onOpenJourneys: () => void;
 }) => TestElement;
 
-type LibraryComponent = (props: {
+type JourneysComponent = (props: {
   journeys: JourneySummary[];
+  activities: ResearchActivity[];
   viewer: Viewer | null;
   busy: string | null;
   onOpen: (id: string) => void;
   onDelete: (id: string) => void;
   onManage: (id: string, changes: { title?: string; pinned?: boolean; hidden?: boolean }) => void;
   onSnapshot: (id: string) => void;
+  onRetry: (id: string) => void;
+  onCancel: (id: string) => void;
   onNew: () => void;
 }) => TestElement;
 
 type BookmarksComponent = (props: {
-  journeys: JourneySummary[];
-  bookmarks: Record<string, number>;
-  onOpen: (journeyId: string, turnId?: string) => void;
-  onToggle: (journeyId: string, turnId: string) => void;
-  onPin: (journeyId: string, pinned: boolean) => void;
+  bookmarks: Bookmark[];
+  onOpen: (journeyId: string, turnId: string) => void;
+  onRemove: (turnId: string) => void;
   onNew: () => void;
 }) => TestElement;
 
@@ -51,11 +52,34 @@ type SettingsComponent = (props: {
   onSave: (next: UserPreferences) => Promise<void>;
 }) => TestElement;
 
+type KnowledgeCheckComponent = (props: {
+  items: Array<{
+    index: number;
+    question: string;
+    imageUrl: string;
+    imageAlt: string;
+    imageCaption: string;
+    imageSourceUrl: string;
+    imageSourceLabel: string;
+    known: boolean;
+    knowledgeCheck?: {
+      declarationQuestion: string;
+      question: string;
+      options: string[];
+      correctOptionIndex: number;
+      explanation: string;
+    };
+  }>;
+  onBackToDeclaration: () => void;
+  onKnowledgeChange: (index: number, known: boolean) => void;
+  onDeepDive: (seed: KnowledgeJourneySeed) => void;
+}) => TestElement;
+
 const { UsageView } = await import("../app/experience/usage-view") as unknown as {
   UsageView: UsageViewComponent;
 };
-const { Library } = await import("../app/experience/library-view") as unknown as {
-  Library: LibraryComponent;
+const { JourneysView } = await import("../app/experience/journeys-view") as unknown as {
+  JourneysView: JourneysComponent;
 };
 const { BookmarksView } = await import("../app/experience/bookmarks-view") as unknown as {
   BookmarksView: BookmarksComponent;
@@ -63,8 +87,134 @@ const { BookmarksView } = await import("../app/experience/bookmarks-view") as un
 const { SettingsView } = await import("../app/experience/settings-view") as unknown as {
   SettingsView: SettingsComponent;
 };
+const { KnowledgeCheckExperience } = await import("../app/experience/knowledge-check") as unknown as {
+  KnowledgeCheckExperience: KnowledgeCheckComponent;
+};
 
 test.beforeEach(() => hooks.clear());
+
+test("KnowledgeCheckExperience renders stored questions immediately with eight choices and a safe unknown action", () => {
+  const options = Array.from({ length: 8 }, (_, index) => `Complete conceptual answer option ${index + 1}`);
+  const root = KnowledgeCheckExperience({
+    items: [{
+      index: 0,
+      question: "Why do the visible parts move together?",
+      imageUrl: "https://images.example.org/mechanism.jpg",
+      imageAlt: "A visible mechanism",
+      imageCaption: "The connected parts of the mechanism.",
+      imageSourceUrl: "https://example.org/mechanism",
+      imageSourceLabel: "Example source",
+      known: true,
+      knowledgeCheck: {
+        declarationQuestion: "Do you understand how the visible parts work together?",
+        question: "Why do the visible parts move together?",
+        options,
+        correctOptionIndex: 0,
+        explanation: "The first option follows the causal model taught in the encyclopedia.",
+      },
+    }],
+    onBackToDeclaration() {},
+    onKnowledgeChange() {},
+    onDeepDive() {},
+  });
+
+  assert.match(text(root), /Why do the visible parts move together/);
+  assert.equal(elements(root).filter((element) => element.props.role === "radio").length, 8);
+  assert.ok(buttonByText(root, "I don’t know"));
+  assert.doesNotMatch(text(root), /Preparing|Loading|Try preparing again/);
+});
+
+test("KnowledgeCheckExperience turns the completed check into image-linked rabbit holes with answer keys", () => {
+  const options = Array.from({ length: 8 }, (_, index) => `Complete conceptual answer option ${index + 1}`);
+  hooks.setSlot(0, [{
+    index: 0,
+    question: "Why do the visible parts move together?",
+    imageUrl: "https://images.example.org/mechanism.jpg",
+    imageAlt: "A visible mechanism",
+    imageCaption: "The connected parts of the mechanism.",
+    imageSourceUrl: "https://example.org/mechanism",
+    imageSourceLabel: "Example source",
+    known: true,
+    knowledgeCheck: {
+      declarationQuestion: "Do you understand how the visible parts work together?",
+      question: "Why do the visible parts move together?",
+      options,
+      correctOptionIndex: 0,
+      explanation: "The first option follows the causal model taught in the encyclopedia.",
+    },
+  }]);
+  hooks.setSlot(1, 0);
+  hooks.setSlot(2, { 0: "unknown" });
+  hooks.setSlot(3, true);
+  const deepDiveSeeds: KnowledgeJourneySeed[] = [];
+  const root = KnowledgeCheckExperience({
+    items: [{
+      index: 0,
+      question: "Why do the visible parts move together?",
+      imageUrl: "https://images.example.org/mechanism.jpg",
+      imageAlt: "A visible mechanism",
+      imageCaption: "The connected parts of the mechanism.",
+      imageSourceUrl: "https://example.org/mechanism",
+      imageSourceLabel: "Example source",
+      known: true,
+      knowledgeCheck: {
+        declarationQuestion: "Do you understand how the visible parts work together?",
+        question: "Why do the visible parts move together?",
+        options,
+        correctOptionIndex: 0,
+        explanation: "The first option follows the causal model taught in the encyclopedia.",
+      },
+    }],
+    onBackToDeclaration() {},
+    onKnowledgeChange() {},
+    onDeepDive(seed) { deepDiveSeeds.push(seed); },
+  });
+
+  assert.match(text(root), /Pick a question/);
+  assert.match(text(root), /Right: you said “I don’t know”/);
+  assert.match(text(root), /Correct answerComplete conceptual answer option 1/);
+  const rabbitHole = find(root, (element) => element.type === "button" && String(element.props.className).includes("knowledge-check-result-card"));
+  (rabbitHole.props.onClick as () => void)();
+  assert.equal(deepDiveSeeds[0]?.question, "Why do the visible parts move together?");
+  assert.equal(deepDiveSeeds[0]?.imageUrl, "https://images.example.org/mechanism.jpg");
+});
+
+test("KnowledgeCheckExperience keeps the active question mounted when I don't know changes its parent declaration", () => {
+  const options = Array.from({ length: 8 }, (_, index) => `Complete conceptual answer option ${index + 1}`);
+  let known = true;
+  const item = {
+    index: 0,
+    question: "Why do the visible parts move together?",
+    imageUrl: "https://images.example.org/mechanism.jpg",
+    imageAlt: "A visible mechanism",
+    imageCaption: "The connected parts of the mechanism.",
+    imageSourceUrl: "https://example.org/mechanism",
+    imageSourceLabel: "Example source",
+    known,
+    knowledgeCheck: {
+      declarationQuestion: "Do you understand how the visible parts work together?",
+      question: "Why do the visible parts move together?",
+      options,
+      correctOptionIndex: 0,
+      explanation: "The first option follows the causal model taught in the encyclopedia.",
+    },
+  };
+  const props = {
+    items: [item],
+    onBackToDeclaration() {},
+    onKnowledgeChange(_index: number, nextKnown: boolean) { known = nextKnown; },
+    onDeepDive() {},
+  };
+
+  let root = KnowledgeCheckExperience(props);
+  (buttonByText(root, "I don’t know").props.onClick as () => void)();
+  assert.equal(known, false);
+
+  hooks.reset();
+  root = KnowledgeCheckExperience({ ...props, items: [{ ...item, known }] });
+  assert.match(text(root), /Why do the visible parts move together/);
+  assert.ok(buttonByText(root, "I don’t know"));
+});
 
 const viewer: Viewer = {
   mode: "guest",
@@ -120,140 +270,149 @@ function journeySummary(
     version: 1,
     pinned: false,
     hidden: false,
+    createdAt: 1_704_204_000_000,
     updatedAt: 100,
     topicLabels: [`Topic ${id}`],
     ...changes,
   };
 }
 
-function renderLibrary(journeys: JourneySummary[], overrides: Partial<Parameters<LibraryComponent>[0]> = {}) {
+function renderJourneys(journeys: JourneySummary[], overrides: Partial<Parameters<JourneysComponent>[0]> = {}) {
   const opened: string[] = [];
   const deleted: string[] = [];
   const managed: Array<[string, { title?: string; pinned?: boolean; hidden?: boolean }]> = [];
   const snapshots: string[] = [];
+  const cancelled: string[] = [];
   let newCount = 0;
   const props = {
     journeys,
+    activities: [],
     viewer,
     busy: null,
     onOpen: (id: string) => opened.push(id),
     onDelete: (id: string) => deleted.push(id),
     onManage: (id: string, changes: { title?: string; pinned?: boolean; hidden?: boolean }) => managed.push([id, changes]),
     onSnapshot: (id: string) => snapshots.push(id),
+    onRetry: () => {},
+    onCancel: (id: string) => cancelled.push(id),
     onNew: () => { newCount += 1; },
     ...overrides,
   };
   const rerender = () => {
     hooks.reset();
-    return Library(props);
+    return JourneysView(props);
   };
-  return { props, opened, deleted, managed, snapshots, get newCount() { return newCount; }, rerender, root: rerender() };
+  return { props, opened, deleted, managed, snapshots, cancelled, get newCount() { return newCount; }, rerender, root: rerender() };
 }
 
-function bookmarkedDetail(journey: JourneySummary, turnId: string): JourneyDetail {
+function bookmark(id: string, changes: Partial<Bookmark> = {}): Bookmark {
   return {
-    ...journey,
-    status: "active",
-    actions: [],
-    turns: [{
-      id: turnId,
-      question: `Saved question for ${journey.id}`,
-      topicLabel: `Saved topic ${journey.id}`,
-      sources: [{ id: "source-1" }, { id: "source-2" }],
-    }],
-  } as unknown as JourneyDetail;
+    id,
+    journeyId: `journey-${id}`,
+    turnId: `turn-${id}`,
+    bookmarkedAt: 1_704_204_000_000,
+    question: `Saved question ${id}`,
+    topicLabel: `Saved topic ${id}`,
+    journeySeed: `Seed ${id}`,
+    journeyTitle: `Journey ${id}`,
+    performerId: "atlas",
+    sourceCount: 2,
+    ...changes,
+  };
 }
 
-function renderBookmarks(journeys: JourneySummary[], bookmarks: Record<string, number>) {
-  const opened: Array<[string, string | undefined]> = [];
-  const toggled: Array<[string, string]> = [];
-  const pinned: Array<[string, boolean]> = [];
+function renderBookmarks(bookmarks: Bookmark[]) {
+  const opened: Array<[string, string]> = [];
+  const removed: string[] = [];
   let newCount = 0;
   const props = {
-    journeys,
     bookmarks,
-    onOpen: (journeyId: string, turnId?: string) => opened.push([journeyId, turnId]),
-    onToggle: (journeyId: string, turnId: string) => toggled.push([journeyId, turnId]),
-    onPin: (journeyId: string, nextPinned: boolean) => pinned.push([journeyId, nextPinned]),
+    onOpen: (journeyId: string, turnId: string) => opened.push([journeyId, turnId]),
+    onRemove: (turnId: string) => removed.push(turnId),
     onNew: () => { newCount += 1; },
   };
   const rerender = () => {
     hooks.reset();
     return BookmarksView(props);
   };
-  return { opened, toggled, pinned, get newCount() { return newCount; }, rerender, root: rerender() };
+  return { opened, removed, get newCount() { return newCount; }, rerender, root: rerender() };
 }
 
 test("UsageView preserves loading and error accessibility states", () => {
-  const loading = UsageView({ usage: null, viewer, loading: true, error: null, onRefresh() {}, onOpenLibrary() {} });
+  const loading = UsageView({ usage: null, viewer, loading: true, error: null, onRefresh() {}, onOpenJourneys() {} });
   assert.equal(find(loading, (element) => element.props.role === "status").props.className, "usage-loading");
   assert.match(text(loading), /Reading your rolling limits…/);
 
   let refreshed = 0;
-  const failed = UsageView({ usage: null, viewer, loading: false, error: "Usage unavailable", onRefresh: () => { refreshed += 1; }, onOpenLibrary() {} });
+  const failed = UsageView({ usage: null, viewer, loading: false, error: "Usage unavailable", onRefresh: () => { refreshed += 1; }, onOpenJourneys() {} });
   assert.equal(find(failed, (element) => element.props.role === "alert").props.className, "usage-load-error");
   (buttonByText(failed, "Try again").props.onClick as () => void)();
   assert.equal(refreshed, 1);
 });
 
-test("UsageView preserves quota, capacity, spend, identity, and library behavior", () => {
-  let openedLibrary = 0;
-  const root = UsageView({ usage, viewer, loading: false, error: null, onRefresh() {}, onOpenLibrary: () => { openedLibrary += 1; } });
+test("UsageView preserves quota, journey capacity, spend, identity, and journeys behavior", () => {
+  let openedJourneys = 0;
+  const root = UsageView({ usage, viewer, loading: false, error: null, onRefresh() {}, onOpenJourneys: () => { openedJourneys += 1; } });
 
   assert.equal(find(root, (element) => element.type === "h1").props.id, "usage-title");
   assert.ok(elements(root).some((element) => element.props.className === "usage-primary quota-reached"));
   assert.equal(find(root, (element) => element.props["aria-label"] === "Live research used in the last 24 hours").props.value, 3);
   assert.equal(find(root, (element) => element.props["aria-label"] === "Saved journey capacity used").props.value, 12);
   assert.match(text(root), /Action required/);
+  assert.match(text(root), /Journey capacity/);
+  assert.doesNotMatch(text(root), /Library capacity/);
   assert.match(text(root), /Delete a journey to free a place\./);
   assert.match(text(root), /\$1\.359 \/ \$5\.00/);
   assert.match(text(root), /\$1\.234 settled · \$0\.125 held/);
   assert.equal(find(root, (element) => element.type === "a").props.href, "/signin-with-chatgpt?return_to=%2F");
   (buttonByText(root, "Manage saved journeys").props.onClick as () => void)();
-  assert.equal(openedLibrary, 1);
+  assert.equal(openedJourneys, 1);
 });
 
-test("Library preserves visible ordering, filters, counts, and empty-state contract", () => {
+test("JourneysView prioritizes the first question, creation time, and simple filtering", () => {
   const journeys = [
-    journeySummary("alpha", { title: "Alpha trail", updatedAt: 200 }),
-    journeySummary("beta", { title: "Beta trail", performerId: "sage", pinned: true, updatedAt: 100 }),
+    journeySummary("alpha", { seed: "Why do fireflies glow?", title: "Alpha trail", createdAt: Date.UTC(2024, 0, 2, 15, 4), updatedAt: Date.UTC(2030, 0, 2), }),
+    journeySummary("beta", { seed: "How do whales navigate?", title: "Beta trail", performerId: "sage", pinned: true, updatedAt: 100 }),
     journeySummary("hidden", { title: "Hidden trail", hidden: true, updatedAt: 300 }),
   ];
-  const rendered = renderLibrary(journeys);
+  const rendered = renderJourneys(journeys);
 
-  assert.deepEqual(elements(rendered.root).filter((element) => element.type === "h2").map(text), ["Beta trail", "Alpha trail"]);
-  assert.match(text(rendered.root), /3 of 12 journeys saved/);
+  assert.equal(find(rendered.root, (element) => element.type === "h1").props.id, "journeys-title");
+  assert.deepEqual(elements(rendered.root).filter((element) => element.type === "h2").map(text), ["How do whales navigate?", "Why do fireflies glow?"]);
+  assert.match(text(rendered.root), /3 of 12 journeys/);
+  assert.match(text(rendered.root), /2024/);
+  assert.doesNotMatch(text(rendered.root), /2030/);
+  assert.doesNotMatch(text(rendered.root), /Turns|Sources|Open|unclassified journey/);
 
-  const search = find(rendered.root, (element) => element.type === "input" && element.props.placeholder === "Title, question, or topic");
+  const search = find(rendered.root, (element) => element.type === "input" && element.props.placeholder === "First question or journey label");
   (search.props.onChange as (event: { target: { value: string } }) => void)({ target: { value: "Alpha" } });
   let root = rendered.rerender();
-  assert.deepEqual(elements(root).filter((element) => element.type === "h2").map(text), ["Alpha trail"]);
+  assert.deepEqual(elements(root).filter((element) => element.type === "h2").map(text), ["Why do fireflies glow?"]);
 
   const showHidden = find(root, (element) => element.type === "input" && element.props.type === "checkbox");
   (showHidden.props.onChange as (event: { target: { checked: boolean } }) => void)({ target: { checked: true } });
-  (find(root, (element) => element.type === "input" && element.props.placeholder === "Title, question, or topic").props.onChange as (event: { target: { value: string } }) => void)({ target: { value: "" } });
+  (find(root, (element) => element.type === "input" && element.props.placeholder === "First question or journey label").props.onChange as (event: { target: { value: string } }) => void)({ target: { value: "" } });
   root = rendered.rerender();
-  assert.deepEqual(elements(root).filter((element) => element.type === "h2").map(text), ["Beta trail", "Hidden trail", "Alpha trail"]);
+  assert.deepEqual(elements(root).filter((element) => element.type === "h2").map(text), ["How do whales navigate?", "Why do fireflies glow?", "Seed hidden"]);
 
-  const empty = renderLibrary([]);
-  const emptyStage = find(empty.root, (element) => element.props.label === "Start the first saved journey");
-  (emptyStage.props.onOpenLibrary as () => void)();
+  const empty = renderJourneys([]);
+  (find(empty.root, (element) => element.type === "button" && text(element).includes("Start a journey")).props.onClick as () => void)();
   assert.equal(empty.newCount, 1);
 });
 
-test("Library preserves resume, deletion, management, snapshot, and new-journey callbacks", () => {
-  const rendered = renderLibrary([journeySummary("alpha")]);
+test("JourneysView preserves map, deletion, label, pin, hide, snapshot, export, and new-journey controls", () => {
+  const rendered = renderJourneys([journeySummary("alpha")]);
   Object.defineProperty(globalThis, "window", { value: { prompt: () => "Renamed trail" }, configurable: true });
 
-  (find(rendered.root, (element) => element.type === "button" && text(element).trim().startsWith("Resume")).props.onClick as () => void)();
+  (find(rendered.root, (element) => element.type === "button" && text(element).trim().startsWith("Show Journey")).props.onClick as () => void)();
   (buttonByText(rendered.root, "Remove").props.onClick as () => void)();
   const root = rendered.rerender();
   (buttonByText(root, "Delete").props.onClick as () => void)();
-  (buttonByText(root, "Rename").props.onClick as () => void)();
+  (buttonByText(root, "Rename label").props.onClick as () => void)();
   (buttonByText(root, "Pin").props.onClick as () => void)();
   (buttonByText(root, "Hide").props.onClick as () => void)();
   (buttonByText(root, "Snapshot").props.onClick as () => void)();
-  (buttonByText(root, "New drive +").props.onClick as () => void)();
+  (buttonByText(root, "New journey").props.onClick as () => void)();
 
   assert.deepEqual(rendered.opened, ["alpha"]);
   assert.deepEqual(rendered.deleted, ["alpha"]);
@@ -264,58 +423,65 @@ test("Library preserves resume, deletion, management, snapshot, and new-journey 
   ]);
   assert.deepEqual(rendered.snapshots, ["alpha"]);
   assert.equal(rendered.newCount, 1);
+  assert.equal(find(root, (element) => element.type === "a" && element.props.href === "/api/journeys/alpha/export").props.href, "/api/journeys/alpha/export");
+  assert.doesNotMatch(text(root), /Resume|New drive/);
 });
 
-test("BookmarksView preserves saved-item ordering, collections, filters, counts, and empty states", () => {
+test("JourneysView confirms before stopping active background research", () => {
+  const activity: ResearchActivity = {
+    id: "research-active",
+    question: "Why do fireflies flash?",
+    performerId: "sage",
+    status: "researching",
+    phase: "finalizing",
+    journeyId: null,
+    error: null,
+    createdAt: Date.now(),
+    startedAt: Date.now(),
+    timeoutAt: Date.now() + 60_000,
+    completedAt: null,
+  };
+  const rendered = renderJourneys([], { activities: [activity] });
+
+  (find(rendered.root, (element) => element.type === "button" && element.props["aria-label"] === "Stop research").props.onClick as () => void)();
+  const confirmation = rendered.rerender();
+  assert.match(text(confirmation), /Stop this research\?/);
+  (buttonByText(confirmation, "Stop").props.onClick as () => void)();
+
+  assert.deepEqual(rendered.cancelled, [activity.id]);
+});
+
+test("BookmarksView contains only explicitly bookmarked questions", () => {
   const now = Date.now();
-  const alpha = journeySummary("alpha", { title: "Alpha trail", updatedAt: now - 2_000, pinned: true });
-  const beta = journeySummary("beta", { title: "Beta trail", updatedAt: now - 4_000 });
-  const hidden = journeySummary("hidden", { title: "Hidden trail", updatedAt: now - 1_000, hidden: true });
-  const bookmarkTime = now - 500;
-  hooks.setSlot(0, { alpha: bookmarkedDetail(alpha, "saved-turn") });
-  const rendered = renderBookmarks([alpha, beta, hidden], { "alpha::saved-turn": bookmarkTime });
+  const rendered = renderBookmarks([bookmark("alpha", { bookmarkedAt: now - 500 })]);
 
   assert.equal(find(rendered.root, (element) => element.type === "h1").props.id, "bookmarks-title");
-  assert.deepEqual(elements(rendered.root).filter((element) => element.type === "h3").map(text), [
-    "Saved question for alpha",
-    "Alpha trail",
-    "Beta trail",
-  ]);
-  assert.match(text(find(rendered.root, (element) => element.props["aria-label"] === "Bookmark summary")), /2 journeys1 questions/);
+  assert.deepEqual(elements(rendered.root).filter((element) => element.type === "h3").map(text), ["Saved question alpha"]);
+  assert.doesNotMatch(text(rendered.root), /Pinned journeys|Everything/);
+  assert.match(text(find(rendered.root, (element) => element.props["aria-label"] === "Bookmark summary")), /1 question/);
 
-  (buttonByText(rendered.root, "Pinned journeys1").props.onClick as () => void)();
-  let root = rendered.rerender();
-  assert.deepEqual(elements(root).filter((element) => element.type === "h3").map(text), ["Alpha trail"]);
-
-  (buttonByText(root, "Everything4").props.onClick as () => void)();
-  root = rendered.rerender();
-  const search = find(root, (element) => element.type === "input" && element.props.placeholder === "Search questions, journeys, or topics");
+  let root = rendered.root;
+  const search = find(root, (element) => element.type === "input" && element.props.placeholder === "Search saved questions or topics");
   (search.props.onChange as (event: { target: { value: string } }) => void)({ target: { value: "missing" } });
   root = rendered.rerender();
   assert.match(text(root), /Nothing tucked away here yet/);
   assert.match(text(root), /Try a broader search or clear a filter\./);
   (buttonByText(root, "Clear search").props.onClick as () => void)();
   root = rendered.rerender();
-  assert.equal(elements(root).filter((element) => element.type === "h3").length, 3);
+  assert.equal(elements(root).filter((element) => element.type === "h3").length, 1);
+
+  const empty = renderBookmarks([]);
+  assert.match(text(empty.root), /Saved topics and questions will appear here/);
 });
 
-test("BookmarksView preserves journey and question callback payloads", () => {
-  const alpha = journeySummary("alpha", { pinned: false, updatedAt: Date.now() - 1_000 });
-  hooks.setSlot(0, { alpha: bookmarkedDetail(alpha, "saved-turn") });
-  const rendered = renderBookmarks([alpha], { "alpha::saved-turn": Date.now() });
-  const rows = elements(rendered.root).filter((element) => typeof element.props.className === "string" && element.props.className.startsWith("bookmark-row "));
-  const questionRow = rows.find((row) => row.props.className === "bookmark-row question")!;
-  const journeyRow = rows.find((row) => row.props.className === "bookmark-row journey")!;
-
-  (buttonByText(questionRow, "Remove").props.onClick as () => void)();
-  (buttonByText(questionRow, "Open").props.onClick as () => void)();
-  (buttonByText(journeyRow, "Pin").props.onClick as () => void)();
-  (buttonByText(journeyRow, "Open").props.onClick as () => void)();
+test("BookmarksView preserves question callback payloads", () => {
+  const rendered = renderBookmarks([bookmark("alpha")]);
+  (buttonByText(rendered.root, "Remove").props.onClick as () => void)();
+  (buttonByText(rendered.root, "Open").props.onClick as () => void)();
   (buttonByText(rendered.root, "Explore something new").props.onClick as () => void)();
 
-  assert.deepEqual(rendered.toggled, [["alpha", "saved-turn"]]);
-  assert.deepEqual(rendered.opened, [["alpha", "saved-turn"], ["alpha", undefined]]);
-  assert.deepEqual(rendered.pinned, [["alpha", true]]);
+  assert.deepEqual(rendered.removed, ["turn-alpha"]);
+  assert.deepEqual(rendered.opened, [["journey-alpha", "turn-alpha"]]);
   assert.equal(rendered.newCount, 1);
 });
 
@@ -347,6 +513,7 @@ test("SettingsView preserves headings, identity messaging, actions, busy state, 
   assert.equal(find(guest.root, (element) => element.type === "h1").props.id, "settings-title");
   assert.match(text(guest.root), /Your preferencesSettingsTune how CuriosityPedia looks and answers\./);
   assert.match(text(guest.root), /Guest ExplorerGuest sessionSaved4 \/ 12PreferencesThis device/);
+  assert.doesNotMatch(text(guest.root), /Real-world visual evidence|Always on/);
   assert.equal(find(guest.root, (element) => element.type === "a").props.href, "/signin-with-chatgpt?return_to=%2Fsettings");
   assert.ok(elements(guest.root).some((element) => element.props.className === "art-dev-disclosure"));
 

@@ -85,8 +85,8 @@ function isUpdate(call) {
 test("journey management preserves validation before D1 access", async () => {
   const cases = [
     [null, "A valid request body is required."],
-    [{ title: "   " }, "Keep the journey title between 1 and 100 characters."],
-    [{ title: "x".repeat(101) }, "Keep the journey title between 1 and 100 characters."],
+    [{ title: "   " }, "Keep the journey label between 1 and 100 characters."],
+    [{ title: "x".repeat(101) }, "Keep the journey label between 1 and 100 characters."],
     [{ title: 42, pinned: "yes", hidden: null, ignored: true }, "Choose a journey setting to update."],
   ];
 

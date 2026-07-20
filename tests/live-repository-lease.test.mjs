@@ -8,6 +8,7 @@ import {
   commitLiveResearch,
   LIVE_RESEARCH_LEASE_MS,
   markLiveResearchFailed,
+  prepareBackgroundLiveResearch,
   prepareLiveResearch,
   renewLiveResearchLease,
 } from "../lib/live-repository.ts";
@@ -95,7 +96,6 @@ function createRequest(idempotencyKey, changes = {}) {
     modelId: "gpt-5.6-luna",
     researchPreset: "spark",
     answerDensity: "brief",
-    imagePreference: "avoid",
     outputLocale: "en",
     idempotencyKey,
     ...changes,
@@ -220,6 +220,8 @@ test("simultaneous ordinary acquisitions produce exactly one active owner", asyn
       prepareLiveResearch(viewer, createRequest("key-second")),
     ]);
     assert.equal(outcomes.filter(({ status }) => status === "fulfilled").length, 1);
+    const fulfilled = outcomes.find(({ status }) => status === "fulfilled");
+    assert.equal(fulfilled.value.prepared.imagePreference, "prefer");
     const rejected = outcomes.find(({ status }) => status === "rejected");
     assert.equal(rejected.reason.code, "ALREADY_IN_PROGRESS");
     assert.equal(
@@ -424,6 +426,99 @@ test("a current advance lease commits one complete child and updates the journey
       database.prepare("SELECT status FROM research_requests WHERE id = ?").get(prepared.requestId).status,
       "committed",
     );
+  } finally {
+    delete env.DB;
+  }
+});
+
+test("a child turn can be reserved as durable background research", async () => {
+  const database = migratedDatabase();
+  database.prepare(
+    `INSERT INTO journeys
+      (id, owner_identity_id, seed, title, performer_id, model_id, research_preset,
+       answer_density, image_preference, output_locale, current_turn_id, version)
+     VALUES ('journey-background-child', ?, 'Bird navigation', 'Bird navigation', 'sage',
+       'gpt-5.6-luna', 'spark', 'brief', 'prefer', 'en', 'turn-background-parent', 1)`,
+  ).run(viewer.identityId);
+  database.prepare(
+    `INSERT INTO turns (id, journey_id, question, status, topic_label, preferred_position)
+     VALUES ('turn-background-parent', 'journey-background-child',
+       'How do birds navigate?', 'ready', 'Navigation', 0)`,
+  ).run();
+  database.prepare(
+    `INSERT INTO turn_options (id, turn_id, set_version, position, question, angle, state)
+     VALUES
+       ('option-background-one', 'turn-background-parent', 0, 0,
+        'How does magnetic sensing work?', 'Mechanism', 'proposed'),
+       ('option-background-two', 'turn-background-parent', 0, 1,
+        'How do stars guide birds?', 'Observation', 'proposed')`,
+  ).run();
+  env.DB = new SQLiteD1(database);
+  try {
+    const result = await prepareBackgroundLiveResearch(viewer, {
+      kind: "advance",
+      journeyId: "journey-background-child",
+      fromTurnId: "turn-background-parent",
+      action: "choose",
+      optionId: "option-background-one",
+      expectedVersion: 1,
+      idempotencyKey: "key-background-child",
+    });
+    assert.equal(result.type, "ready");
+    assert.equal(result.prepared.kind, "advance");
+    assert.equal(result.prepared.journeyId, "journey-background-child");
+    assert.equal(result.prepared.fromTurnId, "turn-background-parent");
+    assert.equal(result.prepared.selectedOptionId, "option-background-one");
+    assert.deepEqual(
+      { ...database.prepare(
+        "SELECT kind, execution_mode, status FROM research_requests WHERE id = ?",
+      ).get(result.prepared.requestId) },
+      { kind: "advance", execution_mode: "background", status: "reserved" },
+    );
+  } finally {
+    delete env.DB;
+  }
+});
+
+test("a curiosity exploration commits a child in the same journey without a fake option", async () => {
+  const database = migratedDatabase();
+  database.prepare(
+    `INSERT INTO journeys
+      (id, owner_identity_id, seed, title, performer_id, model_id, research_preset,
+       answer_density, image_preference, output_locale, current_turn_id, version)
+     VALUES ('journey-curiosity', ?, 'Bird navigation', 'Bird navigation', 'sage',
+       'gpt-5.6-luna', 'spark', 'brief', 'prefer', 'en', 'turn-parent', 1)`,
+  ).run(viewer.identityId);
+  database.prepare(
+    `INSERT INTO turns (id, journey_id, question, status, topic_label, preferred_position)
+     VALUES ('turn-parent', 'journey-curiosity', 'How do birds navigate?', 'ready', 'Navigation', 0)`,
+  ).run();
+  const prepared = preparedRequest({
+    kind: "advance",
+    requestId: "request-curiosity-success",
+    idempotencyKey: "key-curiosity-success",
+    payloadHash: "hash-curiosity-success",
+    journeyId: "journey-curiosity",
+    fromTurnId: "turn-parent",
+    selectedOptionId: undefined,
+    action: "explore",
+    question: "Why do birds travel at night?",
+    expectedVersion: 1,
+    depth: 1,
+  });
+  insertResearchRequest(database, prepared);
+  env.DB = new SQLiteD1(database);
+  try {
+    const journey = await commitLiveResearch(viewer, prepared, draft());
+    assert.equal(journey.id, "journey-curiosity");
+    assert.equal(journey.turns.length, 2);
+    assert.equal(journey.turns[1].parentTurnId, "turn-parent");
+    assert.equal(journey.turns[1].question, "Why do birds travel at night?");
+    assert.deepEqual(
+      { ...database.prepare("SELECT kind, option_id FROM turn_actions").get() },
+      { kind: "explore", option_id: null },
+    );
+    assert.equal(count(database, "journey_edges"), 1);
   } finally {
     delete env.DB;
   }

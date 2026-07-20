@@ -39,6 +39,10 @@ type LivePreparation =
   | { type: "ready"; prepared: PreparedLiveResearch }
   | { type: "replay"; journey: JourneyDetail; requestId: string };
 
+export type BackgroundPreparation =
+  | { type: "ready"; prepared: PreparedLiveResearch }
+  | { type: "existing"; requestId: string };
+
 export async function prepareLiveResearch(
   viewer: ViewerContext,
   request: LiveResearchRequest,
@@ -90,7 +94,8 @@ export async function prepareLiveResearch(
   const activeLease = await db
     .prepare(
       `SELECT id, lease_expires_at FROM research_requests
-       WHERE identity_id = ? AND status IN ('reserved', 'researching')
+       WHERE identity_id = ? AND execution_mode = 'foreground'
+         AND status IN ('reserved', 'researching')
        ORDER BY started_at DESC LIMIT 1`,
     )
     .bind(viewer.identityId)
@@ -133,6 +138,7 @@ export async function prepareLiveResearch(
     topicTrail: [...normalized.topicTrail],
     journeyId: normalized.journeyId,
     fromTurnId: normalized.fromTurnId,
+    sourcePageUrl: normalized.sourcePageUrl,
     selectedOptionId: normalized.selectedOptionId,
     action: normalized.action,
     branched: normalized.branched,
@@ -183,7 +189,8 @@ export async function prepareLiveResearch(
          ) < ?
            AND NOT EXISTS (
              SELECT 1 FROM research_requests
-             WHERE identity_id = ? AND status IN ('reserved', 'researching')
+             WHERE identity_id = ? AND execution_mode = 'foreground'
+               AND status IN ('reserved', 'researching')
            )
            AND (? = 0 OR EXISTS (
              SELECT 1 FROM research_requests
@@ -246,6 +253,137 @@ export async function prepareLiveResearch(
     throw new RepositoryError(
       "LIVE_RESEARCH_LIMIT",
       `This ${viewer.mode === "guest" ? "guest" : "account"} has reached its ${liveLimit}-run live research limit for the last 24 hours.`,
+      429,
+      true,
+    );
+  }
+  return { type: "ready", prepared };
+}
+
+/** Reserves durable research without tying it to a browser connection. */
+export async function prepareBackgroundLiveResearch(
+  viewer: ViewerContext,
+  request: LiveResearchRequest,
+): Promise<BackgroundPreparation> {
+  if (!request || typeof request !== "object") {
+    throw new RepositoryError("BAD_REQUEST", "A live research configuration is required.", 400);
+  }
+  assertIdempotencyKey(request.idempotencyKey);
+  const db = getD1();
+  const normalized = await normalizeRequest(viewer, request);
+  const payloadHash = await hashPayload(normalized.payload);
+  const prior = await db.prepare(
+    `SELECT id, payload_hash FROM research_requests
+     WHERE identity_id = ? AND idempotency_key = ? LIMIT 1`,
+  ).bind(viewer.identityId, request.idempotencyKey).first<{
+    id: string;
+    payload_hash: string;
+  }>();
+  if (prior) {
+    if (prior.payload_hash !== payloadHash) {
+      throw new RepositoryError(
+        "IDEMPOTENCY_CONFLICT",
+        "That request key was already used for different research.",
+        409,
+      );
+    }
+    return { type: "existing", requestId: prior.id };
+  }
+
+  const now = await databaseNow(db);
+  const requestId = crypto.randomUUID();
+  const leaseToken = crypto.randomUUID();
+  const prepared: PreparedLiveResearch = {
+    requestId,
+    leaseToken,
+    identityId: viewer.identityId,
+    viewerMode: viewer.mode,
+    kind: request.kind,
+    question: normalized.question,
+    seed: normalized.seed,
+    depth: normalized.depth,
+    performerId: normalized.performerId,
+    modelId: normalized.modelId,
+    researchPreset: normalized.researchPreset,
+    answerDensity: normalized.answerDensity,
+    imagePreference: normalized.imagePreference,
+    outputLocale: normalized.outputLocale,
+    topicTrail: [...normalized.topicTrail],
+    journeyId: normalized.journeyId,
+    fromTurnId: normalized.fromTurnId,
+    sourcePageUrl: normalized.sourcePageUrl,
+    selectedOptionId: normalized.selectedOptionId,
+    action: normalized.action,
+    branched: normalized.branched,
+    expectedVersion: normalized.expectedVersion,
+    idempotencyKey: request.idempotencyKey,
+    payloadHash,
+  };
+  const result = await db.prepare(
+    `INSERT INTO research_requests
+      (id, identity_id, kind, idempotency_key, payload_hash, request_json,
+       execution_mode, status, created_at)
+     SELECT ?, ?, ?, ?, ?, ?, 'background', 'reserved', ?
+     WHERE (
+       SELECT COUNT(*) FROM research_requests
+       WHERE identity_id = ? AND execution_mode = 'background'
+         AND status IN ('reserved', 'researching')
+     ) < 5
+       AND (? = 'advance' OR (
+         (SELECT COUNT(*) FROM journeys WHERE owner_identity_id = ? AND deleted_at IS NULL)
+         + (SELECT COUNT(*) FROM research_requests
+            WHERE identity_id = ? AND execution_mode = 'background'
+              AND status IN ('reserved', 'researching'))
+       ) < ?)
+       AND (
+         SELECT COUNT(*) FROM research_requests
+         WHERE identity_id = ? AND created_at >= ?
+           AND status IN ('reserved', 'researching', 'committed')
+       ) < ?`,
+  ).bind(
+    requestId,
+    viewer.identityId,
+    request.kind,
+    request.idempotencyKey,
+    payloadHash,
+    JSON.stringify(prepared, (key, value) => key === "leaseToken" ? undefined : value),
+    now,
+    viewer.identityId,
+    request.kind,
+    viewer.identityId,
+    viewer.identityId,
+    viewer.journeyLimit,
+    viewer.identityId,
+    now - ROLLING_USAGE_WINDOW_MS,
+    liveResearchLimit(viewer.mode),
+  ).run();
+  if ((result.meta.changes ?? 0) === 0) {
+    const active = await db.prepare(
+      `SELECT COUNT(*) AS count FROM research_requests
+       WHERE identity_id = ? AND execution_mode = 'background'
+         AND status IN ('reserved', 'researching')`,
+    ).bind(viewer.identityId).first<{ count: number }>();
+    if ((active?.count ?? 0) >= 5) {
+      throw new RepositoryError(
+        "ALREADY_IN_PROGRESS",
+        "You can run up to five background research jobs at once.",
+        409,
+        true,
+      );
+    }
+    const saved = await db.prepare(
+      "SELECT COUNT(*) AS count FROM journeys WHERE owner_identity_id = ? AND deleted_at IS NULL",
+    ).bind(viewer.identityId).first<{ count: number }>();
+    if (request.kind === "create" && (saved?.count ?? 0) + (active?.count ?? 0) >= viewer.journeyLimit) {
+      throw new RepositoryError(
+        "JOURNEY_LIMIT",
+        `Your journey capacity is full (${saved?.count ?? 0}/${viewer.journeyLimit}). Delete one journey to make room.`,
+        409,
+      );
+    }
+    throw new RepositoryError(
+      "LIVE_RESEARCH_LIMIT",
+      `This ${viewer.mode === "guest" ? "guest" : "account"} has reached its live research limit for the last 24 hours.`,
       429,
       true,
     );
@@ -491,7 +629,7 @@ async function commitLiveAdvance(
   const fromTurnId = prepared.fromTurnId;
   const selectedOptionId = prepared.selectedOptionId;
   const expectedVersion = prepared.expectedVersion;
-  if (!journeyId || !fromTurnId || !selectedOptionId || expectedVersion === undefined) {
+  if (!journeyId || !fromTurnId || (prepared.action !== "explore" && !selectedOptionId) || expectedVersion === undefined) {
     throw new RepositoryError("INTERNAL_ERROR", "The live turn reservation was incomplete.", 500);
   }
   const db = getD1();
@@ -561,7 +699,7 @@ async function commitLiveAdvance(
          WHERE id = ? AND turn_id = ?
            AND EXISTS (SELECT 1 FROM turns WHERE id = ? AND journey_id = ?)`,
       )
-      .bind(selectedOptionId, fromTurnId, childId, journeyId),
+      .bind(selectedOptionId ?? null, fromTurnId, childId, journeyId),
     ...optionStatements(db, childId, 0, draft, {
       journeyId,
       persistedTurnId: childId,
@@ -585,11 +723,11 @@ async function commitLiveAdvance(
         journeyId,
         fromTurnId,
         prepared.action,
-        selectedOptionId,
+        selectedOptionId ?? null,
         prepared.idempotencyKey,
         prepared.payloadHash,
         childId,
-        JSON.stringify({ branched: prepared.branched, live: true }),
+        JSON.stringify({ branched: prepared.branched, live: true, question: prepared.question }),
         now,
         childId,
         journeyId,
@@ -605,7 +743,7 @@ async function commitLiveAdvance(
         crypto.randomUUID(),
         journeyId,
         fromTurnId,
-        selectedOptionId,
+        selectedOptionId ?? null,
         childId,
         actionId,
         prepared.action === "delegate" ? "delegated" : "chosen",
@@ -632,7 +770,7 @@ async function commitLiveAdvance(
         JSON.stringify({ remainsOpen: true }),
         now,
         fromTurnId,
-        selectedOptionId,
+        selectedOptionId ?? null,
         actionId,
         journeyId,
       ),
@@ -898,9 +1036,6 @@ async function normalizeRequest(viewer: ViewerContext, request: LiveResearchRequ
     if (!["brief", "balanced", "rich"].includes(request.answerDensity)) {
       throw new RepositoryError("BAD_REQUEST", "Choose a supported answer density.", 400);
     }
-    if (!["avoid", "when-useful", "prefer"].includes(request.imagePreference)) {
-      throw new RepositoryError("BAD_REQUEST", "Choose a supported factual-image preference.", 400);
-    }
     const outputLocale = normalizeLocale(request.outputLocale, "learning language");
     const count = await getD1()
       .prepare(
@@ -911,7 +1046,7 @@ async function normalizeRequest(viewer: ViewerContext, request: LiveResearchRequ
     if ((count?.count ?? 0) >= viewer.journeyLimit) {
       throw new RepositoryError(
         "JOURNEY_LIMIT",
-        `Your saved-journey library is full (${count?.count ?? viewer.journeyLimit}/${viewer.journeyLimit}). Delete one journey to make room.`,
+        `Your journey capacity is full (${count?.count ?? viewer.journeyLimit}/${viewer.journeyLimit}). Delete one journey to make room.`,
         409,
       );
     }
@@ -938,6 +1073,7 @@ async function normalizeRequest(viewer: ViewerContext, request: LiveResearchRequ
       topicTrail: [],
       journeyId: undefined,
       fromTurnId: undefined,
+      sourcePageUrl: undefined,
       selectedOptionId: undefined,
       action: undefined,
       branched: false,
@@ -949,8 +1085,8 @@ async function normalizeRequest(viewer: ViewerContext, request: LiveResearchRequ
   }
   assertId(request.journeyId, "journey");
   assertId(request.fromTurnId, "turn");
-  if (request.action !== "choose" && request.action !== "delegate") {
-    throw new RepositoryError("BAD_REQUEST", "Choose a path or delegate this turn.", 400);
+  if (request.action !== "choose" && request.action !== "delegate" && request.action !== "explore") {
+    throw new RepositoryError("BAD_REQUEST", "Choose, explore, or delegate this turn.", 400);
   }
   if (!Number.isInteger(request.expectedVersion) || request.expectedVersion < 1) {
     throw new RepositoryError("BAD_REQUEST", "A valid journey version is required.", 400);
@@ -973,7 +1109,47 @@ async function normalizeRequest(viewer: ViewerContext, request: LiveResearchRequ
     );
   }
   const fromTurn = journey.turns.find((turn) => turn.id === request.fromTurnId);
-  if (!fromTurn || fromTurn.options.length !== 2) {
+  if (!fromTurn) {
+    throw new RepositoryError("BAD_REQUEST", "Explore from a valid saved turn.", 400);
+  }
+  if (request.action === "explore") {
+    const question = normalizeSeed(request.question ?? "");
+    const sourcePageUrl = request.sourcePageUrl?.trim() ?? "";
+    if (!fromTurn.media.some((media) => media.sourcePageUrl === sourcePageUrl)) {
+      throw new RepositoryError("BAD_REQUEST", "Choose a question attached to this turn.", 400);
+    }
+    const topicTrail = ancestorTopicTrail(journey, fromTurn.id);
+    return {
+      payload: {
+        kind: request.kind,
+        journeyId: journey.id,
+        fromTurnId: fromTurn.id,
+        action: request.action,
+        modelId,
+        question,
+        sourcePageUrl,
+        expectedVersion: request.expectedVersion,
+      },
+      question,
+      seed: journey.seed,
+      depth: fromTurn.depth + 1,
+      performerId: journey.performerId,
+      modelId,
+      researchPreset: journey.researchPreset,
+      answerDensity: journey.answerDensity,
+      imagePreference: "prefer",
+      outputLocale: journey.outputLocale,
+      topicTrail,
+      journeyId: journey.id,
+      fromTurnId: fromTurn.id,
+      sourcePageUrl,
+      selectedOptionId: undefined,
+      action: request.action,
+      branched: fromTurn.id !== journey.currentTurnId,
+      expectedVersion: request.expectedVersion,
+    } as const;
+  }
+  if (fromTurn.options.length !== 2) {
     throw new RepositoryError("BAD_REQUEST", "Choose from a valid saved turn.", 400);
   }
   const selected =
@@ -1006,6 +1182,7 @@ async function normalizeRequest(viewer: ViewerContext, request: LiveResearchRequ
     topicTrail,
     journeyId: journey.id,
     fromTurnId: fromTurn.id,
+    sourcePageUrl: undefined,
     selectedOptionId: selected.id,
     action: request.action,
     branched: fromTurn.id !== journey.currentTurnId,

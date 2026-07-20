@@ -1,1 +1,5 @@
-export { default } from "@/app/routed-experience-page";
+import { redirect } from "next/navigation";
+
+export default function LegacyLibraryPage() {
+  redirect("/journeys");
+}

@@ -20,11 +20,11 @@ function RoutedExperienceFallback() {
       </header>
       <section className="loading-stage" aria-live="polite">
         <span className="loading-orbit" />
-        <p>Opening your CuriosityPedia library…</p>
+        <p>Opening your CuriosityPedia journeys…</p>
         <small>Resolving a durable guest identity</small>
       </section>
       <footer className="app-footer">
-        <p><span aria-hidden="true">W/V3</span> One performer. One researched turn. Exactly two ways forward.</p>
+        <p><span aria-hidden="true">W/V3</span> One personality. One researched turn. Exactly two ways forward.</p>
       </footer>
     </main>
   );

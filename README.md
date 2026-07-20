@@ -1,30 +1,34 @@
 # CuriosityPedia
 
-CuriosityPedia is a Vinext application that creates persistent, source-backed research journeys. Each completed turn stores an answer, its evidence, provider usage, and exactly two possible next questions.
+[![CI](https://github.com/Mister-JP/CuriosityPedia/actions/workflows/ci.yml/badge.svg)](https://github.com/Mister-JP/CuriosityPedia/actions/workflows/ci.yml)
+[![Live site](https://img.shields.io/badge/live-CuriosityPedia-111827)](https://curiositypedia.jigs.chatgpt.site)
+[![License: MIT](https://img.shields.io/badge/license-MIT-2563eb.svg)](LICENSE)
 
-Production: [CuriosityPedia](https://curiositypedia.jigs.chatgpt.site)
+CuriosityPedia turns one question into a persistent, source-backed path of discovery. Every researched turn preserves its answer, evidence, provider usage, and exactly two possible directions for what to explore next.
 
-## Runtime stack
+[Open CuriosityPedia](https://curiositypedia.jigs.chatgpt.site) · [Read the product principles](docs/curiosity-learning-north-star.md) · [Explore the architecture](docs/architecture.md)
+
+## What it does
+
+- Builds branching research journeys with citations and durable history.
+- Lets people revisit, search, map, bookmark, snapshot, export, and continue their learning.
+- Supports guest sessions and ChatGPT-authenticated identities without exposing provider credentials to the browser.
+- Uses background research status, usage controls, and failure-safe persistence for long-running provider work.
+- Serves an editor-managed discovery catalog for approachable starting questions.
+
+## Stack
 
 - TypeScript, React 19, Vinext, and the Next-compatible App Router
 - OpenAI Responses API for live research and structured output
 - Cloudflare D1 through the OpenAI Sites-managed `DB` binding
-- Drizzle ORM with SQL migrations in `drizzle/`
-- Sign in with ChatGPT identity headers, with temporary guest identities
-- GitHub Actions on `main`
+- Drizzle ORM with reviewed SQL migrations in `drizzle/`
+- GitHub Actions for repository validation
 
-The browser calls only application routes. Server routes perform authentication, validation, OpenAI requests, quota enforcement, and D1 persistence. Provider credentials are never sent to the browser.
+The browser talks only to application routes. Server routes own authentication, validation, OpenAI requests, quota enforcement, and persistence.
 
-See [docs/architecture.md](docs/architecture.md) for component boundaries, request flows, API routes, storage, and deployment behavior. See [docs/code-index.md](docs/code-index.md) for the generated local dependency map.
+## Run locally
 
-## Requirements
-
-- Node.js 22.13.0 or newer
-- npm
-- A D1-compatible database for persistence
-- `OPENAI_API_KEY` for live research; tests do not call the provider
-
-## Local setup
+Requirements: Node.js 22.13.0 or newer, npm, and a D1-compatible local database. An OpenAI API key is needed only for live research; the automated tests do not call the provider.
 
 ```bash
 npm ci
@@ -34,67 +38,61 @@ npm run dev
 
 The development server listens on `http://localhost:3000` by default.
 
-Server-side environment variables:
+### Environment variables
 
 | Variable | Required | Purpose |
 | --- | --- | --- |
 | `OPENAI_API_KEY` | Live mode only | Authenticates OpenAI Responses API calls. |
-| `CURIOSITYPEDIA_OPENAI_ENABLED` | No | Emergency switch for every OpenAI-backed operation. Set to `false` to disable provider calls; enabled by default. |
-| `CURIOSITYPEDIA_DAILY_BUDGET_USD` | No | Sets the rolling 24-hour project spend limit; default is `25`. |
+| `CURIOSITYPEDIA_OPENAI_ENABLED` | No | Disables every OpenAI-backed operation when set to `false`; enabled by default. |
+| `CURIOSITYPEDIA_DAILY_BUDGET_USD` | No | Sets the rolling 24-hour project spend limit; defaults to `25`. |
+| `EDITOR_API_KEY` | Editorial publishing only | Authorizes permanent discovery-catalog batches. |
 
-The other provider keys in `.env.example` are inactive placeholders. No corresponding adapters are enabled.
+Keep real values in ignored local environment files or Sites runtime configuration. Never expose a server value through a `NEXT_PUBLIC_` variable.
 
-## Database
+## Development
 
-`db/schema.ts` is the current Drizzle schema. `drizzle/` contains ordered migration history. The Sites project exposes D1 as the logical `DB` binding declared in `.openai/hosting.json`.
-
-Generate a migration after an intentional schema change:
-
-```bash
-npm run db:generate
-```
-
-Inspect generated SQL before committing it. Do not edit or reorder previously deployed migrations.
-
-## Validation
-
-Run the same checks used by CI:
+Run the same checks as CI:
 
 ```bash
 npm run architecture:check
 npm run lint
 npm run typecheck
+npm run audit
 npm test
 ```
 
-`npm test` performs a production build and runs rendered-output, routing, localization, repository-boundary, provider-adapter, usage, and research-contract tests.
+`npm test` includes a production build plus routing, rendered-output, localization, repository-boundary, provider, usage, bookmark, background-research, and persistence tests.
 
-When TypeScript or JavaScript modules are added, removed, or their local imports change, regenerate the dependency index:
+After adding, deleting, or changing local TypeScript or JavaScript imports, regenerate the dependency index:
 
 ```bash
 npm run architecture:update
 ```
 
-## Repository layout
+For schema changes, run `npm run db:generate`, inspect the SQL, and keep every previously deployed migration in order.
 
-| Path | Contents |
+## Repository map
+
+| Path | Purpose |
 | --- | --- |
-| `app/` | Pages, client transport, localization, authentication helper, and API routes |
+| `app/` | Pages, API routes, client transport, authentication, and interface code |
 | `lib/` | Domain contracts, repositories, OpenAI integration, validation, and usage policy |
 | `db/` | Current D1 schema and database binding helper |
-| `drizzle/` | Generated SQL migrations and migration metadata |
+| `drizzle/` | Ordered SQL migrations and migration metadata |
+| `editorial/` | Reviewed discovery-catalog source batches |
 | `tests/` | Build-level and module-level automated tests |
-| `scripts/` | Dependency-index generator |
+| `docs/architecture.md` | System boundaries, flows, storage, and deployment behavior |
+| `docs/code-index.md` | Generated local dependency map |
 | `.openai/hosting.json` | Sites project identifier and logical storage bindings |
-| `.github/workflows/ci.yml` | Validation workflow for pull requests and pushes to `main` |
+
+Generated builds, browser traces, screenshots, local databases, temporary research material, and environment files are intentionally excluded from source control.
 
 ## Deployment
 
-`main` is the GitHub default and production source branch. A release builds the exact `main` commit, packages the Vinext output with `.openai/hosting.json` and migrations, saves a Sites version, and deploys that version. Sites deployments are explicit; a GitHub push alone does not publish the site.
+OpenAI Sites builds and deploys this repository as a Cloudflare-compatible worker. A release packages the validated Vinext output, Sites metadata, and Drizzle migrations; pushing to GitHub alone does not publish production.
 
-## Policies
+## Contributing and security
 
-- [CONTRIBUTING.md](CONTRIBUTING.md)
-- [SECURITY.md](SECURITY.md)
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. Report security issues through the private process in [SECURITY.md](SECURITY.md), not a public issue.
 
-No open-source license is currently granted.
+CuriosityPedia is available under the [MIT License](LICENSE).

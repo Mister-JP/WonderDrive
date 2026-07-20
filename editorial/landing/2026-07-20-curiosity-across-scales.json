@@ -1,0 +1,225 @@
+{
+  "title": "Curiosity across scales — July 20, 2026",
+  "recommendations": [
+    {
+      "id": "mars-blue-sunset",
+      "category": "Space",
+      "question": "Why are sunsets blue on Mars?",
+      "teaser": "Fine Martian dust sends blue light forward near the setting Sun while the wider sky stays reddish.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/MarsSunset.jpg/1280px-MarsSunset.jpg",
+      "imageAlt": "A small pale Sun setting in a blue-gray glow above the Martian horizon",
+      "sourceLabel": "NASA/JPL-Caltech/ASU/MSSS",
+      "sourceUrl": "https://science.nasa.gov/photojournal/mastcam-zs-first-martian-sunset/",
+      "size": "wide"
+    },
+    {
+      "id": "hydrothermal-vent-life",
+      "category": "Nature",
+      "question": "How can an ecosystem live without sunlight?",
+      "teaser": "At deep-sea vents, microbes turn chemicals from Earth’s crust into energy that supports an entire food web.",
+      "imageUrl": "https://oceanexplorer.noaa.gov/wp-content/uploads/2021/10/may2-hires.jpg",
+      "imageAlt": "A dark hydrothermal vent chimney surrounded by shrimp and crabs on the seafloor",
+      "sourceLabel": "NOAA Ocean Exploration",
+      "sourceUrl": "https://oceanexplorer.noaa.gov/multimedia/edu-themes-vents-and-volcanoes-media-multimedia-chimney/",
+      "size": "tall"
+    },
+    {
+      "id": "axolotl-regeneration",
+      "category": "Nature",
+      "question": "How can an axolotl regrow a missing limb?",
+      "teaser": "Cells near the wound rebuild a developmental program, replacing bone, muscle, nerves, and skin in the right arrangement.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/2Axolotl.jpg/1280px-2Axolotl.jpg",
+      "imageAlt": "A pale axolotl underwater with feathery external gills",
+      "sourceLabel": "Nature",
+      "sourceUrl": "https://www.nature.com/articles/nature08152",
+      "size": "standard"
+    },
+    {
+      "id": "singing-sand",
+      "category": "Science",
+      "question": "Why can a sand dune sing?",
+      "teaser": "When very dry grains avalanche together, their motion can synchronize into a deep hum that carries across the desert.",
+      "imageUrl": "https://www.nps.gov/subjects/sound/images/GRSA_rippledDunes_jkw.jpg",
+      "imageAlt": "Wind-rippled golden sand rising into a high dune beneath blue sky",
+      "sourceLabel": "U.S. National Park Service",
+      "sourceUrl": "https://www.nps.gov/subjects/sound/singing-sands.htm",
+      "size": "wide"
+    },
+    {
+      "id": "snowflake-sixfold",
+      "category": "Science",
+      "question": "Why do snowflakes keep choosing six sides?",
+      "teaser": "Water molecules lock into a hexagonal crystal lattice while temperature and humidity sculpt each branching journey.",
+      "imageUrl": "https://www.nesdis.noaa.gov/s3/2025-09/snowflake-card.png",
+      "imageAlt": "Detailed photographs of several six-fold snow crystals",
+      "sourceLabel": "NOAA NESDIS",
+      "sourceUrl": "https://www.nesdis.noaa.gov/about/k-12-education/ice-snow/how-do-snowflakes-form",
+      "size": "standard"
+    },
+    {
+      "id": "glass-frog-transparency",
+      "category": "Nature",
+      "question": "How does a glass frog nearly disappear?",
+      "teaser": "While resting, it hides most red blood cells inside a reflective liver, making the rest of its body more transparent.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Glass_frog_-_Cibelle_de_Castro_Pedroso.jpg/1280px-Glass_frog_-_Cibelle_de_Castro_Pedroso.jpg",
+      "imageAlt": "A translucent green glass frog resting on a leaf",
+      "sourceLabel": "American Museum of Natural History",
+      "sourceUrl": "https://www.amnh.org/explore/news-blogs/glassfrogs-camouflage",
+      "size": "standard"
+    },
+    {
+      "id": "monarch-super-generation",
+      "category": "Nature",
+      "question": "How does one monarch generation fly so much farther?",
+      "teaser": "Late-summer monarchs delay reproduction, live months longer, and ride sun cues and rising air toward Mexico.",
+      "imageUrl": "https://www.fws.gov/sites/default/files/styles/facebook_1200x630/public/banner_images/2021-06/Monarch%20butterfly%20sumac.jpg?h=0eca74ac&itok=5QaGM_IA",
+      "imageAlt": "An orange-and-black monarch butterfly feeding on clustered flowers",
+      "sourceLabel": "U.S. Fish & Wildlife Service",
+      "sourceUrl": "https://www.fws.gov/story/phenomenal-monarch-migration",
+      "size": "standard"
+    },
+    {
+      "id": "mangrove-salt",
+      "category": "Nature",
+      "question": "How can a tree drink seawater without drying out?",
+      "teaser": "Mangroves exclude much of the salt at their roots or push it through leaves while aerial roots gather oxygen.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Mangrove_roots%2C_Havelock_Island%2C_Andamans.jpg/1280px-Mangrove_roots%2C_Havelock_Island%2C_Andamans.jpg",
+      "imageAlt": "A dense stand of mangrove trunks and arching roots at the waterline",
+      "sourceLabel": "Smithsonian Ocean",
+      "sourceUrl": "https://ocean.si.edu/ocean-life/plants-algae/mangroves",
+      "size": "tall"
+    },
+    {
+      "id": "inca-quipu",
+      "category": "Culture",
+      "question": "How can knots hold an empire’s information?",
+      "teaser": "Cord color, position, twist, and carefully placed knots let Inka record keepers organize quantities and perhaps more.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Inca._Quipu.jpg/1280px-Inca._Quipu.jpg",
+      "imageAlt": "A historic quipu with many knotted cords hanging from a main cord",
+      "sourceLabel": "Library of Congress",
+      "sourceUrl": "https://blogs.loc.gov/maps/2021/09/a-book-tied-up-in-knots/",
+      "size": "standard"
+    },
+    {
+      "id": "nazca-lines",
+      "category": "History",
+      "question": "Why have the Nazca Lines survived for centuries?",
+      "teaser": "Builders exposed lighter ground beneath dark stones, and the desert’s extreme dryness preserved the enormous designs.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/L%C3%ADneas_de_Nazca%2C_Nazca%2C_Per%C3%BA%2C_2015-07-29%2C_DD_52.JPG/1280px-L%C3%ADneas_de_Nazca%2C_Nazca%2C_Per%C3%BA%2C_2015-07-29%2C_DD_52.JPG",
+      "imageAlt": "Aerial view of a large animal-shaped Nazca geoglyph across pale desert ground",
+      "sourceLabel": "UNESCO World Heritage Centre",
+      "sourceUrl": "https://whc.unesco.org/en/list/700/",
+      "size": "wide"
+    },
+    {
+      "id": "roman-dodecahedron",
+      "category": "History",
+      "question": "What were Roman dodecahedrons actually for?",
+      "teaser": "Dozens survive with twelve pierced faces and corner knobs, yet no Roman text explains how people used them.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Ancient_Roman_dodecahedron%2C_Gallo-Roman_Museum_of_Tongeren%2C_Belgium_%2827543850102%29.jpg/1280px-Ancient_Roman_dodecahedron%2C_Gallo-Roman_Museum_of_Tongeren%2C_Belgium_%2827543850102%29.jpg",
+      "imageAlt": "A small hollow bronze Roman dodecahedron with circular openings and rounded knobs",
+      "sourceLabel": "Gallo-Roman Museum · Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ancient_Roman_dodecahedron,_Gallo-Roman_Museum_of_Tongeren,_Belgium_(27543850102).jpg",
+      "size": "compact"
+    },
+    {
+      "id": "sutton-hoo-imprint",
+      "category": "History",
+      "question": "How can soil preserve a ship that vanished?",
+      "teaser": "At Sutton Hoo, acidic earth consumed the timber but retained its outline, rivets, and a chamber filled with evidence.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Time_Team_excavation_at_Sutton_Hoo_-_geograph.org.uk_-_7806214.jpg/1280px-Time_Team_excavation_at_Sutton_Hoo_-_geograph.org.uk_-_7806214.jpg",
+      "imageAlt": "Archaeologists working within the long curved outline of a ship burial at Sutton Hoo",
+      "sourceLabel": "British Museum",
+      "sourceUrl": "https://www.britishmuseum.org/collection/death-and-memory/anglo-saxon-ship-burial-sutton-hoo",
+      "size": "wide"
+    },
+    {
+      "id": "submarine-cables",
+      "category": "Systems",
+      "question": "How does the internet cross an ocean?",
+      "teaser": "Hair-thin optical fibers inside armored cables carry pulses between coastal landing stations and onward across continents.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/8/89/Submarine_cable_map_umap.png",
+      "imageAlt": "World map covered by routes of submarine communications cables",
+      "sourceLabel": "Submarine Cable Map · Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Submarine_cable_map_umap.png",
+      "size": "wide"
+    },
+    {
+      "id": "maeslant-barrier",
+      "category": "Systems",
+      "question": "How can two floating gates stop a storm surge?",
+      "teaser": "The Maeslant Barrier swings hollow arms across a waterway, fills them, and sinks them into a temporary wall.",
+      "imageUrl": "https://rijkswaterstaat.imgix.net/maeslant-barrier_tcm26-329679.jpg?crop=entropy&w=1200&h=630",
+      "imageAlt": "The enormous white arms and circular joints of the Maeslant storm surge barrier",
+      "sourceLabel": "Rijkswaterstaat",
+      "sourceUrl": "https://www.rijkswaterstaat.nl/en/projects/iconic-structures/maeslant-barrier",
+      "size": "wide"
+    },
+    {
+      "id": "termite-mound-airflow",
+      "category": "Systems",
+      "question": "Why do termite mounds need so many tunnels?",
+      "teaser": "A porous network responds to wind, heat, and colony metabolism, moving respiratory gases through a crowded underground home.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Namibia_Kalahari_Desert_Termite_Mound.jpg/1280px-Namibia_Kalahari_Desert_Termite_Mound.jpg",
+      "imageAlt": "A tall sculpted termite mound rising from dry Kalahari grassland",
+      "sourceLabel": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Namibia_Kalahari_Desert_Termite_Mound.jpg",
+      "size": "tall"
+    },
+    {
+      "id": "phantom-traffic-jam",
+      "category": "Systems",
+      "question": "How can a traffic jam begin without a crash?",
+      "teaser": "Tiny braking differences can amplify backward through dense traffic until a moving wave of stopping appears from nowhere.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Traffic_Jam_on_Pyramid_Highway%2C_Sparks%2C_Nevada_%2815702680485%29.jpg/1280px-Traffic_Jam_on_Pyramid_Highway%2C_Sparks%2C_Nevada_%2815702680485%29.jpg",
+      "imageAlt": "Aerial view of tightly packed vehicles slowing along a divided highway",
+      "sourceLabel": "NSF Public Access Repository",
+      "sourceUrl": "https://par.nsf.gov/servlets/purl/10258123",
+      "size": "standard"
+    },
+    {
+      "id": "shape-memory-metal",
+      "category": "Technology",
+      "question": "How can a bent metal remember its old shape?",
+      "teaser": "Heating a shape-memory alloy switches its crystal structure, pulling the metal back toward a form set earlier.",
+      "imageUrl": "https://www.nasa.gov/wp-content/uploads/2025/06/othmanebenafansurprisinglystem.png",
+      "imageAlt": "NASA materials engineer Othmane Benafan demonstrating shape-memory metal",
+      "sourceLabel": "NASA",
+      "sourceUrl": "https://www.nasa.gov/learning-resources/career-exploration-using-ingenuity-and-innovation-to-create-memory-metals/",
+      "size": "standard"
+    },
+    {
+      "id": "webb-origami",
+      "category": "Technology",
+      "question": "How did a giant telescope fit inside a rocket?",
+      "teaser": "Webb folded its segmented mirror and layered sunshield for launch, then completed a precise month-long unfolding in space.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/James_Webb_Space_Telescope_Wings_Arrive_for_Testing_at_Marshall.jpg/1280px-James_Webb_Space_Telescope_Wings_Arrive_for_Testing_at_Marshall.jpg",
+      "imageAlt": "The James Webb Space Telescope shown folded and unfolded like an origami structure",
+      "sourceLabel": "NASA Webb",
+      "sourceUrl": "https://science.nasa.gov/mission/webb/webb-and-origami/",
+      "size": "wide"
+    },
+    {
+      "id": "pointillist-color",
+      "category": "Art",
+      "question": "Can your eyes mix colors the painter never mixed?",
+      "teaser": "Pointillists placed separate dots of contrasting pigment so distance and vision could fuse them into luminous color.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/A_Sunday_on_La_Grande_Jatte%2C_Georges_Seurat%2C_1884.jpg/1280px-A_Sunday_on_La_Grande_Jatte%2C_Georges_Seurat%2C_1884.jpg",
+      "imageAlt": "Georges Seurat’s pointillist painting of people relaxing beside the Seine",
+      "sourceLabel": "The Metropolitan Museum of Art",
+      "sourceUrl": "https://www.metmuseum.org/pt/perspectives/metkids-microscope-can-art-trick-minds",
+      "size": "wide"
+    },
+    {
+      "id": "m87-black-hole",
+      "category": "Space",
+      "question": "How did Earth become one giant telescope?",
+      "teaser": "Observatories synchronized with atomic clocks, then combined radio data to resolve a black hole’s distant shadow.",
+      "imageUrl": "https://cdn.eso.org/images/screen/eso1907a.jpg",
+      "imageAlt": "The bright orange ring and dark central shadow of the M87 black hole",
+      "sourceLabel": "Event Horizon Telescope / ESO",
+      "sourceUrl": "https://www.eso.org/public/images/eso1907a/",
+      "size": "standard"
+    }
+  ]
+}
