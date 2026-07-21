@@ -38,7 +38,7 @@ test("models the current policy for 50 guest and ChatGPT users without a paid-us
     assert.deepEqual(policy.allowedModelIds, liveModelIds);
     assert.ok(liveModelIds.every((modelId) => isModelAllowed(user.mode, modelId)));
     assert.equal(policy.liveResearchLimit, guest ? 25 : 100);
-    assert.equal(policy.identitySpendLimitUsd, guest ? 1 : 5);
+    assert.equal(policy.identitySpendLimitUsd, guest ? 3 : 15);
     assert.equal(policy.journeyLimit, guest ? 50 : 25);
     assert.equal(liveResearchLimit(user.mode), policy.liveResearchLimit);
     assert.equal(identitySpendLimitUsd(user.mode), policy.identitySpendLimitUsd);
@@ -93,7 +93,7 @@ test("maps rolling guest usage to exact slot-return times", () => {
   assert.equal(summary.spend.usedUsd, 0.25);
   assert.equal(summary.spend.heldUsd, 0.1);
   assert.equal(summary.spend.accountedUsd, 0.35);
-  assert.equal(summary.spend.remainingUsd, 0.65);
+  assert.equal(summary.spend.remainingUsd, 2.65);
   assert.equal(summary.spend.nextReleaseAt, now + 12 * HOUR);
   assert.deepEqual(summary.library, { used: 4, limit: 50, remaining: 46 });
 });

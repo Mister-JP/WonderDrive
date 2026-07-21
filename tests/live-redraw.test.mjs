@@ -42,7 +42,7 @@ test("sends the note as learnerDirection and explains the adventure scale", () =
 
 test("keeps enough output allowance for reasoning and structured redraw output", () => {
   assert.equal(OPENAI_PROMPT_LIMITS.questionRedraw.reasoning, "high");
-  assert.equal(OPENAI_PROMPT_LIMITS.questionRedraw.maxOutputTokens, 4_000);
+  assert.equal(OPENAI_PROMPT_LIMITS.questionRedraw.maxOutputTokens, 8_000);
 });
 
 test("recognizes incomplete Responses API output across prompt paths", () => {
@@ -62,12 +62,12 @@ test("recognizes incomplete Responses API output across prompt paths", () => {
 
 test("allocates scaled reasoning and output budgets to every prompt path", () => {
   assert.deepEqual(OPENAI_PROMPT_LIMITS.liveResearch, {
-    spark: { maxToolCalls: 3, maxOutputTokens: 10_000, reasoning: "low", timeoutMs: 60_000 },
-    standard: { maxToolCalls: 8, maxOutputTokens: 18_000, reasoning: "medium", timeoutMs: 150_000 },
-    deep: { maxToolCalls: 12, maxOutputTokens: 26_000, reasoning: "high", timeoutMs: 180_000 },
+    spark: { maxToolCalls: 8, maxOutputTokens: 20_000, reasoning: "high", timeoutMs: 180_000 },
+    standard: { maxToolCalls: 12, maxOutputTokens: 30_000, reasoning: "high", timeoutMs: 240_000 },
+    deep: { maxToolCalls: 16, maxOutputTokens: 40_000, reasoning: "high", timeoutMs: 300_000 },
   });
-  assert.deepEqual(OPENAI_PROMPT_LIMITS.starterGeneration, { maxOutputTokens: 6_000, reasoning: "high" });
-  assert.deepEqual(OPENAI_PROMPT_LIMITS.imageNoteRepair, { maxOutputTokens: 3_000, reasoning: "medium", timeoutMs: 30_000 });
-  assert.deepEqual(OPENAI_PROMPT_LIMITS.citationRepair, { maxOutputTokens: 2_000, reasoning: "medium", timeoutMs: 30_000 });
-  assert.deepEqual(OPENAI_PROMPT_LIMITS.citationRecovery, { maxOutputTokens: 6_000, reasoning: "high", timeoutMs: 60_000 });
+  assert.deepEqual(OPENAI_PROMPT_LIMITS.starterGeneration, { maxOutputTokens: 10_000, reasoning: "high" });
+  assert.deepEqual(OPENAI_PROMPT_LIMITS.imageNoteRepair, { maxOutputTokens: 6_000, reasoning: "high", timeoutMs: 60_000 });
+  assert.deepEqual(OPENAI_PROMPT_LIMITS.citationRepair, { maxOutputTokens: 5_000, reasoning: "high", timeoutMs: 60_000 });
+  assert.deepEqual(OPENAI_PROMPT_LIMITS.citationRecovery, { maxOutputTokens: 10_000, reasoning: "high", timeoutMs: 90_000 });
 });

@@ -23,6 +23,7 @@ import {
   responseIncompleteReason,
   structuredOutput,
 } from "./openai";
+import { OPENAI_IMAGE_SEARCH_MAX_RESULTS } from "./research-config";
 import { recordOpenAIUsage } from "./provider-usage";
 import { reserveProviderCost } from "./provider-cost-control";
 import { localeName } from "./i18n";
@@ -218,7 +219,7 @@ export function liveResearchRequestBody(
       : {
           type: "web_search",
           search_content_types: ["image", "text"],
-          image_settings: { max_results: 10, caption: true },
+          image_settings: { max_results: OPENAI_IMAGE_SEARCH_MAX_RESULTS, caption: true },
         }],
     tool_choice: "auto",
     include: prepared.imagePreference === "avoid"

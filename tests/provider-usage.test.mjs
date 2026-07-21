@@ -80,3 +80,37 @@ test("provider usage persists purpose, outcome, dimensions, and safe metadata", 
     delete env.DB;
   }
 });
+
+test("releases a reservation when the provider rejects the HTTP request before model work", async () => {
+  const writes = [];
+  env.DB = {
+    prepare(sql) {
+      let values = [];
+      return {
+        bind(...input) { values = input; return this; },
+        async run() {
+          writes.push({ statement: sql, values });
+          return { success: true, meta: { changes: 1 } };
+        },
+      };
+    },
+  };
+  try {
+    await recordOpenAIUsage({
+      identityId: "identity-rejected",
+      modelId: "gpt-5.6-luna",
+      operation: "live_research",
+      purpose: "primary_research",
+      outcome: "http_error",
+      costReservationId: "reservation-rejected",
+      providerRequestId: "req_rejected",
+      httpStatus: 403,
+      latencyMs: 25,
+    });
+    assert.match(writes[0].statement, /status = 'released'/);
+    assert.equal(writes[0].values[1], "reservation-rejected");
+    assert.match(writes[1].statement, /INSERT INTO provider_usage_events/);
+  } finally {
+    delete env.DB;
+  }
+});

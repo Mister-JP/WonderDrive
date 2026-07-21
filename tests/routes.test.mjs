@@ -74,3 +74,17 @@ test("the page-flip atlas leaves the final media page readable until the user co
   assert.match(source, /activePanel === panelCount - 1 \? "Continue to the knowledge questions"/);
   assert.match(source, /knowledgeDeclarationOpen \? setKnowledgeDeclarationOpen\(false\)/);
 });
+
+test("retrying a question preserves its lead image on the research loading page", async () => {
+  const source = await readFile(new URL("../app/curiositypedia-experience.tsx", import.meta.url), "utf8");
+  const retryStart = source.indexOf("async function retryActiveQuestion()");
+  const retryEnd = source.indexOf("async function takeOverResearch()", retryStart);
+  const retrySource = source.slice(retryStart, retryEnd);
+
+  assert.ok(retryStart >= 0);
+  assert.ok(retryEnd > retryStart);
+  assert.match(retrySource, /const previewMedia = activeTurn\.media\[0\]/);
+  assert.match(retrySource, /preview: previewMedia \? \{/);
+  assert.match(retrySource, /imageUrl: previewMedia\.imageUrl/);
+  assert.match(retrySource, /sourceUrl: previewMedia\.sourcePageUrl/);
+});

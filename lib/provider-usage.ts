@@ -4,6 +4,7 @@ import type { ModelId } from "./contracts";
 import { isRecord } from "./openai";
 import {
   markProviderCostUncertain,
+  releaseProviderCost,
   settleProviderCost,
 } from "./provider-cost-control";
 import type { ProviderCostOperation } from "./provider-cost-control";
@@ -97,6 +98,10 @@ export async function recordOpenAIUsage(input: RecordProviderUsageInput): Promis
           Math.round(usage.estimatedCostUsd * 1_000_000),
           input.providerRequestId ?? usage.providerResponseId,
         );
+      } else if (input.outcome === "http_error") {
+        // A rejected HTTP request never started model work, so it must not
+        // retain a full model-priced hold or poison automatic retries.
+        await releaseProviderCost(input.costReservationId);
       } else {
         await markProviderCostUncertain(input.costReservationId, input.providerRequestId);
       }

@@ -1,5 +1,6 @@
 import { env } from "cloudflare:workers";
 import { RepositoryError } from "./errors";
+export { OPENAI_PROMPT_LIMITS } from "./research-config";
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace -- Cloudflare augments this namespace.
@@ -12,20 +13,6 @@ declare global {
 }
 
 const RESPONSES_URL = "https://api.openai.com/v1/responses";
-
-export const OPENAI_PROMPT_LIMITS = {
-  liveResearch: {
-    spark: { maxToolCalls: 3, maxOutputTokens: 10_000, reasoning: "low", timeoutMs: 60_000 },
-    standard: { maxToolCalls: 8, maxOutputTokens: 18_000, reasoning: "medium", timeoutMs: 150_000 },
-    deep: { maxToolCalls: 12, maxOutputTokens: 26_000, reasoning: "high", timeoutMs: 180_000 },
-  },
-  starterGeneration: { maxOutputTokens: 6_000, reasoning: "high" },
-  questionRedraw: { maxOutputTokens: 4_000, reasoning: "high" },
-  visualCuration: { maxToolCalls: 12, maxOutputTokens: 14_000, reasoning: "medium", timeoutMs: 120_000 },
-  imageNoteRepair: { maxOutputTokens: 3_000, reasoning: "medium", timeoutMs: 30_000 },
-  citationRepair: { maxOutputTokens: 2_000, reasoning: "medium", timeoutMs: 30_000 },
-  citationRecovery: { maxOutputTokens: 6_000, reasoning: "high", timeoutMs: 60_000 },
-} as const;
 
 export function openAIConfigured(): boolean {
   return openAIEnabled() && Boolean(env.OPENAI_API_KEY?.trim());

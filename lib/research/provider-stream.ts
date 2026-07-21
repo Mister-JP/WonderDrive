@@ -113,6 +113,10 @@ export async function runProviderStream({
     providerRequestId = response.headers.get("x-request-id");
 
     if (!response.ok) {
+      const retryable = response.status === 408
+        || response.status === 409
+        || response.status === 429
+        || response.status >= 500;
       usageRecorded = true;
       await recordOutcome({
         ...usageContext,
@@ -132,11 +136,15 @@ export async function runProviderStream({
         response.status === 401 || response.status === 403
           ? "PROVIDER_UNAVAILABLE"
           : "PROVIDER_ERROR",
-        response.status === 429
-          ? "Live research is busy or has reached its provider limit. Please try again shortly."
-          : "Live research could not reach the provider. The journey was not committed; it is safe to retry.",
+        response.status === 401 || response.status === 403
+          ? "This deployment cannot access the selected OpenAI model. Choose another model or verify the production OpenAI project access."
+          : response.status === 429
+            ? "Live research is busy or has reached its provider limit. Please try again shortly."
+            : retryable
+              ? "Live research could not reach the provider. The journey was not committed; it is safe to retry."
+              : "The provider rejected this research request. Verify the selected model and shared generation configuration.",
         response.status === 429 ? 429 : 502,
-        true,
+        retryable,
       );
     }
 

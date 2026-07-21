@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { env } from "cloudflare:workers";
-import { PERFORMERS } from "../lib/catalog.ts";
-import { runLiveResearch } from "../lib/live-research.ts";
+import { MODELS, PERFORMERS } from "../lib/catalog.ts";
+import { liveResearchRequestBody, runLiveResearch } from "../lib/live-research.ts";
 import {
   TURN_SCHEMA,
   buildInstructions,
@@ -40,6 +40,21 @@ function preparedResearch(overrides = {}) {
     ...overrides,
   };
 }
+
+test("freezes one standard request configuration across every live model", () => {
+  const liveModels = MODELS.filter((model) => model.mode === "live");
+  const bodies = liveModels.map((model) => liveResearchRequestBody(preparedResearch({
+    modelId: model.id,
+    imagePreference: "prefer",
+  })));
+  const canonical = { ...bodies[0], model: "<model>" };
+  for (const body of bodies) {
+    assert.deepEqual({ ...body, model: "<model>" }, canonical);
+    assert.deepEqual(body.reasoning, { effort: "high" });
+    assert.equal(body.max_output_tokens, 30_000);
+    assert.equal(body.max_tool_calls, 12);
+  }
+});
 
 test("lease ownership is checked before the first provider attempt", async () => {
   let providerCalls = 0;
@@ -934,14 +949,22 @@ test("records exactly one usage outcome for HTTP, missing-body, and missing-term
     {
       response: () => new Response("rejected", { status: 429 }),
       code: "PROVIDER_ERROR",
+      retryable: true,
+    },
+    {
+      response: () => new Response("rejected", { status: 403 }),
+      code: "PROVIDER_UNAVAILABLE",
+      retryable: false,
     },
     {
       response: () => new Response(null, { status: 200 }),
       code: "PROVIDER_ERROR",
+      retryable: true,
     },
     {
       response: () => new Response("data: [DONE]\n\n", { status: 200 }),
       code: "PROVIDER_ERROR",
+      retryable: true,
     },
   ];
   try {
@@ -950,7 +973,7 @@ test("records exactly one usage outcome for HTTP, missing-body, and missing-term
       globalThis.fetch = async () => item.response();
       await assert.rejects(
         () => runLiveResearch(preparedResearch({ requestId: `request-terminal-${index}` }), () => {}),
-        (error) => error?.code === item.code,
+        (error) => error?.code === item.code && error?.retryable === item.retryable,
       );
       assert.equal(writes(), 1);
     }
@@ -1139,8 +1162,8 @@ test("runs exactly one no-search repair after an initial citation mismatch", asy
       "web_search_call.results",
     ]);
     assert.equal(requests[0].tool_choice, "auto");
-    assert.equal(requests[0].max_output_tokens, 18_000);
-    assert.deepEqual(requests[0].reasoning, { effort: "medium" });
+    assert.equal(requests[0].max_output_tokens, 30_000);
+    assert.deepEqual(requests[0].reasoning, { effort: "high" });
     assert.deepEqual(requests[0].text, {
       format: {
         type: "json_schema",
@@ -1154,8 +1177,8 @@ test("runs exactly one no-search repair after an initial citation mismatch", asy
     assert.equal(requests[0].store, false);
     assert.equal(requests[0].stream, true);
     assert.equal(requests[1].tools, undefined);
-    assert.equal(requests[1].max_output_tokens, 2_000);
-    assert.deepEqual(requests[1].reasoning, { effort: "medium" });
+    assert.equal(requests[1].max_output_tokens, 5_000);
+    assert.deepEqual(requests[1].reasoning, { effort: "high" });
     assert.equal(draft.answerBlocks[0].sourceIds.length, 1);
     assert.equal(draft.usage.inputTokens, 120);
     assert.equal(draft.usage.outputTokens, 60);
@@ -1258,10 +1281,10 @@ test("recovers an unsupported block with a targeted web search", async () => {
 
     assert.equal(requests.length, 3);
     assert.equal(requests[1].tools, undefined);
-    assert.equal(requests[1].max_output_tokens, 2_000);
-    assert.deepEqual(requests[1].reasoning, { effort: "medium" });
+    assert.equal(requests[1].max_output_tokens, 5_000);
+    assert.deepEqual(requests[1].reasoning, { effort: "high" });
     assert.deepEqual(requests[2].tools, [{ type: "web_search" }]);
-    assert.equal(requests[2].max_output_tokens, 6_000);
+    assert.equal(requests[2].max_output_tokens, 10_000);
     assert.deepEqual(requests[2].reasoning, { effort: "high" });
     assert.equal(draft.answerBlocks[0].text, recoveredText);
     assert.ok(draft.sources.some((source) => source.url === "https://recovery.example.edu/finding"));

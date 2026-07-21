@@ -729,6 +729,7 @@ export function CuriosityPediaExperience() {
 
   async function retryActiveQuestion() {
     if (!activeJourney || !activeTurn) return;
+    const previewMedia = activeTurn.media[0];
     await create({
       seed: activeTurn.question,
       performerId: nextPerformerId ?? activeJourney.performerId,
@@ -736,6 +737,14 @@ export function CuriosityPediaExperience() {
       researchPreset: "standard",
       answerDensity: preferences.answerDensity,
       outputLocale: preferences.defaultOutputLocale,
+      preview: previewMedia ? {
+        question: activeTurn.question,
+        teaser: previewMedia.caption,
+        imageUrl: previewMedia.imageUrl,
+        imageAlt: previewMedia.alt,
+        sourceLabel: previewMedia.title ?? activeTurn.topicLabel,
+        sourceUrl: previewMedia.sourcePageUrl,
+      } : undefined,
     });
   }
 

@@ -7,6 +7,7 @@ import type {
   PresetConfig,
   UserPreferences,
 } from "./contracts";
+import { OPENAI_PROMPT_LIMITS } from "./research-config";
 
 export const PROMPT_VERSION = "wonder-research-turn@4.1.0";
 
@@ -188,33 +189,33 @@ export const PRESETS: PresetConfig[] = [
     name: "Spark",
     description: "A quick sourced orientation for simple or stable curiosity.",
     sourceRange: "2–4 useful sources",
-    waitBand: "about 25 seconds",
+    waitBand: "up to 180 seconds",
     costBand: "lowest live cost",
-    maxToolCalls: 2,
-    maxOutputTokens: 4000,
-    deadlineMs: 25_000,
+    maxToolCalls: OPENAI_PROMPT_LIMITS.liveResearch.spark.maxToolCalls,
+    maxOutputTokens: OPENAI_PROMPT_LIMITS.liveResearch.spark.maxOutputTokens,
+    deadlineMs: OPENAI_PROMPT_LIMITS.liveResearch.spark.timeoutMs,
   },
   {
     id: "standard",
     name: "Standard",
     description: "Enough homework for a thoughtful, balanced performance.",
     sourceRange: "3–8 useful sources",
-    waitBand: "about 60 seconds",
+    waitBand: "up to 240 seconds",
     costBand: "balanced live cost",
-    maxToolCalls: 5,
-    maxOutputTokens: 8000,
-    deadlineMs: 60_000,
+    maxToolCalls: OPENAI_PROMPT_LIMITS.liveResearch.standard.maxToolCalls,
+    maxOutputTokens: OPENAI_PROMPT_LIMITS.liveResearch.standard.maxOutputTokens,
+    deadlineMs: OPENAI_PROMPT_LIMITS.liveResearch.standard.timeoutMs,
   },
   {
     id: "deep",
     name: "Deep",
     description: "Broader evidence for niche, current, or contested questions.",
     sourceRange: "6–15 useful sources",
-    waitBand: "up to 120 seconds",
+    waitBand: "up to 300 seconds",
     costBand: "highest live cost",
-    maxToolCalls: 10,
-    maxOutputTokens: 16000,
-    deadlineMs: 120_000,
+    maxToolCalls: OPENAI_PROMPT_LIMITS.liveResearch.deep.maxToolCalls,
+    maxOutputTokens: OPENAI_PROMPT_LIMITS.liveResearch.deep.maxOutputTokens,
+    deadlineMs: OPENAI_PROMPT_LIMITS.liveResearch.deep.timeoutMs,
   },
 ];
 
