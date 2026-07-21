@@ -1,68 +1,67 @@
 const messages: Record<string, string> = {
-  "New drive": "新しい探求",
+
   "Library": "ライブラリ",
-  "Compare": "比較",
   "Usage": "使用量",
   "Settings": "設定",
   "CuriosityPedia views": "CuriosityPediaの表示",
   "ChatGPT account": "ChatGPTアカウント",
-  "Opening library…": "ライブラリを開いています…",
+
   "{count}/{limit} saved": "{count}/{limit} 保存済み",
   "durable session": "永続セッション",
   "Sign in": "サインイン",
   "Sign out": "サインアウト",
   "Research first": "まずはリサーチ",
-  "Your guest library is still separate.": "ゲストライブラリは独立しています。",
+
   "Reconnect": "再接続",
   "Dismiss": "閉じる",
   "Current journey views": "現在のジャーニー表示",
-  "Next turn model": "次回のモデル",
+
   "Model for the next research turn": "次回のリサーチに使用するモデル",
   "Stage": "ステージ",
   "Journey map": "ジャーニープラット",
-  "One performer. One researched turn. Exactly two ways forward.": "一人のパフォーマー。一回の調査。進む道は二つだけ。",
+
   "Source": "ソース",
   "Product book": "プロダクトブック",
-  "Scanning what’s unfolding now…": "現在の展開をスキャン中…",
-  "Current signals + {performer} + {context}": "現在のシグナル + {performer} + {do {context}}",
-  "your history": "履歴",
-  "wild-card domains": "ワイルドカードドメイン",
-  "Hunting…": "検索中…",
-  "Find new questions": "新しい問いを見つける",
-  "Questions suggested for {performer}": "{performer} におすすめの質問",
-  "What are you curious about?": "何に興味がありますか？",
+
+
+
+
+
+
+
+
   "Starting question": "開始する質問",
   "Ask anything…": "何でも聞いてください…",
-  "Tab to complete": "タブで完了",
-  "Recommended match": "推奨される一致",
-  "Start typing for recommendation matches": "入力して候補を表示",
+
+
+
   "Performer": "実行者",
   "Model": "モデル",
-  "Researching in the foreground…": "前景リサーチ中…",
-  "Begin the wonder": "探求を開始する",
-  "Connecting to live foreground research…": "ライブ前景リサーチに接続中…",
+
+
+
   "Research committed": "リサーチ確定",
   "Research stopped": "リサーチ停止",
-  "Opening the next live research turn…": "次のライブリサーチターンを開いています…",
+
   "Choose one of the two current paths.": "現在の2つのパスから1つを選択してください。",
-  "Answer ready": "回答準備完了",
-  "Buffering answer": "回答をバッファリング中",
+
+
   "Retrying {attempt} of {max}": "{attempt} / {max} 回目のリトライ",
-  "Placing the answer into this card": "回答をこのカードに配置中",
-  "Nothing incomplete was saved": "未完了のものは保存されていません",
-  "researching in this foreground turn": "この前景ターンでリサーチ中",
-  "This turn was not committed": "このターンは確定されませんでした",
+
+
+
+
   "Return safely": "安全に戻る",
   "Choose the next direction": "次の方向を選択",
   "Where should curiosity go next?": "好奇心は次にどこへ向かうべきか？",
-  "Two paths will appear here when the answer is ready.": "回答の準備ができ次第、ここに2つのパスが表示されます。",
+
   "Turn {number}": "ターン {number}",
-  "{count} turns": "{count} ターン",
-  "{count} sources": "{count} ソース",
+
+
   "You are revisiting an earlier turn.": "以前のターンを再訪しています。",
   "Choosing a path here creates a visible branch; your existing turns stay in the map.": "ここでパスを選択すると分岐が可視化されます。既存のターンはマップに残ります。",
   "performed from live web research": "ライブウェブ調査から構成",
-  "COMPOSED": "構成済み",
+
   "Save and export options": "保存とエクスポートのオプション",
   "Save snapshot": "スナップショットを保存",
   "Export JSON": "JSONをエクスポート",
@@ -71,7 +70,7 @@ const messages: Record<string, string> = {
   "live research": "ライブリサーチ",
   "Evidence & research details": "根拠とリサーチの詳細",
   "Deeper dive": "さらに深く掘り下げる",
-  "Let {performer} choose": "{performer} に任せる",
+
   "Other ways to continue": "別の進み方",
   "Pick a path for me": "代わりに道を選ぶ",
   "CuriosityPedia chooses one": "CuriosityPedia が1つ選びます",
@@ -97,37 +96,37 @@ const messages: Record<string, string> = {
   "Browse visual evidence": "視覚的な根拠を閲覧",
   "Previous image": "前の画像",
   "Next image": "次の画像",
-  "Why it is here": "ここに表示されている理由",
-  "What to notice": "注目すべき点",
-  "What it helps explain": "何の説明に役立つか",
+
+
+
   "Select an image": "画像を選択",
   "Show {title}": "{title} を表示",
-  "Follow the path you took, revisit a turn, or open a question you left behind.": "辿ったパスを追跡したり、ターンを再訪したり、残した質問を開いたりできます。",
+
   "Current": "現在",
   "Open paths": "開いているパス",
-  "Active path": "アクティブなパス",
-  "How you got here": "ここへの到達方法",
-  "Choose any turn to see its two directions.": "任意のターンを選択して、その2つの方向を確認できます。",
+
+
+
   "You are here": "現在地",
   "Explored": "探索済み",
   "Earlier branch": "以前の分岐",
-  "This turn is outside your current path. Exploring an open question here creates a new visible branch.": "このターンは現在のパスの外にあります。ここでオープンな質問を探索すると、新しい分岐が作成されます。",
-  "Where could this turn go?": "このターンはどこへ向かえるか？",
+
+
   "Explore this question": "この質問を探索する",
-  "This answer continues in the map above.": "この回答は上のマップへと続きます。",
-  "This direction is no longer active.": "この方向は現在アクティブではありません。",
+
+
   "Open full answer": "回答全文を開く",
-  "Revisit this answer": "この回答を再訪",
-  "Other paths": "その他のパス",
-  "Questions worth returning to.": "戻る価値のある質問。",
-  "{count} of {limit} journeys saved": "{limit} 件中 {count} 件のジャーニーを保存済み",
-  "New drive +": "新しい探求 +",
-  "Library filters": "ライブラリフィルタ",
+
+
+
+
+
+
   "Search": "検索",
-  "Title, question, or topic": "タイトル、質問、またはトピック",
+
   "All performers": "すべての実行者",
-  "Show hidden": "非表示を表示",
-  "PINNED": "ピン留め済み",
+
+
   "Turns": "ターン",
   "Resume": "再開",
   "Delete": "削除",
@@ -136,90 +135,90 @@ const messages: Record<string, string> = {
   "Rename": "名前変更",
   "Unpin": "ピン留め解除",
   "Pin": "ピン留め",
-  "Unhide": "非表示解除",
-  "Hide": "非表示",
+
+
   "Snapshot": "スナップショット",
   "Export": "エクスポート",
-  "Start the first saved journey": "最初の保存済みジャーニーを開始",
-  "Rename this journey": "このジャーニーの名前を変更",
-  "Two journeys. One closer look.": "2つのジャーニー。1つの詳細な比較。",
-  "Select two saved journeys. CuriosityPedia compares their committed paths, topics, and performers.": "2つの保存済みジャーエニーを選択してください。CuriosityPediaは、確定されたパス、トピック、実行者を比較します。",
-  "Reading the paths…": "パスを読み込み中…",
-  "Compare selected journeys": "選択したジャーニーを比較",
-  "Comparison begins after two journeys exist.": "比較は2つのジャーニーが存在した後に開始されます。",
-  "Start another drive": "別の探求を始める",
-  "Comparison ready": "比較準備完了",
-  "The useful difference": "有用な違い",
-  "What the saved data shows": "保存されたデータの内容",
-  "Comparison cautions": "比較に関する注意点",
-  "Audience controls": "視聴者コントロール",
+
+
+
+
+
+
+
+
+
+
+
+
+
   "Make the stage comfortable.": "ステージを快適に設定します。",
   "Synced to your ChatGPT identity": "ChatGPTのアイデンティントと同期済み",
   "Saved to this guest session": "このゲストセッションに保存されました",
-  "These preferences change presentation and future turns, never evidence.": "これらの設定は表示方法や今後のターンに影響しますが、根拠には一切影響しません。",
+
   "Experience language": "言語体験",
-  "Changes the whole interface and future learning output.": "インターフェース全体と言語出力を変更します。",
-  "Default answer density": "デフォルトの回答密度",
+
+
   "Brief": "簡潔",
   "Balanced": "バランス",
-  "Rich": "詳細",
-  "Separate from how deeply CuriosityPedia researches.": "CuriosityPediaのリサーチの深さとは別設定です。",
+
+
   "Text size": "テキストサイズ",
   "Small": "小",
   "Medium": "中",
   "Large": "大",
   "Extra large": "特大",
-  "Factual images": "事実に基づく画像",
+
   "Avoid": "避ける",
-  "When useful": "有用な場合",
-  "Prefer when supported": "サポートされている場合に優先",
-  "Decorative imagery is never substituted for factual media.": "装飾的な画像が、事実に基づいたメディアの代わりになることはありません。",
-  "Read-aloud speed: {rate}×": "読み上げ速度: {rate}×",
+
+
+
+
   "Reduce interface motion": "インターフェースのアニメーションを抑える",
   "Saving…": "保存中…",
   "Save preferences": "設定を保存",
-  "Opening your CuriosityPedia library…": "CuriosityPediaライブラリを開いています…",
+
   "Resolving a durable guest identity": "永続的なゲストアイデンティティを解決中",
-  "Open the journey library": "ジャーニライブラリを開く",
-  "No journey is on stage.": "ステージ上にジャーニーはありません。",
+
+
   "Start a new question or return to one you have already saved.": "新しい質問を開始するか、保存済みのものに戻ります。",
-  "rabbit holes": "ラビットホール（深入り）",
-  "Next turn": "次回のターン",
-  "Neither question works": "どちらの質問も機能しません",
+
+
+
   "{count} checked sources": "{count} 件の確認済みソース",
   "Your journey": "あなたのジャーニー",
   "Journey overview": "ジャーニーの概要",
   "Option": "オプション",
-  "Durable library / D1": "永続ライブラリ / D1",
-  "unclassified journey": "未分類のジャーニー",
-  "Manual comparison / no provider call": "手動比較 / プロバイダー呼び出しなし",
-  "Private diagnostics": "プライベート診断",
-  "What failed, where, and when.": "失敗の内容、場所、および時間。",
+
+
+
+
+
   "Checking": "確認中",
-  "Checking…": "確認中…",
-  "Refresh incidents": "更新履歴",
-  "Sign in with ChatGPT to keep private, identity-scoped diagnostic history.": "プライベートなアイデンティティ範囲の診断履歴を保持するには、ChatGPTでサインインしてください。",
-  "Loading privacy-safe request health…": "プライバシーに配慮したリクエストの健全性を確認中…",
-  "requests · 24h": "リクエスト · 24時間",
-  "failures · 24h": "失敗 · 24時間",
-  "failure rate": "失敗率",
+
+
+
+
+
+
+
   "retention": "保持期間",
-  "Repeated failure detected": "繰り返される失敗を検出",
-  "Last provider event": "最終プロバイダーイベント",
-  "Parsed events": "解析済みイベント",
-  "Malformed events": "不正な形式のイベント",
-  "Output deltas": "出力の差分",
-  "Provider done marker": "プロバイダー完了マーカー",
+
+
+
+
+
+
   "seen": "確認済み",
-  "not seen": "未確認",
-  "Latency": "レイテンシ",
-  "HTTP status": "HTTPステータス",
+
+
+
   "OpenAI request": "OpenAIリクエスト",
   "Preset": "プリセット",
   "unrecorded": "記録なし",
-  "No failed research requests in the retained window.": "保持期間内に失敗したリサーチリクエストはありません。",
-  "Prompts, answers, API keys, cookies, and source contents are never included.": "プロンプト、回答、APIキー、クッキー、ソースの内容は一切含まれません。",
-  "Input/output prices shown per 1M tokens; search is metered separately.": "入力/出力の価格は1Mトークンあたりの表示です。検索は別途課金されます。",
+
+
+
   "CuriosityPedia — Give curiosity a direction": "CuriosityPedia — 好奇心に方向性を",
   "Highest-quality current OpenAI research model; highest cost.": "最高品質の最新OpenAIリサーチモデル。コストは最高です。",
   "Current balanced OpenAI research model.": "現在のバランスの取れたOpenAIリサーチモデル。",
@@ -231,32 +230,32 @@ const messages: Record<string, string> = {
   "path taken": "辿ったパス",
   "chosen": "選択済み",
   "expired": "期限切れ",
-  "replaced": "置き換え済み",
-  "Both journeys touched {topics}.": "両方のジャーニーが {topics} に触れています。",
-  "The journeys did not land on the same fixture topic.": "ジャーニーが同じ固定トピックに到達しませんでした。",
-  "They used the same performer, so the path—not the persona—is the clearest visible difference.": "同じ実行者を使用しているため、ペルソナではなくパスが最も明確な違いです。",
-  "They used different performers, so both path and persona shape the contrast.": "異なる実行者を使用しているため、パスとペルソナの両方が対照を形成しています。",
-  "Both contain 1 committed turn.": "両方に1つの確定済みターンが含まれています。",
-  "Both contain {count} committed turns.": "両方に {count} 個の確定済みターンが含まれています。",
-  "{leftTitle} contains {leftCount} turns; {rightTitle} contains {rightCount}.": "{leftTitle} には {leftCount} ターン、{rightTitle} には {rightCount} ターン含まれています。",
-  "Live-web evidence can change between research dates.": "ライブウェブの根拠は、リサーチの日付によって変わる可能性があります。",
-  "Audience choices and rejected paths change the context of later turns.": "視聴者の選択や拒否されたパスは、後のターンの文脈を変化させます。",
-  "Model output is stochastic; this view is descriptive, not a winner ranking.": "モデルの出力は確率的です。このビューは記述的なものであり、勝敗を決めるランキングではありません。",
-  "Both journeys began from the same seed.": "両方のジャーニーが同じシードから開始されました。",
-  "The starting seeds differ.": "開始シードが異なります。",
-  "{performer} will carry this question": "{performer} がこの質問を担当します",
-  "Performer pick": "実行者の選択",
-  "Same selected model researches and performs · inspectable sources · durable branching graph": "選択されたモデルがリサーチと実行を行います ・ 検証可能なソース ・ 永続的な分岐グラフ",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   "Move guest journeys into this account": "ゲストジャーニーをこのアカウントに移動",
   "{count} open questions": "{count} 個のオープンな質問",
-  "{count} earlier branches": "{count} 個の以前の分岐",
+
   "Path": "パス",
-  "{count} source appearances": "{count} 回のソース出現",
-  "{count} open branches": "{count} 個のオープンな分岐",
-  "{count} decisions": "{count} 個の決定",
-  "{count} redraws": "{count} 回の描き直し",
-  "{count} delegated": "{count} 個の委任",
-  "{code} happened {count} times in ten minutes.": "{code} が10分間に {count} 回発生しました。",
+
+
+
+
+
+
   "Patient connections": "忍耐強い接続",
   "Playful surprise": "遊び心のある驚き",
   "How things work": "仕組みの解説",
@@ -276,42 +275,42 @@ const messages: Record<string, string> = {
   "fast": "速い",
   "balanced": "バランスの取れた",
   "deliberate": "意図的な",
-  "Your saved-journey library is full ({count}/{limit}). Delete one journey to make room.": "保存済みジャーニーライブラリがいっぱいです ({count}/{limit})。空きを作るためにジャーニーを削除してください。",
+
   "Manage saved journeys": "保存済みジャーニーの管理",
   "View usage": "使用量の表示",
-  "Library full": "ライブラリがいっぱいです",
+
   "Usage limit reached": "使用制限に達しました",
-  "No research was started": "リサーチは開始されませんでした",
-  "Your saved-journey library is full": "保存済みジャーニーライブラリがいっぱいです",
-  "Your rolling usage limit is reached": "ローリング使用制限に達しました",
-  "Rolling usage / 24 hours": "ローリング使用量 / 24時間",
-  "Know what is available.": "利用可能な内容を確認してください。",
+
+
+
+
+
   "{count} research runs ready": "{count} 件のリサーチ実行が準備完了です",
   "Reading your usage…": "使用量を読み込み中…",
-  "Every run returns exactly 24 hours after it starts.": "すべての実行は、開始から正確に24時間後にリセットされます。",
+
   "Try again": "再試行",
   "Reading your rolling limits…": "ローリング制限を読み込み中…",
   "Live research": "ライブリサーチ",
   "Live research used in the last 24 hours": "過去24時間に使用されたライブリサーチ",
-  "{count} runs are available now.": "{count} 件の実行が現在利用可能です。",
+
   "Next slot returns {time}.": "次のスロットは {time} に戻ります。",
   "You have not reached the rolling run limit.": "ローリング実行制限には達していません。",
   "Upcoming slot returns": "今後戻るスロット",
-  "Rolling provider spend": "プロバイダーのローリング支出",
-  "Provider spend used in the last 24 hours": "過去24時間に使用されたプロバイダー支出",
+
+
   "Provider spend and active holds in the last 24 hours": "過去24時間のプロバイダー支出と有効な予約額",
   "Spend begins leaving the window {time}.": "支出は {time} 後に集計期間から外れます。",
-  "No metered provider spend in the current window.": "現在の期間内に、従量制のプロバイダー支出はありません。",
+
   "No metered provider spend or active holds in the current window.": "現在の期間内に、従量制のプロバイダー支出や有効な予約額はありません。",
   "Saved journeys": "保存済みジャーニー",
   "Saved journey capacity used": "使用済みのジャーニ容量",
-  "This capacity does not reset every 24 hours. Delete a journey to free a place.": "この容量は24時間ごとにリセットされません。空きを作るにはジャーニーを削除してください。",
+
   "How rolling limits work": "ローリング制限の仕組み",
   "There is no midnight reset. Each run and each dollar leaves the window 24 hours after it was recorded.": "深夜のリセットはありません。各実行および各支出は、記録されてから24時間後に集計期間から外れます。",
   "Guest session": "ゲストセッション",
   "This browser session is scheduled to remain available until {time}.": "このブラウザセッションは {time} まで利用可能になる予定です。",
-  "This library belongs to this browser session.": "このライブラリはこのブラウザセッションに属しています。",
-  "Sign in to keep more across devices": "デバイス間で情報を保持するにはサインインしてください",
+
+
   "Account usage": "アカウント使用量",
   "These limits follow your signed-in ChatGPT identity across devices.": "これらの制限は、デバイス間でサインインしたChatGPTのアイデンティティに従います。"
 };

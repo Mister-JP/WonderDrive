@@ -55,7 +55,6 @@ import {
   applyCitationRecovery,
   applyCitationRepair,
   applyImageNoteRepair,
-  fallbackMediaGallery,
   imagePreferenceForQuestion,
   imageNoteRepairFailure,
   invalidCitationIndexes,
@@ -1249,19 +1248,3 @@ function validationFailure(
 function stringValue(value: unknown): string {
   return typeof value === "string" ? value : "";
 }
-
-export const liveResearchTestHooks = {
-  applyImageNoteRepair,
-  applyCitationRepair,
-  applyCitationRecovery,
-  buildInstructions,
-  buildResearchInput,
-  turnSchemaForDensity,
-  extractImages,
-  extractSources,
-  fallbackMediaGallery,
-  imagePreferenceForQuestion,
-  pruneUnsupportedBlocks,
-  repairImageNotesBySourcePath,
-  validateAndMapTurn,
-};

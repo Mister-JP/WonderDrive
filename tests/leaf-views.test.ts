@@ -29,9 +29,9 @@ type JourneysComponent = (props: {
   onOpen: (id: string) => void;
   onDelete: (id: string) => void;
   onManage: (id: string, changes: { title?: string; pinned?: boolean; hidden?: boolean }) => void;
-  onSnapshot: (id: string) => void;
   onRetry: (id: string) => void;
   onCancel: (id: string) => void;
+  onDismiss: (id: string) => void;
   onNew: () => void;
 }) => TestElement;
 
@@ -281,8 +281,8 @@ function renderJourneys(journeys: JourneySummary[], overrides: Partial<Parameter
   const opened: string[] = [];
   const deleted: string[] = [];
   const managed: Array<[string, { title?: string; pinned?: boolean; hidden?: boolean }]> = [];
-  const snapshots: string[] = [];
   const cancelled: string[] = [];
+  const dismissed: string[] = [];
   let newCount = 0;
   const props = {
     journeys,
@@ -292,9 +292,9 @@ function renderJourneys(journeys: JourneySummary[], overrides: Partial<Parameter
     onOpen: (id: string) => opened.push(id),
     onDelete: (id: string) => deleted.push(id),
     onManage: (id: string, changes: { title?: string; pinned?: boolean; hidden?: boolean }) => managed.push([id, changes]),
-    onSnapshot: (id: string) => snapshots.push(id),
     onRetry: () => {},
     onCancel: (id: string) => cancelled.push(id),
+    onDismiss: (id: string) => dismissed.push(id),
     onNew: () => { newCount += 1; },
     ...overrides,
   };
@@ -302,7 +302,7 @@ function renderJourneys(journeys: JourneySummary[], overrides: Partial<Parameter
     hooks.reset();
     return JourneysView(props);
   };
-  return { props, opened, deleted, managed, snapshots, cancelled, get newCount() { return newCount; }, rerender, root: rerender() };
+  return { props, opened, deleted, managed, cancelled, dismissed, get newCount() { return newCount; }, rerender, root: rerender() };
 }
 
 function bookmark(id: string, changes: Partial<Bookmark> = {}): Bookmark {
@@ -390,7 +390,7 @@ test("JourneysView prioritizes the first question, creation time, and simple fil
   const rendered = renderJourneys(journeys);
 
   assert.equal(find(rendered.root, (element) => element.type === "h1").props.id, "journeys-title");
-  assert.deepEqual(elements(rendered.root).filter((element) => element.type === "h2").map(text), ["How do whales navigate?", "Why do fireflies glow?"]);
+  assert.deepEqual(elements(rendered.root).filter((element) => element.type === "h2").map(text), ["How do whales navigate?", "Why do fireflies glow?", "Seed hidden"]);
   assert.match(text(rendered.root), /3 of 12 journeys/);
   assert.match(text(rendered.root), /2024/);
   assert.doesNotMatch(text(rendered.root), /2030/);
@@ -405,8 +405,6 @@ test("JourneysView prioritizes the first question, creation time, and simple fil
   let root = rendered.rerender();
   assert.deepEqual(elements(root).filter((element) => element.type === "h2").map(text), ["Why do fireflies glow?"]);
 
-  const showHidden = find(root, (element) => element.type === "input" && element.props.type === "checkbox");
-  (showHidden.props.onChange as (event: { target: { checked: boolean } }) => void)({ target: { checked: true } });
   (find(root, (element) => element.type === "input" && element.props.placeholder === "First question or journey label").props.onChange as (event: { target: { value: string } }) => void)({ target: { value: "" } });
   root = rendered.rerender();
   assert.deepEqual(elements(root).filter((element) => element.type === "h2").map(text), ["How do whales navigate?", "Why do fireflies glow?", "Seed hidden"]);
@@ -416,18 +414,16 @@ test("JourneysView prioritizes the first question, creation time, and simple fil
   assert.equal(empty.newCount, 1);
 });
 
-test("JourneysView preserves map, deletion, label, pin, hide, snapshot, export, and new-journey controls", () => {
+test("JourneysView keeps only useful journey management controls", () => {
   const rendered = renderJourneys([journeySummary("alpha")]);
   Object.defineProperty(globalThis, "window", { value: { prompt: () => "Renamed trail" }, configurable: true });
 
   (find(rendered.root, (element) => element.type === "button" && text(element).trim().startsWith("Show Journey")).props.onClick as () => void)();
-  (buttonByText(rendered.root, "Remove").props.onClick as () => void)();
+  (buttonByText(rendered.root, "Remove journey").props.onClick as () => void)();
   const root = rendered.rerender();
   (buttonByText(root, "Delete").props.onClick as () => void)();
   (buttonByText(root, "Rename label").props.onClick as () => void)();
   (buttonByText(root, "Pin").props.onClick as () => void)();
-  (buttonByText(root, "Hide").props.onClick as () => void)();
-  (buttonByText(root, "Snapshot").props.onClick as () => void)();
   (buttonByText(root, "New journey").props.onClick as () => void)();
 
   assert.deepEqual(rendered.opened, ["alpha"]);
@@ -435,11 +431,9 @@ test("JourneysView preserves map, deletion, label, pin, hide, snapshot, export, 
   assert.deepEqual(rendered.managed, [
     ["alpha", { title: "Renamed trail" }],
     ["alpha", { pinned: true }],
-    ["alpha", { hidden: true }],
   ]);
-  assert.deepEqual(rendered.snapshots, ["alpha"]);
   assert.equal(rendered.newCount, 1);
-  assert.equal(find(root, (element) => element.type === "a" && element.props.href === "/api/journeys/alpha/export").props.href, "/api/journeys/alpha/export");
+  assert.doesNotMatch(text(root), /Hide|Snapshot|Export/);
   assert.doesNotMatch(text(root), /Resume|New drive/);
 });
 
@@ -467,14 +461,50 @@ test("JourneysView confirms before stopping active background research", () => {
   assert.deepEqual(rendered.cancelled, [activity.id]);
 });
 
+test("JourneysView confirms before dismissing failed background research", () => {
+  const activity: ResearchActivity = {
+    id: "research-failed",
+    question: "Why did this research fail?",
+    performerId: "sage",
+    status: "failed",
+    phase: null,
+    journeyId: null,
+    error: "Provider allowance exceeded.",
+    createdAt: Date.now(),
+    startedAt: Date.now(),
+    timeoutAt: null,
+    completedAt: Date.now(),
+  };
+  const rendered = renderJourneys([], { activities: [activity] });
+
+  (find(rendered.root, (element) => element.type === "button" && text(element).trim().startsWith("Remove failed research")).props.onClick as () => void)();
+  const confirmation = rendered.rerender();
+  assert.match(text(confirmation), /Remove this failed research\?/);
+  (buttonByText(confirmation, "Remove").props.onClick as () => void)();
+
+  assert.deepEqual(rendered.dismissed, [activity.id]);
+});
+
 test("BookmarksView contains only explicitly bookmarked questions", () => {
   const now = Date.now();
-  const rendered = renderBookmarks([bookmark("alpha", { bookmarkedAt: now - 500 })]);
+  const rendered = renderBookmarks([bookmark("alpha", {
+    bookmarkedAt: now - 500,
+    leadMedia: {
+      imageUrl: "https://images.example/bookmark.jpg",
+      sourcePageUrl: "https://example.org/bookmark",
+      caption: "Saved visual",
+      alt: "Saved question visual",
+    },
+  })]);
 
   assert.equal(find(rendered.root, (element) => element.type === "h1").props.id, "bookmarks-title");
   assert.deepEqual(elements(rendered.root).filter((element) => element.type === "h3").map(text), ["Saved question alpha"]);
   assert.doesNotMatch(text(rendered.root), /Pinned journeys|Everything/);
   assert.match(text(find(rendered.root, (element) => element.props["aria-label"] === "Bookmark summary")), /1 question/);
+  assert.equal(
+    (find(rendered.root, (element) => (element.props.media as TurnMedia | undefined)?.imageUrl === "https://images.example/bookmark.jpg").props.media as TurnMedia).alt,
+    "Saved question visual",
+  );
 
   let root = rendered.root;
   const search = find(root, (element) => element.type === "input" && element.props.placeholder === "Search saved questions or topics");
@@ -493,7 +523,11 @@ test("BookmarksView contains only explicitly bookmarked questions", () => {
 test("BookmarksView preserves question callback payloads", () => {
   const rendered = renderBookmarks([bookmark("alpha")]);
   (buttonByText(rendered.root, "Remove").props.onClick as () => void)();
-  (buttonByText(rendered.root, "Open").props.onClick as () => void)();
+  let root = rendered.rerender();
+  assert.match(text(root), /Remove bookmark\?/);
+  (buttonByText(root, "Remove").props.onClick as () => void)();
+  root = rendered.rerender();
+  (buttonByText(root, "Open").props.onClick as () => void)();
   (buttonByText(rendered.root, "Explore something new").props.onClick as () => void)();
 
   assert.deepEqual(rendered.removed, ["turn-alpha"]);
@@ -524,15 +558,13 @@ function renderSettings(
   return { previews, saves, rerender, root: rerender() };
 }
 
-test("SettingsView preserves headings, identity messaging, actions, busy state, and development disclosure", () => {
+test("SettingsView preserves headings, identity messaging, actions, and busy state", () => {
   const guest = renderSettings();
   assert.equal(find(guest.root, (element) => element.type === "h1").props.id, "settings-title");
   assert.match(text(guest.root), /Your preferencesSettingsTune how CuriosityPedia looks and answers\./);
   assert.match(text(guest.root), /Guest ExplorerGuest sessionSaved4 \/ 12PreferencesThis device/);
   assert.doesNotMatch(text(guest.root), /Real-world visual evidence|Always on/);
   assert.equal(find(guest.root, (element) => element.type === "a").props.href, "/signin-with-chatgpt?return_to=%2Fsettings");
-  assert.ok(elements(guest.root).some((element) => element.props.className === "art-dev-disclosure"));
-
   const signedIn = renderSettings({ mode: "chatgpt", displayName: "Ada Lovelace", journeyLimit: 20 }, { busy: true });
   assert.match(text(signedIn.root), /Ada LovelaceChatGPT accountSaved4 \/ 20PreferencesSynced/);
   assert.match(text(signedIn.root), /Synced to your ChatGPT identity/);

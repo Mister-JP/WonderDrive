@@ -1,68 +1,67 @@
 const messages: Record<string, string> = {
-  "New drive": "নতুন ড্রাইভ",
+
   "Library": "লাইব্রেরি",
-  "Compare": "তুলনা করুন",
   "Usage": "ব্যবহার",
   "Settings": "সেটিংস",
   "CuriosityPedia views": "CuriosityPedia ভিউ",
   "ChatGPT account": "ChatGPT অ্যাকাউন্ট",
-  "Opening library…": "লাইব্রেরি খোলা হচ্ছে…",
+
   "{count}/{limit} saved": "{count}/{limit} সংরক্ষিত",
   "durable session": "স্থায়ী সেশন",
   "Sign in": "সাইন ইন করুন",
   "Sign out": "সাইন আউট করুন",
   "Research first": "প্রথমে গবেষণা করুন",
-  "Your guest library is still separate.": "আপনার গেস্ট লাইব্রেরি এখনও আলাদা।",
+
   "Reconnect": "পুনরায় সংযোগ করুন",
   "Dismiss": "বাতিল করুন",
   "Current journey views": "বর্তমান যাত্রার ভিউ",
-  "Next turn model": "পরবর্তী টার্ন মডেল",
+
   "Model for the next research turn": "পরবর্তী গবেষণার টার্নের জন্য মডেল",
   "Stage": "ধাপ",
   "Journey map": "যাত্রার মানচিত্র",
-  "One performer. One researched turn. Exactly two ways forward.": "একজন পারফর্মার। একটি গবেষণালব্ধ টার্ন। সামনে এগিয়ে যাওয়ার ঠিক দুটি পথ।",
+
   "Source": "উৎস",
   "Product book": "প্রোডাক্ট বুক",
-  "Scanning what’s unfolding now…": "বর্তমানে যা ঘটছে তা স্ক্যান করা হচ্ছে…",
-  "Current signals + {performer} + {context}": "বর্তমান সংকেত + {performer} + {context}",
-  "your history": "আপনার ইতিহাস",
-  "wild-card domains": "ওয়াইল্ড-কার্ড ডোমেইন",
-  "Hunting…": "খোঁজা হচ্ছে…",
-  "Find new questions": "নতুন প্রশ্ন খুঁজুন",
-  "Questions suggested for {performer}": "{performer}-এর জন্য প্রস্তাবিত প্রশ্ন",
-  "What are you curious about?": "আপনি কী বিষয়ে কৌতূহলী?",
+
+
+
+
+
+
+
+
   "Starting question": "শুরুর প্রশ্ন",
   "Ask anything…": "যেকোনো কিছু জিজ্ঞাসা করুন…",
-  "Tab to complete": "সম্পন্ন করতে ট্যাপ করুন",
-  "Recommended match": "প্রস্তাবিত ম্যাচ",
-  "Start typing for recommendation matches": "প্রস্তাবিত ম্যাচের জন্য টাইপ করা শুরু করুন",
+
+
+
   "Performer": "পারফর্মার",
   "Model": "মডেল",
-  "Researching in the foreground…": "সামনে গবেষণা চলছে…",
-  "Begin the wonder": "কৌতূহল শুরু করুন",
-  "Connecting to live foreground research…": "লাইভ ফোরগ্রাউন্ড গবেষণার সাথে সংযোগ স্থাপন করা হচ্ছে…",
+
+
+
   "Research committed": "গবেষণা সম্পন্ন হয়েছে",
   "Research stopped": "গবেষণা বন্ধ হয়েছে",
-  "Opening the next live research turn…": "পরবর্তী লাইভ গবেষণার টার্ন খোলা হচ্ছে…",
+
   "Choose one of the two current paths.": "বর্তমান দুটি পথের মধ্যে একটি বেছে নিন।",
-  "Answer ready": "উত্তর প্রস্তুত",
-  "Buffering answer": "উত্তর লোড হচ্ছে",
+
+
   "Retrying {attempt} of {max}": "{max} এর মধ্যে {attempt} বার চেষ্টা করা হচ্ছে",
-  "Placing the answer into this card": "উত্তরটি এই কার্ডে রাখা হচ্ছে",
-  "Nothing incomplete was saved": "অসম্পূর্ণ কিছু সংরক্ষণ করা হয়নি",
-  "researching in this foreground turn": "এই ফোরগ্রাউন্ড টার্নে গবেষণা চলছে",
-  "This turn was not committed": "এই টার্নটি সম্পন্ন করা হয়নি",
+
+
+
+
   "Return safely": "নিরাপদে ফিরে যান",
   "Choose the next direction": "পরবর্তী দিক বেছে নিন",
   "Where should curiosity go next?": "কৌতূহল এরপর কোথায় যাবে?",
-  "Two paths will appear here when the answer is ready.": "উত্তর প্রস্তুত হলে এখানে দুটি পথ দেখা যাবে।",
+
   "Turn {number}": "টার্ন {number}",
-  "{count} turns": "{count} টি টার্ন",
-  "{count} sources": "{count} টি উৎস",
+
+
   "You are revisiting an earlier turn.": "আপনি একটি পূর্বের টার্নে ফিরে যাচ্ছেন।",
   "Choosing a path here creates a visible branch; your existing turns stay in the map.": "এখানে একটি পথ বেছে নিলে একটি দৃশ্যমান শাখা তৈরি হবে; আপনার বিদ্যমান টার্নগুলো মানচিত্রে থাকবে।",
   "performed from live web research": "লাইভ ওয়েব গবেষণা থেকে সম্পন্ন হয়েছে",
-  "COMPOSED": "গঠিত",
+
   "Save and export options": "সংরক্ষণ এবং এক্সপোর্ট করার বিকল্প",
   "Save snapshot": "স্নেপশট সংরক্ষণ করুন",
   "Export JSON": "JSON এক্সপোর্ট করুন",
@@ -71,7 +70,7 @@ const messages: Record<string, string> = {
   "live research": "লাইভ গবেষণা",
   "Evidence & research details": "প্রমাণ ও গবেষণার বিবরণ",
   "Deeper dive": "গভীর অনুসন্ধান",
-  "Let {performer} choose": "{performer}-কে বেছে নিতে দিন",
+
   "Other ways to continue": "এগিয়ে যাওয়ার অন্য উপায়",
   "Pick a path for me": "আমার জন্য একটি পথ বেছে নিন",
   "CuriosityPedia chooses one": "CuriosityPedia একটি বেছে নেয়",
@@ -97,37 +96,37 @@ const messages: Record<string, string> = {
   "Browse visual evidence": "দৃশ্যমান প্রমাণ দেখুন",
   "Previous image": "পূর্বের ছবি",
   "Next image": "পরের ছবি",
-  "Why it is here": "এটি কেন এখানে",
-  "What to notice": "যা লক্ষ্য করতে হবে",
-  "What it helps explain": "এটি কী ব্যাখ্যা করতে সাহায্য করে",
+
+
+
   "Select an image": "একটি ছবি নির্বাচন করুন",
   "Show {title}": "{title} দেখান",
-  "Follow the path you took, revisit a turn, or open a question you left behind.": "আপনার নেওয়া পথ অনুসরণ করুন, একটি টার্নে ফিরে যান, অথবা ফেলে আসা কোনো প্রশ্ন খুলুন।",
+
   "Current": "বর্তমান",
   "Open paths": "খোলা পথ",
-  "Active path": "সক্রিয় পথ",
-  "How you got here": "আপনি কীভাবে এখানে এসেছেন",
-  "Choose any turn to see its two directions.": "এর দুটি দিক দেখতে যেকোনো টার্ন বেছে নিন।",
+
+
+
   "You are here": "আপনি এখানে আছেন",
   "Explored": "অনুসন্ধান করা হয়েছে",
   "Earlier branch": "পূর্বের শাখা",
-  "This turn is outside your current path. Exploring an open question here creates a new visible branch.": "এই টার্নটি আপনার বর্তমান পথের বাইরে। এখানে একটি খোলা প্রশ্ন অনুসন্ধান করলে একটি নতুন দৃশ্যমান শাখা তৈরি হবে।",
-  "Where could this turn go?": "এই টার্নটি কোথায় যেতে পারে?",
+
+
   "Explore this question": "এই প্রশ্নটি অনুসন্ধান করুন",
-  "This answer continues in the map above.": "এই উত্তরটি উপরের মানচিত্রে অব্যাহত রয়েছে।",
-  "This direction is no longer active.": "এই দিকটি আর সক্রিয় নেই।",
+
+
   "Open full answer": "সম্পূর্ণ উত্তর খুলুন",
-  "Revisit this answer": "এই উত্তরে ফিরে যান",
-  "Other paths": "অন্যান্য পথ",
-  "Questions worth returning to.": "যেসব প্রশ্নে ফিরে আসা варто।",
-  "{count} of {limit} journeys saved": "{limit} টি যাত্রার মধ্যে {count} টি সংরক্ষিত",
-  "New drive +": "নতুন ড্রাইভ +",
-  "Library filters": "লাইব্রেরি ফিল্টার",
+
+
+
+
+
+
   "Search": "অনুসন্ধান",
-  "Title, question, or topic": "শিরোনাম, প্রশ্ন, বা বিষয়",
+
   "All performers": "সকল পারফর্মার",
-  "Show hidden": "লুকানো দেখান",
-  "PINNED": "পিন করা",
+
+
   "Turns": "টার্ন",
   "Resume": "পুনরায় শুরু করুন",
   "Delete": "মুছে ফেলুন",
@@ -136,90 +135,90 @@ const messages: Record<string, string> = {
   "Rename": "নাম পরিবর্তন করুন",
   "Unpin": "আনপিন করুন",
   "Pin": "পিন করুন",
-  "Unhide": "আনহাইড করুন",
-  "Hide": "লুকান",
+
+
   "Snapshot": "স্নেপশট",
   "Export": "এক্সপোর্ট",
-  "Start the first saved journey": "প্রথম সংরক্ষিত যাত্রা শুরু করুন",
-  "Rename this journey": "এই যাত্রার নাম পরিবর্তন করুন",
-  "Two journeys. One closer look.": "দুটি যাত্রা। একটি নিবিড় পর্যবেক্ষণ।",
-  "Select two saved journeys. CuriosityPedia compares their committed paths, topics, and performers.": "দুটি সংরক্ষিত যাত্রা নির্বাচন করুন। CuriosityPedia তাদের সম্পন্ন পথ, বিষয় এবং পারফর্মার তুলনা করে।",
-  "Reading the paths…": "পথগুলো পড়া হচ্ছে…",
-  "Compare selected journeys": "নির্বাচিত যাত্রা তুলনা করুন",
-  "Comparison begins after two journeys exist.": "দুটি যাত্রা বিদ্যমান থাকলে তুলনা শুরু হবে।",
-  "Start another drive": "অন্য একটি ড্রাইভ শুরু করুন",
-  "Comparison ready": "তুলনা প্রস্তুত",
-  "The useful difference": "কার্যকর পার্থক্য",
-  "What the saved data shows": "সংরক্ষিত ডেটা যা দেখায়",
-  "Comparison cautions": "তুলনার সতর্কতা",
-  "Audience controls": "অডিয়েন্স নিয়ন্ত্রণ",
+
+
+
+
+
+
+
+
+
+
+
+
+
   "Make the stage comfortable.": "ধাপটিকে আরামদায়ক করুন।",
   "Synced to your ChatGPT identity": "আপনার ChatGPT পরিচয়ের সাথে সিঙ্ক করা হয়েছে",
   "Saved to this guest session": "এই গেস্ট সেশনে সংরক্ষিত",
-  "These preferences change presentation and future turns, never evidence.": "এই পছন্দগুলো উপস্থাপনা এবং ভবিষ্যৎ টার্ন পরিবর্তন করে, প্রমাণ নয়।",
+
   "Experience language": "ভাষা অভিজ্ঞতা",
-  "Changes the whole interface and future learning output.": "পুরো ইন্টারফেস এবং ভবিষ্যৎ শেখার আউটপুট পরিবর্তন করে।",
-  "Default answer density": "ডিফল্ট উত্তরের ঘনত্ব",
+
+
   "Brief": "সংক্ষিপ্ত",
   "Balanced": "ভারসাম্যপূর্ণ",
-  "Rich": "সমৃদ্ধ",
-  "Separate from how deeply CuriosityPedia researches.": "CuriosityPedia কতটা গভীরভাবে গবেষণা করে তার থেকে আলাদা।",
+
+
   "Text size": "টেক্সট সাইজ",
   "Small": "ছোট",
   "Medium": "মাঝারি",
   "Large": "বড়",
   "Extra large": "অত্যধিক বড়",
-  "Factual images": "তথ্যভিত্তিক ছবি",
+
   "Avoid": "এড়িয়ে চলুন",
-  "When useful": "যখন প্রয়োজন",
-  "Prefer when supported": "সমর্থিত হলে পছন্দ করুন",
-  "Decorative imagery is never substituted for factual media.": "সাজসজ্জামূলক চিত্র কখনোই তথ্যভিত্তিক মিডিয়ার বিকল্প হিসেবে ব্যবহৃত হয় না।",
-  "Read-aloud speed: {rate}×": "পড়ার গতি: {rate}×",
+
+
+
+
   "Reduce interface motion": "ইন্টারফেসের মোশন কমান",
   "Saving…": "সংরক্ষণ করা হচ্ছে…",
   "Save preferences": "পছন্দ সংরক্ষণ করুন",
-  "Opening your CuriosityPedia library…": "আপনার CuriosityPedia লাইব্রেরি খোলা হচ্ছে…",
+
   "Resolving a durable guest identity": "একটি স্থায়ী গেস্ট পরিচয় নির্ধারণ করা হচ্ছে",
-  "Open the journey library": "যাত্রার লাইব্রেরি খুলুন",
-  "No journey is on stage.": "কোনো যাত্রা স্টেজ বা মঞ্চে নেই।",
+
+
   "Start a new question or return to one you have already saved.": "একটি নতুন প্রশ্ন শুরু করুন অথবা ইতিমধ্যে সংরক্ষিত কোনোটিতে ফিরে যান।",
-  "rabbit holes": "র‍্যাবিট হোলস",
-  "Next turn": "পরবর্তী টার্ন",
-  "Neither question works": "কোনো প্রশ্নই কাজ করছে না",
+
+
+
   "{count} checked sources": "{count} টি যাচাইকৃত উৎস",
   "Your journey": "আপনার যাত্রা",
   "Journey overview": "যাত্রার ওভারভিউ",
   "Option": "বিকল্প",
-  "Durable library / D1": "স্থায়ী লাইব্রেরি / D1",
-  "unclassified journey": "অশ্রেণীবদ্ধ যাত্রা",
-  "Manual comparison / no provider call": "ম্যানুয়াল তুলনা / কোনো প্রোভাইডার কল নেই",
-  "Private diagnostics": "ব্যক্তিগত ডায়াগনস্টিকস",
-  "What failed, where, and when.": "কী ব্যর্থ হয়েছে, কোথায় এবং কখন।",
+
+
+
+
+
   "Checking": "যাচাই করা হচ্ছে",
-  "Checking…": "যাচাই করা হচ্ছে…",
-  "Refresh incidents": "রিফ্রেশ ইনসিডেন্টস",
-  "Sign in with ChatGPT to keep private, identity-scoped diagnostic history.": "ব্যক্তিগত, আইডেন্টিটি-স্কোপড ডায়াগনস্টিক ইতিহাস রাখতে ChatGPT দিয়ে সাইন ইন করুন।",
-  "Loading privacy-safe request health…": "প্রাইভেসি-সেফ রিকোয়েস্ট হেলথ লোড হচ্ছে…",
-  "requests · 24h": "রিকোয়েস্ট · ২৪ ঘণ্টা",
-  "failures · 24h": "ব্যর্থতা · ২৪ ঘণ্টা",
-  "failure rate": "ব্যর্থতার হার",
+
+
+
+
+
+
+
   "retention": "রিটেনশন",
-  "Repeated failure detected": "বারবার ব্যর্থতা শনাক্ত করা হয়েছে",
-  "Last provider event": "শেষ প্রোভাইডার ইভেন্ট",
-  "Parsed events": "পার্সড ইভেন্টস",
-  "Malformed events": "ত্রুটিপূর্ণ ইভেন্টস",
-  "Output deltas": "আউটপুট ডেল্টা",
-  "Provider done marker": "প্রোভাইডার সম্পন্ন মার্কার",
+
+
+
+
+
+
   "seen": "দেখা গেছে",
-  "not seen": "দেখা যায়নি",
-  "Latency": "ল্যাটেন্সি",
-  "HTTP status": "HTTP স্ট্যাটাস",
+
+
+
   "OpenAI request": "OpenAI রিকোয়েস্ট",
   "Preset": "প্রিসেট",
   "unrecorded": "অসংরক্ষিত",
-  "No failed research requests in the retained window.": "রিটেনশন উইন্ডোতে কোনো ব্যর্থ গবেষণা রিকোয়েস্ট নেই।",
-  "Prompts, answers, API keys, cookies, and source contents are never included.": "প্রম্পট, উত্তর, API কী, কুকিজ এবং উৎসের বিষয়বস্তু কখনোই অন্তর্ভুক্ত করা হয় না।",
-  "Input/output prices shown per 1M tokens; search is metered separately.": "প্রতি ১ মিলিয়ন টোকেনে ইনপুট/আউটপুট মূল্য দেখানো হয়েছে; সার্চ আলাদাভাবে পরিমাপ করা হয়।",
+
+
+
   "CuriosityPedia — Give curiosity a direction": "CuriosityPedia — কৌতূহলকে একটি দিক দিন",
   "Highest-quality current OpenAI research model; highest cost.": "সর্বোচ্চ মানের বর্তমান OpenAI গবেষণা মডেল; সর্বোচ্চ খরচ।",
   "Current balanced OpenAI research model.": "বর্তমান ভারসাম্যপূর্ণ OpenAI গবেষণা মডেল।",
@@ -231,32 +230,32 @@ const messages: Record<string, string> = {
   "path taken": "গৃহীত পথ",
   "chosen": "নির্বাচিত",
   "expired": "মেয়াদোত্তীর্ণ",
-  "replaced": "প্রতিস্থাপিত",
-  "Both journeys touched {topics}.": "উভয় যাত্রায় {topics} অন্তর্ভুক্ত ছিল।",
-  "The journeys did not land on the same fixture topic.": "যাত্রা দুটি একই নির্দিষ্ট বিষয়ে পৌঁছাতে পারেনি।",
-  "They used the same performer, so the path—not the persona—is the clearest visible difference.": "তারা একই পারফর্মার ব্যবহার করেছে, তাই ব্যক্তিত্ব নয়—পথটি সবচেয়ে স্পষ্ট দৃশ্যমান পার্থক্য।",
-  "They used different performers, so both path and persona shape the contrast.": "তারা ভিন্ন পারফর্মার ব্যবহার করেছে, তাই পথ এবং ব্যক্তিত্ব উভয়ই বৈসাদৃশ্য তৈরি করে।",
-  "Both contain 1 committed turn.": "উভয়টিতেই ১টি সম্পন্ন টার্ন রয়েছে।",
-  "Both contain {count} committed turns.": "উভয়টিতেই {count} টি সম্পন্ন টার্ন রয়েছে।",
-  "{leftTitle} contains {leftCount} turns; {rightTitle} contains {rightCount}.": "{leftTitle}-এ {leftCount} টি টার্ন রয়েছে; {rightTitle}-এ {rightCount} টি রয়েছে।",
-  "Live-web evidence can change between research dates.": "গবেষণার তারিখের মধ্যে লাইভ-ওয়েব প্রমাণ পরিবর্তিত হতে পারে।",
-  "Audience choices and rejected paths change the context of later turns.": "অডিয়েন্সের পছন্দ এবং প্রত্যাখ্যাত পথ পরবর্তী টার্নের প্রেক্ষাপট পরিবর্তন করে।",
-  "Model output is stochastic; this view is descriptive, not a winner ranking.": "মডেল আউটপুট স্টোকাস্টিক; এই ভিউটি বর্ণনামূলক, বিজয়ী র‍্যাঙ্কিং নয়।",
-  "Both journeys began from the same seed.": "উভয় যাত্রা একই সিড থেকে শুরু হয়েছিল।",
-  "The starting seeds differ.": "শুরুর সিডগুলো ভিন্ন।",
-  "{performer} will carry this question": "{performer} এই প্রশ্নটি বহন করবে",
-  "Performer pick": "পারফর্মার নির্বাচন",
-  "Same selected model researches and performs · inspectable sources · durable branching graph": "একই নির্বাচিত মডেল গবেষণা এবং সম্পাদন করে · যাচাইযোগ্য উৎস · স্থায়ী ব্রাঞ্চিং গ্রাফ",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   "Move guest journeys into this account": "গেস্ট যাত্রাসমূহ এই অ্যাকাউন্টে নিয়ে যান",
   "{count} open questions": "{count} টি খোলা প্রশ্ন",
-  "{count} earlier branches": "{count} টি পূর্বের শাখা",
+
   "Path": "পথ",
-  "{count} source appearances": "{count} বার উৎসের উপস্থিতি",
-  "{count} open branches": "{count} টি খোলা শাখা",
-  "{count} decisions": "{count} টি সিদ্ধান্ত",
-  "{count} redraws": "{count} টি রিড্র",
-  "{count} delegated": "{count} টি ডেলিগেটেড",
-  "{code} happened {count} times in ten minutes.": "দশ মিনিটে {code} মোট {count} বার ঘটেছে।",
+
+
+
+
+
+
   "Patient connections": "ধৈর্যশীল সংযোগ",
   "Playful surprise": "চঞ্চল বিস্ময়",
   "How things work": "জিনিস কীভাবে কাজ করে",
@@ -276,42 +275,42 @@ const messages: Record<string, string> = {
   "fast": "দ্রুত",
   "balanced": "ভারসাম্যপূর্ণ",
   "deliberate": "সুচিন্তিত",
-  "Your saved-journey library is full ({count}/{limit}). Delete one journey to make room.": "আপনার সংরক্ষিত-যাত্রা লাইব্রেরি পূর্ণ ({count}/{limit})। জায়গা করতে একটি যাত্রা মুছে ফেলুন।",
+
   "Manage saved journeys": "সংরক্ষিত যাত্রা পরিচালনা করুন",
   "View usage": "ব্যবহার দেখুন",
-  "Library full": "লাইব্রেরি পূর্ণ",
+
   "Usage limit reached": "ব্যবহারের সীমা পৌঁছে গেছে",
-  "No research was started": "কোনো গবেষণা শুরু করা হয়নি",
-  "Your saved-journey library is full": "আপনার সংরক্ষিত-যাত্রা লাইব্রেরি পূর্ণ",
-  "Your rolling usage limit is reached": "আপনার চলমান ব্যবহারের সীমা পৌঁছে গেছে",
-  "Rolling usage / 24 hours": "চলমান ব্যবহার / ২৪ ঘণ্টা",
-  "Know what is available.": "কী উপলব্ধ তা জানুন।",
+
+
+
+
+
   "{count} research runs ready": "{count} টি গবেষণার রান প্রস্তুত",
   "Reading your usage…": "আপনার ব্যবহার পড়া হচ্ছে…",
-  "Every run returns exactly 24 hours after it starts.": "প্রতিটি রান শুরু হওয়ার ঠিক ২৪ ঘণ্টা পরে ফিরে আসে।",
+
   "Try again": "আবার চেষ্টা করুন",
   "Reading your rolling limits…": "আপনার চলমান সীমা পড়া হচ্ছে…",
   "Live research": "লাইভ গবেষণা",
   "Live research used in the last 24 hours": "গত ২৪ ঘণ্টায় ব্যবহৃত লাইভ গবেষণা",
-  "{count} runs are available now.": "এখন {count} টি রান উপলব্ধ আছে।",
+
   "Next slot returns {time}.": "পরবর্তী স্লট ফিরবে {time} এ।",
   "You have not reached the rolling run limit.": "আপনি চলমান রানের সীমায় পৌঁছাননি।",
   "Upcoming slot returns": "আসন্ন স্লট ফিরবে",
-  "Rolling provider spend": "চলমান প্রোভাইডার খরচ",
-  "Provider spend used in the last 24 hours": "গত ২৪ ঘণ্টায় ব্যবহৃত প্রোভাইডার খরচ",
+
+
   "Provider spend and active holds in the last 24 hours": "গত ২৪ ঘণ্টার প্রোভাইডার খরচ ও সক্রিয় সংরক্ষণ",
   "Spend begins leaving the window {time}.": "খরচটি উইন্ডো থেকে ছাড়তে শুরু করবে {time} এ।",
-  "No metered provider spend in the current window.": "বর্তমান উইন্ডোতে কোনো পরিমাপযোগ্য প্রোভাইডার খরচ নেই।",
+
   "No metered provider spend or active holds in the current window.": "বর্তমান উইন্ডোতে কোনো পরিমাপযোগ্য প্রোভাইডার খরচ বা সক্রিয় সংরক্ষণ নেই।",
   "Saved journeys": "সংরক্ষিত যাত্রা",
   "Saved journey capacity used": "সংরক্ষিত যাত্রার ক্ষমতা ব্যবহৃত হচ্ছে",
-  "This capacity does not reset every 24 hours. Delete a journey to free a place.": "এই ক্ষমতা প্রতি ২৪ ঘণ্টায় রিসেট হয় না। জায়গা খালি করতে একটি যাত্রা মুছে ফেলুন।",
+
   "How rolling limits work": "চলমান সীমা কীভাবে কাজ করে",
   "There is no midnight reset. Each run and each dollar leaves the window 24 hours after it was recorded.": "কোনো মধ্যরাতের রিসেট নেই। প্রতিটি রান এবং প্রতিটি ডলার রেকর্ড করার ২৪ ঘণ্টা পরে উইন্ডো থেকে বেরিয়ে যায়।",
   "Guest session": "গেস্ট সেশন",
   "This browser session is scheduled to remain available until {time}.": "এই ব্রাউজার সেশনটি {time} পর্যন্ত উপলব্ধ থাকার জন্য নির্ধারিত।",
-  "This library belongs to this browser session.": "এই লাইব্রেরি এই ব্রাউজার সেশনের অন্তর্ভুক্ত।",
-  "Sign in to keep more across devices": "বিভিন্ন ডিভাইসে আরও বেশি কিছু রাখতে সাইন ইন করুন",
+
+
   "Account usage": "অ্যাকাউন্ট ব্যবহার",
   "These limits follow your signed-in ChatGPT identity across devices.": "এই সীমাগুলো বিভিন্ন ডিভাইসে আপনার সাইন-ইন করা ChatGPT পরিচয় অনুসরণ করে।"
 };

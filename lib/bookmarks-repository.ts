@@ -6,6 +6,7 @@ import type {
   ImportBookmarksResult,
   LegacyBookmarkImportEntry,
   PerformerId,
+  TurnMedia,
 } from "./contracts";
 import { RepositoryError } from "./errors";
 import { asRecord, assertId } from "./request";
@@ -22,11 +23,12 @@ type BookmarkRow = {
   journey_title: string;
   performer_id: PerformerId;
   source_count: number;
+  answer_json: string | null;
 };
 
 const BOOKMARK_PROJECTION = `
   SELECT b.id, b.journey_id, b.turn_id, b.created_at,
-         t.question, t.topic_label, j.seed AS journey_seed,
+         t.question, t.topic_label, t.answer_json, j.seed AS journey_seed,
          j.title AS journey_title, j.performer_id,
          COUNT(DISTINCT ts.source_id) AS source_count
   FROM bookmarks b
@@ -45,7 +47,7 @@ export async function listBookmarks(viewer: ViewerContext): Promise<Bookmark[]> 
     .prepare(`${BOOKMARK_PROJECTION}
       WHERE b.identity_id = ?
       GROUP BY b.id, b.journey_id, b.turn_id, b.created_at, t.question,
-               t.topic_label, j.seed, j.title, j.performer_id
+               t.topic_label, t.answer_json, j.seed, j.title, j.performer_id
       ORDER BY b.created_at DESC, b.id DESC`)
     .bind(viewer.identityId, viewer.identityId)
     .all<BookmarkRow>();
@@ -135,7 +137,7 @@ async function readBookmark(
     .prepare(`${BOOKMARK_PROJECTION}
       WHERE b.identity_id = ? AND b.turn_id = ?
       GROUP BY b.id, b.journey_id, b.turn_id, b.created_at, t.question,
-               t.topic_label, j.seed, j.title, j.performer_id
+               t.topic_label, t.answer_json, j.seed, j.title, j.performer_id
       LIMIT 1`)
     .bind(viewer.identityId, viewer.identityId, turnId)
     .first<BookmarkRow>();
@@ -184,6 +186,7 @@ function parseImportRequest(value: unknown): LegacyBookmarkImportEntry[] {
 }
 
 function projectBookmark(row: BookmarkRow): Bookmark {
+  const leadMedia = bookmarkLeadMedia(row.answer_json);
   return {
     id: row.id,
     journeyId: row.journey_id,
@@ -195,5 +198,24 @@ function projectBookmark(row: BookmarkRow): Bookmark {
     journeyTitle: row.journey_title,
     performerId: row.performer_id,
     sourceCount: Number(row.source_count),
+    ...(leadMedia ? { leadMedia } : {}),
   };
+}
+
+function bookmarkLeadMedia(value: string | null): TurnMedia | undefined {
+  if (!value) return undefined;
+  try {
+    const parsed = JSON.parse(value) as { media?: unknown };
+    const candidates = Array.isArray(parsed?.media) ? parsed.media : parsed?.media ? [parsed.media] : [];
+    return candidates.find((item: unknown): item is TurnMedia => Boolean(
+      item
+      && typeof item === "object"
+      && typeof (item as TurnMedia).imageUrl === "string"
+      && typeof (item as TurnMedia).sourcePageUrl === "string"
+      && typeof (item as TurnMedia).caption === "string"
+      && typeof (item as TurnMedia).alt === "string",
+    ));
+  } catch {
+    return undefined;
+  }
 }

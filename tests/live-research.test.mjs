@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { env } from "cloudflare:workers";
-import { PERFORMERS, STARTERS } from "../lib/catalog.ts";
+import { PERFORMERS } from "../lib/catalog.ts";
 import { runLiveResearch } from "../lib/live-research.ts";
 import {
   TURN_SCHEMA,
@@ -774,8 +774,6 @@ test("Atlas keeps generated paths on documented real-world subjects", () => {
   assert.match(instructions, /do not turn that guidance into hypothetical or counterfactual paths/);
   assert.match(instructions, /documented real-world anchor is mandatory/);
   assert.match(instructions, /topicLabel as a concise subject label, not as a repetition/);
-  assert.equal(STARTERS.atlas.length, 4);
-  assert.ok(STARTERS.atlas.every((question) => /\?$/.test(question)));
 });
 
 test("turn input makes image preference operational", () => {

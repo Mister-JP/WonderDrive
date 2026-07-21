@@ -6,6 +6,7 @@ import { env } from "cloudflare:workers";
 import {
   BACKGROUND_RESEARCH_TIMEOUT_MS,
   cancelBackgroundResearch,
+  dismissFailedBackgroundResearch,
   listBackgroundResearch,
 } from "../lib/background-research.ts";
 
@@ -172,6 +173,27 @@ test("learner cancellation is idempotent and fences stale finalizers", async () 
       ).get(requestId) },
       { status: "failed", error_code: "CANCELLED", lease_token: null, lease_expires_at: null },
     );
+  } finally {
+    delete env.DB;
+  }
+});
+
+test("failed background research can be dismissed from future activity lists", async () => {
+  const database = migratedDatabase();
+  const requestId = "request-dismissed-background";
+  insertBackground(database, { requestId, status: "failed", leaseToken: null, leaseExpiresAt: null });
+  database.prepare(
+    "UPDATE research_requests SET error_code = 'PROVIDER_ERROR', error_message = 'Research failed.' WHERE id = ?",
+  ).run(requestId);
+  env.DB = new SQLiteD1(database);
+  try {
+    const dismissed = await dismissFailedBackgroundResearch(viewer, requestId);
+    assert.equal(dismissed.status, "failed");
+    assert.equal(
+      database.prepare("SELECT error_code FROM research_requests WHERE id = ?").get(requestId).error_code,
+      "DISMISSED",
+    );
+    assert.deepEqual(await listBackgroundResearch(viewer, { reconcile: false }), []);
   } finally {
     delete env.DB;
   }

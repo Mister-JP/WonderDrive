@@ -1,4 +1,4 @@
-import { BOOTSTRAP_CATALOG } from "./catalog";
+import { PROMPT_VERSION } from "./catalog";
 import type { JourneySnapshot } from "./contracts";
 import { getD1 } from "../db";
 import { getJourney } from "./repository";
@@ -93,7 +93,7 @@ export async function exportJourney(viewer: ViewerContext, journeyId: string) {
   return {
     exportVersion: "curiositypedia-export@1",
     exportedAt: new Date().toISOString(),
-    catalogVersion: BOOTSTRAP_CATALOG.promptVersion,
+    catalogVersion: PROMPT_VERSION,
     journey,
     snapshots,
     privacy: {

@@ -1,68 +1,67 @@
 const messages: Record<string, string> = {
-  "New drive": "새로운 탐구",
+
   "Library": "라이브러리",
-  "Compare": "비교하기",
   "Usage": "사용량",
   "Settings": "설정",
   "CuriosityPedia views": "CuriosityPedia 보기",
   "ChatGPT account": "ChatGPT 계정",
-  "Opening library…": "라이브러리 여는 중…",
+
   "{count}/{limit} saved": "{count}/{limit} 저장됨",
   "durable session": "지속적인 세션",
   "Sign in": "로그인",
   "Sign out": "로그아웃",
   "Research first": "먼저 탐색하기",
-  "Your guest library is still separate.": "게스트 라이브러리는 별도로 관리됩니다.",
+
   "Reconnect": "다시 연결",
   "Dismiss": "닫기",
   "Current journey views": "현재 여정 보기",
-  "Next turn model": "다음 단계 모델",
+
   "Model for the next research turn": "다음 연구 단계를 위한 모델",
   "Stage": "단계",
   "Journey map": "여정 지도",
-  "One performer. One researched turn. Exactly two ways forward.": "한 명의 퍼포머, 한 번의 조사, 그리고 정확히 두 갈래의 길.",
+
   "Source": "출처",
   "Product book": "제품 설명서",
-  "Scanning what’s unfolding now…": "현재 진행 상황 스캔 중…",
-  "Current signals + {performer} + {context}": "현재 신호 + {performer} + {context}",
-  "your history": "내 기록",
-  "wild-card domains": "와일드카드 도메인",
-  "Hunting…": "검색 중…",
-  "Find new questions": "새 질문 찾기",
-  "Questions suggested for {performer}": "{performer}를 위한 추천 질문",
-  "What are you curious about?": "무엇이 궁금하신가요?",
+
+
+
+
+
+
+
+
   "Starting question": "시작 질문",
   "Ask anything…": "무엇이든 물어보세요…",
-  "Tab to complete": "탭하여 완료",
-  "Recommended match": "추천 일치 항목",
-  "Start typing for recommendation matches": "추천 항목을 보려면 입력을 시작하세요",
+
+
+
   "Performer": "수행자",
   "Model": "모델",
-  "Researching in the foreground…": "전경 연구 진행 중…",
-  "Begin the wonder": "탐색 시작",
-  "Connecting to live foreground research…": "실시간 전경 연구에 연결 중…",
+
+
+
   "Research committed": "연구 확정됨",
   "Research stopped": "연구 중단됨",
-  "Opening the next live research turn…": "다음 실시간 연구 단계 여는 중…",
+
   "Choose one of the two current paths.": "두 가지 현재 경로 중 하나를 선택하세요.",
-  "Answer ready": "답변 준비 완료",
-  "Buffering answer": "답변 버퍼링 중",
+
+
   "Retrying {attempt} of {max}": "{attempt} / {max}회 재시도 중",
-  "Placing the answer into this card": "답변을 이 카드에 배치하는 중",
-  "Nothing incomplete was saved": "완료되지 않은 항목은 저장되지 않았습니다",
-  "researching in this foreground turn": "이 전경 단계에서 연구 중",
-  "This turn was not committed": "이 단계는 확정되지 않았습니다",
+
+
+
+
   "Return safely": "안전하게 돌아가기",
   "Choose the next direction": "다음 방향 선택",
   "Where should curiosity go next?": "다음 호기심은 어디로 향해야 할까요?",
-  "Two paths will appear here when the answer is ready.": "답변이 준비되면 여기에 두 가지 경로가 나타납니다.",
+
   "Turn {number}": "단계 {number}",
-  "{count} turns": "{count}개 단계",
-  "{count} sources": "{count}개 출처",
+
+
   "You are revisiting an earlier turn.": "이전 단계를 다시 방문 중입니다.",
   "Choosing a path here creates a visible branch; your existing turns stay in the map.": "여기서 경로를 선택하면 눈에 보이는 분기가 생성됩니다. 기존 단계는 지도에 유지됩니다.",
   "performed from live web research": "실시간 웹 조사를 바탕으로 구성",
-  "COMPOSED": "구성됨",
+
   "Save and export options": "저장 및 내보내 텍스트 옵션",
   "Save snapshot": "스냅샷 저장",
   "Export JSON": "JSON 내보내기",
@@ -71,7 +70,7 @@ const messages: Record<string, string> = {
   "live research": "실시간 연구",
   "Evidence & research details": "증거 및 연구 상세 정보",
   "Deeper dive": "심층 탐색",
-  "Let {performer} choose": "{performer}가 선택하도록 하기",
+
   "Other ways to continue": "계속하는 다른 방법",
   "Pick a path for me": "대신 경로 선택하기",
   "CuriosityPedia chooses one": "CuriosityPedia가 하나를 선택합니다",
@@ -97,37 +96,37 @@ const messages: Record<string, string> = {
   "Browse visual evidence": "시각적 증거 찾아보기",
   "Previous image": "이전 이미지",
   "Next image": "다음 이미지",
-  "Why it is here": "여기에 있는 이유",
-  "What to notice": "주목할 점",
-  "What it helps explain": "설명에 도움이 되는 내용",
+
+
+
   "Select an image": "이미지 선택",
   "Show {title}": "{title} 표시",
-  "Follow the path you took, revisit a turn, or open a question you left behind.": "선택한 경로를 따라가거나, 단계를 다시 방문하거나, 남겨둔 질문을 열어보세요.",
+
   "Current": "현재",
   "Open paths": "열린 경로",
-  "Active path": "활성 경로",
-  "How you got here": "도착 경로",
-  "Choose any turn to see its two directions.": "두 가지 방향을 보려면 아무 단계나 선택하세요.",
+
+
+
   "You are here": "현재 위치",
   "Explored": "탐색 완료",
   "Earlier branch": "이전 분기",
-  "This turn is outside your current path. Exploring an open question here creates a new visible branch.": "이 단계는 현재 경로 밖에 있습니다. 여기서 열린 질문을 탐색하면 새로운 분기가 생성됩니다.",
-  "Where could this turn go?": "이 단계는 어디로 향할 수 있을까요?",
+
+
   "Explore this question": "이 질문 탐색하기",
-  "This answer continues in the map above.": "이 답변은 위의 지도에서 이어집니다.",
-  "This direction is no longer active.": "이 방향은 더 이상 활성 상태가 아닙니다.",
+
+
   "Open full answer": "전체 답변 열기",
-  "Revisit this answer": "이 답변 다시 방문",
-  "Other paths": "다른 경로",
-  "Questions worth returning to.": "다시 돌아볼 가치가 있는 질문들.",
-  "{count} of {limit} journeys saved": "저장된 여정 {count} / {limit}",
-  "New drive +": "새로운 탐구 +",
-  "Library filters": "라이브러리 필터",
+
+
+
+
+
+
   "Search": "검색",
-  "Title, question, or topic": "제목, 질문 또는 주제",
+
   "All performers": "모든 수행자",
-  "Show hidden": "숨겨진 항목 표시",
-  "PINNED": "고정됨",
+
+
   "Turns": "단계",
   "Resume": "재개",
   "Delete": "삭제",
@@ -136,90 +135,90 @@ const messages: Record<string, string> = {
   "Rename": "이름 변경",
   "Unpin": "고정 해제",
   "Pin": "고정",
-  "Unhide": "숨김 해제",
-  "Hide": "숨기기",
+
+
   "Snapshot": "스냅샷",
   "Export": "내보내기",
-  "Start the first saved journey": "첫 번째 저장된 여정 시작하기",
-  "Rename this journey": "이 여정의 이름 변경",
-  "Two journeys. One closer look.": "두 개의 여정. 하나의 심층 비교.",
-  "Select two saved journeys. CuriosityPedia compares their committed paths, topics, and performers.": "저장된 두 개의 여정을 선택하세요. CuriosityPedia가 확정된 경로, 주제 및 수행자를 비교합니다.",
-  "Reading the paths…": "경로를 읽는 중…",
-  "Compare selected journeys": "선택한 여정 비교",
-  "Comparison begins after two journeys exist.": "비교는 두 개의 여정이 존재할 때 시작됩니다.",
-  "Start another drive": "다른 탐구 시작하기",
-  "Comparison ready": "비교 준비 완료",
-  "The useful difference": "유용한 차이점",
-  "What the saved data shows": "저장된 데이터가 보여주는 내용",
-  "Comparison cautions": "비교 시 주의사항",
-  "Audience controls": "대상 제어",
+
+
+
+
+
+
+
+
+
+
+
+
+
   "Make the stage comfortable.": "무대를 편안하게 설정하세요.",
   "Synced to your ChatGPT identity": "ChatGPT 계정과 동기화됨",
   "Saved to this guest session": "이 게스트 세션에 저장됨",
-  "These preferences change presentation and future turns, never evidence.": "이 설정은 프레젠테이션과 향후 단계에는 영향을 주지만, 증거 데이터에는 영향을 주지 않습니다.",
+
   "Experience language": "언어 경험",
-  "Changes the whole interface and future learning output.": "인터페이스 전체와 향후 학습 결과물이 변경됩니다.",
-  "Default answer density": "기본 답변 밀도",
+
+
   "Brief": "간결함",
   "Balanced": "균형 잡힘",
-  "Rich": "풍부함",
-  "Separate from how deeply CuriosityPedia researches.": "CuriosityPedia의 연구 깊이와는 별개로 설정됩니다.",
+
+
   "Text size": "텍스트 크기",
   "Small": "작게",
   "Medium": "중간",
   "Large": "크게",
   "Extra large": "매우 크게",
-  "Factual images": "사실적 이미지",
+
   "Avoid": "제외",
-  "When useful": "유용할 때",
-  "Prefer when supported": "지원되는 경우 선호",
-  "Decorative imagery is never substituted for factual media.": "장식용 이미지는 결코 사실적인 미디어의 대체재가 될 수 없습니다.",
-  "Read-aloud speed: {rate}×": "읽기 속도: {rate}×",
+
+
+
+
   "Reduce interface motion": "인터페이스 움직임 줄이기",
   "Saving…": "저장 중…",
   "Save preferences": "설정 저장",
-  "Opening your CuriosityPedia library…": "CuriosityPedia 라이브러리를 여는 중…",
+
   "Resolving a durable guest identity": "지속적인 게스트 식별자 확인 중",
-  "Open the journey library": "여정 라이브러리 열기",
-  "No journey is on stage.": "진행 중인 여정이 없습니다.",
+
+
   "Start a new question or return to one you have already saved.": "새 질문을 시작하거나 이미 저장된 질문으로 돌아가세요.",
-  "rabbit holes": "꼬리에 꼬리를 무는 탐색",
-  "Next turn": "다음 단계",
-  "Neither question works": "두 질문 모두 적절하지 않음",
+
+
+
   "{count} checked sources": "{count}개 확인된 출처",
   "Your journey": "내 여정",
   "Journey overview": "여정 개요",
   "Option": "옵션",
-  "Durable library / D1": "지속적 라이브러리 / D1",
-  "unclassified journey": "미분류 여정",
-  "Manual comparison / no provider call": "수동 비교 / 제공자 호출 없음",
-  "Private diagnostics": "개인용 진단",
-  "What failed, where, and when.": "실패한 내용, 위치 및 시간.",
+
+
+
+
+
   "Checking": "확인 중",
-  "Checking…": "확인 중…",
-  "Refresh incidents": "새로고침 이벤트",
-  "Sign in with ChatGPT to keep private, identity-scoped diagnostic history.": "개인화된 식별 범위의 진단 기록을 유지하려면 ChatGPT로 로그인하세요.",
-  "Loading privacy-safe request health…": "개인정보가 보호되는 요청 상태 확인 중…",
-  "requests · 24h": "요청 · 24시간",
-  "failures · 24h": "실패 · 24시간",
-  "failure rate": "실패율",
+
+
+
+
+
+
+
   "retention": "보관 기간",
-  "Repeated failure detected": "반복적인 실패 감지됨",
-  "Last provider event": "마지막 제공자 이벤트",
-  "Parsed events": "분석된 이벤트",
-  "Malformed events": "잘못된 형식의 이벤트",
-  "Output deltas": "출력 차이",
-  "Provider done marker": "제공자 완료 표시",
+
+
+
+
+
+
   "seen": "확인됨",
-  "not seen": "확인되지 않음",
-  "Latency": "지연 시간",
-  "HTTP status": "HTTP 상태",
+
+
+
   "OpenAI request": "OpenAI 요청",
   "Preset": "사전 설정",
   "unrecorded": "기록되지 않음",
-  "No failed research requests in the retained window.": "보관 기간 내에 실패한 연구 요청이 없습니다.",
-  "Prompts, answers, API keys, cookies, and source contents are never included.": "프롬프트, 답변, API 키, 쿠키 및 출처 내용은 절대 포함되지 않습니다.",
-  "Input/output prices shown per 1M tokens; search is metered separately.": "입력/출력 가격은 1M 토큰당 표시되며, 검색 비용은 별도로 측정됩니다.",
+
+
+
   "CuriosityPedia — Give curiosity a direction": "CuriosityPedia — 호기심에 방향을 제시합니다",
   "Highest-quality current OpenAI research model; highest cost.": "최고 품질의 현재 OpenAI 연구 모델; 비용이 가장 높음.",
   "Current balanced OpenAI research model.": "현재 균형 잡힌 OpenAI 연구 모델.",
@@ -231,32 +230,32 @@ const messages: Record<string, string> = {
   "path taken": "선택된 경로",
   "chosen": "선택됨",
   "expired": "만료됨",
-  "replaced": "교체됨",
-  "Both journeys touched {topics}.": "두 여정 모두 {topics}를 다루었습니다.",
-  "The journeys did not land on the same fixture topic.": "두 여정이 동일한 고정 주제에 도달하지 않았습니다.",
-  "They used the same performer, so the path—not the persona—is the clearest visible difference.": "동일한 수행자를 사용했으므로, 페르소나가 아닌 경로가 가장 명확한 차이점입니다.",
-  "They used different performers, so both path and persona shape the contrast.": "서로 다른 수행자를 사용했으므로, 경로와 페르소나 모두 대조를 이룹니다.",
-  "Both contain 1 committed turn.": "두 여정 모두 1개의 확정된 단계를 포함합니다.",
-  "Both contain {count} committed turns.": "두 여정 모두 {count}개의 확정된 단계를 포함합니다.",
-  "{leftTitle} contains {leftCount} turns; {rightTitle} contains {rightCount}.": "{leftTitle}에는 {leftCount}개의 단계가 있고, {rightTitle}에는 {rightCount}개의 단계가 있습니다.",
-  "Live-web evidence can change between research dates.": "실시간 웹 증거는 연구 날짜에 따라 변경될 수 있습니다.",
-  "Audience choices and rejected paths change the context of later turns.": "사용자의 선택과 거부된 경로는 이후 단계의 맥락을 변화시킵니다.",
-  "Model output is stochastic; this view is descriptive, not a winner ranking.": "모델 출력은 확률적입니다. 이 뷰는 설명용이며 순위를 매기는 것이 아닙니다.",
-  "Both journeys began from the same seed.": "두 여정 모두 동일한 시드에서 시작되었습니다.",
-  "The starting seeds differ.": "시작 시드가 다릅니다.",
-  "{performer} will carry this question": "{performer}가 이 질문을 이어갑니다",
-  "Performer pick": "수행자 선택",
-  "Same selected model researches and performs · inspectable sources · durable branching graph": "선택된 모델이 연구 및 수행 · 검토 가능한 출처 · 지속적인 분기 그래프",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   "Move guest journeys into this account": "게스트 여정을 이 계정으로 이동",
   "{count} open questions": "{count}개의 열린 질문",
-  "{count} earlier branches": "{count}개의 이전 분기",
+
   "Path": "경로",
-  "{count} source appearances": "{count}번의 출처 등장",
-  "{count} open branches": "{count}개의 열린 분기",
-  "{count} decisions": "{count}개의 결정",
-  "{count} redraws": "{count}개의 재작도",
-  "{count} delegated": "{count}개의 위임됨",
-  "{code} happened {count} times in ten minutes.": "{code}이(가) 10분 동안 {count}회 발생했습니다.",
+
+
+
+
+
+
   "Patient connections": "인내심 있는 연결",
   "Playful surprise": "즐거운 놀라움",
   "How things work": "작동 원리",
@@ -276,42 +275,42 @@ const messages: Record<string, string> = {
   "fast": "빠른",
   "balanced": "균형 잡힌",
   "deliberate": "신중한",
-  "Your saved-journey library is full ({count}/{limit}). Delete one journey to make room.": "저장된 여정 라이브러리가 가득 찼습니다 ({count}/{limit}). 공간을 확보하려면 여정을 하나 삭제하세요.",
+
   "Manage saved journeys": "저장된 여정 관리",
   "View usage": "사용량 보기",
-  "Library full": "라이브러리 가득 참",
+
   "Usage limit reached": "사용량 한도 도달",
-  "No research was started": "시작된 연구가 없습니다",
-  "Your saved-journey library is full": "저장된 여정 라이브러리가 가득 찼습니다",
-  "Your rolling usage limit is reached": "순환 사용 한도에 도달했습니다",
-  "Rolling usage / 24 hours": "순환 사용량 / 24시간",
-  "Know what is available.": "사용 가능한 항목을 확인하세요.",
+
+
+
+
+
   "{count} research runs ready": "{count}개의 연구 실행 준비 완료",
   "Reading your usage…": "사용량을 읽는 중…",
-  "Every run returns exactly 24 hours after it starts.": "모든 실행은 시작된 시점으로부터 정확히 24시간 후에 만료됩니다.",
+
   "Try again": "다시 시도",
   "Reading your rolling limits…": "순환 한도를 읽는 중…",
   "Live research": "실시간 연구",
   "Live research used in the last 24 hours": "지난 24시간 동안 사용된 실시간 연구",
-  "{count} runs are available now.": "현재 {count}개의 실행을 사용할 수 있습니다.",
+
   "Next slot returns {time}.": "다음 슬롯은 {time}에 돌아옵니다.",
   "You have not reached the rolling run limit.": "순환 실행 한도에 도달하지 않았습니다.",
   "Upcoming slot returns": "곧 돌아오는 슬롯",
-  "Rolling provider spend": "순환 제공자 비용",
-  "Provider spend used in the last 24 hours": "지난 24시간 동안 사용된 제공자 비용",
+
+
   "Provider spend and active holds in the last 24 hours": "지난 24시간의 제공자 비용 및 활성 예약액",
   "Spend begins leaving the window {time}.": "비용은 {time} 이후부터 범위에서 제외됩니다.",
-  "No metered provider spend in the current window.": "현재 범위 내에 측정된 제공자 비용이 없습니다.",
+
   "No metered provider spend or active holds in the current window.": "현재 범위 내에 측정된 제공자 비용이나 활성 예약액이 없습니다.",
   "Saved journeys": "저장된 여정",
   "Saved journey capacity used": "사용된 저장 여정 용량",
-  "This capacity does not reset every 24 hours. Delete a journey to free a place.": "이 용량은 24시간마다 초기화되지 않습니다. 공간을 확보하려면 여정을 삭제하세요.",
+
   "How rolling limits work": "순환 한도 작동 방식",
   "There is no midnight reset. Each run and each dollar leaves the window 24 hours after it was recorded.": "자정 리셋은 없습니다. 각 실행과 각 비용은 기록된 후 24시간이 지나면 범위에서 제외됩니다.",
   "Guest session": "게스트 세션",
   "This browser session is scheduled to remain available until {time}.": "이 브라우저 세션은 {time}까지 유지될 예정입니다.",
-  "This library belongs to this browser session.": "이 라이브러리는 이 브라우저 세션에 속합니다.",
-  "Sign in to keep more across devices": "여러 기기에서 더 많은 데이터를 유지하려면 로그인하세요",
+
+
   "Account usage": "계정 사용량",
   "These limits follow your signed-in ChatGPT identity across devices.": "이 한도는 로그인한 ChatGPT 계정을 따라 여러 기기에 적용됩니다."
 };

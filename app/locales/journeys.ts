@@ -3,40 +3,40 @@ import type { SupportedLocale } from "../../lib/contracts";
 type Locale = Exclude<SupportedLocale, "en">;
 
 const messages: Record<Locale, Record<string, string>> = {
-  es: journeyMessages({ journeys: "Recorridos", yourJourneys: "Tus recorridos", newJourney: "Nuevo recorrido", showJourney: "Ver recorrido", capacity: "Capacidad de recorridos", firstExplored: "Primera pregunta", started: "Comenzó", renameLabel: "Renombrar etiqueta del recorrido", remove: "Quitar", showHidden: "Mostrar ocultos" }),
-  fr: journeyMessages({ journeys: "Parcours", yourJourneys: "Vos parcours", newJourney: "Nouveau parcours", showJourney: "Voir le parcours", capacity: "Capacité des parcours", firstExplored: "Première question", started: "Commencé", renameLabel: "Renommer l’étiquette du parcours", remove: "Supprimer", showHidden: "Afficher les masqués" }),
-  de: journeyMessages({ journeys: "Journeys", yourJourneys: "Deine Journeys", newJourney: "Neue Journey", showJourney: "Journey anzeigen", capacity: "Journey-Kapazität", firstExplored: "Erste Frage", started: "Begonnen", renameLabel: "Journey-Label umbenennen", remove: "Entfernen", showHidden: "Ausgeblendete anzeigen" }),
-  pt: journeyMessages({ journeys: "Jornadas", yourJourneys: "Suas jornadas", newJourney: "Nova jornada", showJourney: "Mostrar jornada", capacity: "Capacidade de jornadas", firstExplored: "Primeira pergunta", started: "Iniciada", renameLabel: "Renomear rótulo da jornada", remove: "Remover", showHidden: "Mostrar ocultas" }),
-  hi: journeyMessages({ journeys: "यात्राएँ", yourJourneys: "आपकी यात्राएँ", newJourney: "नई यात्रा", showJourney: "यात्रा दिखाएँ", capacity: "यात्रा क्षमता", firstExplored: "पहला प्रश्न", started: "शुरू हुई", renameLabel: "यात्रा लेबल का नाम बदलें", remove: "हटाएँ", showHidden: "छिपी यात्राएँ दिखाएँ" }),
-  bn: journeyMessages({ journeys: "যাত্রাসমূহ", yourJourneys: "আপনার যাত্রাসমূহ", newJourney: "নতুন যাত্রা", showJourney: "যাত্রা দেখুন", capacity: "যাত্রার ধারণক্ষমতা", firstExplored: "প্রথম প্রশ্ন", started: "শুরু", renameLabel: "যাত্রার লেবেল নাম বদলান", remove: "সরান", showHidden: "লুকানো যাত্রা দেখান" }),
-  ar: journeyMessages({ journeys: "الرحلات", yourJourneys: "رحلاتك", newJourney: "رحلة جديدة", showJourney: "عرض الرحلة", capacity: "سعة الرحلات", firstExplored: "السؤال الأول", started: "بدأت", renameLabel: "إعادة تسمية وسم الرحلة", remove: "إزالة", showHidden: "إظهار المخفي" }),
-  "zh-CN": journeyMessages({ journeys: "旅程", yourJourneys: "你的旅程", newJourney: "新旅程", showJourney: "查看旅程", capacity: "旅程容量", firstExplored: "最初的问题", started: "开始于", renameLabel: "重命名旅程标签", remove: "移除", showHidden: "显示隐藏项" }),
-  ja: journeyMessages({ journeys: "ジャーニー", yourJourneys: "あなたのジャーニー", newJourney: "新しいジャーニー", showJourney: "ジャーニーを表示", capacity: "ジャーニー容量", firstExplored: "最初の質問", started: "開始", renameLabel: "ジャーニーラベルを変更", remove: "削除", showHidden: "非表示を表示" }),
-  ko: journeyMessages({ journeys: "여정", yourJourneys: "나의 여정", newJourney: "새 여정", showJourney: "여정 보기", capacity: "여정 용량", firstExplored: "첫 질문", started: "시작", renameLabel: "여정 라벨 이름 바꾸기", remove: "삭제", showHidden: "숨긴 여정 표시" }),
+  es: journeyMessages({ journeys: "Recorridos", yourJourneys: "Tus recorridos", newJourney: "Nuevo recorrido", showJourney: "Ver recorrido", capacity: "Capacidad de recorridos", firstExplored: "Primera pregunta", started: "Comenzó", renameLabel: "Renombrar etiqueta del recorrido", remove: "Quitar" }),
+  fr: journeyMessages({ journeys: "Parcours", yourJourneys: "Vos parcours", newJourney: "Nouveau parcours", showJourney: "Voir le parcours", capacity: "Capacité des parcours", firstExplored: "Première question", started: "Commencé", renameLabel: "Renommer l’étiquette du parcours", remove: "Supprimer" }),
+  de: journeyMessages({ journeys: "Journeys", yourJourneys: "Deine Journeys", newJourney: "Neue Journey", showJourney: "Journey anzeigen", capacity: "Journey-Kapazität", firstExplored: "Erste Frage", started: "Begonnen", renameLabel: "Journey-Label umbenennen", remove: "Entfernen" }),
+  pt: journeyMessages({ journeys: "Jornadas", yourJourneys: "Suas jornadas", newJourney: "Nova jornada", showJourney: "Mostrar jornada", capacity: "Capacidade de jornadas", firstExplored: "Primeira pergunta", started: "Iniciada", renameLabel: "Renomear rótulo da jornada", remove: "Remover" }),
+  hi: journeyMessages({ journeys: "यात्राएँ", yourJourneys: "आपकी यात्राएँ", newJourney: "नई यात्रा", showJourney: "यात्रा दिखाएँ", capacity: "यात्रा क्षमता", firstExplored: "पहला प्रश्न", started: "शुरू हुई", renameLabel: "यात्रा लेबल का नाम बदलें", remove: "हटाएँ" }),
+  bn: journeyMessages({ journeys: "যাত্রাসমূহ", yourJourneys: "আপনার যাত্রাসমূহ", newJourney: "নতুন যাত্রা", showJourney: "যাত্রা দেখুন", capacity: "যাত্রার ধারণক্ষমতা", firstExplored: "প্রথম প্রশ্ন", started: "শুরু", renameLabel: "যাত্রার লেবেল নাম বদলান", remove: "সরান" }),
+  ar: journeyMessages({ journeys: "الرحلات", yourJourneys: "رحلاتك", newJourney: "رحلة جديدة", showJourney: "عرض الرحلة", capacity: "سعة الرحلات", firstExplored: "السؤال الأول", started: "بدأت", renameLabel: "إعادة تسمية وسم الرحلة", remove: "إزالة" }),
+  "zh-CN": journeyMessages({ journeys: "旅程", yourJourneys: "你的旅程", newJourney: "新旅程", showJourney: "查看旅程", capacity: "旅程容量", firstExplored: "最初的问题", started: "开始于", renameLabel: "重命名旅程标签", remove: "移除" }),
+  ja: journeyMessages({ journeys: "ジャーニー", yourJourneys: "あなたのジャーニー", newJourney: "新しいジャーニー", showJourney: "ジャーニーを表示", capacity: "ジャーニー容量", firstExplored: "最初の質問", started: "開始", renameLabel: "ジャーニーラベルを変更", remove: "削除" }),
+  ko: journeyMessages({ journeys: "여정", yourJourneys: "나의 여정", newJourney: "새 여정", showJourney: "여정 보기", capacity: "여정 용량", firstExplored: "첫 질문", started: "시작", renameLabel: "여정 라벨 이름 바꾸기", remove: "삭제" }),
 };
 
-Object.assign(messages.es, { Pinned: "Fijado", Hidden: "Oculto" });
-Object.assign(messages.fr, { Pinned: "Épinglé", Hidden: "Masqué" });
-Object.assign(messages.de, { Pinned: "Angepinnt", Hidden: "Ausgeblendet" });
-Object.assign(messages.pt, { Pinned: "Fixada", Hidden: "Oculta" });
-Object.assign(messages.hi, { Pinned: "पिन की गई", Hidden: "छिपी हुई" });
-Object.assign(messages.bn, { Pinned: "পিন করা", Hidden: "লুকানো" });
-Object.assign(messages.ar, { Pinned: "مثبتة", Hidden: "مخفية" });
-Object.assign(messages["zh-CN"], { Pinned: "已置顶", Hidden: "已隐藏" });
-Object.assign(messages.ja, { Pinned: "ピン留め", Hidden: "非表示" });
-Object.assign(messages.ko, { Pinned: "고정됨", Hidden: "숨김" });
+Object.assign(messages.es, { Pinned: "Fijado"});
+Object.assign(messages.fr, { Pinned: "Épinglé"});
+Object.assign(messages.de, { Pinned: "Angepinnt"});
+Object.assign(messages.pt, { Pinned: "Fixada"});
+Object.assign(messages.hi, { Pinned: "पिन की गई"});
+Object.assign(messages.bn, { Pinned: "পিন করা"});
+Object.assign(messages.ar, { Pinned: "مثبتة"});
+Object.assign(messages["zh-CN"], { Pinned: "已置顶"});
+Object.assign(messages.ja, { Pinned: "ピン留め"});
+Object.assign(messages.ko, { Pinned: "고정됨"});
 
 const backgroundMessages: Record<Locale, Record<string, string>> = {
-  es: { "Researching in the background. You can safely leave this page.": "Investigando en segundo plano. Puedes salir de esta página con seguridad.", "Researching {count}": "Investigando {count}", "In progress": "En curso", "Research activity": "Actividad de investigación", "Researching now": "Investigando ahora", "This will update automatically when it is ready. You can use another device or leave this page.": "Se actualizará automáticamente cuando esté listo. Puedes usar otro dispositivo o salir de esta página.", "This research could not be completed.": "No se pudo completar esta investigación.", "Retry research": "Reintentar investigación" },
-  fr: { "Researching in the background. You can safely leave this page.": "Recherche en arrière-plan. Vous pouvez quitter cette page sans risque.", "Researching {count}": "Recherche {count}", "In progress": "En cours", "Research activity": "Activité de recherche", "Researching now": "Recherche en cours", "This will update automatically when it is ready. You can use another device or leave this page.": "La mise à jour sera automatique. Vous pouvez utiliser un autre appareil ou quitter cette page.", "This research could not be completed.": "Cette recherche n’a pas pu aboutir.", "Retry research": "Relancer la recherche" },
-  de: { "Researching in the background. You can safely leave this page.": "Die Recherche läuft im Hintergrund. Du kannst diese Seite sicher verlassen.", "Researching {count}": "Recherche {count}", "In progress": "In Bearbeitung", "Research activity": "Rechercheaktivität", "Researching now": "Wird recherchiert", "This will update automatically when it is ready. You can use another device or leave this page.": "Dies wird automatisch aktualisiert. Du kannst ein anderes Gerät verwenden oder die Seite verlassen.", "This research could not be completed.": "Diese Recherche konnte nicht abgeschlossen werden.", "Retry research": "Recherche wiederholen" },
-  pt: { "Researching in the background. You can safely leave this page.": "Pesquisando em segundo plano. Você pode sair desta página com segurança.", "Researching {count}": "Pesquisando {count}", "In progress": "Em andamento", "Research activity": "Atividade de pesquisa", "Researching now": "Pesquisando agora", "This will update automatically when it is ready. You can use another device or leave this page.": "Isto será atualizado automaticamente. Você pode usar outro dispositivo ou sair desta página.", "This research could not be completed.": "Não foi possível concluir esta pesquisa.", "Retry research": "Tentar pesquisa novamente" },
-  hi: { "Researching in the background. You can safely leave this page.": "पृष्ठभूमि में शोध चल रहा है। आप इस पेज से सुरक्षित रूप से जा सकते हैं।", "Researching {count}": "{count} पर शोध", "In progress": "जारी है", "Research activity": "शोध गतिविधि", "Researching now": "अभी शोध जारी है", "This will update automatically when it is ready. You can use another device or leave this page.": "तैयार होने पर यह अपने आप अपडेट होगा। आप दूसरा डिवाइस इस्तेमाल कर सकते हैं या यह पेज छोड़ सकते हैं।", "This research could not be completed.": "यह शोध पूरा नहीं हो सका।", "Retry research": "शोध फिर से करें" },
-  bn: { "Researching in the background. You can safely leave this page.": "পটভূমিতে গবেষণা চলছে। আপনি নিরাপদে এই পৃষ্ঠা ছেড়ে যেতে পারেন।", "Researching {count}": "{count}টি গবেষণা চলছে", "In progress": "চলছে", "Research activity": "গবেষণা কার্যক্রম", "Researching now": "এখন গবেষণা চলছে", "This will update automatically when it is ready. You can use another device or leave this page.": "প্রস্তুত হলে এটি নিজে থেকেই আপডেট হবে। আপনি অন্য ডিভাইস ব্যবহার করতে বা এই পৃষ্ঠা ছাড়তে পারেন।", "This research could not be completed.": "এই গবেষণা সম্পন্ন করা যায়নি।", "Retry research": "গবেষণা আবার চেষ্টা করুন" },
-  ar: { "Researching in the background. You can safely leave this page.": "يجري البحث في الخلفية. يمكنك مغادرة هذه الصفحة بأمان.", "Researching {count}": "جارٍ بحث {count}", "In progress": "قيد التنفيذ", "Research activity": "نشاط البحث", "Researching now": "يجري البحث الآن", "This will update automatically when it is ready. You can use another device or leave this page.": "سيُحدّث هذا تلقائيًا عند الجاهزية. يمكنك استخدام جهاز آخر أو مغادرة الصفحة.", "This research could not be completed.": "تعذر إكمال هذا البحث.", "Retry research": "إعادة محاولة البحث" },
-  "zh-CN": { "Researching in the background. You can safely leave this page.": "正在后台研究。你可以放心离开此页面。", "Researching {count}": "正在研究 {count} 项", "In progress": "进行中", "Research activity": "研究动态", "Researching now": "正在研究", "This will update automatically when it is ready. You can use another device or leave this page.": "准备好后会自动更新。你可以使用其他设备或离开此页面。", "This research could not be completed.": "此研究未能完成。", "Retry research": "重试研究" },
-  ja: { "Researching in the background. You can safely leave this page.": "バックグラウンドで調査中です。このページを離れても問題ありません。", "Researching {count}": "{count}件を調査中", "In progress": "進行中", "Research activity": "調査状況", "Researching now": "調査中", "This will update automatically when it is ready. You can use another device or leave this page.": "準備ができると自動更新されます。別の端末を使ったり、このページを離れたりできます。", "This research could not be completed.": "この調査は完了できませんでした。", "Retry research": "調査を再試行" },
-  ko: { "Researching in the background. You can safely leave this page.": "백그라운드에서 조사 중입니다. 이 페이지를 나가도 안전합니다.", "Researching {count}": "{count}개 조사 중", "In progress": "진행 중", "Research activity": "조사 활동", "Researching now": "현재 조사 중", "This will update automatically when it is ready. You can use another device or leave this page.": "준비되면 자동으로 업데이트됩니다. 다른 기기를 사용하거나 이 페이지를 나가도 됩니다.", "This research could not be completed.": "이 조사를 완료하지 못했습니다.", "Retry research": "조사 다시 시도" },
+  es: { "Researching in the background. You can safely leave this page.": "Investigando en segundo plano. Puedes salir de esta página con seguridad.", "Researching {count}": "Investigando {count}", "In progress": "En curso", "Research activity": "Actividad de investigación", "Researching now": "Investigando ahora", "This research could not be completed.": "No se pudo completar esta investigación.", "Retry research": "Reintentar investigación" },
+  fr: { "Researching in the background. You can safely leave this page.": "Recherche en arrière-plan. Vous pouvez quitter cette page sans risque.", "Researching {count}": "Recherche {count}", "In progress": "En cours", "Research activity": "Activité de recherche", "Researching now": "Recherche en cours", "This research could not be completed.": "Cette recherche n’a pas pu aboutir.", "Retry research": "Relancer la recherche" },
+  de: { "Researching in the background. You can safely leave this page.": "Die Recherche läuft im Hintergrund. Du kannst diese Seite sicher verlassen.", "Researching {count}": "Recherche {count}", "In progress": "In Bearbeitung", "Research activity": "Rechercheaktivität", "Researching now": "Wird recherchiert", "This research could not be completed.": "Diese Recherche konnte nicht abgeschlossen werden.", "Retry research": "Recherche wiederholen" },
+  pt: { "Researching in the background. You can safely leave this page.": "Pesquisando em segundo plano. Você pode sair desta página com segurança.", "Researching {count}": "Pesquisando {count}", "In progress": "Em andamento", "Research activity": "Atividade de pesquisa", "Researching now": "Pesquisando agora", "This research could not be completed.": "Não foi possível concluir esta pesquisa.", "Retry research": "Tentar pesquisa novamente" },
+  hi: { "Researching in the background. You can safely leave this page.": "पृष्ठभूमि में शोध चल रहा है। आप इस पेज से सुरक्षित रूप से जा सकते हैं।", "Researching {count}": "{count} पर शोध", "In progress": "जारी है", "Research activity": "शोध गतिविधि", "Researching now": "अभी शोध जारी है", "This research could not be completed.": "यह शोध पूरा नहीं हो सका।", "Retry research": "शोध फिर से करें" },
+  bn: { "Researching in the background. You can safely leave this page.": "পটভূমিতে গবেষণা চলছে। আপনি নিরাপদে এই পৃষ্ঠা ছেড়ে যেতে পারেন।", "Researching {count}": "{count}টি গবেষণা চলছে", "In progress": "চলছে", "Research activity": "গবেষণা কার্যক্রম", "Researching now": "এখন গবেষণা চলছে", "This research could not be completed.": "এই গবেষণা সম্পন্ন করা যায়নি।", "Retry research": "গবেষণা আবার চেষ্টা করুন" },
+  ar: { "Researching in the background. You can safely leave this page.": "يجري البحث في الخلفية. يمكنك مغادرة هذه الصفحة بأمان.", "Researching {count}": "جارٍ بحث {count}", "In progress": "قيد التنفيذ", "Research activity": "نشاط البحث", "Researching now": "يجري البحث الآن", "This research could not be completed.": "تعذر إكمال هذا البحث.", "Retry research": "إعادة محاولة البحث" },
+  "zh-CN": { "Researching in the background. You can safely leave this page.": "正在后台研究。你可以放心离开此页面。", "Researching {count}": "正在研究 {count} 项", "In progress": "进行中", "Research activity": "研究动态", "Researching now": "正在研究", "This research could not be completed.": "此研究未能完成。", "Retry research": "重试研究" },
+  ja: { "Researching in the background. You can safely leave this page.": "バックグラウンドで調査中です。このページを離れても問題ありません。", "Researching {count}": "{count}件を調査中", "In progress": "進行中", "Research activity": "調査状況", "Researching now": "調査中", "This research could not be completed.": "この調査は完了できませんでした。", "Retry research": "調査を再試行" },
+  ko: { "Researching in the background. You can safely leave this page.": "백그라운드에서 조사 중입니다. 이 페이지를 나가도 안전합니다.", "Researching {count}": "{count}개 조사 중", "In progress": "진행 중", "Research activity": "조사 활동", "Researching now": "현재 조사 중", "This research could not be completed.": "이 조사를 완료하지 못했습니다.", "Retry research": "조사 다시 시도" },
 };
 
 for (const locale of Object.keys(backgroundMessages) as Locale[]) {
@@ -77,6 +77,23 @@ for (const locale of Object.keys(cancellationMessages) as Locale[]) {
   Object.assign(messages[locale], cancellationMessages[locale]);
 }
 
+const removalMessages: Record<Locale, Record<string, string>> = {
+  es: { "Confirm failed research removal": "Confirmar eliminación de investigación fallida", "No journeys match this search": "Ningún recorrido coincide con esta búsqueda", "Remove failed research": "Eliminar investigación fallida", "Remove journey": "Eliminar recorrido", "Remove this failed research?": "¿Eliminar esta investigación fallida?", "Try a broader question or journey label.": "Prueba con una pregunta o etiqueta de recorrido más amplia." },
+  fr: { "Confirm failed research removal": "Confirmer la suppression de la recherche échouée", "No journeys match this search": "Aucun parcours ne correspond à cette recherche", "Remove failed research": "Supprimer la recherche échouée", "Remove journey": "Supprimer le parcours", "Remove this failed research?": "Supprimer cette recherche échouée ?", "Try a broader question or journey label.": "Essayez une question ou une étiquette de parcours plus générale." },
+  de: { "Confirm failed research removal": "Entfernen der fehlgeschlagenen Recherche bestätigen", "No journeys match this search": "Keine Journey entspricht dieser Suche", "Remove failed research": "Fehlgeschlagene Recherche entfernen", "Remove journey": "Journey entfernen", "Remove this failed research?": "Diese fehlgeschlagene Recherche entfernen?", "Try a broader question or journey label.": "Versuche eine allgemeinere Frage oder Journey-Bezeichnung." },
+  pt: { "Confirm failed research removal": "Confirmar remoção da pesquisa com falha", "No journeys match this search": "Nenhuma jornada corresponde a esta busca", "Remove failed research": "Remover pesquisa com falha", "Remove journey": "Remover jornada", "Remove this failed research?": "Remover esta pesquisa com falha?", "Try a broader question or journey label.": "Tente uma pergunta ou um rótulo de jornada mais amplo." },
+  hi: { "Confirm failed research removal": "असफल शोध हटाने की पुष्टि करें", "No journeys match this search": "इस खोज से कोई यात्रा नहीं मिली", "Remove failed research": "असफल शोध हटाएँ", "Remove journey": "यात्रा हटाएँ", "Remove this failed research?": "यह असफल शोध हटाएँ?", "Try a broader question or journey label.": "थोड़ा व्यापक प्रश्न या यात्रा लेबल आज़माएँ।" },
+  bn: { "Confirm failed research removal": "ব্যর্থ গবেষণা সরানো নিশ্চিত করুন", "No journeys match this search": "এই অনুসন্ধানের সঙ্গে কোনো যাত্রা মেলেনি", "Remove failed research": "ব্যর্থ গবেষণা সরান", "Remove journey": "যাত্রা সরান", "Remove this failed research?": "এই ব্যর্থ গবেষণাটি সরাবেন?", "Try a broader question or journey label.": "আরও বিস্তৃত প্রশ্ন বা যাত্রার লেবেল চেষ্টা করুন।" },
+  ar: { "Confirm failed research removal": "تأكيد إزالة البحث الفاشل", "No journeys match this search": "لا توجد رحلات تطابق هذا البحث", "Remove failed research": "إزالة البحث الفاشل", "Remove journey": "إزالة الرحلة", "Remove this failed research?": "إزالة هذا البحث الفاشل؟", "Try a broader question or journey label.": "جرّب سؤالاً أو تسمية رحلة أوسع." },
+  "zh-CN": { "Confirm failed research removal": "确认移除失败的研究", "No journeys match this search": "没有旅程符合此搜索", "Remove failed research": "移除失败的研究", "Remove journey": "移除旅程", "Remove this failed research?": "移除这项失败的研究？", "Try a broader question or journey label.": "请尝试更宽泛的问题或旅程标签。" },
+  ja: { "Confirm failed research removal": "失敗したリサーチの削除を確認", "No journeys match this search": "この検索に一致するジャーニーはありません", "Remove failed research": "失敗したリサーチを削除", "Remove journey": "ジャーニーを削除", "Remove this failed research?": "この失敗したリサーチを削除しますか？", "Try a broader question or journey label.": "より広い質問またはジャーニーラベルを試してください。" },
+  ko: { "Confirm failed research removal": "실패한 조사 삭제 확인", "No journeys match this search": "이 검색과 일치하는 여정이 없습니다", "Remove failed research": "실패한 조사 삭제", "Remove journey": "여정 삭제", "Remove this failed research?": "이 실패한 조사를 삭제할까요?", "Try a broader question or journey label.": "더 넓은 질문이나 여정 라벨을 사용해 보세요." },
+};
+
+for (const locale of Object.keys(removalMessages) as Locale[]) {
+  Object.assign(messages[locale], removalMessages[locale]);
+}
+
 function journeyMessages(words: {
   journeys: string;
   yourJourneys: string;
@@ -87,7 +104,6 @@ function journeyMessages(words: {
   started: string;
   renameLabel: string;
   remove: string;
-  showHidden: string;
 }): Record<string, string> {
   return {
     Journeys: words.journeys,
@@ -102,19 +118,19 @@ function journeyMessages(words: {
     "Rename journey label": words.renameLabel,
     "Rename label": words.renameLabel,
     Remove: words.remove,
-    "Show hidden": words.showHidden,
+
     "Each journey follows the path from your first question through every question you explored afterward.": `${words.firstExplored} → ${words.journeys}`,
     "{count} of {limit} journeys": `{count} / {limit} ${words.journeys}`,
     "Journey filters": `${words.journeys} — filters`,
     "First question or journey label": `${words.firstExplored} / label`,
     Pinned: "Pinned",
-    Hidden: "Hidden",
+
     "Manage journey": words.journeys,
     "Label: {label}": `Label: {label}`,
     "Confirm journey removal": words.remove,
     "Remove this journey?": `${words.remove}?`,
-    "No journeys match these filters": `${words.journeys} — 0`,
-    "Try another search or show hidden journeys.": words.showHidden,
+
+
     "No journeys yet": `${words.journeys} — 0`,
     "Explore a question to begin your first journey.": words.firstExplored,
     "Start a journey": words.newJourney,

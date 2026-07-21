@@ -22,7 +22,7 @@ There is no queue service, scheduler, background worker, provider fan-out, R2 bu
 | --- | --- |
 | Interface orchestration | `app/curiositypedia-experience.tsx` |
 | Usage, journey-list, and bookmark presentation | `app/experience/usage-view.tsx`, `app/experience/journeys-view.tsx`, `app/experience/bookmarks-view.tsx` |
-| Settings presentation and development-only Civitai configuration | `app/experience/settings-view.tsx` |
+| Settings presentation | `app/experience/settings-view.tsx` |
 | Shared empty-stage presentation | `app/experience/empty-stage.tsx` |
 | Journey graph projection, paths, folding, and layout | `app/experience/journey-graph.ts` |
 | Journey map rendering and map-local interaction state | `app/experience/journey-map.tsx` |
@@ -33,7 +33,6 @@ There is no queue service, scheduler, background worker, provider fan-out, R2 bu
 | HTTP parsing and public responses | `lib/api.ts`, `lib/errors.ts` |
 | Shared request and response contracts | `lib/contracts.ts` |
 | Owned journey reads and row-to-domain mapping | `lib/journeys/read-model.ts` |
-| Pure journey comparison projection | `lib/journeys/comparison.ts` |
 | Deterministic journey mutations and journey repository facade | `lib/repository.ts` |
 | Identity-scoped topic bookmark reads, writes, and legacy import | `lib/bookmarks-repository.ts` |
 | Preference validation, defaults, reads, and writes | `lib/preferences-repository.ts` |
@@ -54,7 +53,7 @@ There is no queue service, scheduler, background worker, provider fan-out, R2 bu
 | Identity resolution | `app/chatgpt-auth.ts`, `lib/viewer.ts` |
 | Database schema | `db/schema.ts` |
 
-Dependencies flow from pages and routes into domain modules, then into D1 or OpenAI. Shared contracts and error helpers do not import repositories. The journey graph model is a pure interface-domain module: it imports only shared journey contracts and has no React, browser, routing, storage, network, clock, or random dependency. The journey read model owns identity-bound list/detail reads, rejected-question reads, legacy JSON fallbacks, and row-to-domain mapping. The journey comparison module accepts two authorized `JourneyDetail` values and purely projects their decorated summaries, topic sets, observations, confounders, costs, and timelines; it owns no identity lookup, persistence, route validation, clock, random, provider, quota, or mutation behavior. `lib/repository.ts` validates comparison input, performs authorization-gated reads, re-exports the public read surface, and owns deterministic mutations. The journey-management repository owns management-input validation and the identity- and version-bound title, pin, and visibility update; it rereads the authorized journey before and after a successful optimistic mutation. The preferences repository owns preference defaults, validation, identity-bound reads, and upserts; its current forced `prefer` image behavior remains characterized rather than redesigned. The research-status repository owns the identity-bound observable request-status read and its public projection. The snapshots repository owns identity-authorized snapshot creation and listing plus the current journey-export projection. Snapshot creation has no capacity or retention limit, and export intentionally performs the existing duplicate authorized journey reads. Research prompt policy imports only the performer/preset catalog, shared research contracts, and locale naming; it owns no provider transport, streaming, repair, validation, quota, usage, or persistence behavior. The provider-stream module receives an already assembled request body and hides the primary request's OpenAI SSE, timeout/abort, terminal-outcome, diagnostic, and provider-usage mechanics. It does not choose prompts, tools, limits, retry policy, repair/recovery order, quotas, costs, or persistence behavior.
+Dependencies flow from pages and routes into domain modules, then into D1 or OpenAI. Shared contracts and error helpers do not import repositories. The journey graph model is a pure interface-domain module: it imports only shared journey contracts and has no React, browser, routing, storage, network, clock, or random dependency. The journey read model owns identity-bound list/detail reads, rejected-question reads, legacy JSON fallbacks, and row-to-domain mapping. `lib/repository.ts` re-exports the public read surface and owns deterministic mutations. The journey-management repository owns management-input validation and the identity- and version-bound title, pin, and visibility update; it rereads the authorized journey before and after a successful optimistic mutation. The preferences repository owns preference defaults, validation, identity-bound reads, and upserts; its current forced `prefer` image behavior remains characterized rather than redesigned. The research-status repository owns the identity-bound observable request-status read and its public projection. The snapshots repository owns identity-authorized snapshot creation and listing plus the current journey-export projection. Snapshot creation has no capacity or retention limit, and export intentionally performs the existing duplicate authorized journey reads. Research prompt policy imports only the performer/preset catalog, shared research contracts, and locale naming; it owns no provider transport, streaming, repair, validation, quota, usage, or persistence behavior. The provider-stream module receives an already assembled request body and hides the primary request's OpenAI SSE, timeout/abort, terminal-outcome, diagnostic, and provider-usage mechanics. It does not choose prompts, tools, limits, retry policy, repair/recovery order, quotas, costs, or persistence behavior.
 
 ## Routes
 
@@ -83,7 +82,7 @@ Dependencies flow from pages and routes into domain modules, then into D1 or Ope
 | `/api/bookmarks` | `GET`, `POST` | List or add identity-scoped topic bookmarks. |
 | `/api/bookmarks/:turnId` | `DELETE` | Idempotently remove a topic bookmark. |
 | `/api/bookmarks/import` | `POST` | Idempotently import authorized legacy browser bookmarks. |
-| `/api/journeys` | `GET`, `POST` | List journeys or create a fixture journey. |
+| `/api/journeys` | `GET` | List journeys visible to the current identity. |
 | `/api/journeys/:journeyId` | `GET`, `PATCH`, `DELETE` | Read, update, hide, or delete a journey. |
 | `/api/journeys/:journeyId/advance` | `POST` | Choose, reject, delegate, branch, or pause. |
 | `/api/journeys/:journeyId/export` | `GET` | Export a persisted journey. |
@@ -91,7 +90,6 @@ Dependencies flow from pages and routes into domain modules, then into D1 or Ope
 | `/api/research` | `POST` | Create or advance a live research journey. |
 | `/api/research/:runId` | `GET` | Read observable research status and events. |
 | `/api/landing-recommendations` | `GET`, `POST` | Read permanent global editorial pages or publish an authenticated new batch. |
-| `/api/compare` | `GET` | Compare two persisted journeys selected by query parameters. |
 | `/api/usage` | `GET` | Return rolling usage and spend availability. |
 | `/api/diagnostics` | `GET` | Return privacy-filtered provider diagnostics. |
 | `/api/health` | `GET` | Return runtime health metadata. |

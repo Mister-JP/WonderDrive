@@ -18,7 +18,7 @@ type ProviderStreamUsageContext = {
   callKey: string;
 };
 
-export type ProviderStreamProgress =
+type ProviderStreamProgress =
   | { kind: "search" }
   | { kind: "output_delta"; delta: string };
 

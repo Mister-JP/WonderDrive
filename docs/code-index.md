@@ -11,14 +11,13 @@ Read [architecture.md](architecture.md) for system boundaries and change rules. 
 | [`app/api/bookmarks/import/route.ts`](../app/api/bookmarks/import/route.ts) | [`lib/api.ts`](../lib/api.ts)<br>[`lib/bookmarks-repository.ts`](../lib/bookmarks-repository.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts) |
 | [`app/api/bookmarks/route.ts`](../app/api/bookmarks/route.ts) | [`lib/api.ts`](../lib/api.ts)<br>[`lib/bookmarks-repository.ts`](../lib/bookmarks-repository.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts) |
 | [`app/api/bootstrap/route.ts`](../app/api/bootstrap/route.ts) | [`lib/api.ts`](../lib/api.ts)<br>[`lib/catalog.ts`](../lib/catalog.ts)<br>[`lib/preferences-repository.ts`](../lib/preferences-repository.ts) |
-| [`app/api/compare/route.ts`](../app/api/compare/route.ts) | [`lib/api.ts`](../lib/api.ts)<br>[`lib/errors.ts`](../lib/errors.ts)<br>[`lib/repository.ts`](../lib/repository.ts) |
 | [`app/api/diagnostics/route.ts`](../app/api/diagnostics/route.ts) | [`lib/api.ts`](../lib/api.ts)<br>[`lib/diagnostics.ts`](../lib/diagnostics.ts) |
 | [`app/api/health/route.ts`](../app/api/health/route.ts) | — |
 | [`app/api/journeys/[journeyId]/advance/route.ts`](../app/api/journeys/[journeyId]/advance/route.ts) | [`lib/api.ts`](../lib/api.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/live-redraw.ts`](../lib/live-redraw.ts)<br>[`lib/repository.ts`](../lib/repository.ts) |
 | [`app/api/journeys/[journeyId]/export/route.ts`](../app/api/journeys/[journeyId]/export/route.ts) | [`lib/api.ts`](../lib/api.ts)<br>[`lib/snapshots-repository.ts`](../lib/snapshots-repository.ts)<br>[`lib/viewer.ts`](../lib/viewer.ts) |
 | [`app/api/journeys/[journeyId]/route.ts`](../app/api/journeys/[journeyId]/route.ts) | [`lib/api.ts`](../lib/api.ts)<br>[`lib/journey-management-repository.ts`](../lib/journey-management-repository.ts)<br>[`lib/repository.ts`](../lib/repository.ts) |
 | [`app/api/journeys/[journeyId]/snapshots/route.ts`](../app/api/journeys/[journeyId]/snapshots/route.ts) | [`lib/api.ts`](../lib/api.ts)<br>[`lib/snapshots-repository.ts`](../lib/snapshots-repository.ts) |
-| [`app/api/journeys/route.ts`](../app/api/journeys/route.ts) | [`lib/api.ts`](../lib/api.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/repository.ts`](../lib/repository.ts) |
+| [`app/api/journeys/route.ts`](../app/api/journeys/route.ts) | [`lib/api.ts`](../lib/api.ts)<br>[`lib/repository.ts`](../lib/repository.ts) |
 | [`app/api/landing-recommendations/route.ts`](../app/api/landing-recommendations/route.ts) | [`lib/api.ts`](../lib/api.ts)<br>[`lib/errors.ts`](../lib/errors.ts)<br>[`lib/landing-recommendations-repository.ts`](../lib/landing-recommendations-repository.ts) |
 | [`app/api/preferences/route.ts`](../app/api/preferences/route.ts) | [`lib/api.ts`](../lib/api.ts)<br>[`lib/preferences-repository.ts`](../lib/preferences-repository.ts) |
 | [`app/api/research/[runId]/route.ts`](../app/api/research/[runId]/route.ts) | [`lib/api.ts`](../lib/api.ts)<br>[`lib/research-status-repository.ts`](../lib/research-status-repository.ts) |
@@ -41,7 +40,7 @@ Read [architecture.md](architecture.md) for system boundaries and change rules. 
 | [`app/experience/journey-map.tsx`](../app/experience/journey-map.tsx) | [`app/experience/journey-graph.ts`](../app/experience/journey-graph.ts)<br>[`app/i18n.tsx`](../app/i18n.tsx)<br>[`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/image-validation.ts`](../lib/image-validation.ts)<br>[`lib/knowledge-check-contracts.ts`](../lib/knowledge-check-contracts.ts) |
 | [`app/experience/journeys-view.tsx`](../app/experience/journeys-view.tsx) | [`app/i18n.tsx`](../app/i18n.tsx)<br>[`lib/contracts.ts`](../lib/contracts.ts) |
 | [`app/experience/knowledge-check.tsx`](../app/experience/knowledge-check.tsx) | [`lib/contracts.ts`](../lib/contracts.ts) |
-| [`app/experience/settings-view.tsx`](../app/experience/settings-view.tsx) | [`app/i18n.tsx`](../app/i18n.tsx)<br>[`lib/civitai-gallery.ts`](../lib/civitai-gallery.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/i18n.ts`](../lib/i18n.ts) |
+| [`app/experience/settings-view.tsx`](../app/experience/settings-view.tsx) | [`app/i18n.tsx`](../app/i18n.tsx)<br>[`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/i18n.ts`](../lib/i18n.ts) |
 | [`app/experience/usage-view.tsx`](../app/experience/usage-view.tsx) | [`app/i18n.tsx`](../app/i18n.tsx)<br>[`lib/contracts.ts`](../lib/contracts.ts) |
 | [`app/globals.css`](../app/globals.css) | — |
 | [`app/i18n.tsx`](../app/i18n.tsx) | [`app/locales/ar.ts`](../app/locales/ar.ts)<br>[`app/locales/bn.ts`](../app/locales/bn.ts)<br>[`app/locales/de.ts`](../app/locales/de.ts)<br>[`app/locales/fr.ts`](../app/locales/fr.ts)<br>[`app/locales/hi.ts`](../app/locales/hi.ts)<br>[`app/locales/ja.ts`](../app/locales/ja.ts)<br>[`app/locales/journey-tree.ts`](../app/locales/journey-tree.ts)<br>[`app/locales/journeys.ts`](../app/locales/journeys.ts)<br>[`app/locales/ko.ts`](../app/locales/ko.ts)<br>[`app/locales/pt.ts`](../app/locales/pt.ts)<br>[`app/locales/zh-CN.ts`](../app/locales/zh-CN.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/i18n.ts`](../lib/i18n.ts) |
@@ -76,16 +75,13 @@ Read [architecture.md](architecture.md) for system boundaries and change rules. 
 | [`lib/background-research.ts`](../lib/background-research.ts) | [`db/index.ts`](../db/index.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/errors.ts`](../lib/errors.ts)<br>[`lib/live-repository.ts`](../lib/live-repository.ts)<br>[`lib/live-research.ts`](../lib/live-research.ts)<br>[`lib/openai.ts`](../lib/openai.ts)<br>[`lib/provider-cost-control.ts`](../lib/provider-cost-control.ts)<br>[`lib/provider-usage.ts`](../lib/provider-usage.ts)<br>[`lib/research/provider-response.ts`](../lib/research/provider-response.ts)<br>[`lib/viewer.ts`](../lib/viewer.ts) |
 | [`lib/bookmarks-repository.ts`](../lib/bookmarks-repository.ts) | [`db/index.ts`](../db/index.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/errors.ts`](../lib/errors.ts)<br>[`lib/request.ts`](../lib/request.ts)<br>[`lib/viewer.ts`](../lib/viewer.ts) |
 | [`lib/catalog.ts`](../lib/catalog.ts) | [`lib/contracts.ts`](../lib/contracts.ts) |
-| [`lib/civitai-gallery.ts`](../lib/civitai-gallery.ts) | — |
 | [`lib/contracts.ts`](../lib/contracts.ts) | — |
-| [`lib/curiosity-quotes.ts`](../lib/curiosity-quotes.ts) | — |
 | [`lib/diagnostics.ts`](../lib/diagnostics.ts) | [`db/index.ts`](../db/index.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/errors.ts`](../lib/errors.ts)<br>[`lib/viewer.ts`](../lib/viewer.ts) |
 | [`lib/errors.ts`](../lib/errors.ts) | [`lib/contracts.ts`](../lib/contracts.ts) |
 | [`lib/fixtures.ts`](../lib/fixtures.ts) | [`lib/catalog.ts`](../lib/catalog.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts) |
 | [`lib/i18n.ts`](../lib/i18n.ts) | [`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/errors.ts`](../lib/errors.ts) |
 | [`lib/image-validation.ts`](../lib/image-validation.ts) | — |
 | [`lib/journey-management-repository.ts`](../lib/journey-management-repository.ts) | [`db/index.ts`](../db/index.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/errors.ts`](../lib/errors.ts)<br>[`lib/repository.ts`](../lib/repository.ts)<br>[`lib/request.ts`](../lib/request.ts)<br>[`lib/viewer.ts`](../lib/viewer.ts) |
-| [`lib/journeys/comparison.ts`](../lib/journeys/comparison.ts) | [`lib/catalog.ts`](../lib/catalog.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts) |
 | [`lib/journeys/read-model.ts`](../lib/journeys/read-model.ts) | [`db/index.ts`](../db/index.ts)<br>[`lib/catalog.ts`](../lib/catalog.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/errors.ts`](../lib/errors.ts)<br>[`lib/request.ts`](../lib/request.ts)<br>[`lib/viewer.ts`](../lib/viewer.ts) |
 | [`lib/knowledge-check-contracts.ts`](../lib/knowledge-check-contracts.ts) | [`lib/contracts.ts`](../lib/contracts.ts) |
 | [`lib/landing-recommendations-repository.ts`](../lib/landing-recommendations-repository.ts) | [`db/index.ts`](../db/index.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/errors.ts`](../lib/errors.ts) |
@@ -96,7 +92,7 @@ Read [architecture.md](architecture.md) for system boundaries and change rules. 
 | [`lib/preferences-repository.ts`](../lib/preferences-repository.ts) | [`db/index.ts`](../db/index.ts)<br>[`lib/catalog.ts`](../lib/catalog.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/errors.ts`](../lib/errors.ts)<br>[`lib/i18n.ts`](../lib/i18n.ts)<br>[`lib/request.ts`](../lib/request.ts)<br>[`lib/viewer.ts`](../lib/viewer.ts) |
 | [`lib/provider-cost-control.ts`](../lib/provider-cost-control.ts) | [`db/index.ts`](../db/index.ts)<br>[`lib/catalog.ts`](../lib/catalog.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/errors.ts`](../lib/errors.ts)<br>[`lib/openai.ts`](../lib/openai.ts)<br>[`lib/usage-policy.ts`](../lib/usage-policy.ts) |
 | [`lib/provider-usage.ts`](../lib/provider-usage.ts) | [`db/index.ts`](../db/index.ts)<br>[`lib/catalog.ts`](../lib/catalog.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/openai.ts`](../lib/openai.ts)<br>[`lib/provider-cost-control.ts`](../lib/provider-cost-control.ts) |
-| [`lib/repository.ts`](../lib/repository.ts) | [`db/index.ts`](../db/index.ts)<br>[`lib/catalog.ts`](../lib/catalog.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/errors.ts`](../lib/errors.ts)<br>[`lib/fixtures.ts`](../lib/fixtures.ts)<br>[`lib/i18n.ts`](../lib/i18n.ts)<br>[`lib/journeys/comparison.ts`](../lib/journeys/comparison.ts)<br>[`lib/journeys/read-model.ts`](../lib/journeys/read-model.ts)<br>[`lib/request.ts`](../lib/request.ts)<br>[`lib/turn-options.ts`](../lib/turn-options.ts)<br>[`lib/usage-policy.ts`](../lib/usage-policy.ts)<br>[`lib/viewer.ts`](../lib/viewer.ts) |
+| [`lib/repository.ts`](../lib/repository.ts) | [`db/index.ts`](../db/index.ts)<br>[`lib/catalog.ts`](../lib/catalog.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/errors.ts`](../lib/errors.ts)<br>[`lib/fixtures.ts`](../lib/fixtures.ts)<br>[`lib/journeys/read-model.ts`](../lib/journeys/read-model.ts)<br>[`lib/request.ts`](../lib/request.ts)<br>[`lib/turn-options.ts`](../lib/turn-options.ts)<br>[`lib/usage-policy.ts`](../lib/usage-policy.ts)<br>[`lib/viewer.ts`](../lib/viewer.ts) |
 | [`lib/request.ts`](../lib/request.ts) | [`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/errors.ts`](../lib/errors.ts) |
 | [`lib/research-status-repository.ts`](../lib/research-status-repository.ts) | [`db/index.ts`](../db/index.ts)<br>[`lib/errors.ts`](../lib/errors.ts)<br>[`lib/viewer.ts`](../lib/viewer.ts) |
 | [`lib/research/prompt-policy.ts`](../lib/research/prompt-policy.ts) | [`lib/catalog.ts`](../lib/catalog.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/i18n.ts`](../lib/i18n.ts) |
@@ -108,7 +104,6 @@ Read [architecture.md](architecture.md) for system boundaries and change rules. 
 | [`lib/usage-policy.ts`](../lib/usage-policy.ts) | [`lib/catalog.ts`](../lib/catalog.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts) |
 | [`lib/usage-summary.ts`](../lib/usage-summary.ts) | [`db/index.ts`](../db/index.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/usage-policy.ts`](../lib/usage-policy.ts)<br>[`lib/viewer.ts`](../lib/viewer.ts) |
 | [`lib/viewer.ts`](../lib/viewer.ts) | [`app/chatgpt-auth.ts`](../app/chatgpt-auth.ts)<br>[`db/index.ts`](../db/index.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/usage-policy.ts`](../lib/usage-policy.ts) |
-| [`next.config.ts`](../next.config.ts) | — |
 | [`postcss.config.mjs`](../postcss.config.mjs) | — |
 | [`scripts/architecture-index.mjs`](../scripts/architecture-index.mjs) | — |
 | [`scripts/replenish-landing-recommendations.mjs`](../scripts/replenish-landing-recommendations.mjs) | — |
@@ -118,7 +113,6 @@ Read [architecture.md](architecture.md) for system boundaries and change rules. 
 | [`tests/bookmarks-repository.test.mjs`](../tests/bookmarks-repository.test.mjs) | [`lib/bookmarks-repository.ts`](../lib/bookmarks-repository.ts) |
 | [`tests/client-api.test.mjs`](../tests/client-api.test.mjs) | [`app/client-api.ts`](../app/client-api.ts) |
 | [`tests/cloudflare-loader.mjs`](../tests/cloudflare-loader.mjs) | — |
-| [`tests/curiosity-quotes.test.ts`](../tests/curiosity-quotes.test.ts) | [`lib/curiosity-quotes.ts`](../lib/curiosity-quotes.ts) |
 | [`tests/diagnostics.test.mjs`](../tests/diagnostics.test.mjs) | [`lib/diagnostics.ts`](../lib/diagnostics.ts) |
 | [`tests/fixtures.test.mjs`](../tests/fixtures.test.mjs) | [`lib/catalog.ts`](../lib/catalog.ts)<br>[`lib/contracts.ts`](../lib/contracts.ts)<br>[`lib/fixtures.ts`](../lib/fixtures.ts)<br>[`lib/request.ts`](../lib/request.ts) |
 | [`tests/i18n.test.mjs`](../tests/i18n.test.mjs) | [`app/i18n.tsx`](../app/i18n.tsx)<br>[`lib/catalog.ts`](../lib/catalog.ts)<br>[`lib/i18n.ts`](../lib/i18n.ts) |
@@ -137,7 +131,6 @@ Read [architecture.md](architecture.md) for system boundaries and change rules. 
 | [`tests/provider-cost-control.test.mjs`](../tests/provider-cost-control.test.mjs) | [`lib/provider-cost-control.ts`](../lib/provider-cost-control.ts) |
 | [`tests/provider-usage.test.mjs`](../tests/provider-usage.test.mjs) | [`lib/provider-usage.ts`](../lib/provider-usage.ts) |
 | [`tests/rendered-html.test.mjs`](../tests/rendered-html.test.mjs) | — |
-| [`tests/repository-fixture-commands.test.mjs`](../tests/repository-fixture-commands.test.mjs) | [`lib/catalog.ts`](../lib/catalog.ts)<br>[`lib/repository.ts`](../lib/repository.ts) |
 | [`tests/repository-read-model.test.mjs`](../tests/repository-read-model.test.mjs) | [`lib/repository.ts`](../lib/repository.ts) |
 | [`tests/research-status-repository.test.mjs`](../tests/research-status-repository.test.mjs) | [`lib/research-status-repository.ts`](../lib/research-status-repository.ts) |
 | [`tests/routes.test.mjs`](../tests/routes.test.mjs) | [`app/routes.ts`](../app/routes.ts) |

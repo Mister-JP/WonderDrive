@@ -8,9 +8,9 @@ import {
 } from "./provider-cost-control";
 import type { ProviderCostOperation } from "./provider-cost-control";
 
-export type ProviderOperation = ProviderCostOperation;
+type ProviderOperation = ProviderCostOperation;
 
-export type ProviderOutcome =
+type ProviderOutcome =
   | "completed"
   | "incomplete"
   | "provider_failed"

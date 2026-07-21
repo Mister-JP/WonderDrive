@@ -7,7 +7,6 @@ const roots = ["app", "lib", "db", "worker", "build", "tests", "scripts"];
 const rootFiles = [
   "drizzle.config.ts",
   "eslint.config.mjs",
-  "next.config.ts",
   "postcss.config.mjs",
   "vite.config.ts",
 ];

@@ -31,6 +31,8 @@ import {
   PencilSimple,
   Play,
   ShareNetwork,
+  MoonStars,
+  Sun,
   X,
 } from "@phosphor-icons/react";
 
@@ -164,6 +166,8 @@ function useValidatedImageUrls(urls: string[]) {
 const HTMLFlipBook = dynamic(() => import("react-pageflip"), { ssr: false });
 
 type View = "start" | "journey" | "map" | "journeys" | "bookmarks" | "usage" | "settings" | "about";
+type Theme = "light" | "dark";
+type CelestialMarkVariant = "brand" | "loader" | "status";
 
 type SessionPayload = {
   journeys: JourneySummary[];
@@ -203,6 +207,25 @@ type ResearchPreview = Pick<
 
 const DISCOVERY_CATEGORIES = ["All", ...LANDING_RECOMMENDATION_CATEGORIES] as const;
 
+function CelestialMark({
+  variant,
+  state,
+}: {
+  variant: CelestialMarkVariant;
+  state?: LiveResearchState["status"];
+}) {
+  return (
+    <span className={`celestial-mark celestial-mark-${variant} ${state ?? ""}`} aria-hidden="true">
+      <span className="celestial-orbit-line" />
+      <span className="celestial-moon" />
+      <span className="celestial-earth">
+        <span className="celestial-map" />
+        <span className="celestial-grid" />
+      </span>
+    </span>
+  );
+}
+
 export function CuriosityPediaExperience() {
   const router = useRouter();
   const pathname = usePathname();
@@ -233,6 +256,7 @@ export function CuriosityPediaExperience() {
   const [nextModelId, setNextModelId] = useState<ModelId | null>(null);
   const [nextPerformerId, setNextPerformerId] = useState<PerformerId | null>(null);
   const [sourcesRequestToken, setSourcesRequestToken] = useState(0);
+  const [theme, setTheme] = useState<Theme>("light");
   const activeJourneyRef = useRef(activeJourney);
   const journeysRef = useRef(journeys);
   const viewerRef = useRef(viewer);
@@ -255,6 +279,21 @@ export function CuriosityPediaExperience() {
       delete document.documentElement.dataset.textSize;
     };
   }, [preferences.textSize]);
+
+  useEffect(() => {
+    const activeTheme = document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+    // Theme is initialized by the pre-hydration script in app/layout.tsx.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setTheme(activeTheme);
+  }, []);
+
+  function toggleTheme() {
+    const nextTheme: Theme = theme === "light" ? "dark" : "light";
+    setTheme(nextTheme);
+    document.documentElement.dataset.theme = nextTheme;
+    document.documentElement.style.colorScheme = nextTheme;
+    window.localStorage.setItem("curiositypedia-theme", nextTheme);
+  }
 
   const refreshSession = useCallback(async () => {
     setError(null);
@@ -831,9 +870,10 @@ export function CuriosityPediaExperience() {
     <main className={`app-shell ${preferences.reduceMotion ? "reduce-motion" : ""} ${view === "journey" && activeJourney && activeTurn ? "journey-stage-active" : ""} ${view === "map" && activeJourney && activeTurn ? "journey-map-active" : ""}`}>
       <header className="app-header">
         <button className="wordmark" type="button" onClick={() => navigate("start")}>
-          <span className="wordmark-mark" aria-hidden="true">C</span>
+          <CelestialMark variant="brand" />
           <span>
             CuriosityPedia
+            <small>{t("A field guide to everything")}</small>
           </span>
         </button>
 
@@ -862,18 +902,31 @@ export function CuriosityPediaExperience() {
           </button>
         )}
 
-        <div className="identity-control">
-          <span className={`identity-dot ${viewer?.mode ?? "loading"}`} aria-hidden="true" />
-          {viewer?.mode === "chatgpt" ? (
-            <span><strong>{viewer.displayName}</strong><small>{t("ChatGPT account")}</small></span>
-          ) : (
-          <span><strong>{viewer?.displayName ?? t("Opening journeys…")}</strong><small>{viewer ? t("{count}/{limit} saved", { count: journeys.length, limit: viewer.journeyLimit }) : t("durable session")}</small></span>
-          )}
-          {viewer?.mode === "guest" ? (
-            <a className="identity-action" href={`/signin-with-chatgpt?return_to=${returnTo}`}>{t("Sign in")}</a>
-          ) : viewer?.mode === "chatgpt" ? (
-            <a className="identity-action" href={`/signout-with-chatgpt?return_to=${returnTo}`}>{t("Sign out")}</a>
-          ) : null}
+        <div className="header-actions">
+          <button
+            className="theme-toggle"
+            type="button"
+            onClick={toggleTheme}
+            aria-label={theme === "light" ? t("Switch to dark edition") : t("Switch to light edition")}
+            title={theme === "light" ? t("Switch to dark edition") : t("Switch to light edition")}
+          >
+            <Sun weight="fill" aria-hidden="true" />
+            <span aria-hidden="true" />
+            <MoonStars weight="fill" aria-hidden="true" />
+          </button>
+          <div className="identity-control">
+            <span className={`identity-dot ${viewer?.mode ?? "loading"}`} aria-hidden="true" />
+            {viewer?.mode === "chatgpt" ? (
+              <span><strong>{viewer.displayName}</strong><small>{t("ChatGPT account")}</small></span>
+            ) : (
+            <span><strong>{viewer?.displayName ?? t("Opening journeys…")}</strong><small>{viewer ? t("{count}/{limit} saved", { count: journeys.length, limit: viewer.journeyLimit }) : t("durable session")}</small></span>
+            )}
+            {viewer?.mode === "guest" ? (
+              <a className="identity-action" href={`/signin-with-chatgpt?return_to=${returnTo}`}>{t("Sign in")}</a>
+            ) : viewer?.mode === "chatgpt" ? (
+              <a className="identity-action" href={`/signout-with-chatgpt?return_to=${returnTo}`}>{t("Sign out")}</a>
+            ) : null}
+          </div>
         </div>
       </header>
 
@@ -951,7 +1004,6 @@ export function CuriosityPediaExperience() {
           onOpen={(id) => void openJourney(id, "map")}
           onDelete={(id) => void removeJourney(id)}
           onManage={(id, changes) => void manageJourney(id, changes)}
-          onSnapshot={(id) => void snapshotJourney(id)}
           onRetry={(id) => void runMutation(`retry-${id}`, async () => {
             const payload = await api<ResearchActivity>(`/api/research/background/${id}/retry`, { method: "POST" });
             setViewer(payload.viewer);
@@ -970,6 +1022,11 @@ export function CuriosityPediaExperience() {
               error: payload.data.error ?? t("Research stopped"),
               message: t("Research stopped"),
             } : current);
+          })}
+          onDismiss={(id) => void runMutation(`dismiss-${id}`, async () => {
+            const payload = await api<ResearchActivity>(`/api/research/background/${id}?dismiss=true`, { method: "DELETE" });
+            setViewer(payload.viewer);
+            setResearchActivities((current) => current.filter((activity) => activity.id !== id));
           })}
           onNew={() => navigate("start")}
         />
@@ -1149,7 +1206,9 @@ function StartStage({
   const performerId: PerformerId = "sage";
   const modelId = preferences.defaultModelId;
   const [category, setCategory] = useState<(typeof DISCOVERY_CATEGORIES)[number]>("All");
+  const [loadedCategory, setLoadedCategory] = useState<(typeof DISCOVERY_CATEGORIES)[number]>("All");
   const [failedEncounterIds, setFailedEncounterIds] = useState<string[]>([]);
+  const catalogRequestRef = useRef(0);
   const [recommendationPage, setRecommendationPage] = useState<LandingRecommendationPage>({
     batchId: null,
     batchTitle: null,
@@ -1170,39 +1229,38 @@ function StartStage({
     placeholderQuestions,
     seed.length === 0 && !preferences.reduceMotion,
   );
-  const visibleEncounters = category === "All"
-    ? recommendationPage.items
-    : recommendationPage.items.filter((encounter) => encounter.category === category);
+  const visibleEncounters = loadedCategory === category ? recommendationPage.items : [];
 
-  const loadRecommendationPage = useCallback(async (page: number) => {
+  const loadRecommendationPage = useCallback(async (
+    page: number,
+    selectedCategory: (typeof DISCOVERY_CATEGORIES)[number],
+  ) => {
+    const requestId = ++catalogRequestRef.current;
     setCatalogLoading(true);
     setCatalogError(null);
-    setCategory("All");
     setFailedEncounterIds([]);
+    const searchParams = new URLSearchParams({ page: String(page) });
+    if (selectedCategory !== "All") searchParams.set("category", selectedCategory);
     try {
-      const response = await api<LandingRecommendationPage>(`/api/landing-recommendations?page=${page}`);
+      const response = await api<LandingRecommendationPage>(`/api/landing-recommendations?${searchParams}`);
+      if (catalogRequestRef.current !== requestId) return;
       setRecommendationPage(response.data);
+      setLoadedCategory(selectedCategory);
     } catch (cause) {
+      if (catalogRequestRef.current !== requestId) return;
       setCatalogError(messageFrom(cause));
     } finally {
-      setCatalogLoading(false);
+      if (catalogRequestRef.current === requestId) setCatalogLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    let cancelled = false;
-    void api<LandingRecommendationPage>("/api/landing-recommendations?page=1")
-      .then((response) => {
-        if (!cancelled) setRecommendationPage(response.data);
-      })
-      .catch((cause) => {
-        if (!cancelled) setCatalogError(messageFrom(cause));
-      })
-      .finally(() => {
-        if (!cancelled) setCatalogLoading(false);
-      });
-    return () => { cancelled = true; };
-  }, []);
+    const timeoutId = window.setTimeout(() => void loadRecommendationPage(1, "All"), 0);
+    return () => {
+      window.clearTimeout(timeoutId);
+      catalogRequestRef.current += 1;
+    };
+  }, [loadRecommendationPage]);
 
   useEffect(() => {
     if (!questionLimitOpen) return;
@@ -1260,9 +1318,15 @@ function StartStage({
   }
 
   function surpriseMe() {
-    const encounter = recommendationPage.items[Math.floor(Math.random() * recommendationPage.items.length)];
+    const encounter = visibleEncounters[Math.floor(Math.random() * visibleEncounters.length)];
     if (!encounter) return;
     explore(encounter);
+  }
+
+  function selectCategory(selectedCategory: (typeof DISCOVERY_CATEGORIES)[number]) {
+    if (selectedCategory === category && loadedCategory === category && !catalogError) return;
+    setCategory(selectedCategory);
+    void loadRecommendationPage(1, selectedCategory);
   }
 
   return (
@@ -1296,7 +1360,7 @@ function StartStage({
               className={category === item ? "active" : ""}
               type="button"
               aria-pressed={category === item}
-              onClick={() => setCategory(item)}
+              onClick={() => selectCategory(item)}
             >
               {item}
             </button>
@@ -1349,21 +1413,27 @@ function StartStage({
             </article>
           ))}
         </div>
-        {catalogLoading && <p className="discovery-catalog-status">Opening the latest editorial page…</p>}
-        {!catalogLoading && catalogError && (
-          <p className="discovery-catalog-status" role="alert">
-            {catalogError} <button type="button" onClick={() => void loadRecommendationPage(recommendationPage.page)}>Try again</button>
+        {catalogLoading && (
+          <p className="discovery-catalog-status">
+            {category === "All" ? "Opening the latest editorial page…" : `Gathering all ${category.toLowerCase()} topics…`}
           </p>
         )}
-        {!catalogLoading && !catalogError && recommendationPage.items.length === 0 && (
-          <p className="discovery-catalog-status">No recommendation pages have been published yet.</p>
+        {!catalogLoading && catalogError && (
+          <p className="discovery-catalog-status" role="alert">
+            {catalogError} <button type="button" onClick={() => void loadRecommendationPage(recommendationPage.page, category)}>Try again</button>
+          </p>
         )}
-        {recommendationPage.totalPages > 1 && (
+        {!catalogLoading && !catalogError && visibleEncounters.length === 0 && (
+          <p className="discovery-catalog-status">
+            {category === "All" ? "No recommendation pages have been published yet." : `No ${category.toLowerCase()} topics have been published yet.`}
+          </p>
+        )}
+        {loadedCategory === category && recommendationPage.totalPages > 1 && (
           <nav className="discovery-pagination" aria-label="Recommendation archive pages">
             <button
               type="button"
               disabled={catalogLoading || recommendationPage.page <= 1}
-              onClick={() => void loadRecommendationPage(recommendationPage.page - 1)}
+              onClick={() => void loadRecommendationPage(recommendationPage.page - 1, category)}
             >
               ← Page Up
             </button>
@@ -1376,7 +1446,7 @@ function StartStage({
                   aria-label={`Open recommendation page ${page}`}
                   aria-current={page === recommendationPage.page ? "page" : undefined}
                   disabled={catalogLoading || page === recommendationPage.page}
-                  onClick={() => void loadRecommendationPage(page)}
+                  onClick={() => void loadRecommendationPage(page, category)}
                 >
                   {page}
                 </button>
@@ -1385,7 +1455,7 @@ function StartStage({
             <button
               type="button"
               disabled={catalogLoading || recommendationPage.page >= recommendationPage.totalPages}
-              onClick={() => void loadRecommendationPage(recommendationPage.page + 1)}
+              onClick={() => void loadRecommendationPage(recommendationPage.page + 1, category)}
             >
               Page Down →
             </button>
@@ -1487,7 +1557,7 @@ function JourneyBufferingStage({
         <h1 id="buffering-title">{state.question}</h1>
         <p>{preview?.teaser ?? "A source-backed visual explanation is being assembled around your question."}</p>
         <div className={`knowledge-loading-current ${state.status}`} role="status" aria-live="polite">
-          <span aria-hidden="true" />
+          <CelestialMark variant="status" state={state.status} />
           <div>
             <strong>{state.status === "complete" ? "The session is ready" : state.status === "error" ? stoppedLabel : "Building your visual story"}</strong>
             <small>{state.status === "running" ? workingLabel : state.status === "complete" ? "Arranging the final page" : state.error}</small>
@@ -2744,7 +2814,7 @@ function drawWrappedText(
 
 function LoadingStage() {
   const { t } = useI18n();
-  return <section className="loading-stage" aria-live="polite"><span className="loading-orbit" /><p>{t("Opening your CuriosityPedia journeys…")}</p><small>{t("Resolving a durable guest identity")}</small></section>;
+  return <section className="loading-stage" aria-live="polite"><CelestialMark variant="loader" /><p>{t("Opening your CuriosityPedia journeys…")}</p><small>{t("Resolving a durable guest identity")}</small></section>;
 }
 
 function upsertSummary(current: JourneySummary[], detail: JourneyDetail): JourneySummary[] {

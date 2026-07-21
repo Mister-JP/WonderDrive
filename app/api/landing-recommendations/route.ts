@@ -10,8 +10,9 @@ import {
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
-  const requestedPage = Number(new URL(request.url).searchParams.get("page") ?? "1");
-  return query(() => getLandingRecommendationPage(requestedPage));
+  const searchParams = new URL(request.url).searchParams;
+  const requestedPage = Number(searchParams.get("page") ?? "1");
+  return query(() => getLandingRecommendationPage(requestedPage, searchParams.get("category")));
 }
 
 export async function POST(request: Request) {

@@ -1,68 +1,67 @@
 const messages: Record<string, string> = {
-  "New drive": "بحث جديد",
+
   "Library": "المكتبة",
-  "Compare": "مقارنة",
   "Usage": "الاستخدام",
   "Settings": "الإعدادات",
   "CuriosityPedia views": "رؤى CuriosityPedia",
   "ChatGPT account": "حساب ChatGPT",
-  "Opening library…": "جاري فتح المكتبة...",
+
   "{count}/{limit} saved": "{count}/{limit} محفوظ",
   "durable session": "جلسة مستمرة",
   "Sign in": "تسجيل الدخول",
   "Sign out": "تسجيل الخروج",
   "Research first": "ابحث أولاً",
-  "Your guest library is still separate.": "مكتبة الضيف لا تزال منفصلة.",
+
   "Reconnect": "إعادة الاتصال",
   "Dismiss": "تجاهل",
   "Current journey views": "رؤى الرحلة الحالية",
-  "Next turn model": "نموذج الدور التالي",
+
   "Model for the next research turn": "النموذج المخصص لدور البحث التالي",
   "Stage": "المرحلة",
   "Journey map": "خريطة الرحلة",
-  "One performer. One researched turn. Exactly two ways forward.": "مؤدٍ واحد. دور بحث واحد. طريقتان فقط للمضي قدماً.",
+
   "Source": "المصدر",
   "Product book": "كتاب المنتج",
-  "Scanning what’s unfolding now…": "جاري مسح ما يحدث الآن...",
-  "Current signals + {performer} + {context}": "الإشارات الحالية + {performer} + {context}",
-  "your history": "سجلك",
-  "wild-card domains": "نطاقات عشوائية",
-  "Hunting…": "جاري البحث...",
-  "Find new questions": "البحث عن أسئلة جديدة",
-  "Questions suggested for {performer}": "أسئلة مقترحة لـ {performer}",
-  "What are you curious about?": "ما الذي يثير فضولك؟",
+
+
+
+
+
+
+
+
   "Starting question": "السؤال المبدئي",
   "Ask anything…": "اسأل أي شيء...",
-  "Tab to complete": "اضغط للإكمال",
-  "Recommended match": "مطابقة موصى بها",
-  "Start typing for recommendation matches": "ابدأ الكتابة للحصول على مطابقات موصى بها",
+
+
+
   "Performer": "المؤدي",
   "Model": "النموذج",
-  "Researching in the foreground…": "جاري البحث في الواجهة الأمامية...",
-  "Begin the wonder": "ابدأ الاستكشاف",
-  "Connecting to live foreground research…": "جاري الاتصال بالبحث المباشر في الواجهة الأمامية...",
+
+
+
   "Research committed": "تم اعتماد البحث",
   "Research stopped": "توقف البحث",
-  "Opening the next live research turn…": "جاري فتح دور البحث المباشر التالي...",
+
   "Choose one of the two current paths.": "اختر أحد المسارين الحاليين.",
-  "Answer ready": "الإجابة جاهزة",
-  "Buffering answer": "جاري تحضير الإجابة",
+
+
   "Retrying {attempt} of {max}": "إعادة المحاولة {attempt} من {max}",
-  "Placing the answer into this card": "جاري وضع الإجابة في هذه البطاقة",
-  "Nothing incomplete was saved": "لم يتم حفظ أي بيانات غير مكتملة",
-  "researching in this foreground turn": "جاري البحث في هذا الدور الحالي",
-  "This turn was not committed": "لم يتم اعتماد هذا الدور",
+
+
+
+
   "Return safely": "العودة بأمان",
   "Choose the next direction": "اختر الاتجاه التالي",
   "Where should curiosity go next?": "إلى أين يجب أن يتجه الفضول بعد ذلك؟",
-  "Two paths will appear here when the answer is ready.": "سيظهر مساران هنا عندما تكون الإجابة جاهزة.",
+
   "Turn {number}": "الدور {number}",
-  "{count} turns": "{count} أدوار",
-  "{count} sources": "{count} مصادر",
+
+
   "You are revisiting an earlier turn.": "أنت تعيد زيارة دور سابق.",
   "Choosing a path here creates a visible branch; your existing turns stay in the map.": "اختيار مسار هنا ينشئ فرعاً مرئياً؛ تظل أدوارك الحالية في الخريطة.",
   "performed from live web research": "تم التنفيذ من بحث مباشر على الويب",
-  "COMPOSED": "مُصاغ",
+
   "Save and export options": "خيارات الحفظ والتصدير",
   "Save snapshot": "حفظ لقطة",
   "Export JSON": "تصدير JSON",
@@ -71,7 +70,7 @@ const messages: Record<string, string> = {
   "live research": "بحث مباشر",
   "Evidence & research details": "أدلة وتفاصيل البحث",
   "Deeper dive": "تعمق أكثر",
-  "Let {performer} choose": "اترك {performer} يختار",
+
   "Other ways to continue": "طرق أخرى للمتابعة",
   "Pick a path for me": "اختر مسارًا لي",
   "CuriosityPedia chooses one": "يختار CuriosityPedia أحدهما",
@@ -97,37 +96,37 @@ const messages: Record<string, string> = {
   "Browse visual evidence": "تصفح الأدلة المرئية",
   "Previous image": "الصورة السابقة",
   "Next image": "الصورة التالية",
-  "Why it is here": "سبب وجودها هنا",
-  "What to notice": "ما يجب ملاحظته",
-  "What it helps explain": "ما يساعد في توضيحه",
+
+
+
   "Select an image": "اختر صورة",
   "Show {title}": "عرض {title}",
-  "Follow the path you took, revisit a turn, or open a question you left behind.": "اتبع المسار الذي سلكته، أو أعد زيارة دور، أو افتح سؤالاً تركته خلفك.",
+
   "Current": "الحالي",
   "Open paths": "المسارات المفتوحة",
-  "Active path": "المسار النشط",
-  "How you got here": "كيف وصلت إلى هنا",
-  "Choose any turn to see its two directions.": "اختر أي دور لرؤية اتجاهاته الاثنين.",
+
+
+
   "You are here": "أنت هنا",
   "Explored": "تم استكشافه",
   "Earlier branch": "فرع سابق",
-  "This turn is outside your current path. Exploring an open question here creates a new visible branch.": "هذا الدور خارج مسارك الحالي. استكشاف سؤال مفتوح هنا ينشئ فرعاً مرئياً جديداً.",
-  "Where could this turn go?": "إلى أين يمكن أن يتجه هذا الدور؟",
+
+
   "Explore this question": "استكشف هذا السؤال",
-  "This answer continues in the map above.": "تستمر هذه الإجابة في الخريطة أعلاه.",
-  "This direction is no longer active.": "هذا الاتجاه لم يعد نشطاً.",
+
+
   "Open full answer": "فتح الإجابة الكاملة",
-  "Revisit this answer": "أعد زيارة هذه الإجابة",
-  "Other paths": "مسارات أخرى",
-  "Questions worth returning to.": "أسئلة تستحق العودة إليها.",
-  "{count} of {limit} journeys saved": "{count} من {limit} رحلات محفوظة",
-  "New drive +": "بحث جديد +",
-  "Library filters": "فلاتر المكتبة",
+
+
+
+
+
+
   "Search": "بحث",
-  "Title, question, or topic": "العنوان، السؤال، أو الموضوع",
+
   "All performers": "جميع المؤدين",
-  "Show hidden": "إظهار المخفي",
-  "PINNED": "مثبت",
+
+
   "Turns": "الأدوار",
   "Resume": "استئناف",
   "Delete": "حذف",
@@ -136,90 +135,90 @@ const messages: Record<string, string> = {
   "Rename": "إعادة تسمية",
   "Unpin": "إلغاء التثبيت",
   "Pin": "تثبيت",
-  "Unhide": "إظهار",
-  "Hide": "إخفاء",
+
+
   "Snapshot": "لقطة",
   "Export": "تصدير",
-  "Start the first saved journey": "ابدأ أول رحلة محفوظة",
-  "Rename this journey": "إعادة تسمية هذه الرحلة",
-  "Two journeys. One closer look.": "رحلتان. نظرة واحدة عن قرب.",
-  "Select two saved journeys. CuriosityPedia compares their committed paths, topics, and performers.": "اختر رحلتين محفوظتين. ستقوم CuriosityPedia بمقارنة مساراتهما المعتمدة، ومواضيعهما، ومؤدييهما.",
-  "Reading the paths…": "جاري قراءة المسارات...",
-  "Compare selected journeys": "مقارنة الرحلات المختارة",
-  "Comparison begins after two journeys exist.": "تبدأ المقارنة بعد وجود رحلتين.",
-  "Start another drive": "بدء بحث آخر",
-  "Comparison ready": "المقارنة جاهزة",
-  "The useful difference": "الفرق المفيد",
-  "What the saved data shows": "ما تظهره البيانات المحفوظة",
-  "Comparison cautions": "تنبيهات المقارنة",
-  "Audience controls": "عناصر التحكم في الجمهور",
+
+
+
+
+
+
+
+
+
+
+
+
+
   "Make the stage comfortable.": "اجعل المرحلة مريحة.",
   "Synced to your ChatGPT identity": "متزامن مع هويتك في ChatGPT",
   "Saved to this guest session": "محفوظ في جلسة الضيف هذه",
-  "These preferences change presentation and future turns, never evidence.": "تغير هذه التفضيلات طريقة العرض والأدوار المستقبلية، ولكنها لا تغير الأدلة أبداً.",
+
   "Experience language": "تجربة اللغة",
-  "Changes the whole interface and future learning output.": "تغير الواجهة بالكامل ومخرجات التعلم المستقبلية.",
-  "Default answer density": "كثافة الإجابة الافتراضية",
+
+
   "Brief": "موجز",
   "Balanced": "متوازن",
-  "Rich": "غني",
-  "Separate from how deeply CuriosityPedia researches.": "منفصل عن مدى عمق بحث CuriosityPedia.",
+
+
   "Text size": "حجم النص",
   "Small": "صغير",
   "Medium": "متوسط",
   "Large": "كبير",
   "Extra large": "كبير جداً",
-  "Factual images": "صور واقعية",
+
   "Avoid": "تجنب",
-  "When useful": "عندما يكون مفيداً",
-  "Prefer when supported": "يفضل عند توفره",
-  "Decorative imagery is never substituted for factual media.": "لا يتم أبداً استبدال الصور التزيينية بالوسائط الواقعية.",
-  "Read-aloud speed: {rate}×": "سرعة القراءة بصوت عالٍ: {rate}×",
+
+
+
+
   "Reduce interface motion": "تقليل حركة الواجهة",
   "Saving…": "جاري الحفظ...",
   "Save preferences": "حفظ التفضيلات",
-  "Opening your CuriosityPedia library…": "جاري فتح مكتبة CuriosityPedia الخاصة بك...",
+
   "Resolving a durable guest identity": "جاري تحديد هوية ضيف مستمرة",
-  "Open the journey library": "افتح مكتبة الرحلات",
-  "No journey is on stage.": "لا توجد رحلة في المرحلة.",
+
+
   "Start a new question or return to one you have already saved.": "ابدأ سؤالاً جديداً أو عد إلى سؤال قمت بحفظه بالفعل.",
-  "rabbit holes": "متاهات جانبية",
-  "Next turn": "الدور التالي",
-  "Neither question works": "لا يصلح أي من السؤالين",
+
+
+
   "{count} checked sources": "{count} مصادر تم التحقق منها",
   "Your journey": "رحلتك",
   "Journey overview": "نظرة عامة على الرحلة",
   "Option": "خيار",
-  "Durable library / D1": "مكتبة مستمرة / D1",
-  "unclassified journey": "رحلة غير مصنفة",
-  "Manual comparison / no provider call": "مقارنة يدوية / لا يوجد استدعاء لمزود الخدمة",
-  "Private diagnostics": "تشخيصات خاصة",
-  "What failed, where, and when.": "ما الذي فشل، وأين، ومتى.",
+
+
+
+
+
   "Checking": "جاري التحقق",
-  "Checking…": "جاري التحقق...",
-  "Refresh incidents": "حوادث التحديث",
-  "Sign in with ChatGPT to keep private, identity-scoped diagnostic history.": "سجل الدخول باستخدام ChatGPT للحفاظ على سجل التشخيص الخاص بنطاق هويتك.",
-  "Loading privacy-safe request health…": "جاري تحميل صحة الطلب الآمن للخصوصية...",
-  "requests · 24h": "طلبات · 24 ساعة",
-  "failures · 24h": "إخفاقات · 24 ساعة",
-  "failure rate": "معدل الفشل",
+
+
+
+
+
+
+
   "retention": "الاحتفاظ",
-  "Repeated failure detected": "تم اكتشاف فشل متكرر",
-  "Last provider event": "آخر حدث للمزود",
-  "Parsed events": "الأحداث التي تم تحليلها",
-  "Malformed events": "أحداث غير صحيحة",
-  "Output deltas": "تغيرات المخرجات",
-  "Provider done marker": "علامة انتهاء عمل المزود",
+
+
+
+
+
+
   "seen": "شوهد",
-  "not seen": "لم يشاهد",
-  "Latency": "التأخير",
-  "HTTP status": "حالة HTTP",
+
+
+
   "OpenAI request": "طلب OpenAI",
   "Preset": "معد مسبقاً",
   "unrecorded": "غير مسجل",
-  "No failed research requests in the retained window.": "لا توجد طلبات بحث فاشلة في الفترة المحفوظة.",
-  "Prompts, answers, API keys, cookies, and source contents are never included.": "لا يتم تضمين المطالبات، الإجابات، مفاتيح API، ملفات تعريف الارتباط، ومحتويات المصادر أبداً.",
-  "Input/output prices shown per 1M tokens; search is metered separately.": "تظهر أسعار المدخلات/المخرجات لكل 1 مليون رمز؛ البحث يتم احتسابه بشكل منفصل.",
+
+
+
   "CuriosityPedia — Give curiosity a direction": "CuriosityPedia — امنح فضولك اتجاهاً",
   "Highest-quality current OpenAI research model; highest cost.": "أعلى نموذج بحث حالي من OpenAI جودة؛ الأعلى تكلفة.",
   "Current balanced OpenAI research model.": "نموذج بحث OpenAI المتوازن الحالي.",
@@ -231,32 +230,32 @@ const messages: Record<string, string> = {
   "path taken": "المسار المسلوك",
   "chosen": "مختار",
   "expired": "منتهي الصلاحية",
-  "replaced": "مستبدل",
-  "Both journeys touched {topics}.": "كلتا الرحلتين تناولتا {topics}.",
-  "The journeys did not land on the same fixture topic.": "لم تصل الرحلتان إلى نفس الموضوع الثابت.",
-  "They used the same performer, so the path—not the persona—is the clearest visible difference.": "استخدمتا نفس المؤدي، لذا فإن المسار — وليس الشخصية — هو أوضح فرق مرئي.",
-  "They used different performers, so both path and persona shape the contrast.": "استخدمتا مؤدين مختلفين، لذا فإن كل من المسار والشخصية يشكلان التباين.",
-  "Both contain 1 committed turn.": "تحتوي كلتاهما على دور واحد معتمد.",
-  "Both contain {count} committed turns.": "تحتوي كلتاهما على {count} أدوار معتمدة.",
-  "{leftTitle} contains {leftCount} turns; {rightTitle} contains {rightCount}.": "تحتوي {leftTitle} على {leftCount} أدوار؛ وتحتوي {rightTitle} على {rightCount}.",
-  "Live-web evidence can change between research dates.": "يمكن أن تتغير الأدلة من الويب المباشر بين تواريخ البحث.",
-  "Audience choices and rejected paths change the context of later turns.": "خيارات الجمهور والمسارات المرفوضة تغير سياق الأدوار اللاحقة.",
-  "Model output is stochastic; this view is descriptive, not a winner ranking.": "مخرجات النموذج عشوائية؛ هذا العرض وصفي وليس ترتيباً للفائزين.",
-  "Both journeys began from the same seed.": "بدأت كلتا الرحلتين من نفس البذرة.",
-  "The starting seeds differ.": "البذور الابتدائية تختلف.",
-  "{performer} will carry this question": "{performer} سيتولى هذا السؤال",
-  "Performer pick": "اختيار المؤدي",
-  "Same selected model researches and performs · inspectable sources · durable branching graph": "نفس النموذج المختار يبحث وينفذ · مصادر قابلة للفحص · رسم بياني متفرع مستمر",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   "Move guest journeys into this account": "انقل رحلات الضيف إلى هذا الحساب",
   "{count} open questions": "{count} أسئلة مفتوحة",
-  "{count} earlier branches": "{count} فروع سابقة",
+
   "Path": "المسار",
-  "{count} source appearances": "{count} ظهور للمصادر",
-  "{count} open branches": "{count} فروع مفتوحة",
-  "{count} decisions": "{count} قرارات",
-  "{count} redraws": "{count} عمليات إعادة رسم",
-  "{count} delegated": "{count} مفوضة",
-  "{code} happened {count} times in ten minutes.": "حدث {code} عدد {count} مرات في عشر دقائق.",
+
+
+
+
+
+
   "Patient connections": "اتصالات صبورة",
   "Playful surprise": "مفاجأة مرحة",
   "How things work": "كيف تعمل الأشياء",
@@ -276,42 +275,42 @@ const messages: Record<string, string> = {
   "fast": "سريع",
   "balanced": "متوازن",
   "deliberate": "متعمد",
-  "Your saved-journey library is full ({count}/{limit}). Delete one journey to make room.": "مكتبة رحلاتك المحفوظة ممتلئة ({count}/{limit}). احذف إحدى الرحلات لتوفير مساحة.",
+
   "Manage saved journeys": "إدارة الرحلات المحفوظة",
   "View usage": "عرض الاستخدام",
-  "Library full": "المكتبة ممتلئة",
+
   "Usage limit reached": "تم الوصول إلى حد الاستخدام",
-  "No research was started": "لم يتم بدء أي بحث",
-  "Your saved-journey library is full": "مكتبة رحلاتك المحفوظة ممتلئة",
-  "Your rolling usage limit is reached": "لقد وصلت إلى حد الاستخدام المتداول",
-  "Rolling usage / 24 hours": "الاستخدام المتداول / 24 ساعة",
-  "Know what is available.": "اعرف ما هو متاح.",
+
+
+
+
+
   "{count} research runs ready": "{count} عمليات بحث جاهزة",
   "Reading your usage…": "جاري قراءة استخدامك...",
-  "Every run returns exactly 24 hours after it starts.": "كل عملية تعود بعد 24 ساعة بالضبط من بدئها.",
+
   "Try again": "حاول مرة أخرى",
   "Reading your rolling limits…": "جاري قراءة حدودك المتداولة...",
   "Live research": "بحث مباشر",
   "Live research used in the last 24 hours": "تم استخدام البحث المباشر في آخر 24 ساعة",
-  "{count} runs are available now.": "{count} عمليات متاحة الآن.",
+
   "Next slot returns {time}.": "الفترة التالية تعود في {time}.",
   "You have not reached the rolling run limit.": "لم تصل إلى حد العمليات المتداول.",
   "Upcoming slot returns": "الفترة القادمة تعود في",
-  "Rolling provider spend": "الإنفاق المتداول للمزود",
-  "Provider spend used in the last 24 hours": "تم استخدام إنفاق المزود في آخر 24 ساعة",
+
+
   "Provider spend and active holds in the last 24 hours": "إنفاق المزود والحجوزات النشطة خلال آخر 24 ساعة",
   "Spend begins leaving the window {time}.": "يبدأ الإنفاق في مغادرة الفترة بعد {time}.",
-  "No metered provider spend in the current window.": "لا يوجد إنفاق متداول للمزود في الفترة الحالية.",
+
   "No metered provider spend or active holds in the current window.": "لا يوجد إنفاق محسوب للمزود أو حجوزات نشطة في الفترة الحالية.",
   "Saved journeys": "الرحلات المحفوظة",
   "Saved journey capacity used": "سعة الرحلات المحفوظة المستخدمة",
-  "This capacity does not reset every 24 hours. Delete a journey to free a place.": "هذه السعة لا تتجدد كل 24 ساعة. احذف رحلة لتوفير مكان.",
+
   "How rolling limits work": "كيف تعمل الحدود المتداولة",
   "There is no midnight reset. Each run and each dollar leaves the window 24 hours after it was recorded.": "لا يوجد إعادة ضبط عند منتصف الليل. كل عملية وكل دولار يغادر الفترة بعد 24 ساعة من تسجيله.",
   "Guest session": "جلسة ضيف",
   "This browser session is scheduled to remain available until {time}.": "من المقرر أن تظل جلسة المتصفح هذه متاحة حتى {time}.",
-  "This library belongs to this browser session.": "تنتمي هذه المكتبة إلى جلسة المتصفح هذه.",
-  "Sign in to keep more across devices": "سجل الدخول للحفاظ على المزيد عبر الأجهزة",
+
+
   "Account usage": "استخدام الحساب",
   "These limits follow your signed-in ChatGPT identity across devices.": "تتبع هذه الحدود هويتك المسجلة في ChatGPT عبر الأجهزة."
 };

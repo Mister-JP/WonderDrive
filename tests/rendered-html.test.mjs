@@ -92,7 +92,6 @@ test("exposes an explicit V3 health contract", async () => {
       d1Declared: true,
       durableJourneys: true,
       guestIdentity: true,
-      deterministicResearchFixture: true,
       liveForegroundResearch: true,
       openAIResponses: true,
       webSearch: true,

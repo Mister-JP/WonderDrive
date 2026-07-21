@@ -11,7 +11,7 @@ import { RepositoryError } from "./errors";
 const SIZES = new Set<LandingRecommendationSize>(["wide", "tall", "standard", "compact"]);
 const CATEGORIES = new Set<string>(LANDING_RECOMMENDATION_CATEGORIES);
 const MAX_BATCH_SIZE = 100;
-export const LANDING_RECOMMENDATION_PAGE_SIZE = 20;
+const LANDING_RECOMMENDATION_PAGE_SIZE = 20;
 
 type RecommendationRow = {
   id: string;
@@ -33,15 +33,24 @@ export type PublishLandingBatchInput = {
   recommendations: Array<Omit<LandingRecommendation, "id"> & { id?: string }>;
 };
 
-export async function getLandingRecommendationPage(requestedPage = 1): Promise<LandingRecommendationPage> {
+export async function getLandingRecommendationPage(
+  requestedPage = 1,
+  requestedCategory?: string | null,
+): Promise<LandingRecommendationPage> {
+  const category = requestedCategory?.trim() || null;
+  if (category && !CATEGORIES.has(category)) {
+    throw new RepositoryError("BAD_REQUEST", "The requested recommendation category is not supported.", 400);
+  }
   const db = getD1();
-  const countRow = await db
-    .prepare(
-      `SELECT COUNT(*) AS count
-       FROM landing_recommendations r
-       JOIN landing_recommendation_batches b ON b.id = r.batch_id
-       WHERE b.status = 'published'`,
-    )
+  const categoryClause = category ? " AND r.category = ?" : "";
+  const countStatement = db.prepare(
+    `SELECT COUNT(*) AS count
+     FROM landing_recommendations r
+     JOIN landing_recommendation_batches b ON b.id = r.batch_id
+     WHERE b.status = 'published'${categoryClause}`,
+  );
+  const countRow = await countStatement
+    .bind(...(category ? [category] : []))
     .first<{ count: number }>();
   const totalItems = Number(countRow?.count ?? 0);
   const totalPages = Math.ceil(totalItems / LANDING_RECOMMENDATION_PAGE_SIZE);
@@ -59,19 +68,19 @@ export async function getLandingRecommendationPage(requestedPage = 1): Promise<L
   }
 
   const page = Math.min(Math.max(Math.trunc(requestedPage) || 1, 1), totalPages);
-  const result = await db
-    .prepare(
-      `SELECT r.id, r.category, r.question, r.teaser, r.image_url, r.image_alt,
-              r.source_label, r.source_url, r.size, b.id AS batch_id,
-              b.title AS batch_title, b.published_at
-       FROM landing_recommendations r
-       JOIN landing_recommendation_batches b ON b.id = r.batch_id
-       WHERE b.status = 'published'
-       ORDER BY b.published_at DESC, b.created_at DESC, b.id DESC,
-                r.position, r.created_at, r.id
-       LIMIT ? OFFSET ?`,
-    )
-    .bind(LANDING_RECOMMENDATION_PAGE_SIZE, (page - 1) * LANDING_RECOMMENDATION_PAGE_SIZE)
+  const resultStatement = db.prepare(
+    `SELECT r.id, r.category, r.question, r.teaser, r.image_url, r.image_alt,
+            r.source_label, r.source_url, r.size, b.id AS batch_id,
+            b.title AS batch_title, b.published_at
+     FROM landing_recommendations r
+     JOIN landing_recommendation_batches b ON b.id = r.batch_id
+     WHERE b.status = 'published'${categoryClause}
+     ORDER BY b.published_at DESC, b.created_at DESC, b.id DESC,
+              r.position, r.created_at, r.id
+     LIMIT ? OFFSET ?`,
+  );
+  const result = await resultStatement
+    .bind(...(category ? [category] : []), LANDING_RECOMMENDATION_PAGE_SIZE, (page - 1) * LANDING_RECOMMENDATION_PAGE_SIZE)
     .all<RecommendationRow>();
   const firstItem = result.results[0];
 

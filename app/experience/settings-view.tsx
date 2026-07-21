@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import {
   type AnswerDensity,
   type BootstrapCatalog,
@@ -10,100 +10,7 @@ import {
   type Viewer,
 } from "../../lib/contracts";
 import { SUPPORTED_LOCALES } from "../../lib/i18n";
-import {
-  collectCivitaiTags,
-  fetchCivitaiImages,
-  getGalleryConfig,
-  saveGalleryDevOverride,
-  type CivitaiGalleryConfig,
-  type CivitaiImage,
-} from "../../lib/civitai-gallery";
 import { useI18n } from "../i18n";
-
-function ArtGalleryDevSettings() {
-  const { t } = useI18n();
-  const [draft, setDraft] = useState<CivitaiGalleryConfig>(getGalleryConfig);
-  const [sample, setSample] = useState<CivitaiImage[]>([]);
-  const [loadingTags, setLoadingTags] = useState(false);
-  const [tagSearch, setTagSearch] = useState("");
-  const [saved, setSaved] = useState(false);
-  const tags = useMemo(() => collectCivitaiTags(sample), [sample]);
-  const visibleTags = tags.filter((tag) => tag.name.toLowerCase().includes(tagSearch.trim().toLowerCase()));
-
-  async function discoverTags() {
-    setLoadingTags(true);
-    try {
-      setSample(await fetchCivitaiImages({ ...draft, includeTags: [], excludeTags: [] }));
-    } finally {
-      setLoadingTags(false);
-    }
-  }
-
-  function cycleTag(name: string) {
-    const included = draft.includeTags.includes(name);
-    const excluded = draft.excludeTags.includes(name);
-    setDraft({
-      ...draft,
-      includeTags: included ? draft.includeTags.filter((tag) => tag !== name) : excluded ? draft.includeTags : [...draft.includeTags, name],
-      excludeTags: excluded ? draft.excludeTags.filter((tag) => tag !== name) : included ? [...draft.excludeTags, name] : draft.excludeTags,
-    });
-  }
-
-  function saveConfig() {
-    saveGalleryDevOverride(draft);
-    const source = `${JSON.stringify(draft, null, 2)}\n`;
-    const url = URL.createObjectURL(new Blob([source], { type: "application/json" }));
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "curiositypedia-art.config.json";
-    link.click();
-    URL.revokeObjectURL(url);
-    setSaved(true);
-  }
-
-  return (
-    <section className="art-dev-settings" aria-labelledby="art-dev-title">
-      <header>
-        <div>
-          <p className="eyebrow"><span /> Development only</p>
-          <h2 id="art-dev-title">{t("Art settings")}</h2>
-        </div>
-        <span className="dev-seal">Not rendered in production</span>
-      </header>
-      <div className="art-dev-grid">
-        <label className="check-setting"><input type="checkbox" checked={draft.enabled} onChange={(event) => setDraft({ ...draft, enabled: event.target.checked })} /><span>Show gallery window</span></label>
-        <label><span>Rotation cadence</span><select value={draft.intervalMs} onChange={(event) => setDraft({ ...draft, intervalMs: Number(event.target.value) })}><option value={5000}>5 seconds</option><option value={8000}>8 seconds</option><option value={10000}>10 seconds</option><option value={12000}>12 seconds</option></select></label>
-        <label><span>Ranking</span><select value={draft.sort} onChange={(event) => setDraft({ ...draft, sort: event.target.value as CivitaiGalleryConfig["sort"] })}><option>Most Reactions</option><option>Most Comments</option><option>Most Collected</option><option>Newest</option><option>Random</option></select></label>
-        <label><span>Period</span><select value={draft.period} onChange={(event) => setDraft({ ...draft, period: event.target.value as CivitaiGalleryConfig["period"] })}><option>Day</option><option>Week</option><option>Month</option><option>Year</option><option>AllTime</option></select></label>
-        <label><span>Candidate pool</span><input type="number" min="20" max="200" value={draft.poolSize} onChange={(event) => setDraft({ ...draft, poolSize: Number(event.target.value) })} /><small>Sampled from a randomized SFW result page; filtering and shuffling happen in the browser.</small></label>
-        <label><span>Base models</span><input value={draft.baseModels.join(", ")} onChange={(event) => setDraft({ ...draft, baseModels: event.target.value.split(",").map((value) => value.trim()).filter(Boolean) })} placeholder="SDXL 1.0, Flux.1 D" /><small>Optional, comma separated.</small></label>
-        <label><span>Required tag rule</span><select value={draft.includeMode} onChange={(event) => setDraft({ ...draft, includeMode: event.target.value as "any" | "all" })}><option value="any">Match any selected tag</option><option value="all">Match every selected tag</option></select></label>
-      </div>
-      <div className="tag-workbench">
-        <div className="tag-workbench-tools">
-          <div><strong>Tag workbench</strong><small>Click once to require, twice to strictly exclude, three times to clear.</small></div>
-          <input type="search" value={tagSearch} onChange={(event) => setTagSearch(event.target.value)} placeholder="Filter discovered tags…" />
-          <button type="button" disabled={loadingTags} onClick={() => void discoverTags()}>{loadingTags ? "Scanning…" : "Discover from pool"}</button>
-        </div>
-        <div className="tag-selection-summary">
-          <span><b>{draft.includeTags.length}</b> selected</span>
-          <span><b>{draft.excludeTags.length}</b> strict no</span>
-          <span><b>{tags.length}</b> discovered</span>
-        </div>
-        <div className="tag-catalog">
-          {visibleTags.length ? visibleTags.map((tag) => {
-            const state = draft.includeTags.includes(tag.name) ? "include" : draft.excludeTags.includes(tag.name) ? "exclude" : "";
-            return <button type="button" className={state} key={tag.name} onClick={() => cycleTag(tag.name)}><span>{state === "include" ? "+" : state === "exclude" ? "−" : "·"}</span>{tag.name}<small>{tag.count}</small></button>;
-          }) : <p>{sample.length ? "No tags match this search." : "Discover a live sample to build the tag catalog."}</p>}
-        </div>
-      </div>
-      <div className="art-dev-actions">
-        <p>{saved ? "Preview saved locally and JSON generated." : <>Saving applies a local dev preview and generates <code>curiositypedia-art.config.json</code>. Replace the bundled file before a production build.</>}</p>
-        <button type="button" onClick={saveConfig}>Save + generate JSON <i aria-hidden="true">↘</i></button>
-      </div>
-    </section>
-  );
-}
 
 export function SettingsView({
   viewer,
@@ -224,7 +131,6 @@ export function SettingsView({
           </div>
         </form>
       </div>
-      {process.env.NODE_ENV !== "production" && <details className="art-dev-disclosure"><summary>{t("Art settings")} <span>{t("Development only")}</span></summary><ArtGalleryDevSettings /></details>}
     </section>
   );
 }

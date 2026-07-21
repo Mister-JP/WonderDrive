@@ -1,6 +1,6 @@
 import { waitUntil } from "cloudflare:workers";
 import { mutation } from "../../../../../lib/api";
-import { cancelBackgroundResearch } from "../../../../../lib/background-research";
+import { cancelBackgroundResearch, dismissFailedBackgroundResearch } from "../../../../../lib/background-research";
 
 export const dynamic = "force-dynamic";
 
@@ -10,6 +10,9 @@ export function DELETE(
 ) {
   return mutation(request, async (viewer) => {
     const { requestId } = await context.params;
+    if (new URL(request.url).searchParams.get("dismiss") === "true") {
+      return dismissFailedBackgroundResearch(viewer, requestId);
+    }
     return cancelBackgroundResearch(viewer, requestId, { defer: waitUntil });
   });
 }

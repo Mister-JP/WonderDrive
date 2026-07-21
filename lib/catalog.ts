@@ -9,7 +9,6 @@ import type {
 } from "./contracts";
 
 export const PROMPT_VERSION = "wonder-research-turn@4.1.0";
-export const TURN_SCHEMA_VERSION = "wonder-turn-draft@5";
 
 export const DEFAULT_PREFERENCES: UserPreferences = {
   interfaceLocale: "en",
@@ -183,34 +182,6 @@ export const MODELS: ModelConfig[] = [
   })),
 ];
 
-export const STARTERS: Record<PerformerId, string[]> = {
-  sage: [
-    "Where does a city keep its memories?",
-    "What can a map hide by being accurate?",
-    "Why do some ideas feel inevitable?",
-    "Can silence be designed?",
-  ],
-  spark: [
-    "What does a building sound like?",
-    "What can an ocean hear that we cannot?",
-    "Could a shadow be public infrastructure?",
-    "When does a mistake become a tradition?",
-  ],
-  mechanist: [
-    "How does a room decide where an echo goes?",
-    "What keeps a standard alive after its inventors leave?",
-    "How does a repeated route become infrastructure?",
-    "What makes a city develop its own sound?",
-  ],
-  atlas: [
-    "Why did the 1815 eruption change weather worldwide?",
-    "How do octopuses edit messages inside their cells?",
-    "What makes ancient Roman concrete survive seawater?",
-    "How did accurate clocks reshape everyday city life?",
-  ],
-};
-
-
 export const PRESETS: PresetConfig[] = [
   {
     id: "spark",
@@ -247,17 +218,10 @@ export const PRESETS: PresetConfig[] = [
   },
 ];
 
-export const PRESET_LABELS = Object.fromEntries(
-  PRESETS.map((preset) => [preset.id, preset]),
-) as Record<(typeof PRESETS)[number]["id"], PresetConfig>;
-
 export const BOOTSTRAP_CATALOG: BootstrapCatalog = {
   performers: PERFORMERS,
   models: MODELS.filter((model) => model.status === "enabled"),
   presets: PRESETS,
-  starters: STARTERS,
-  promptVersion: PROMPT_VERSION,
-  schemaVersion: TURN_SCHEMA_VERSION,
 };
 
 export function performerById(id: PerformerId) {

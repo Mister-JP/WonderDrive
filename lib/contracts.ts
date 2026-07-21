@@ -80,9 +80,6 @@ export type BootstrapCatalog = {
   performers: Performer[];
   models: ModelConfig[];
   presets: PresetConfig[];
-  starters: Record<PerformerId, string[]>;
-  promptVersion: string;
-  schemaVersion: string;
 };
 
 export const LANDING_RECOMMENDATION_CATEGORIES = [
@@ -340,6 +337,7 @@ export type Bookmark = {
   journeyTitle: string;
   performerId: PerformerId;
   sourceCount: number;
+  leadMedia?: TurnMedia;
 };
 
 export type AddBookmarkRequest = {
@@ -358,16 +356,6 @@ export type ImportBookmarksRequest = {
 export type ImportBookmarksResult = {
   imported: number;
   bookmarks: Bookmark[];
-};
-
-export type CreateJourneyRequest = {
-  seed: string;
-  performerId: PerformerId;
-  modelId: ModelId;
-  researchPreset: ResearchPreset;
-  answerDensity: AnswerDensity;
-  outputLocale: SupportedLocale;
-  idempotencyKey: string;
 };
 
 export type AdvanceJourneyRequest = {
@@ -429,38 +417,6 @@ export type ResearchActivity = {
   startedAt: number | null;
   timeoutAt: number | null;
   completedAt: number | null;
-};
-
-export type CompareJourneyDetail = JourneySummary & {
-  performerName: string;
-  modelName: string;
-  actionCount: number;
-  rejectedCount: number;
-  delegatedCount: number;
-  totalEstimatedCostUsd: number;
-  timeline: Array<{
-    turnId: string;
-    question: string;
-    topicLabel: string;
-    transition: string;
-    researchedAt: number;
-    sourceCount: number;
-  }>;
-};
-
-export type CompareResult = {
-  left: CompareJourneyDetail;
-  right: CompareJourneyDetail;
-  sharedTopics: string[];
-  leftOnlyTopics: string[];
-  rightOnlyTopics: string[];
-  observations: LocalizedMessage[];
-  confounders: LocalizedMessage[];
-};
-
-export type LocalizedMessage = {
-  key: string;
-  values?: Record<string, string | number>;
 };
 
 export type ApiSuccess<T> = { data: T; viewer: Viewer };

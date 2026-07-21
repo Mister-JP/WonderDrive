@@ -1,8 +1,6 @@
 import type { SupportedLocale } from "./contracts";
 import { RepositoryError } from "./errors";
 
-export const DEFAULT_LOCALE: SupportedLocale = "en";
-
 export const SUPPORTED_LOCALES = [
   { id: "en", name: "English", direction: "ltr" },
   { id: "es", name: "Español", direction: "ltr" },
@@ -23,7 +21,7 @@ export const SUPPORTED_LOCALES = [
 
 const localeIds = new Set<string>(SUPPORTED_LOCALES.map(({ id }) => id));
 
-export function isSupportedLocale(value: unknown): value is SupportedLocale {
+function isSupportedLocale(value: unknown): value is SupportedLocale {
   if (typeof value !== "string") return false;
   try {
     return localeIds.has(Intl.getCanonicalLocales(value)[0]);

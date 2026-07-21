@@ -1,5 +1,24 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="32" fill="#13241e"/>
-  <path d="M46 22c-3.2-4.4-7.8-6.5-13.5-6.5C23 15.5 16 22.5 16 32s7 16.5 16.5 16.5c5.7 0 10.3-2.1 13.5-6.5" fill="none" stroke="#f2eee4" stroke-width="7" stroke-linecap="round"/>
-  <circle cx="51" cy="13" r="6" fill="#dfff58"/>
+  <defs>
+    <radialGradient id="space" cx="30%" cy="20%" r="85%">
+      <stop offset="0" stop-color="#245fc2"/>
+      <stop offset="1" stop-color="#0e347f"/>
+    </radialGradient>
+    <radialGradient id="ocean" cx="28%" cy="22%" r="82%">
+      <stop offset="0" stop-color="#b8ecff"/>
+      <stop offset=".42" stop-color="#48bde9"/>
+      <stop offset="1" stop-color="#1768b2"/>
+    </radialGradient>
+    <linearGradient id="moon" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fffbe7"/>
+      <stop offset="1" stop-color="#ffd43b"/>
+    </linearGradient>
+  </defs>
+  <circle cx="32" cy="32" r="30" fill="url(#space)" stroke="#ffd43b" stroke-width="3"/>
+  <ellipse cx="32" cy="33" rx="25" ry="11" fill="none" stroke="#fffdf7" stroke-opacity=".45" stroke-width="1.5" transform="rotate(-13 32 33)"/>
+  <circle cx="31" cy="33" r="16" fill="url(#ocean)" stroke="#fffdf7" stroke-width="1.5"/>
+  <path d="M20 28c3-6 8-9 13-9l2 4 5 2-1 5-6 2-3 7-5-2-1-5-4-4Zm20 9 5 2-2 6-5 3-3-5 5-6Z" fill="#73c77d"/>
+  <path d="M19 34c8 4 18 5 27 0M31 17c-4 10-4 21 0 32M31 17c5 10 5 21 0 32" fill="none" stroke="#fffdf7" stroke-opacity=".38" stroke-width="1"/>
+  <circle cx="53" cy="23" r="6" fill="url(#moon)" stroke="#0e347f" stroke-width="1.5"/>
+  <circle cx="51" cy="21" r="1.2" fill="#d6ad25" opacity=".55"/>
 </svg>

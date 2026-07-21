@@ -12,9 +12,9 @@ export function JourneysView({
   onOpen,
   onDelete,
   onManage,
-  onSnapshot,
   onRetry,
   onCancel,
+  onDismiss,
   onNew,
 }: {
   journeys: JourneySummary[];
@@ -24,26 +24,26 @@ export function JourneysView({
   onOpen: (id: string) => void;
   onDelete: (id: string) => void;
   onManage: (id: string, changes: { title?: string; pinned?: boolean; hidden?: boolean }) => void;
-  onSnapshot: (id: string) => void;
   onRetry: (id: string) => void;
   onCancel: (id: string) => void;
+  onDismiss: (id: string) => void;
   onNew: () => void;
 }) {
   const { t, locale } = useI18n();
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
   const [confirmCancel, setConfirmCancel] = useState<string | null>(null);
+  const [confirmDismiss, setConfirmDismiss] = useState<string | null>(null);
   const [query, setQuery] = useState("");
-  const [showHidden, setShowHidden] = useState(false);
   const normalizedQuery = query.trim().toLocaleLowerCase(locale);
   const formatter = new Intl.DateTimeFormat(locale, {
     dateStyle: "medium",
     timeStyle: "short",
   });
   const visibleJourneys = journeys
-    .filter((journey) => showHidden || !journey.hidden)
     .filter((journey) => !normalizedQuery || `${journey.seed} ${journey.title}`.toLocaleLowerCase(locale).includes(normalizedQuery))
     .sort((left, right) => Number(right.pinned) - Number(left.pinned) || right.updatedAt - left.updatedAt);
   const unfinished = activities.filter((activity) => activity.status !== "ready");
+  const hasActiveResearch = unfinished.some((activity) => activity.status === "researching");
 
   return (
     <section className="journeys-view" aria-labelledby="journeys-title">
@@ -64,13 +64,12 @@ export function JourneysView({
           <span>{t("Search")}</span>
           <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t("First question or journey label")} />
         </label>
-        <label className="check-setting"><input type="checkbox" checked={showHidden} onChange={(event) => setShowHidden(event.target.checked)} /><span>{t("Show hidden")}</span></label>
       </div>
 
       {unfinished.length > 0 && (
         <section className="research-activity-list" aria-labelledby="research-activity-title">
           <div className="research-activity-heading">
-            <p className="eyebrow"><span /> {t("In progress")}</p>
+            <p className="eyebrow"><span /> {t(hasActiveResearch ? "In progress" : "Needs attention")}</p>
             <h2 id="research-activity-title">{t("Research activity")}</h2>
           </div>
           <div className="journeys-grid">
@@ -121,14 +120,30 @@ export function JourneysView({
                 ) : (
                   <>
                     <p className="research-activity-copy">{activity.error ?? t("This research could not be completed.")}</p>
-                    <button
-                      type="button"
-                      className="show-journey"
-                      disabled={busy !== null}
-                      onClick={() => onRetry(activity.id)}
-                    >
-                      {t("Retry research")} <span aria-hidden="true">↻</span>
-                    </button>
+                    <div className="research-failed-actions">
+                      <button
+                        type="button"
+                        className="show-journey"
+                        disabled={busy !== null}
+                        onClick={() => onRetry(activity.id)}
+                      >
+                        {t("Retry research")} <span aria-hidden="true">↻</span>
+                      </button>
+                      {confirmDismiss === activity.id ? (
+                        <span className="research-dismiss-confirm" role="group" aria-label={t("Confirm failed research removal")}>
+                          <span>{t("Remove this failed research?")}</span>
+                          <button type="button" disabled={busy !== null} onClick={() => {
+                            setConfirmDismiss(null);
+                            onDismiss(activity.id);
+                          }}>{t("Remove")}</button>
+                          <button type="button" onClick={() => setConfirmDismiss(null)}>{t("Keep")}</button>
+                        </span>
+                      ) : (
+                        <button type="button" className="research-dismiss-button" disabled={busy !== null} onClick={() => setConfirmDismiss(activity.id)}>
+                          {t("Remove failed research")} <span aria-hidden="true">×</span>
+                        </button>
+                      )}
+                    </div>
                   </>
                 )}
               </article>
@@ -148,7 +163,6 @@ export function JourneysView({
                   <div className="journey-card-body">
                     <div className="journey-card-state">
                       {journey.pinned && <span>{t("Pinned")}</span>}
-                      {journey.hidden && <span>{t("Hidden")}</span>}
                     </div>
                     <p className="journey-card-kicker">{t("First explored")}</p>
                     <h2>{journey.seed}</h2>
@@ -166,36 +180,30 @@ export function JourneysView({
                     <details className="journey-manage">
                       <summary>{t("Manage journey")}</summary>
                       {customLabel && <p className="journey-label">{t("Label: {label}", { label: customLabel })}</p>}
-                      <div>
+                      <div className="journey-manage-actions">
                         <button type="button" onClick={() => {
                           const title = window.prompt(t("Rename journey label"), journey.title);
                           if (title?.trim()) onManage(journey.id, { title: title.trim() });
                         }}>{t("Rename label")}</button>
                         <button type="button" onClick={() => onManage(journey.id, { pinned: !journey.pinned })}>{t(journey.pinned ? "Unpin" : "Pin")}</button>
-                        <button type="button" onClick={() => onManage(journey.id, { hidden: !journey.hidden })}>{t(journey.hidden ? "Unhide" : "Hide")}</button>
-                        <button type="button" onClick={() => onSnapshot(journey.id)}>{t("Snapshot")}</button>
-                        <a href={`/api/journeys/${journey.id}/export`}>{t("Export")}</a>
+                        {confirmDelete === journey.id ? (
+                          <span className="delete-confirm" role="group" aria-label={t("Confirm journey removal")}>
+                            <span>{t("Remove this journey?")}</span>
+                            <button type="button" disabled={busy !== null} onClick={() => onDelete(journey.id)}>{t("Delete")}</button>
+                            <button type="button" onClick={() => setConfirmDelete(null)}>{t("Keep")}</button>
+                          </span>
+                        ) : (
+                          <button type="button" className="journey-delete-button" onClick={() => setConfirmDelete(journey.id)}>{t("Remove journey")}</button>
+                        )}
                       </div>
                     </details>
-
-                    <div className="journey-remove">
-                      {confirmDelete === journey.id ? (
-                        <span className="delete-confirm" role="group" aria-label={t("Confirm journey removal")}>
-                          <span>{t("Remove this journey?")}</span>
-                          <button type="button" disabled={busy !== null} onClick={() => onDelete(journey.id)}>{t("Delete")}</button>
-                          <button type="button" onClick={() => setConfirmDelete(null)}>{t("Keep")}</button>
-                        </span>
-                      ) : (
-                        <button type="button" className="text-button" onClick={() => setConfirmDelete(journey.id)}>{t("Remove")}</button>
-                      )}
-                    </div>
                   </div>
                 </article>
               );
             })}
           </div>
         ) : (
-          <div className="journeys-empty"><h2>{t("No journeys match these filters")}</h2><p>{t("Try another search or show hidden journeys.")}</p></div>
+          <div className="journeys-empty"><h2>{t("No journeys match this search")}</h2><p>{t("Try a broader question or journey label.")}</p></div>
         )
       ) : (
         <div className="journeys-empty"><h2>{t("No journeys yet")}</h2><p>{t("Explore a question to begin your first journey.")}</p><button type="button" onClick={onNew}>{t("Start a journey")} →</button></div>

@@ -253,7 +253,7 @@ export function buildResearchInput(prepared: ResearchPromptInput): string {
   ].join("\n\n");
 }
 
-export function answerDensityDirection(answerDensity: AnswerDensity): string {
+function answerDensityDirection(answerDensity: AnswerDensity): string {
   if (answerDensity === "brief") {
     return "Write exactly 2 compact answer blocks and about 2–4 sentences total. Give the direct answer and only the most important explanation.";
   }
@@ -263,7 +263,7 @@ export function answerDensityDirection(answerDensity: AnswerDensity): string {
   return "Write 2–3 answer blocks and about 5–7 sentences total. Give the direct answer, its main explanation, and the most useful evidence or caveat.";
 }
 
-export function imageSearchDirection(imagePreference: ImagePreference): string {
+function imageSearchDirection(imagePreference: ImagePreference): string {
   if (imagePreference === "avoid") {
     return "Do not search for or return images.";
   }

@@ -1,68 +1,67 @@
 const messages: Record<string, string> = {
-  "New drive": "नई ड्राइव",
+
   "Library": "लाइब्रेरी",
-  "Compare": "तुलना करें",
   "Usage": "उपयोग",
   "Settings": "सेटिंग्स",
   "CuriosityPedia views": "CuriosityPedia के दृश्य",
   "ChatGPT account": "ChatGPT अकाउंट",
-  "Opening library…": "लाइब्रेरी खोल रहे हैं…",
+
   "{count}/{limit} saved": "{count}/{limit} सहेजे गए",
   "durable session": "स्थायी सत्र",
   "Sign in": "साइन इन करें",
   "Sign out": "साइन आउट करें",
   "Research first": "पहले शोध करें",
-  "Your guest library is still separate.": "आपकी अतिथि लाइब्रेरी अभी भी अलग है।",
+
   "Reconnect": "पुनः कनेक्ट करें",
   "Dismiss": "खारिज करें",
   "Current journey views": "वर्तमान यात्रा के दृश्य",
-  "Next turn model": "अगला टर्न मॉडल",
+
   "Model for the next research turn": "अगले शोध टर्न के लिए मॉडल",
   "Stage": "चरण",
   "Journey map": "यात्रा मानचित्र",
-  "One performer. One researched turn. Exactly two ways forward.": "एक कर्ता। एक शोधित टर्न। आगे बढ़ने के ठीक दो तरीके।",
+
   "Source": "स्रोत",
   "Product book": "प्रोडक्ट बुक",
-  "Scanning what’s unfolding now…": "अभी जो हो रहा है उसे स्कैन किया जा रहा है…",
-  "Current signals + {performer} + {context}": "वर्तमान संकेत + {performer} + {context}",
-  "your history": "आपका इतिहास",
-  "wild-card domains": "वाइल्ड-कार्ड डोमेन",
-  "Hunting…": "खोज रहे हैं…",
-  "Find new questions": "नए प्रश्न खोजें",
-  "Questions suggested for {performer}": "{performer} के लिए सुझाए गए प्रश्न",
-  "What are you curious about?": "आप किस बारे में जिज्ञासु हैं?",
+
+
+
+
+
+
+
+
   "Starting question": "प्रारंभिक प्रश्न",
   "Ask anything…": "कुछ भी पूछें…",
-  "Tab to complete": "पूरा करने के लिए टैब करें",
-  "Recommended match": "अनुशंसित मिलान",
-  "Start typing for recommendation matches": "सुझाव मिलानों के लिए टाइप करना शुरू करें",
+
+
+
   "Performer": "कर्ता",
   "Model": "मॉडल",
-  "Researching in the foreground…": "फोरग्राउंड में शोध किया जा रहा है…",
-  "Begin the wonder": "आश्चर्य की शुरुआत करें",
-  "Connecting to live foreground research…": "लाइव फोरग्राउंड शोध से जुड़ रहे हैं…",
+
+
+
   "Research committed": "शोध समर्पित किया गया",
   "Research stopped": "शोध रुक गया",
-  "Opening the next live research turn…": "अगला लाइव शोध टर्न खोल रहे हैं…",
+
   "Choose one of the two current paths.": "दो वर्तमान पथों में से एक चुनें।",
-  "Answer ready": "उत्तर तैयार है",
-  "Buffering answer": "उत्तर बफर हो रहा है",
+
+
   "Retrying {attempt} of {max}": "{max} में से {attempt} बार पुनः प्रयास कर रहे हैं",
-  "Placing the answer into this card": "उत्तर को इस कार्ड में रख रहे हैं",
-  "Nothing incomplete was saved": "कोई भी अधूरा डेटा नहीं सहेजा गया",
-  "researching in this foreground turn": "इस फोरग्राउंड टर्न में शोध किया जा रहा है",
-  "This turn was not committed": "यह टर्न समर्पित नहीं किया गया था",
+
+
+
+
   "Return safely": "सुरक्षित रूप से लौटें",
   "Choose the next direction": "अगली दिशा चुनें",
   "Where should curiosity go next?": "जिज्ञासा आगे कहाँ जानी चाहिए?",
-  "Two paths will appear here when the answer is ready.": "उत्तर तैयार होने पर यहाँ दो पथ दिखाई देंगे।",
+
   "Turn {number}": "टर्न {number}",
-  "{count} turns": "{count} टर्न",
-  "{count} sources": "{count} स्रोत",
+
+
   "You are revisiting an earlier turn.": "आप एक पुराने टर्न पर वापस जा रहे हैं।",
   "Choosing a path here creates a visible branch; your existing turns stay in the map.": "यहाँ एक पथ चुनने से एक दृश्य शाखा बनती है; आपके मौजूदा टर्न मानचित्र में रहते हैं।",
   "performed from live web research": "लाइव वेब शोध से किया गया",
-  "COMPOSED": "रचित",
+
   "Save and export options": "सहेजने और निर्यात करने के विकल्प",
   "Save snapshot": "स्नैपशॉट सहेजें",
   "Export JSON": "JSON निर्यात करें",
@@ -71,7 +70,7 @@ const messages: Record<string, string> = {
   "live research": "लाइव शोध",
   "Evidence & research details": "प्रमाण और शोध विवरण",
   "Deeper dive": "गहराई से जानें",
-  "Let {performer} choose": "{performer} को चुनने दें",
+
   "Other ways to continue": "आगे बढ़ने के दूसरे तरीके",
   "Pick a path for me": "मेरे लिए एक रास्ता चुनें",
   "CuriosityPedia chooses one": "CuriosityPedia एक चुनता है",
@@ -97,37 +96,37 @@ const messages: Record<string, string> = {
   "Browse visual evidence": "दृश्य प्रमाण ब्राउज़ करें",
   "Previous image": "पिछली छवि",
   "Next image": "अगली छवि",
-  "Why it is here": "यह यहाँ क्यों है",
-  "What to notice": "क्या ध्यान दें",
-  "What it helps explain": "यह क्या समझाने में मदद करता है",
+
+
+
   "Select an image": "एक छवि चुनें",
   "Show {title}": "{title} दिखाएं",
-  "Follow the path you took, revisit a turn, or open a question you left behind.": "उस पथ का अनुसरण करें जो आपने लिया था, किसी टर्न पर वापस जाएं, या अपने द्वारा छोड़े गए प्रश्न को खोलें।",
+
   "Current": "वर्तमान",
   "Open paths": "खुले पथ",
-  "Active path": "सक्रिय पथ",
-  "How you got here": "आप यहाँ कैसे पहुँचे",
-  "Choose any turn to see its two directions.": "अपने दो दिशाओं को देखने के लिए कोई भी टर्न चुनें।",
+
+
+
   "You are here": "आप यहाँ हैं",
   "Explored": "खोजा गया",
   "Earlier branch": "पिछली शाखा",
-  "This turn is outside your current path. Exploring an open question here creates a new visible branch.": "यह टर्न आपके वर्तमान पथ से बाहर है। यहाँ एक खुला प्रश्न खोजने से एक नई दृश्य शाखा बनती है।",
-  "Where could this turn go?": "यह टर्न कहाँ जा सकता है?",
+
+
   "Explore this question": "इस प्रश्न की खोज करें",
-  "This answer continues in the map above.": "यह उत्तर ऊपर मानचित्र में जारी रहता है।",
-  "This direction is no longer active.": "यह दिशा अब सक्रिय नहीं है।",
+
+
   "Open full answer": "पूरा उत्तर खोलें",
-  "Revisit this answer": "इस उत्तर पर वापस जाएं",
-  "Other paths": "अन्य पथ",
-  "Questions worth returning to.": "प्रश्न जिन पर वापस जाना सार्थक है।",
-  "{count} of {limit} journeys saved": "सहेजी गई यात्राओं में से {count} of {limit}",
-  "New drive +": "नई ड्राइव +",
-  "Library filters": "लाइब्रेरी फ़िल्टर",
+
+
+
+
+
+
   "Search": "खोजें",
-  "Title, question, or topic": "शीर्षक, प्रश्न, या विषय",
+
   "All performers": "सभी कर्ता",
-  "Show hidden": "छिपा हुआ दिखाएं",
-  "PINNED": "पिन किया गया",
+
+
   "Turns": "टर्न",
   "Resume": "जारी रखें",
   "Delete": "मिटाएं",
@@ -136,90 +135,90 @@ const messages: Record<string, string> = {
   "Rename": "नाम बदलें",
   "Unpin": "अनपिन करें",
   "Pin": "पिन करें",
-  "Unhide": "अनहाइड करें",
-  "Hide": "छिपाएं",
+
+
   "Snapshot": "स्नैपशॉट",
   "Export": "निर्यात करें",
-  "Start the first saved journey": "पहली सहेजी गई यात्रा शुरू करें",
-  "Rename this journey": "इस यात्रा का नाम बदलें",
-  "Two journeys. One closer look.": "दो यात्राएँ। एक करीब से नज़र।",
-  "Select two saved journeys. CuriosityPedia compares their committed paths, topics, and performers.": "दो सहेजी गई यात्राओं का चयन करें। CuriosityPedia उनके समर्पित पथों, विषयों और कर्ताओं की तुलना करता है।",
-  "Reading the paths…": "पथों को पढ़ा जा रहा है…",
-  "Compare selected journeys": "चयनित यात्राओं की तुलना करें",
-  "Comparison begins after two journeys exist.": "तुलना दो यात्राओं के मौजूद होने के बाद शुरू होती है।",
-  "Start another drive": "दूसरी ड्राइव शुरू करें",
-  "Comparison ready": "तुलना तैयार है",
-  "The useful difference": "उपयोगी अंतर",
-  "What the saved data shows": "सहेजा गया डेटा क्या दिखाता है",
-  "Comparison cautions": "तुलना की सावधानियां",
-  "Audience controls": "दर्शक नियंत्रण",
+
+
+
+
+
+
+
+
+
+
+
+
+
   "Make the stage comfortable.": "चरण को आरामदायक बनाएं।",
   "Synced to your ChatGPT identity": "आपके ChatGPT पहचान के साथ सिंक किया गया",
   "Saved to this guest session": "इस अतिथि सत्र में सहेजा गया",
-  "These preferences change presentation and future turns, never evidence.": "ये प्राथमिकताएं प्रस्तुति और भविष्य के टर्न को बदलती हैं, प्रमाण को कभी नहीं।",
+
   "Experience language": "भाषा का अनुभव करें",
-  "Changes the whole interface and future learning output.": "पूरे इंटरफ़ेस और भविष्य के सीखने के आउटपुट को बदलता है।",
-  "Default answer density": "डिफ़ॉल्ट उत्तर घनत्व",
+
+
   "Brief": "संक्षिप्त",
   "Balanced": "संतुलित",
-  "Rich": "समृद्ध",
-  "Separate from how deeply CuriosityPedia researches.": "CuriosityPedia कितनी गहराई से शोध करता है, उससे अलग।",
+
+
   "Text size": "टेक्स्ट का आकार",
   "Small": "छोटा",
   "Medium": "मध्यम",
   "Large": "बड़ा",
   "Extra large": "अति बड़ा",
-  "Factual images": "तथ्यात्मक चित्र",
+
   "Avoid": "बचें",
-  "When useful": "जब उपयोगी हो",
-  "Prefer when supported": "सपोर्ट होने पर प्राथमिकता दें",
-  "Decorative imagery is never substituted for factual media.": "सजावटी छवियों का उपयोग कभी भी तथ्यात्मक मीडिया के विकल्प के रूप में नहीं किया जाता है।",
-  "Read-aloud speed: {rate}×": "पढ़ने की गति: {rate}×",
+
+
+
+
   "Reduce interface motion": "इंटरफ़ेस मोशन कम करें",
   "Saving…": "सहेज रहे हैं…",
   "Save preferences": "प्राथमिकताएं सहेजें",
-  "Opening your CuriosityPedia library…": "आपकी CuriosityPedia लाइब्रेरी खोल रहे हैं…",
+
   "Resolving a durable guest identity": "एक स्थायी अतिथि पहचान का समाधान कर रहे हैं",
-  "Open the journey library": "यात्रा लाइब्रेरी खोलें",
-  "No journey is on stage.": "मंच पर कोई यात्रा नहीं है।",
+
+
   "Start a new question or return to one you have already saved.": "एक नया प्रश्न शुरू करें या उस पर वापस लौटें जिसे आपने पहले ही सहेज लिया है।",
-  "rabbit holes": "रैबिट होल्स",
-  "Next turn": "अगला टर्न",
-  "Neither question works": "कोई भी प्रश्न काम नहीं करता",
+
+
+
   "{count} checked sources": "{count} जांचे गए स्रोत",
   "Your journey": "आपकी यात्रा",
   "Journey overview": "यात्रा अवलोकन",
   "Option": "विकल्प",
-  "Durable library / D1": "स्थायी लाइब्रेरी / D1",
-  "unclassified journey": "अवर्गीकृत यात्रा",
-  "Manual comparison / no provider call": "मैनुअल तुलना / कोई प्रदाता कॉल नहीं",
-  "Private diagnostics": "निजी डायग्नोस्टिक्स",
-  "What failed, where, and when.": "क्या विफल हुआ, कहाँ, और कब।",
+
+
+
+
+
   "Checking": "जांच रहे हैं",
-  "Checking…": "जांच रहे हैं…",
-  "Refresh incidents": "रिफ्रेश घटनाएं",
-  "Sign in with ChatGPT to keep private, identity-scoped diagnostic history.": "निजी, पहचान-दायरा डायग्नोस्टिक इतिहास बनाए रखने के लिए ChatGPT के साथ साइन इन करें।",
-  "Loading privacy-safe request health…": "प्राइवेसी-सुरक्षित अनुरोध स्वास्थ्य की जांच की जा रही है…",
-  "requests · 24h": "अनुरोध · 24h",
-  "failures · 24h": "विफलताएं · 24h",
-  "failure rate": "विफलता दर",
+
+
+
+
+
+
+
   "retention": "प्रतिधारण",
-  "Repeated failure detected": "बार-बार विफलता का पता चला",
-  "Last provider event": "अंतिम प्रदाता घटना",
-  "Parsed events": "पार्स किए गए इवेंट्स",
-  "Malformed events": "त्रुटिपूर्ण इवेंट्स",
-  "Output deltas": "आउटपुट डेल्टा",
-  "Provider done marker": "प्रदाता कार्य पूर्ण मार्कर",
+
+
+
+
+
+
   "seen": "देखा गया",
-  "not seen": "नहीं देखा गया",
-  "Latency": "विलंबता",
-  "HTTP status": "HTTP स्थिति",
+
+
+
   "OpenAI request": "OpenAI अनुरोध",
   "Preset": "प्रीसेट",
   "unrecorded": "अदर्जित",
-  "No failed research requests in the retained window.": "रिटेन किए गए विंडो में कोई विफल शोध अनुरोध नहीं है।",
-  "Prompts, answers, API keys, cookies, and source contents are never included.": "प्रॉम्प्ट, उत्तर, API कुंजियाँ, कुकीज़ और स्रोत सामग्री कभी भी शामिल नहीं की जाती हैं।",
-  "Input/output prices shown per 1M tokens; search is metered separately.": "इनपुट/आउटपुट कीमतें प्रति 1M टोकन दिखाई जाती हैं; खोज अलग से मापी जाती है।",
+
+
+
   "CuriosityPedia — Give curiosity a direction": "CuriosityPedia — जिज्ञासा को एक दिशा दें",
   "Highest-quality current OpenAI research model; highest cost.": "उच्चतम गुणवत्ता वाला वर्तमान OpenAI शोध मॉडल; उच्चतम लागत।",
   "Current balanced OpenAI research model.": "वर्तमान संतुलित OpenAI शोध मॉडल।",
@@ -231,32 +230,32 @@ const messages: Record<string, string> = {
   "path taken": "लिया गया पथ",
   "chosen": "चुना गया",
   "expired": "समाप्त",
-  "replaced": "बदला गया",
-  "Both journeys touched {topics}.": "दोनों यात्राओं ने {topics} को छुआ।",
-  "The journeys did not land on the same fixture topic.": "यात्राएं एक ही निश्चित विषय पर नहीं पहुँचीं।",
-  "They used the same performer, so the path—not the persona—is the clearest visible difference.": "उन्होंने एक ही कर्ता का उपयोग किया, इसलिए पथ—न कि व्यक्तित्व—सबसे स्पष्ट दृश्य अंतर है।",
-  "They used different performers, so both path and persona shape the contrast.": "उन्होंने अलग-अलग कर्ताओं का उपयोग किया, इसलिए पथ और व्यक्तित्व दोनों अंतर को आकार देते हैं।",
-  "Both contain 1 committed turn.": "दोनों में 1 समर्पित टर्न है।",
-  "Both contain {count} committed turns.": "दोनों में {count} समर्पित टर्न हैं।",
-  "{leftTitle} contains {leftCount} turns; {rightTitle} contains {rightCount}.": "{leftTitle} में {leftCount} टर्न हैं; {rightTitle} में {rightCount} हैं।",
-  "Live-web evidence can change between research dates.": "शोध तिथियों के बीच लाइव-वेब प्रमाण बदल सकते हैं।",
-  "Audience choices and rejected paths change the context of later turns.": "दर्शकों के विकल्प और अस्वीकार किए गए पथ बाद के टर्न के संदर्भ को बदल देते हैं।",
-  "Model output is stochastic; this view is descriptive, not a winner ranking.": "मॉडल आउटपुट स्टोकेस्टिक है; यह दृश्य वर्णनात्मक है, विजेता रैंकिंग नहीं।",
-  "Both journeys began from the same seed.": "दोनों यात्राएं एक ही सीड से शुरू हुई थीं।",
-  "The starting seeds differ.": "शुरुआती सीड अलग हैं।",
-  "{performer} will carry this question": "{performer} इस प्रश्न को आगे बढ़ाएगा",
-  "Performer pick": "कर्ता चयन",
-  "Same selected model researches and performs · inspectable sources · durable branching graph": "समान चयनित मॉडल शोध और प्रदर्शन करता है · जांचने योग्य स्रोत · स्थायी शाखा ग्राफ",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   "Move guest journeys into this account": "अतिथि यात्राओं को इस अकाउंट में ले जाएं",
   "{count} open questions": "{count} खुले प्रश्न",
-  "{count} earlier branches": "{count} पिछली शाखाएं",
+
   "Path": "पथ",
-  "{count} source appearances": "{count} स्रोत उपस्थिति",
-  "{count} open branches": "{count} खुली शाखाएं",
-  "{count} decisions": "{count} निर्णय",
-  "{count} redraws": "{count} रीड्रॉ",
-  "{count} delegated": "{count} डेलीगेटेड",
-  "{code} happened {count} times in ten minutes.": "{code} दस मिनट में {count} बार हुआ।",
+
+
+
+
+
+
   "Patient connections": "धैर्यवान कनेक्शन",
   "Playful surprise": "चंचल आश्चर्य",
   "How things work": "चीजें कैसे काम करती हैं",
@@ -276,42 +275,42 @@ const messages: Record<string, string> = {
   "fast": "तेज़",
   "balanced": "संतुलित",
   "deliberate": "सोचा-समझा",
-  "Your saved-journey library is full ({count}/{limit}). Delete one journey to make room.": "आपकी सहेजी गई-यात्रा लाइब्रेरी भर गई है ({count}/{limit})। जगह बनाने के लिए एक यात्रा मिटाएं।",
+
   "Manage saved journeys": "सहेजी गई यात्राओं का प्रबंधन करें",
   "View usage": "उपयोग देखें",
-  "Library full": "लाइब्रेरी भर गई है",
+
   "Usage limit reached": "उपयोग सीमा तक पहुँच गई",
-  "No research was started": "कोई शोध शुरू नहीं किया गया था",
-  "Your saved-journey library is full": "आपकी सहेजी गई-यात्रा लाइब्रेरी भर गई है",
-  "Your rolling usage limit is reached": "आपकी रोलिंग उपयोग सीमा तक पहुँच गई है",
-  "Rolling usage / 24 hours": "रोलिंग उपयोग / 24 घंटे",
-  "Know what is available.": "जानें कि क्या उपलब्ध है।",
+
+
+
+
+
   "{count} research runs ready": "{count} शोध रन तैयार हैं",
   "Reading your usage…": "आपका उपयोग पढ़ा जा रहा है…",
-  "Every run returns exactly 24 hours after it starts.": "प्रत्येक रन शुरू होने के ठीक 24 घंटे बाद वापस आता है।",
+
   "Try again": "पुनः प्रयास करें",
   "Reading your rolling limits…": "आपकी रोलिंग सीमाओं को पढ़ा जा रहा है…",
   "Live research": "लाइव शोध",
   "Live research used in the last 24 hours": "पिछले 24 घंटों में उपयोग किया गया लाइव शोध",
-  "{count} runs are available now.": "{count} रन अभी उपलब्ध हैं।",
+
   "Next slot returns {time}.": "अगला स्लॉट {time} पर वापस आएगा।",
   "You have not reached the rolling run limit.": "आप रोलिंग रन सीमा तक नहीं पहुँचे हैं।",
   "Upcoming slot returns": "आगामी स्लॉट वापस आता है",
-  "Rolling provider spend": "रोलिंग प्रदाता खर्च",
-  "Provider spend used in the last 24 hours": "पिछले 24 घंटों में उपयोग किया गया प्रदाता खर्च",
+
+
   "Provider spend and active holds in the last 24 hours": "पिछले 24 घंटों में प्रदाता खर्च और सक्रिय रोक",
   "Spend begins leaving the window {time}.": "खर्च विंडो से {time} के बाद निकलना शुरू हो जाता है।",
-  "No metered provider spend in the current window.": "वर्तमान विंडो में कोई मापा गया प्रदाता खर्च नहीं है।",
+
   "No metered provider spend or active holds in the current window.": "वर्तमान विंडो में कोई मापा गया प्रदाता खर्च या सक्रिय रोक नहीं है।",
   "Saved journeys": "सहेजी गई यात्राएँ",
   "Saved journey capacity used": "सहेजी गई यात्रा क्षमता का उपयोग किया गया",
-  "This capacity does not reset every 24 hours. Delete a journey to free a place.": "यह क्षमता हर 24 घंटे में रीसेट नहीं होती है। जगह खाली करने के लिए एक यात्रा मिटाएं।",
+
   "How rolling limits work": "रोलिंग सीमाएं कैसे काम करती हैं",
   "There is no midnight reset. Each run and each dollar leaves the window 24 hours after it was recorded.": "कोई आधी रात का रीसेट नहीं होता है। प्रत्येक रन और प्रत्येक डॉलर रिकॉर्ड किए जाने के 24 घंटे बाद विंडो से निकल जाता है।",
   "Guest session": "अतिथि सत्र",
   "This browser session is scheduled to remain available until {time}.": "यह ब्राउज़र सत्र {time} तक उपलब्ध रहने के लिए निर्धारित है।",
-  "This library belongs to this browser session.": "यह लाइब्रेरी इस ब्राउज़र सत्र की है।",
-  "Sign in to keep more across devices": "डिवाइसों में अधिक रखने के लिए साइन इन करें",
+
+
   "Account usage": "अकाउंट उपयोग",
   "These limits follow your signed-in ChatGPT identity across devices.": "ये सीमाएं डिवाइसों में आपकी साइन-इन की गई ChatGPT पहचान का पालन करती हैं।"
 };

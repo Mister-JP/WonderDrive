@@ -1,68 +1,67 @@
 const messages: Record<string, string> = {
-  "New drive": "Neuer Drive",
+
   "Library": "Bibliothek",
-  "Compare": "Vergleichen",
   "Usage": "Nutzung",
   "Settings": "Einstellungen",
   "CuriosityPedia views": "CuriosityPedia-Ansichten",
   "ChatGPT account": "ChatGPT-Konto",
-  "Opening library…": "Bibliothek wird geöffnet…",
+
   "{count}/{limit} saved": "{count}/{limit} gespeichert",
   "durable session": "dauerhafte Sitzung",
   "Sign in": "Anmelden",
   "Sign out": "Abmelden",
   "Research first": "Zuerst recherchieren",
-  "Your guest library is still separate.": "Deine Gast-Bibliothek ist separat.",
+
   "Reconnect": "Wiederverbinden",
   "Dismiss": "Schließen",
   "Current journey views": "Aktuelle Journey-Ansichten",
-  "Next turn model": "Nächstes Turn-Modell",
+
   "Model for the next research turn": "Modell für die nächste Recherche-Runde",
   "Stage": "Phase",
   "Journey map": "Journey-Map",
-  "One performer. One researched turn. Exactly two ways forward.": "Ein Performer. Eine recherchierte Runde. Genau zwei Wege nach vorne.",
+
   "Source": "Quelle",
   "Product book": "Produktbuch",
-  "Scanning what’s unfolding now…": "Scanne aktuelle Entwicklungen…",
-  "Current signals + {performer} + {context}": "Aktuelle Signale + {performer} + {context}",
-  "your history": "deine Historie",
-  "wild-card domains": "Wildcard-Domains",
-  "Hunting…": "Suche läuft…",
-  "Find new questions": "Neue Fragen finden",
-  "Questions suggested for {performer}": "Fragen vorgeschlagen für {performer}",
-  "What are you curious about?": "Was macht dich neugierig?",
+
+
+
+
+
+
+
+
   "Starting question": "Startfrage",
   "Ask anything…": "Frag alles…",
-  "Tab to complete": "Zum Auswählen tippen",
-  "Recommended match": "Empfohlene Übereinstimmung",
-  "Start typing for recommendation matches": "Tippe, um Empfehlungen zu erhalten",
+
+
+
   "Performer": "Performer",
   "Model": "Modell",
-  "Researching in the foreground…": "Recherche im Vordergrund läuft…",
-  "Begin the wonder": "Das Staunen beginnen",
-  "Connecting to live foreground research…": "Verbindung zur Live-Recherche wird hergestellt…",
+
+
+
   "Research committed": "Recherche abgeschlossen",
   "Research stopped": "Recherche gestoppt",
-  "Opening the next live research turn…": "Nächste Live-Recherche-Runde wird geöffnet…",
+
   "Choose one of the two current paths.": "Wähle einen der zwei aktuellen Pfade.",
-  "Answer ready": "Antwort bereit",
-  "Buffering answer": "Antwort wird geladen",
+
+
   "Retrying {attempt} of {max}": "Erneuter Versuch {attempt} von {max}",
-  "Placing the answer into this card": "Antwort wird in diese Karte eingefügt",
-  "Nothing incomplete was saved": "Es wurden keine unvollständigen Daten gespeichert",
-  "researching in this foreground turn": "Recherche in dieser Vordergrund-Runde",
-  "This turn was not committed": "Diese Runde wurde nicht übernommen",
+
+
+
+
   "Return safely": "Sicher zurückkehren",
   "Choose the next direction": "Nächste Richtung wählen",
   "Where should curiosity go next?": "Wohin soll die Neugier als Nächstes führen?",
-  "Two paths will appear here when the answer is ready.": "Zwei Pfade erscheinen hier, sobald die Antwort bereit ist.",
+
   "Turn {number}": "Runde {number}",
-  "{count} turns": "{count} Runden",
-  "{count} sources": "{count} Quellen",
+
+
   "You are revisiting an earlier turn.": "Du besuchst eine frühere Runde.",
   "Choosing a path here creates a visible branch; your existing turns stay in the map.": "Das Wählen eines Pfades erstellt einen sichtbaren Zweig; deine bestehenden Runden bleiben in der Map.",
   "performed from live web research": "durchgeführt aus Live-Web-Recherche",
-  "COMPOSED": "ERSTELLT",
+
   "Save and export options": "Speicher- und Exportoptionen",
   "Save snapshot": "Snapshot speichern",
   "Export JSON": "JSON exportieren",
@@ -71,7 +70,7 @@ const messages: Record<string, string> = {
   "live research": "Live-Recherche",
   "Evidence & research details": "Beweise & Rechendetails",
   "Deeper dive": "Tiefer eintauchen",
-  "Let {performer} choose": "Lass {performer} wählen",
+
   "Other ways to continue": "Andere Möglichkeiten",
   "Pick a path for me": "Wähle einen Weg für mich",
   "CuriosityPedia chooses one": "CuriosityPedia wählt einen",
@@ -97,37 +96,37 @@ const messages: Record<string, string> = {
   "Browse visual evidence": "Visuelle Beweise durchsuchen",
   "Previous image": "Vorheriges Bild",
   "Next image": "Nächstes Bild",
-  "Why it is here": "Warum es hier ist",
-  "What to notice": "Was zu beachten ist",
-  "What it helps explain": "Was es hilft zu erklären",
+
+
+
   "Select an image": "Bild auswählen",
   "Show {title}": "Zeige {title}",
-  "Follow the path you took, revisit a turn, or open a question you left behind.": "Folge dem gewählten Pfad, besuche eine Runde erneut oder öffne eine zurückgelassene Frage.",
+
   "Current": "Aktuell",
   "Open paths": "Offene Pfade",
-  "Active path": "Aktiver Pfad",
-  "How you got here": "Wie du hierher gelangt bist",
-  "Choose any turn to see its two directions.": "Wähle eine beliebige Runde, um ihre zwei Richtungen zu sehen.",
+
+
+
   "You are here": "Du bist hier",
   "Explored": "Erforscht",
   "Earlier branch": "Früherer Zweig",
-  "This turn is outside your current path. Exploring an open question here creates a new visible branch.": "Diese Runde liegt außerhalb deines aktuellen Pfades. Das Erforschen einer offenen Frage hier erstellt einen neuen sichtbaren Zweig.",
-  "Where could this turn go?": "Wohin könnte diese Runde führen?",
+
+
   "Explore this question": "Diese Frage erforschen",
-  "This answer continues in the map above.": "Diese Antwort wird in der obigen Map fortgesetzt.",
-  "This direction is no longer active.": "Diese Richtung ist nicht mehr aktiv.",
+
+
   "Open full answer": "Vollständige Antwort öffnen",
-  "Revisit this answer": "Diese Antwort erneut besuchen",
-  "Other paths": "Andere Pfade",
-  "Questions worth returning to.": "Fragen, zu denen es sich lohnt zurückzukehren.",
-  "{count} of {limit} journeys saved": "{count} von {limit} Journeys gespeichert",
-  "New drive +": "Neuer Drive +",
-  "Library filters": "Bibliotheksfilter",
+
+
+
+
+
+
   "Search": "Suche",
-  "Title, question, or topic": "Titel, Frage oder Thema",
+
   "All performers": "Alle Performer",
-  "Show hidden": "Ausgeblendet zeigen",
-  "PINNED": "ANGEPINNT",
+
+
   "Turns": "Runden",
   "Resume": "Fortsetzen",
   "Delete": "Löschen",
@@ -136,90 +135,90 @@ const messages: Record<string, string> = {
   "Rename": "Umbenennen",
   "Unpin": "Entpinne",
   "Pin": "Anpinnen",
-  "Unhide": "Einblenden",
-  "Hide": "Ausblenden",
+
+
   "Snapshot": "Snapshot",
   "Export": "Exportieren",
-  "Start the first saved journey": "Die erste gespeicherte Journey starten",
-  "Rename this journey": "Diese Journey umbenennen",
-  "Two journeys. One closer look.": "Zwei Journeys. Ein genauerer Blick.",
-  "Select two saved journeys. CuriosityPedia compares their committed paths, topics, and performers.": "Wähle zwei gespeicherte Journeys aus. CuriosityPedia vergleicht deren übernommene Pfade, Themen und Performer.",
-  "Reading the paths…": "Lese die Pfade…",
-  "Compare selected journeys": "Ausgewählte Journeys vergleichen",
-  "Comparison begins after two journeys exist.": "Der Vergleich beginnt, sobald zwei Journeys existieren.",
-  "Start another drive": "Einen weiteren Drive starten",
-  "Comparison ready": "Vergleich bereit",
-  "The useful difference": "Der nützliche Unterschied",
-  "What the saved data shows": "Was die gespeicherten Daten zeigen",
-  "Comparison cautions": "Vergleichshinweise",
-  "Audience controls": "Zuschauer-Steuerung",
+
+
+
+
+
+
+
+
+
+
+
+
+
   "Make the stage comfortable.": "Mache die Phase komfortabel.",
   "Synced to your ChatGPT identity": "Mit deiner ChatGPT-Identität synchronisiert",
   "Saved to this guest session": "In dieser Gast-Sitzung gespeichert",
-  "These preferences change presentation and future turns, never evidence.": "Diese Einstellungen ändern die Darstellung und zukünftige Runden, niemals die Beweise.",
+
   "Experience language": "Spracherlebnis",
-  "Changes the whole interface and future learning output.": "Ändert die gesamte Benutzeroberfläche und das zukünftige Lernergebnis.",
-  "Default answer density": "Standard-Antwortdichte",
+
+
   "Brief": "Kurz",
   "Balanced": "Ausgewogen",
-  "Rich": "Ausführlich",
-  "Separate from how deeply CuriosityPedia researches.": "Unabhängig davon, wie tief CuriosityPedia recherchiert.",
+
+
   "Text size": "Textgröße",
   "Small": "Klein",
   "Medium": "Mittel",
   "Large": "Groß",
   "Extra large": "Extra groß",
-  "Factual images": "Faktenbasierte Bilder",
+
   "Avoid": "Vermeiden",
-  "When useful": "Wenn nützlich",
-  "Prefer when supported": "Bevorzugen, wenn unterstützt",
-  "Decorative imagery is never substituted for factual media.": "Dekorative Bilder ersetzen niemals faktenbasierte Medien.",
-  "Read-aloud speed: {rate}×": "Vorlesegeschwindigkeit: {rate}×",
+
+
+
+
   "Reduce interface motion": "Interface-Animation reduzieren",
   "Saving…": "Speichere…",
   "Save preferences": "Einstellungen speichern",
-  "Opening your CuriosityPedia library…": "Öffne deine CuriosityPedia-Bibliothek…",
+
   "Resolving a durable guest identity": "Eindeutige Gast-Identität wird ermittelt",
-  "Open the journey library": "Journey-Bibliothek öffnen",
-  "No journey is on stage.": "Keine Journey ist aktiv.",
+
+
   "Start a new question or return to one you have already saved.": "Starte eine neue Frage oder kehre zu einer bereits gespeicherten zurück.",
-  "rabbit holes": "Rabbit Holes",
-  "Next turn": "Nächste Runde",
-  "Neither question works": "Keine der Fragen funktioniert",
+
+
+
   "{count} checked sources": "{count} geprüfte Quellen",
   "Your journey": "Deine Journey",
   "Journey overview": "Journey-Übersicht",
   "Option": "Option",
-  "Durable library / D1": "Dauerhafte Bibliothek / D1",
-  "unclassified journey": "Nicht klassifizierte Journey",
-  "Manual comparison / no provider call": "Manueller Vergleich / kein Provider-Aufruf",
-  "Private diagnostics": "Private Diagnosen",
-  "What failed, where, and when.": "Was, wo und wann fehlgeschlagen ist.",
+
+
+
+
+
   "Checking": "Prüfe",
-  "Checking…": "Prüfung läuft…",
-  "Refresh incidents": "Aktualisiere Vorfälle",
-  "Sign in with ChatGPT to keep private, identity-scoped diagnostic history.": "Melde dich mit ChatGPT an, um eine private, identitätsbasierte Diagnosehistorie zu behalten.",
-  "Loading privacy-safe request health…": "Prüfe sicherheitsrelevante Anforderungs-Status…",
-  "requests · 24h": "Anfragen · 24h",
-  "failures · 24h": "Fehler · 24h",
-  "failure rate": "Fehlerrate",
+
+
+
+
+
+
+
   "retention": "Aufbewahrung",
-  "Repeated failure detected": "Wiederholter Fehler erkannt",
-  "Last provider event": "Letztes Provider-Ereignis",
-  "Parsed events": "Analysierte Ereignisse",
-  "Malformed events": "Fehlerhafte Ereignisse",
-  "Output deltas": "Ausgabedifferenzen",
-  "Provider done marker": "Provider-Abschlussmarkierung",
+
+
+
+
+
+
   "seen": "gesehen",
-  "not seen": "nicht gesehen",
-  "Latency": "Latenz",
-  "HTTP status": "HTTP-Status",
+
+
+
   "OpenAI request": "OpenAI-Anfrage",
   "Preset": "Voreinstellung",
   "unrecorded": "nicht aufgezeichnet",
-  "No failed research requests in the retained window.": "Keine fehlgeschlagenen Recherche-Anfragen im Aufbewahrungszeitraum.",
-  "Prompts, answers, API keys, cookies, and source contents are never included.": "Prompts, Antworten, API-Schlüssel, Cookies und Quellinhalte sind niemals enthalten.",
-  "Input/output prices shown per 1M tokens; search is metered separately.": "Eingabe-/Ausgabepreise pro 1 Mio. Token; die Suche wird separat abgerechnet.",
+
+
+
   "CuriosityPedia — Give curiosity a direction": "CuriosityPedia — Gib der Neugier eine Richtung",
   "Highest-quality current OpenAI research model; highest cost.": "Aktuellstes OpenAI-Forschungsmodell höchster Qualität; höchste Kosten.",
   "Current balanced OpenAI research model.": "Aktuelles ausgewogenes OpenAI-Forschungsmodell.",
@@ -231,32 +230,32 @@ const messages: Record<string, string> = {
   "path taken": "gewählter Pfad",
   "chosen": "ausgewählt",
   "expired": "abgelaufen",
-  "replaced": "ersetzt",
-  "Both journeys touched {topics}.": "Beide Journeys behandelten {topics}.",
-  "The journeys did not land on the same fixture topic.": "Die Journeys landeten nicht beim selben Fixpunkt-Thema.",
-  "They used the same performer, so the path—not the persona—is the clearest visible difference.": "Sie verwendeten denselben Performer, daher ist der Pfad – nicht die Persona – der deutlichste Unterschied.",
-  "They used different performers, so both path and persona shape the contrast.": "Sie verwendeten unterschiedliche Performer, sodass sowohl Pfad als auch Persona den Kontrast prägen.",
-  "Both contain 1 committed turn.": "Beide enthalten 1 übernommene Runde.",
-  "Both contain {count} committed turns.": "Beide enthalten {count} übernommene Runden.",
-  "{leftTitle} contains {leftCount} turns; {rightTitle} contains {rightCount}.": "{leftTitle} enthält {leftCount} Runden; {rightTitle} enthält {rightCount}.",
-  "Live-web evidence can change between research dates.": "Live-Web-Beweise können zwischen den Recherchedaten variieren.",
-  "Audience choices and rejected paths change the context of later turns.": "Entscheidungen des Nutzers und abgelehnte Pfade ändern den Kontext späterer Runden.",
-  "Model output is stochastic; this view is descriptive, not a winner ranking.": "Modellausgaben sind stochastisch; diese Ansicht ist beschreibend, kein Ranking der Gewinner.",
-  "Both journeys began from the same seed.": "Beide Journeys begannen mit demselben Seed.",
-  "The starting seeds differ.": "Die Start-Seeds unterscheiden sich.",
-  "{performer} will carry this question": "{performer} wird diese Frage behandeln",
-  "Performer pick": "Performer-Wahl",
-  "Same selected model researches and performs · inspectable sources · durable branching graph": "Gleiches ausgewähltes Modell recherchiert und führt aus · prüfbare Quellen · dauerhafter Verzweigungs-Graph",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   "Move guest journeys into this account": "Gast-Journeys in dieses Konto verschieben",
   "{count} open questions": "{count} offene Fragen",
-  "{count} earlier branches": "{count} frühere Zweige",
+
   "Path": "Pfad",
-  "{count} source appearances": "{count} Quellen-Vorkommen",
-  "{count} open branches": "{count} offene Zweige",
-  "{count} decisions": "{count} Entscheidungen",
-  "{count} redraws": "{count} Neugestaltungen",
-  "{count} delegated": "{count} delegiert",
-  "{code} happened {count} times in ten minutes.": "{code} geschah {count} Mal in zehn Minuten.",
+
+
+
+
+
+
   "Patient connections": "Geduldige Verbindungen",
   "Playful surprise": "Spielerische Überraschung",
   "How things work": "Wie Dinge funktionieren",
@@ -276,42 +275,42 @@ const messages: Record<string, string> = {
   "fast": "schnell",
   "balanced": "ausgewogen",
   "deliberate": "bedacht",
-  "Your saved-journey library is full ({count}/{limit}). Delete one journey to make room.": "Deine Bibliothek gespeicherter Journeys ist voll ({count}/{limit}). Lösche eine Journey, um Platz zu schaffen.",
+
   "Manage saved journeys": "Gespeicherte Journeys verwalten",
   "View usage": "Nutzung anzeigen",
-  "Library full": "Bibliothek voll",
+
   "Usage limit reached": "Nutzungslimit erreicht",
-  "No research was started": "Es wurde keine Recherche gestartet",
-  "Your saved-journey library is full": "Deine Bibliothek gespeicherte Journeys ist voll",
-  "Your rolling usage limit is reached": "Dein rollendes Nutzungslimit ist erreicht",
-  "Rolling usage / 24 hours": "Rollende Nutzung / 24 Stunden",
-  "Know what is available.": "Wisse, was verfügbar ist.",
+
+
+
+
+
   "{count} research runs ready": "{count} Recherche-Durchläufe bereit",
   "Reading your usage…": "Lese deine Nutzung…",
-  "Every run returns exactly 24 hours after it starts.": "Jeder Durchlauf endet genau 24 Stunden nach seinem Start.",
+
   "Try again": "Erneut versuchen",
   "Reading your rolling limits…": "Lese deine rollenden Limits…",
   "Live research": "Live-Recherche",
   "Live research used in the last 24 hours": "Live-Recherche in den letzten 24 Stunden genutzt",
-  "{count} runs are available now.": "{count} Durchläufe sind jetzt verfügbar.",
+
   "Next slot returns {time}.": "Nächster Slot ist um {time}.",
   "You have not reached the rolling run limit.": "Du hast das rollende Limit für Durchläufe noch nicht erreicht.",
   "Upcoming slot returns": "Kommender Slot ist um",
-  "Rolling provider spend": "Rollierende Provider-Ausgaben",
-  "Provider spend used in the last 24 hours": "Provider-Ausgaben in den letzten 24 Stunden genutzt",
+
+
   "Provider spend and active holds in the last 24 hours": "Provider-Ausgaben und aktive Reservierungen in den letzten 24 Stunden",
   "Spend begins leaving the window {time}.": "Ausgaben verlassen das Zeitfenster ab {time}.",
-  "No metered provider spend in the current window.": "Keine abgerechneten Provider-Ausgaben im aktuellen Fenster.",
+
   "No metered provider spend or active holds in the current window.": "Keine abgerechneten Provider-Ausgaben oder aktiven Reservierungen im aktuellen Fenster.",
   "Saved journeys": "Gespeicherte Journeys",
   "Saved journey capacity used": "Kapazität für gespeicherte Journeys genutzt",
-  "This capacity does not reset every 24 hours. Delete a journey to free a place.": "Diese Kapazität setzt sich nicht alle 24 Stunden zurück. Lösche eine Journey, um Platz freizugeben.",
+
   "How rolling limits work": "So funktionieren rollende Limits",
   "There is no midnight reset. Each run and each dollar leaves the window 24 hours after it was recorded.": "Es gibt keinen Reset um Mitternacht. Jeder Durchlauf und jeder Dollar verlässt das Fenster 24 Stunden nach der Erfassung.",
   "Guest session": "Gast-Sitzung",
   "This browser session is scheduled to remain available until {time}.": "Diese Browser-Sitzung ist so geplant, dass sie bis {time} verfügbar bleibt.",
-  "This library belongs to this browser session.": "Diese Bibliothek gehört zu dieser Browser-Sitzung.",
-  "Sign in to keep more across devices": "Melde dich an, um mehr geräteübergreifend zu speichern",
+
+
   "Account usage": "Kontonutzung",
   "These limits follow your signed-in ChatGPT identity across devices.": "Diese Limits folgen deiner angemeldeten ChatGPT-Identität über alle Geräte hinweg."
 };

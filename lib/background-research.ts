@@ -165,6 +165,24 @@ export async function cancelBackgroundResearch(
   return activityFromRow(cancelled);
 }
 
+export async function dismissFailedBackgroundResearch(
+  viewer: ViewerContext,
+  requestId: string,
+): Promise<ResearchActivity> {
+  const row = await backgroundRow(viewer, requestId);
+  if (!row) throw new RepositoryError("NOT_FOUND", "Research request not found.", 404);
+  if (row.status !== "failed") {
+    throw new RepositoryError("BAD_REQUEST", "Only failed research can be removed.", 400);
+  }
+
+  await getD1().prepare(
+    `UPDATE research_requests SET error_code = 'DISMISSED'
+     WHERE id = ? AND identity_id = ? AND execution_mode = 'background'
+       AND status = 'failed'`,
+  ).bind(requestId, viewer.identityId).run();
+  return activityFromRow(row);
+}
+
 export async function retryBackgroundResearch(viewer: ViewerContext, requestId: string) {
   const row = await backgroundRow(viewer, requestId);
   if (!row || row.status !== "failed") {
@@ -494,7 +512,7 @@ async function backgroundRows(viewer: ViewerContext) {
             lease_token, lease_expires_at, created_at
      FROM research_requests
      WHERE identity_id = ? AND execution_mode = 'background'
-       AND NOT (status = 'failed' AND error_code = 'RETRIED')
+       AND NOT (status = 'failed' AND COALESCE(error_code, '') IN ('RETRIED', 'DISMISSED'))
      ORDER BY created_at DESC LIMIT 25`,
   ).bind(viewer.identityId).all<BackgroundRow>();
   return result.results;

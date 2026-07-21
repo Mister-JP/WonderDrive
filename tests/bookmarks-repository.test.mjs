@@ -27,6 +27,16 @@ function bookmarkRow(changes = {}) {
     journey_title: "Firefly trail",
     performer_id: "sage",
     source_count: 2,
+    answer_json: JSON.stringify({
+      blocks: [],
+      media: [{
+        imageUrl: "https://images.example/firefly.jpg",
+        thumbnailUrl: "https://images.example/firefly-thumb.jpg",
+        sourcePageUrl: "https://example.org/fireflies",
+        caption: "A glowing firefly",
+        alt: "Firefly glowing at night",
+      }],
+    }),
     ...changes,
   };
 }
@@ -134,12 +144,20 @@ test("bookmark listing is identity-scoped, newest-first, joined, and omits inter
     journeyTitle: "Firefly trail",
     performerId: "sage",
     sourceCount: 2,
+    leadMedia: {
+      imageUrl: "https://images.example/firefly.jpg",
+      thumbnailUrl: "https://images.example/firefly-thumb.jpg",
+      sourcePageUrl: "https://example.org/fireflies",
+      caption: "A glowing firefly",
+      alt: "Firefly glowing at night",
+    },
   });
   assert.equal("identityId" in result[0], false);
   const sql = normalizedSql(db.calls[0]);
   assert.match(sql, /JOIN journeys j ON j\.id = b\.journey_id AND j\.owner_identity_id = \? AND j\.deleted_at IS NULL/);
   assert.match(sql, /JOIN turns t ON t\.id = b\.turn_id AND t\.journey_id = j\.id AND t\.status = 'ready'/);
   assert.match(sql, /COUNT\(DISTINCT ts\.source_id\)/);
+  assert.match(sql, /t\.answer_json/);
   assert.match(sql, /ORDER BY b\.created_at DESC, b\.id DESC$/);
   assert.deepEqual(db.calls[0].bindings, [viewer.identityId, viewer.identityId]);
 });

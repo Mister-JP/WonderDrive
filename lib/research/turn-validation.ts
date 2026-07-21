@@ -538,33 +538,6 @@ export function imagePreferenceForQuestion(imagePreference: ImagePreference, que
   return /\b(images?|photos?|photographs?|pictures?|visuals?)\b/i.test(question) ? "prefer" : imagePreference;
 }
 
-export function fallbackMediaGallery(values: ProviderImage[], topicLabel: string): TurnMedia[] {
-  const seen = new Set<string>();
-  const seenSources = new Set<string>();
-  const gallery: TurnMedia[] = [];
-  for (const value of values) {
-    const imageUrl = canonicalUrl(value.imageUrl);
-    const sourcePageUrl = canonicalUrl(value.sourcePageUrl);
-    const thumbnailUrl = canonicalUrl(value.thumbnailUrl ?? "");
-    if (!imageUrl || !sourcePageUrl || !isSafePublicImageUrl(imageUrl) || seen.has(imageUrl) || seenSources.has(sourcePageUrl)) continue;
-    if (thumbnailUrl && !isSafePublicImageUrl(thumbnailUrl)) continue;
-    const caption = normalizeGeneratedProse(value.caption).slice(0, 384) || `Visual reference for ${topicLabel}`;
-    seen.add(imageUrl);
-    seenSources.add(sourcePageUrl);
-    gallery.push({
-      imageUrl,
-      ...(thumbnailUrl ? { thumbnailUrl } : {}),
-      sourcePageUrl,
-      caption,
-      alt: caption.slice(0, 288),
-      title: caption.slice(0, 116),
-      role: "context",
-    });
-    if (gallery.length === 12) break;
-  }
-  return gallery;
-}
-
 function isSafePublicImageUrl(value: string) {
   const url = new URL(value);
   const host = url.hostname.toLowerCase();

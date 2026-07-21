@@ -1,68 +1,67 @@
 const messages: Record<string, string> = {
-  "New drive": "新探索",
+
   "Library": "探索库",
-  "Compare": "对比",
   "Usage": "使用情况",
   "Settings": "设置",
   "CuriosityPedia views": "CuriosityPedia 视图",
   "ChatGPT account": "ChatGPT 账号",
-  "Opening library…": "正在打开探索库…",
+
   "{count}/{limit} saved": "{count}/{limit} 已保存",
   "durable session": "持久会话",
   "Sign in": "登录",
   "Sign out": "退出登录",
   "Research first": "先进行研究",
-  "Your guest library is still separate.": "您的访客探索库仍然独立保存。",
+
   "Reconnect": "重新连接",
   "Dismiss": "关闭",
   "Current journey views": "当前旅程视图",
-  "Next turn model": "下一轮模型",
+
   "Model for the next research turn": "用于下一轮研究的模型",
   "Stage": "阶段",
   "Journey map": "旅程图",
-  "One performer. One researched turn. Exactly two ways forward.": "一位引导者，一轮深入研究，恰好两条前进路径。",
+
   "Source": "来源",
   "Product book": "产品手册",
-  "Scanning what’s unfolding now…": "正在扫描当前进展…",
-  "Current signals + {performer} + {context}": "当前信号 + {performer} + {context}",
-  "your history": "您的历史记录",
-  "wild-card domains": "通配符域名",
-  "Hunting…": "正在搜索…",
-  "Find new questions": "寻找新问题",
-  "Questions suggested for {performer}": "为 {performer} 推荐的问题",
-  "What are you curious about?": "您对什么感到好奇？",
+
+
+
+
+
+
+
+
   "Starting question": "起始问题",
   "Ask anything…": "询问任何内容…",
-  "Tab to complete": "按 Tab 键完成",
-  "Recommended match": "推荐匹配",
-  "Start typing for recommendation matches": "开始输入以获取推荐匹配",
+
+
+
   "Performer": "引导者",
   "Model": "模型",
-  "Researching in the foreground…": "正在前台进行研究…",
-  "Begin the wonder": "开启探索",
-  "Connecting to live foreground research…": "正在连接实时前台研究…",
+
+
+
   "Research committed": "研究已提交",
   "Research stopped": "研究已停止",
-  "Opening the next live research turn…": "正在开启下一轮实时研究…",
+
   "Choose one of the two current paths.": "请从当前的两个路径中选择其一。",
-  "Answer ready": "回答已就绪",
-  "Buffering answer": "回答缓冲中",
+
+
   "Retrying {attempt} of {max}": "正在重试第 {attempt} 次，共 {max} 次",
-  "Placing the answer into this card": "正在将回答放入此卡片",
-  "Nothing incomplete was saved": "未保存任何未完成的内容",
-  "researching in this foreground turn": "正在本轮前台进行研究",
-  "This turn was not committed": "此轮次未提交",
+
+
+
+
   "Return safely": "安全返回",
   "Choose the next direction": "选择下一个方向",
   "Where should curiosity go next?": "好奇心下一步该走向何方？",
-  "Two paths will appear here when the answer is ready.": "当回答就绪时，此处将出现两条路径。",
+
   "Turn {number}": "第 {number} 轮",
-  "{count} turns": "{count} 个轮次",
-  "{count} sources": "{count} 个来源",
+
+
   "You are revisiting an earlier turn.": "您正在重新访问之前的轮次。",
   "Choosing a path here creates a visible branch; your existing turns stay in the map.": "在此处选择路径会创建一个可见的分支；您现有的轮次仍保留在地图中。",
   "performed from live web research": "基于实时网页研究呈现",
-  "COMPOSED": "已构建",
+
   "Save and export options": "保存与导出选项",
   "Save snapshot": "保存快照",
   "Export JSON": "导出 JSON",
@@ -71,7 +70,7 @@ const messages: Record<string, string> = {
   "live research": "实时研究",
   "Evidence & research details": "证据与研究详情",
   "Deeper dive": "深入探索",
-  "Let {performer} choose": "让 {performer} 来选择",
+
   "Other ways to continue": "其他继续方式",
   "Pick a path for me": "帮我选一条路",
   "CuriosityPedia chooses one": "由 CuriosityPedia 选择",
@@ -97,37 +96,37 @@ const messages: Record<string, string> = {
   "Browse visual evidence": "浏览视觉证据",
   "Previous image": "上一张图片",
   "Next image": "下一张图片",
-  "Why it is here": "为何出现在此处",
-  "What to notice": "值得注意的内容",
-  "What it helps explain": "它有助于解释什么",
+
+
+
   "Select an image": "选择一张图片",
   "Show {title}": "显示 {title}",
-  "Follow the path you took, revisit a turn, or open a question you left behind.": "跟随您走过的路径，重新访问某个轮次，或打开您留下的问题。",
+
   "Current": "当前",
   "Open paths": "开放路径",
-  "Active path": "活跃路径",
-  "How you got here": "您是如何到达此处的",
-  "Choose any turn to see its two directions.": "选择任何一个轮次以查看其两个方向。",
+
+
+
   "You are here": "您在此处",
   "Explored": "已探索",
   "Earlier branch": "早期分支",
-  "This turn is outside your current path. Exploring an open question here creates a new visible branch.": "此轮次不在您的当前路径中。在此处探索开放问题会创建一个新的可见分支。",
-  "Where could this turn go?": "此轮次可以走向何方？",
+
+
   "Explore this question": "探索此问题",
-  "This answer continues in the map above.": "此回答在上方地图中继续。",
-  "This direction is no longer active.": "此方向已不再活跃。",
+
+
   "Open full answer": "打开完整回答",
-  "Revisit this answer": "重新访问此回答",
-  "Other paths": "其他路径",
-  "Questions worth returning to.": "值得返回的问题。",
-  "{count} of {limit} journeys saved": "已保存 {count}/{limit} 个旅程",
-  "New drive +": "新探索 +",
-  "Library filters": "探索库筛选",
+
+
+
+
+
+
   "Search": "搜索",
-  "Title, question, or topic": "标题、问题或主题",
+
   "All performers": "所有引导者",
-  "Show hidden": "显示隐藏内容",
-  "PINNED": "已置顶",
+
+
   "Turns": "轮次",
   "Resume": "恢复",
   "Delete": "删除",
@@ -136,90 +135,90 @@ const messages: Record<string, string> = {
   "Rename": "重命名",
   "Unpin": "取消置顶",
   "Pin": "置顶",
-  "Unhide": "取消隐藏",
-  "Hide": "隐藏",
+
+
   "Snapshot": "快照",
   "Export": "导出",
-  "Start the first saved journey": "开始第一次保存的旅程",
-  "Rename this journey": "重命名此旅程",
-  "Two journeys. One closer look.": "两个旅程。一次深度观察。",
-  "Select two saved journeys. CuriosityPedia compares their committed paths, topics, and performers.": "选择两个已保存的旅程。CuriosityPedia 会对比它们已提交的路径、主题和执行者。",
-  "Reading the paths…": "正在读取路径…",
-  "Compare selected journeys": "对比所选旅程",
-  "Comparison begins after two journeys exist.": "对比将在存在两个旅程后开始。",
-  "Start another drive": "开始新的探索",
-  "Comparison ready": "对比已就绪",
-  "The useful difference": "有用的差异",
-  "What the saved data shows": "保存的数据显示的内容",
-  "Comparison cautions": "对比注意事项",
-  "Audience controls": "受众控制",
+
+
+
+
+
+
+
+
+
+
+
+
+
   "Make the stage comfortable.": "让阶段更舒适。",
   "Synced to your ChatGPT identity": "已同步至您的 ChatGPT 身份",
   "Saved to this guest session": "已保存至此访客会话",
-  "These preferences change presentation and future turns, never evidence.": "这些偏好会改变呈现方式和未来的轮次，但绝不会改变证据。",
+
   "Experience language": "体验语言",
-  "Changes the whole interface and future learning output.": "更改整个界面及未来的学习输出。",
-  "Default answer density": "默认回答密度",
+
+
   "Brief": "简明",
   "Balanced": "均衡",
-  "Rich": "丰富",
-  "Separate from how deeply CuriosityPedia researches.": "与 CuriosityPedia 的研究深度无关。",
+
+
   "Text size": "文本大小",
   "Small": "小",
   "Medium": "中",
   "Large": "大",
   "Extra large": "超大",
-  "Factual images": "事实性图像",
+
   "Avoid": "避免",
-  "When useful": "在有用时",
-  "Prefer when supported": "在支持时优先使用",
-  "Decorative imagery is never substituted for factual media.": "装饰性图像绝不会替代事实性媒体。",
-  "Read-aloud speed: {rate}×": "朗读速度：{rate}×",
+
+
+
+
   "Reduce interface motion": "减少界面动画",
   "Saving…": "正在保存…",
   "Save preferences": "保存偏好",
-  "Opening your CuriosityPedia library…": "正在打开您的 CuriosityPedia 探索库…",
+
   "Resolving a durable guest identity": "正在解析持久化访客身份",
-  "Open the journey library": "打开旅程库",
-  "No journey is on stage.": "当前没有处于舞台上的旅程。",
+
+
   "Start a new question or return to one you have already saved.": "开始一个新问题，或返回您已保存的问题。",
-  "rabbit holes": "钻牛角尖",
-  "Next turn": "下一轮",
-  "Neither question works": "两个问题都不适用",
+
+
+
   "{count} checked sources": "{count} 个已核查的来源",
   "Your journey": "您的旅程",
   "Journey overview": "旅程概览",
   "Option": "选项",
-  "Durable library / D1": "持久化探索库 / D1",
-  "unclassified journey": "未分类旅程",
-  "Manual comparison / no provider call": "手动对比 / 无提供商调用",
-  "Private diagnostics": "私人诊断",
-  "What failed, where, and when.": "失败情况、位置及时间。",
+
+
+
+
+
   "Checking": "正在检查",
-  "Checking…": "正在检查…",
-  "Refresh incidents": "刷新事件",
-  "Sign in with ChatGPT to keep private, identity-scoped diagnostic history.": "使用 ChatGPT 登录以保留私密的、基于身份的诊断历史记录。",
-  "Loading privacy-safe request health…": "正在检查隐私安全的请求健康状况…",
-  "requests · 24h": "请求 · 24h",
-  "failures · 24h": "失败 · 24h",
-  "failure rate": "失败率",
+
+
+
+
+
+
+
   "retention": "留存",
-  "Repeated failure detected": "检测到重复失败",
-  "Last provider event": "最后一次提供商事件",
-  "Parsed events": "已解析事件",
-  "Malformed events": "格式错误事件",
-  "Output deltas": "输出增量",
-  "Provider done marker": "提供商完成标记",
+
+
+
+
+
+
   "seen": "已见",
-  "not seen": "未见",
-  "Latency": "延迟",
-  "HTTP status": "HTTP 状态码",
+
+
+
   "OpenAI request": "OpenAI 请求",
   "Preset": "预设",
   "unrecorded": "未记录",
-  "No failed research requests in the retained window.": "在留存窗口内没有失败的研究请求。",
-  "Prompts, answers, API keys, cookies, and source contents are never included.": "提示词、回答、API 密钥、Cookie 和来源内容绝不会被包含在内。",
-  "Input/output prices shown per 1M tokens; search is metered separately.": "显示每 100 万 token 的输入/输出价格；搜索费用另行计算。",
+
+
+
   "CuriosityPedia — Give curiosity a direction": "CuriosityPedia — 为好奇心指引方向",
   "Highest-quality current OpenAI research model; highest cost.": "最高质量的当前 OpenAI 研究模型；成本最高。",
   "Current balanced OpenAI research model.": "当前的均衡型 OpenAI 研究模型。",
@@ -231,32 +230,32 @@ const messages: Record<string, string> = {
   "path taken": "所选路径",
   "chosen": "已选择",
   "expired": "已过期",
-  "replaced": "已替换",
-  "Both journeys touched {topics}.": "两个旅程都涉及了 {topics}。",
-  "The journeys did not land on the same fixture topic.": "两个旅程未落在同一个固定主题上。",
-  "They used the same performer, so the path—not the persona—is the clearest visible difference.": "它们使用了相同的执行者，因此路径（而非人格）是清晰可见的区别。",
-  "They used different performers, so both path and persona shape the contrast.": "它们使用了不同的执行者，因此路径和人格共同构成了对比。",
-  "Both contain 1 committed turn.": "两者均包含 1 个已提交的轮次。",
-  "Both contain {count} committed turns.": "两者均包含 {count} 个已提交的轮次。",
-  "{leftTitle} contains {leftCount} turns; {rightTitle} contains {rightCount}.": "{leftTitle} 包含 {leftCount} 个轮次；{rightTitle} 包含 {rightCount} 个轮次。",
-  "Live-web evidence can change between research dates.": "实时网页证据可能会随研究日期而变化。",
-  "Audience choices and rejected paths change the context of later turns.": "受众的选择和拒绝的路径会改变后续轮次的上下文。",
-  "Model output is stochastic; this view is descriptive, not a winner ranking.": "模型输出具有随机性；此视图仅为描述性，而非胜负排名。",
-  "Both journeys began from the same seed.": "两个旅程均始于相同的种子。",
-  "The starting seeds differ.": "起始种子不同。",
-  "{performer} will carry this question": "{performer} 将承载此问题",
-  "Performer pick": "选择引导者",
-  "Same selected model researches and performs · inspectable sources · durable branching graph": "所选相同模型进行研究与执行 · 可检查的来源 · 持久化分支图",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   "Move guest journeys into this account": "将访客旅程移至此账号",
   "{count} open questions": "{count} 个开放问题",
-  "{count} earlier branches": "{count} 个早期分支",
+
   "Path": "路径",
-  "{count} source appearances": "{count} 次来源出现",
-  "{count} open branches": "{count} 个开放分支",
-  "{count} decisions": "{count} 次决策",
-  "{count} redraws": "{count} 次重绘",
-  "{count} delegated": "{count} 次委派",
-  "{code} happened {count} times in ten minutes.": "{code} 在十分钟内发生了 {count} 次。",
+
+
+
+
+
+
   "Patient connections": "耐心连接",
   "Playful surprise": "俏皮的惊喜",
   "How things work": "事物运作的方式",
@@ -276,42 +275,42 @@ const messages: Record<string, string> = {
   "fast": "快速",
   "balanced": "均衡",
   "deliberate": "深思熟虑",
-  "Your saved-journey library is full ({count}/{limit}). Delete one journey to make room.": "您的已保存旅程库已满 ({count}/{limit})。请删除一个旅程以腾出空间。",
+
   "Manage saved journeys": "管理已保存的旅程",
   "View usage": "查看使用情况",
-  "Library full": "探索库已满",
+
   "Usage limit reached": "已达到使用限制",
-  "No research was started": "未启动任何研究",
-  "Your saved-journey library is full": "您的已保存旅程库已满",
-  "Your rolling usage limit is reached": "已达到您的滚动使用限制",
-  "Rolling usage / 24 hours": "滚动使用量 / 24 小时",
-  "Know what is available.": "了解可用资源。",
+
+
+
+
+
   "{count} research runs ready": "{count} 个研究运行已就绪",
   "Reading your usage…": "正在读取您的使用情况…",
-  "Every run returns exactly 24 hours after it starts.": "每次运行都在开始后的整整 24 小时后失效。",
+
   "Try again": "重试",
   "Reading your rolling limits…": "正在读取您的滚动限制…",
   "Live research": "实时研究",
   "Live research used in the last 24 hours": "过去 24 小时内使用的实时研究",
-  "{count} runs are available now.": "{count} 个运行当前可用。",
+
   "Next slot returns {time}.": "下一个时段将在 {time} 返回。",
   "You have not reached the rolling run limit.": "您尚未达到滚动运行限制。",
   "Upcoming slot returns": "即将返回的时段",
-  "Rolling provider spend": "滚动提供商支出",
-  "Provider spend used in the last 24 hours": "过去 24 小时内使用的提供商支出",
+
+
   "Provider spend and active holds in the last 24 hours": "过去 24 小时内的提供商支出和有效预留",
   "Spend begins leaving the window {time}.": "支出将在 {time} 后移出统计窗口。",
-  "No metered provider spend in the current window.": "当前窗口内没有计费的提供商支出。",
+
   "No metered provider spend or active holds in the current window.": "当前窗口内没有计费的提供商支出或有效预留。",
   "Saved journeys": "已保存的旅程",
   "Saved journey capacity used": "已使用的已保存旅程容量",
-  "This capacity does not reset every 24 hours. Delete a journey to free a place.": "此容量不会每 24 小时重置一次。请删除一个旅程以释放空间。",
+
   "How rolling limits work": "滚动限制的工作原理",
   "There is no midnight reset. Each run and each dollar leaves the window 24 hours after it was recorded.": "不存在午夜重置。每次运行和每一美元都会在记录后的 24 小时移出窗口。",
   "Guest session": "访客会话",
   "This browser session is scheduled to remain available until {time}.": "此浏览器会话计划在 {time} 前保持可用。",
-  "This library belongs to this browser session.": "此探索库属于当前浏览器会话。",
-  "Sign in to keep more across devices": "登录以在不同设备间同步更多内容",
+
+
   "Account usage": "账号使用情况",
   "These limits follow your signed-in ChatGPT identity across devices.": "这些限制会随您的已登录 ChatGPT 身份在不同设备间同步。"
 };

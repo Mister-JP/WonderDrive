@@ -20,7 +20,11 @@ function memoryD1(seed = {}) {
       async first() {
         if (sql.includes("COUNT(*) AS count")) {
           const publishedIds = new Set(batches.filter((batch) => batch.status === "published").map((batch) => batch.id));
-          return { count: recommendations.filter((item) => publishedIds.has(item.batch_id)).length };
+          const category = sql.includes("r.category = ?") ? values[0] : null;
+          return {
+            count: recommendations.filter((item) => publishedIds.has(item.batch_id)
+              && (!category || item.category === category)).length,
+          };
         }
         return null;
       },
@@ -29,10 +33,12 @@ function memoryD1(seed = {}) {
         const publishedBatches = new Map(
           batches.filter((batch) => batch.status === "published").map((batch) => [batch.id, batch]),
         );
-        const [limit, offset] = values;
+        const category = sql.includes("r.category = ?") ? values[0] : null;
+        const [limit, offset] = category ? values.slice(1) : values;
         return {
           results: recommendations
-            .filter((item) => publishedBatches.has(item.batch_id))
+            .filter((item) => publishedBatches.has(item.batch_id)
+              && (!category || item.category === category))
             .sort((left, right) => {
               const leftBatch = publishedBatches.get(left.batch_id);
               const rightBatch = publishedBatches.get(right.batch_id);
@@ -113,6 +119,36 @@ test("published recommendations are paginated 20 at a time newest first", async 
   assert.equal(second.batchId, "older");
   assert.equal(second.items.length, 15);
   assert.deepEqual(second.items.map((item) => item.id), Array.from({ length: 15 }, (_, index) => `old-${index + 10}`));
+});
+
+test("category pages query the full published catalog before pagination", async () => {
+  const scienceRows = Array.from({ length: 22 }, (_, index) => row(`science-${index}`, "published", index));
+  const historyRows = Array.from({ length: 7 }, (_, index) => ({
+    ...row(`history-${index}`, "published", index + scienceRows.length),
+    category: "History",
+  }));
+  env.DB = memoryD1({
+    batches: [{ id: "published", title: "Published", status: "published", created_at: 100, published_at: 100 }],
+    recommendations: [...scienceRows, ...historyRows],
+  });
+
+  const history = await getLandingRecommendationPage(1, "History");
+  assert.equal(history.totalItems, 7);
+  assert.equal(history.totalPages, 1);
+  assert.deepEqual(history.items.map((item) => item.id), Array.from({ length: 7 }, (_, index) => `history-${index}`));
+
+  const scienceSecondPage = await getLandingRecommendationPage(2, "Science");
+  assert.equal(scienceSecondPage.totalItems, 22);
+  assert.equal(scienceSecondPage.totalPages, 2);
+  assert.deepEqual(scienceSecondPage.items.map((item) => item.id), ["science-20", "science-21"]);
+});
+
+test("unsupported recommendation categories are rejected", async () => {
+  env.DB = memoryD1();
+  await assert.rejects(
+    () => getLandingRecommendationPage(1, "Unknown"),
+    (error) => error?.code === "BAD_REQUEST" && error?.status === 400,
+  );
 });
 
 test("owner publishing prepends cards and shifts older cards across pages", async () => {

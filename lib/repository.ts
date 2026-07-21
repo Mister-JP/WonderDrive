@@ -1,14 +1,10 @@
 import {
-  MODELS,
-  PERFORMERS,
   PROMPT_VERSION,
   modelById,
   performerById,
 } from "./catalog";
 import type {
   AdvanceJourneyRequest,
-  CompareResult,
-  CreateJourneyRequest,
   JourneyDetail,
   JourneyTurn,
   ModelId,
@@ -22,13 +18,9 @@ import {
   assertId,
   assertIdempotencyKey,
   hashPayload,
-  normalizeSeed,
-  titleFromSeed,
 } from "./request";
 import { optionStatements } from "./turn-options";
-import { normalizeLocale } from "./i18n";
 import { getJourney } from "./journeys/read-model";
-import { projectJourneyComparison } from "./journeys/comparison";
 import { isModelAllowed } from "./usage-policy";
 
 export {
@@ -36,168 +28,6 @@ export {
   listJourneys,
   listRejectedQuestions,
 } from "./journeys/read-model";
-
-const PRESETS: ResearchPreset[] = ["spark", "standard", "deep"];
-
-export async function createJourney(
-  viewer: ViewerContext,
-  request: CreateJourneyRequest,
-): Promise<JourneyDetail> {
-  validateCreateRequest(request);
-  if (String(request.modelId) !== "fixture-terra") {
-    throw new RepositoryError(
-      "BAD_REQUEST",
-      "Live models must use the foreground research route.",
-      400,
-    );
-  }
-  const db = getD1();
-  const seed = normalizeSeed(request.seed);
-  await db
-    .prepare("DELETE FROM idempotency_keys WHERE identity_id = ? AND expires_at <= ?")
-    .bind(viewer.identityId, Date.now())
-    .run();
-  const payloadHash = await hashPayload({
-    seed,
-    performerId: request.performerId,
-    modelId: request.modelId,
-    researchPreset: request.researchPreset,
-    answerDensity: request.answerDensity,
-    imagePreference: "prefer",
-    outputLocale: request.outputLocale,
-  });
-  const prior = await db
-    .prepare(
-      "SELECT payload_hash, response_id FROM idempotency_keys WHERE identity_id = ? AND route = 'create-journey' AND key = ? AND expires_at > ? LIMIT 1",
-    )
-    .bind(viewer.identityId, request.idempotencyKey, Date.now())
-    .first<{ payload_hash: string; response_id: string }>();
-  if (prior) {
-    if (prior.payload_hash !== payloadHash) {
-      throw new RepositoryError(
-        "IDEMPOTENCY_CONFLICT",
-        "That request key was already used for a different journey.",
-        409,
-      );
-    }
-    return getJourney(viewer, prior.response_id);
-  }
-
-  const count = await db
-    .prepare(
-      "SELECT COUNT(*) AS count FROM journeys WHERE owner_identity_id = ? AND deleted_at IS NULL",
-    )
-    .bind(viewer.identityId)
-    .first<{ count: number }>();
-  if ((count?.count ?? 0) >= viewer.journeyLimit) {
-    throw new RepositoryError(
-      "JOURNEY_LIMIT",
-      `Your journey capacity is full (${count?.count ?? viewer.journeyLimit}/${viewer.journeyLimit}). Delete one journey to make room.`,
-      409,
-    );
-  }
-
-  const now = Date.now();
-  const journeyId = crypto.randomUUID();
-  const turnId = crypto.randomUUID();
-  const runId = crypto.randomUUID();
-  const draft = buildFixtureTurn({
-    question: seed,
-    depth: 0,
-    performerId: request.performerId,
-  });
-  const statements = [
-    db
-      .prepare(
-        `INSERT INTO journeys
-          (id, owner_identity_id, seed, title, performer_id, model_id, research_preset,
-           answer_density, image_preference, output_locale, current_turn_id, turn_count, source_count,
-           last_action, status, version, created_at, updated_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, 'created', 'active', 1, ?, ?)`,
-      )
-      .bind(
-        journeyId,
-        viewer.identityId,
-        seed,
-        titleFromSeed(seed),
-        request.performerId,
-        request.modelId,
-        request.researchPreset,
-        request.answerDensity,
-        "prefer",
-        request.outputLocale,
-        turnId,
-        draft.sources.length,
-        now,
-        now,
-      ),
-    db
-      .prepare(
-        `INSERT INTO turns
-          (id, journey_id, parent_turn_id, depth, question, status, answer, answer_json,
-           transition, topic_label, research_summary, research_handoff_json, preferred_position,
-           fixture_key, option_set_version, provider, model_id, prompt_version,
-           performer_version, model_snapshot, answer_density, image_preference, output_locale, created_at, ready_at)
-         VALUES (?, ?, NULL, 0, ?, 'ready', ?, ?, ?, ?, ?, ?, ?, ?, 0, 'fixture', ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      )
-      .bind(
-        turnId,
-        journeyId,
-        seed,
-        draft.answer,
-        JSON.stringify({ blocks: draft.answerBlocks, media: draft.media }),
-        draft.transition,
-        draft.topicLabel,
-        draft.researchSummary,
-        JSON.stringify(draft.researchHandoff),
-        draft.preferredPosition,
-        draft.fixtureKey,
-        request.modelId,
-        PROMPT_VERSION,
-        performerById(request.performerId).version,
-        modelById(request.modelId).snapshot,
-        request.answerDensity,
-        "prefer",
-        request.outputLocale,
-        now,
-        now,
-      ),
-    ...optionStatements(db, turnId, 0, draft),
-    ...researchStatements(
-      db,
-      { journeyId, turnId, runId, modelId: request.modelId, preset: request.researchPreset },
-      draft,
-      now,
-    ),
-    db
-      .prepare(
-        "INSERT INTO idempotency_keys (id, identity_id, route, key, payload_hash, response_id, created_at, expires_at) VALUES (?, ?, 'create-journey', ?, ?, ?, ?, ?)",
-      )
-      .bind(
-        crypto.randomUUID(),
-        viewer.identityId,
-        request.idempotencyKey,
-        payloadHash,
-        journeyId,
-        now,
-        now + 86_400_000,
-      ),
-  ];
-
-  try {
-    await db.batch(statements);
-  } catch (error) {
-    const raced = await db
-      .prepare(
-        "SELECT payload_hash, response_id FROM idempotency_keys WHERE identity_id = ? AND route = 'create-journey' AND key = ? LIMIT 1",
-      )
-      .bind(viewer.identityId, request.idempotencyKey)
-      .first<{ payload_hash: string; response_id: string }>();
-    if (raced?.payload_hash === payloadHash) return getJourney(viewer, raced.response_id);
-    throw error;
-  }
-  return getJourney(viewer, journeyId);
-}
 
 export async function advanceJourney(
   viewer: ViewerContext,
@@ -576,82 +406,6 @@ export async function deleteJourney(viewer: ViewerContext, journeyId: string): P
   return { id: journeyId };
 }
 
-export async function compareJourneys(
-  viewer: ViewerContext,
-  leftId: string,
-  rightId: string,
-): Promise<CompareResult> {
-  if (leftId === rightId) {
-    throw new RepositoryError("BAD_REQUEST", "Choose two different journeys to compare.", 400);
-  }
-  const [leftDetail, rightDetail] = await Promise.all([
-    getJourney(viewer, leftId),
-    getJourney(viewer, rightId),
-  ]);
-  return projectJourneyComparison(leftDetail, rightDetail);
-}
-
-function researchStatements(
-  db: D1Database,
-  input: {
-    journeyId: string;
-    turnId: string;
-    runId: string;
-    modelId: ModelId;
-    preset: ResearchPreset;
-  },
-  draft: FixtureTurnDraft,
-  now: number,
-) {
-  const statements = [
-    db
-      .prepare(
-        `INSERT INTO research_runs
-          (id, journey_id, turn_id, provider, model_id, preset, status, started_at, completed_at, created_at)
-         VALUES (?, ?, ?, 'fixture', ?, ?, 'ready', ?, ?, ?)`,
-      )
-      .bind(input.runId, input.journeyId, input.turnId, input.modelId, input.preset, now, now, now),
-  ];
-  for (const source of draft.sources) {
-    const sourceId = stableKey(source.url);
-    statements.push(
-      db
-        .prepare(
-          `INSERT INTO sources (id, canonical_url, title, publisher, retrieved_at)
-           VALUES (?, ?, ?, ?, ?)
-           ON CONFLICT(canonical_url) DO UPDATE SET title = excluded.title, publisher = excluded.publisher, retrieved_at = excluded.retrieved_at`,
-        )
-        .bind(sourceId, source.url, source.title, source.publisher, now),
-      db
-        .prepare(
-          "INSERT OR IGNORE INTO turn_sources (turn_id, source_id, relation) VALUES (?, ?, 'cited')",
-        )
-        .bind(input.turnId, sourceId),
-    );
-  }
-  draft.researchEvents.forEach((event) => {
-    const source = event.kind === "source" ? draft.sources[event.sequence === 1 ? 0 : 1] : null;
-    statements.push(
-      db
-        .prepare(
-          `INSERT INTO research_events
-            (id, research_run_id, sequence, kind, label, source_id, created_at)
-           VALUES (?, ?, ?, ?, ?, ?, ?)`,
-        )
-        .bind(
-          crypto.randomUUID(),
-          input.runId,
-          event.sequence,
-          event.kind,
-          event.label,
-          source ? stableKey(source.url) : null,
-          now + event.sequence,
-        ),
-    );
-  });
-  return statements;
-}
-
 function conditionalResearchStatements(
   db: D1Database,
   input: {
@@ -738,27 +492,6 @@ function conditionalResearchStatements(
     );
   });
   return statements;
-}
-
-function validateCreateRequest(request: CreateJourneyRequest) {
-  if (!request || typeof request !== "object") {
-    throw new RepositoryError("BAD_REQUEST", "A journey configuration is required.", 400);
-  }
-  normalizeSeed(request.seed);
-  if (!PERFORMERS.some((performer) => performer.id === request.performerId)) {
-    throw new RepositoryError("BAD_REQUEST", "Choose a supported performer.", 400);
-  }
-  if (!MODELS.some((model) => model.id === request.modelId)) {
-    throw new RepositoryError("BAD_REQUEST", "Choose a supported demo model.", 400);
-  }
-  if (!PRESETS.includes(request.researchPreset)) {
-    throw new RepositoryError("BAD_REQUEST", "Choose a supported research preset.", 400);
-  }
-  if (!["brief", "balanced", "rich"].includes(request.answerDensity)) {
-    throw new RepositoryError("BAD_REQUEST", "Choose a supported answer density.", 400);
-  }
-  normalizeLocale(request.outputLocale, "learning language");
-  assertIdempotencyKey(request.idempotencyKey);
 }
 
 function validateAdvanceRequest(viewer: ViewerContext, request: AdvanceJourneyRequest) {

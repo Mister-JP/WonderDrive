@@ -25,7 +25,7 @@ export type LiveResearchState = {
   maxRetries: number;
 };
 
-export class ApiRequestError extends Error {
+class ApiRequestError extends Error {
   constructor(
     message: string,
     public readonly code: ApiFailure["error"]["code"],

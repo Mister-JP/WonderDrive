@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { ArrowRight, BookmarkSimple, MagnifyingGlass, X } from "@phosphor-icons/react";
 import { PERFORMERS } from "../../lib/catalog";
-import type { Bookmark, PerformerId } from "../../lib/contracts";
+import type { Bookmark, PerformerId, TurnMedia } from "../../lib/contracts";
 import { useI18n } from "../i18n";
 
 export function BookmarksView({
@@ -21,6 +21,7 @@ export function BookmarksView({
   const [query, setQuery] = useState("");
   const [performer, setPerformer] = useState<PerformerId | "all">("all");
   const [sort, setSort] = useState<"recent" | "oldest" | "title">("recent");
+  const [confirmRemove, setConfirmRemove] = useState<string | null>(null);
 
   const items = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -67,12 +68,6 @@ export function BookmarksView({
       </header>
 
       <div className="bookmark-workspace">
-        <aside className="bookmark-collections" aria-label="Collections">
-          <p>Collection</p>
-          <button type="button" className="active"><span>Saved questions</span><b>{bookmarks.length}</b></button>
-          <div className="bookmark-care-note"><BookmarkSimple weight="fill" aria-hidden="true" /><p><strong>A small tip</strong>Save any answer from its question page. It will wait here with the path that led to it.</p></div>
-        </aside>
-
         <div className="bookmark-library">
           <div className="bookmark-tools" aria-label="Find and organize bookmarks">
             <label className="bookmark-search"><MagnifyingGlass aria-hidden="true" /><span className="sr-only">Search bookmarks</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search saved questions or topics" />{query && <button type="button" aria-label="Clear search" onClick={() => setQuery("")}><X aria-hidden="true" /></button>}</label>
@@ -89,10 +84,21 @@ export function BookmarksView({
                   const persona = PERFORMERS.find((entry) => entry.id === item.performerId)!;
                   return (
                     <article className="bookmark-row question" key={item.id}>
-                      <span className={`bookmark-kind ${persona.accent}`}><BookmarkSimple weight="fill" aria-hidden="true" /></span>
+                      <BookmarkCardImage media={item.leadMedia} accent={persona.accent} question={item.question} />
                       <div className="bookmark-copy"><p><span>Question</span>{item.journeyTitle} · {item.topicLabel}</p><h3>{item.question}</h3><small>{formatter.format(item.bookmarkedAt)} · {item.sourceCount} sources · with {persona.name}</small></div>
                       <div className="bookmark-row-actions">
-                        <button type="button" onClick={() => onRemove(item.turnId)}>Remove</button>
+                        {confirmRemove === item.turnId ? (
+                          <span className="bookmark-remove-confirm" role="group" aria-label="Confirm bookmark removal">
+                            <span>Remove bookmark?</span>
+                            <button type="button" onClick={() => {
+                              setConfirmRemove(null);
+                              onRemove(item.turnId);
+                            }}>Remove</button>
+                            <button type="button" onClick={() => setConfirmRemove(null)}>Keep</button>
+                          </span>
+                        ) : (
+                          <button type="button" onClick={() => setConfirmRemove(item.turnId)}>Remove</button>
+                        )}
                         <button type="button" className="open-bookmark" onClick={() => onOpen(item.journeyId, item.turnId)}>Open <ArrowRight aria-hidden="true" /></button>
                       </div>
                     </article>
@@ -106,6 +112,30 @@ export function BookmarksView({
         </div>
       </div>
     </section>
+  );
+}
+
+function BookmarkCardImage({ media, accent, question }: { media?: TurnMedia; accent: string; question: string }) {
+  const [src, setSrc] = useState(media?.thumbnailUrl ?? media?.imageUrl ?? null);
+
+  return (
+    <figure className={`bookmark-card-image ${accent}${src ? "" : " unavailable"}`}>
+      {src ? (
+        <img
+          src={src}
+          alt={media?.alt || question}
+          loading="lazy"
+          referrerPolicy="no-referrer"
+          onError={() => {
+            if (media?.imageUrl && src !== media.imageUrl) setSrc(media.imageUrl);
+            else setSrc(null);
+          }}
+        />
+      ) : (
+        <BookmarkSimple weight="fill" aria-hidden="true" />
+      )}
+      {media?.caption && <figcaption>{media.caption}</figcaption>}
+    </figure>
   );
 }
 
