@@ -10,6 +10,8 @@ export function UsageView({
   error,
   onRefresh,
   onOpenJourneys,
+  byokConfigured,
+  onOpenSettings,
 }: {
   usage: UsageSummary | null;
   viewer: Viewer | null;
@@ -17,6 +19,8 @@ export function UsageView({
   error: string | null;
   onRefresh: () => void;
   onOpenJourneys: () => void;
+  byokConfigured: boolean;
+  onOpenSettings: () => void;
 }) {
   const { t, locale } = useI18n();
   const time = (value: number) => new Intl.DateTimeFormat(locale, {
@@ -83,11 +87,22 @@ export function UsageView({
               <button type="button" onClick={onOpenJourneys}>{t("Manage saved journeys")}</button>
             </article>
 
-            <details className="usage-spend">
-              <summary><span>Provider spend</span><strong>${usage.spend.accountedUsd.toFixed(3)} / ${usage.spend.limitUsd.toFixed(2)}</strong></summary>
+            <details className="usage-spend" open={usage.spend.remainingUsd === 0}>
+              <summary><span>{t("App-funded allowance")}</span><strong>${usage.spend.accountedUsd.toFixed(3)} / ${usage.spend.limitUsd.toFixed(2)}</strong></summary>
               <progress value={usage.spend.accountedUsd} max={usage.spend.limitUsd || 1} aria-label={t("Provider spend and active holds in the last 24 hours")} />
               <p>${usage.spend.usedUsd.toFixed(3)} settled · ${usage.spend.heldUsd.toFixed(3)} held</p>
               <p>{usage.spend.nextReleaseAt ? t("Spend begins leaving the window {time}.", { time: time(usage.spend.nextReleaseAt) }) : t("No metered provider spend or active holds in the current window.")}</p>
+              <div className={`usage-byok-status ${byokConfigured ? "connected" : ""}`}>
+                <div>
+                  <b>{t(byokConfigured ? "Using your OpenAI key" : "Continue with your own key")}</b>
+                  <span>{t(byokConfigured
+                    ? "BYOK requests do not consume this app-funded dollar allowance."
+                    : viewer?.mode === "guest"
+                      ? "Guests can add an OpenAI key for live use beyond the $0.50 trial."
+                      : "Add an OpenAI key for live use beyond the $1.00 allowance.")}</span>
+                </div>
+                <button type="button" onClick={onOpenSettings}>{t(byokConfigured ? "Manage key" : "Add key")}</button>
+              </div>
             </details>
 
             <aside className="usage-account">

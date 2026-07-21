@@ -1,0 +1,468 @@
+{
+  "title": "Thirty new wonders — July 21, 2026",
+  "recommendations": [
+    {
+      "id": "pygmy-seahorse-coral-camouflage",
+      "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Mind",
+        "Planet Earth"
+      ],
+      "question": "How can a seahorse become almost indistinguishable from coral?",
+      "teaser": "A pygmy seahorse is smaller than a fingernail and can match its gorgonian home in color and texture, hiding from predators while waiting to ambush tiny prey.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Pygmy_Seahorse_%28Hippocampus_bargibanti%29_%286079487627%29.jpg?width=1600",
+      "imageAlt": "A tiny pink pygmy seahorse nearly vanishing among the matching knobby branches of a sea fan",
+      "sourceLabel": "Smithsonian Ocean",
+      "sourceUrl": "https://ocean.si.edu/ocean-life/invertebrates/can-you-spot-seahorse",
+      "size": "wide"
+    },
+    {
+      "id": "light-pillars-floating-mirrors",
+      "category": "Science",
+      "dimensions": [
+        "Forces & Energy"
+      ],
+      "question": "Why can streetlights appear to shoot columns into the night sky?",
+      "teaser": "Flat ice crystals drift nearly horizontal through cold air, reflecting lights at many heights so thousands of tiny glints align into a luminous pillar.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Light_Pillars_Stockholm%2C_Sweden_20160106.JPG/1920px-Light_Pillars_Stockholm%2C_Sweden_20160106.JPG",
+      "imageAlt": "Tall bands of pink, gold, and white light rising above a snowy Stockholm street at night",
+      "sourceLabel": "National Weather Service",
+      "sourceUrl": "https://www.weather.gov/owlie/weird-weather",
+      "size": "tall"
+    },
+    {
+      "id": "sanxingdui-protruding-eyes",
+      "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Matter"
+      ],
+      "question": "Why do the eyes on this Bronze Age mask project 16 centimeters?",
+      "teaser": "Sanxingdui's giant bronze face may echo stories of the legendary ruler Can Cong, but no surviving text explains its startling eyes and enormous ears with certainty.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Ancient_Bronze_Mask_from_Sanxingdui_with_Protruding_Eyes_%26_Ears_e.jpg/1920px-Ancient_Bronze_Mask_from_Sanxingdui_with_Protruding_Eyes_%26_Ears_e.jpg",
+      "imageAlt": "Monumental green-bronze Sanxingdui mask with tubular projecting eyes and huge winglike ears",
+      "sourceLabel": "Sanxingdui Museum",
+      "sourceUrl": "https://www.sanxingduiarchy.com/eng/home/202110/58321597.html",
+      "size": "wide"
+    },
+    {
+      "id": "kintsugi-golden-repair",
+      "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Matter"
+      ],
+      "question": "Why repair a broken vessel by making every fracture shine?",
+      "teaser": "In kintsugi, lacquer rejoins the fragments and powdered metal illuminates the seams, turning a vessel's damage and continued use into part of its visible history.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Kintugi.jpg?width=1600",
+      "imageAlt": "A dark ceramic cup transformed by bright branching seams of gold kintsugi repair",
+      "sourceLabel": "The Metropolitan Museum of Art",
+      "sourceUrl": "https://www.metmuseum.org/art/collection/search/670995",
+      "size": "standard"
+    },
+    {
+      "id": "living-root-bridge-stronger",
+      "category": "Systems",
+      "dimensions": [
+        "Design & Technology",
+        "Living World"
+      ],
+      "question": "How can a bridge grow stronger while its builders grow older?",
+      "teaser": "Khasi communities guide and weave living fig roots across rivers; later generations keep tending the structure as the roots thicken into a resilient crossing.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Double_decker_living_root_bridge_02.jpg/1920px-Double_decker_living_root_bridge_02.jpg",
+      "imageAlt": "Two levels of living fig-root bridges spanning a forest stream in Meghalaya",
+      "sourceLabel": "UNESCO World Heritage Centre",
+      "sourceUrl": "https://whc.unesco.org/en/tentativelists/6606/",
+      "size": "wide"
+    },
+    {
+      "id": "daphnis-ring-wavemaker",
+      "category": "Space",
+      "dimensions": [
+        "Cosmos",
+        "Planet Earth",
+        "Forces & Energy",
+        "Numbers & Logic"
+      ],
+      "question": "How can a tiny moon sculpt waves into Saturn's rings?",
+      "teaser": "Daphnis orbits inside a narrow ring gap, and its gravity repeatedly tugs nearby particles into rippling edges whose peaks can even cast shadows above the ring plane.",
+      "imageUrl": "https://assets.science.nasa.gov/content/dam/science/psd/solar/2023/07/PIA21056.jpg/jcr:content/renditions/cq5dam.web.1280.1280.jpeg",
+      "imageAlt": "Cassini close-up of tiny Daphnis between the scalloped, wave-like edges of a gap in Saturn's rings",
+      "sourceLabel": "NASA Cassini",
+      "sourceUrl": "https://science.nasa.gov/saturn/moons/daphnis/",
+      "size": "standard"
+    },
+    {
+      "id": "aerogel-solid-smoke",
+      "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Cosmos",
+        "Matter",
+        "Forces & Energy"
+      ],
+      "question": "How can a solid that is 99.8% air stop heat—and catch comet dust?",
+      "teaser": "Silica aerogel is a ghostly network of nanoscale pores: almost weightless, remarkably insulating, and gentle enough to slow fragile cosmic particles without destroying them.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Aerogelflower_%28highres-version-edit%29.png/1920px-Aerogelflower_%28highres-version-edit%29.png",
+      "imageAlt": "A delicate flower resting on a translucent blue slab of aerogel above a roaring burner flame",
+      "sourceLabel": "NASA Jet Propulsion Laboratory",
+      "sourceUrl": "https://www.jpl.nasa.gov/news/ideas-that-gel/",
+      "size": "standard"
+    },
+    {
+      "id": "holbein-anamorphic-skull",
+      "category": "Art",
+      "dimensions": [
+        "Art & Expression",
+        "Mind"
+      ],
+      "question": "Why does a skull appear only when you stop looking straight at the painting?",
+      "teaser": "Holbein stretched the skull across the canvas using anamorphosis; from the front it is an unreadable smear, but an oblique view snaps it into a warning about mortality.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/London09_-_Magic_Skull.jpg/1920px-London09_-_Magic_Skull.jpg",
+      "imageAlt": "Oblique museum view in which Holbein's stretched diagonal smear resolves into a human skull",
+      "sourceLabel": "The National Gallery",
+      "sourceUrl": "https://www.nationalgallery.org.uk/paintings/hans-holbein-the-younger-the-ambassadors",
+      "size": "wide"
+    },
+    {
+      "id": "peacock-spider-rainbow-fan",
+      "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Mind",
+        "Planet Earth",
+        "Art & Expression"
+      ],
+      "question": "Why does a spider unfold a rainbow fan before it dances?",
+      "teaser": "A male peacock spider raises its vividly patterned abdominal flap, waves its legs, and vibrates the ground in a precisely choreographed courtship display.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/3/31/Male_peacock_spider.jpg",
+      "imageAlt": "A tiny male peacock spider displaying an iridescent red, blue, and green fan beside raised legs",
+      "sourceLabel": "Australian Museum",
+      "sourceUrl": "https://australian.museum/learn/news/blog/meet-the-latest-dancing-spider/",
+      "size": "compact"
+    },
+    {
+      "id": "snow-rollers-wind-sculpture",
+      "category": "Science",
+      "dimensions": [
+        "Forces & Energy",
+        "Planet Earth",
+        "Matter"
+      ],
+      "question": "How can wind roll snow into hollow cylinders?",
+      "teaser": "When a cohesive surface layer lies over weaker snow, steady wind can peel up a flap and tumble it downhill, leaving a trail and an empty core like a natural pastry roll.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Snow_Roller_in_Rocky_Mountain_National_Park.jpg?width=1600",
+      "imageAlt": "A large hollow cylinder of snow resting on a windswept mountain slope with its track behind it",
+      "sourceLabel": "National Weather Service",
+      "sourceUrl": "https://www.weather.gov/owlie/weird-weather",
+      "size": "wide"
+    },
+    {
+      "id": "lion-man-mammoth-ivory",
+      "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Art & Expression"
+      ],
+      "question": "Why carve an imaginary lion-human from a mammoth tusk 40,000 years ago?",
+      "teaser": "This Ice Age figure joins a cave lion's head to a human body in an artwork that demanded hundreds of hours; its story is lost, but its maker clearly imagined beyond the visible world.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Loewenmensch1.jpg/1920px-Loewenmensch1.jpg",
+      "imageAlt": "The slender ivory Lion Man figure standing upright with a cave lion's head and humanlike body",
+      "sourceLabel": "British Museum",
+      "sourceUrl": "https://www.britishmuseum.org/blog/lion-man-ice-age-masterpiece",
+      "size": "tall"
+    },
+    {
+      "id": "zellige-infinite-geometry",
+      "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Numbers & Logic"
+      ],
+      "question": "How do hand-cut tiles make a pattern that seems to continue forever?",
+      "teaser": "Zellige artisans assemble individually cut glazed pieces into interlocking stars and polygons whose repeated symmetries imply a design extending beyond every border.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Zellij_FOUNTAIN%2C_FEZ%2C_MOROCCO.jpg/1920px-Zellij_FOUNTAIN%2C_FEZ%2C_MOROCCO.jpg",
+      "imageAlt": "A fountain in Fez covered with dense blue, green, white, and ochre zellige star patterns",
+      "sourceLabel": "The Metropolitan Museum of Art",
+      "sourceUrl": "https://www.metmuseum.org/learn/educators/curriculum-resources/art-of-the-islamic-world/~/media/Files/Learn/For%20Educators/Publications%20for%20Educators/Islamic%20Teacher%20Resource/Unit3.pdf",
+      "size": "standard"
+    },
+    {
+      "id": "fog-net-drinking-water",
+      "category": "Systems",
+      "dimensions": [
+        "Design & Technology",
+        "Planet Earth",
+        "Matter"
+      ],
+      "question": "How can a net harvest drinking water from a cloud?",
+      "teaser": "Fine mesh intercepts windblown fog droplets, which merge, run downward, and collect in tanks—all without pumps or electricity.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Pan_de_Azucar-_Wassergewinnung_Nebelfangnetze_%2843106605115%29.jpeg?width=1600",
+      "imageAlt": "A long wall of black fog-collecting mesh stretched across the ochre slopes of the Atacama Desert",
+      "sourceLabel": "MIT News",
+      "sourceUrl": "https://news.mit.edu/2013/how-to-get-fresh-water-out-of-thin-air-0830",
+      "size": "wide"
+    },
+    {
+      "id": "ceres-occator-salt-deposits",
+      "category": "Space",
+      "dimensions": [
+        "Cosmos"
+      ],
+      "question": "Why is a crater on Ceres shining with deposits of salt?",
+      "teaser": "Briny liquid rose from a deep reservoir beneath Occator Crater; after the water escaped, intensely bright sodium-carbonate-rich deposits remained on the dwarf planet's dark floor.",
+      "imageUrl": "https://assets.science.nasa.gov/dynamicimage/assets/science/psd/photojournal/pia/pia24/pia24021/PIA24021.jpg?w=1639&h=2048&fit=clip&crop=faces%2Cfocalpoint",
+      "imageAlt": "False-color perspective across Ceres' Occator Crater toward luminous white and reddish salt deposits",
+      "sourceLabel": "NASA Dawn",
+      "sourceUrl": "https://science.nasa.gov/photojournal/highlighting-bright-areas-of-ceres-occator-crater/",
+      "size": "standard"
+    },
+    {
+      "id": "gecko-gripper-space",
+      "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Living World",
+        "Cosmos"
+      ],
+      "question": "How can a robot grip in space without glue or suction?",
+      "teaser": "Microscopic wedge-shaped hairs imitate gecko feet, making strong dry contact when pulled one way and releasing cleanly when the force changes direction.",
+      "imageUrl": "https://engineering.stanford.edu/sites/default/files/styles/card_1192x596/public/images/news/20210521-space-gecko-gripper-thumbnail_image.jpg?h=31f4bb55&itok=PfzMW5XF",
+      "imageAlt": "A robotic gecko-inspired gripper holding a large rectangular object during a microgravity test",
+      "sourceLabel": "Stanford Engineering",
+      "sourceUrl": "https://engineering.stanford.edu/news/stanford-gecko-gripper-tested-international-space-station",
+      "size": "standard"
+    },
+    {
+      "id": "goryeo-celadon-hidden-inlay",
+      "category": "Art",
+      "dimensions": [
+        "Art & Expression",
+        "Matter"
+      ],
+      "question": "How do potters draw beneath a glaze by cutting into clay?",
+      "teaser": "Goryeo potters incised designs into dry clay, packed the grooves with black or white slip, then sealed cranes, clouds, and flowers beneath a translucent celadon glaze.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/%EC%B2%AD%EC%9E%90_%EC%83%81%EA%B0%90_%EA%B5%AC%EB%A6%84_%ED%95%99_%EB%AC%B4%EB%8A%AC_%EB%A7%A4%EB%B3%91_%EA%B3%A0%EB%A0%A4-%E9%9D%91%E7%A3%81%E8%B1%A1%E5%B5%8C%E9%9B%B2%E9%B6%B4%E6%96%87%E6%A2%85%E7%94%81_%E9%AB%98%E9%BA%97-Maebyeong_decorated_with_cranes_and_clouds_MET_DP240197.jpg?width=1600",
+      "imageAlt": "Elegant green celadon maebyeong vase inlaid with white cranes flying among curling clouds",
+      "sourceLabel": "The Metropolitan Museum of Art",
+      "sourceUrl": "https://www.metmuseum.org/essays/goryeo-celadon",
+      "size": "tall"
+    },
+    {
+      "id": "resurrection-plant-rehydration",
+      "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Body",
+        "Planet Earth"
+      ],
+      "question": "How can a plant look dead, then turn green again after rain?",
+      "teaser": "Selaginella lepidophylla can tolerate extreme drying, curling into a brown ball while protective chemistry stabilizes its cells until water restarts metabolism and unfurls its fronds.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Selaginella_lepidophylla_%28resurrection_plant%29_%28Mexico%29_1_%2849748122767%29.jpg/1920px-Selaginella_lepidophylla_%28resurrection_plant%29_%28Mexico%29_1_%2849748122767%29.jpg",
+      "imageAlt": "A resurrection plant shown as a tight dry brown ball beside its open green hydrated form",
+      "sourceLabel": "USDA Agricultural Research Service",
+      "sourceUrl": "https://www.ars.usda.gov/research/publications/publication/?seqNo115=284797",
+      "size": "standard"
+    },
+    {
+      "id": "romanesco-fibonacci-growth",
+      "category": "Science",
+      "dimensions": [
+        "Numbers & Logic",
+        "Living World"
+      ],
+      "question": "Why does Romanesco build spirals inside spirals?",
+      "teaser": "Each bud becomes a miniature version of the whole while new buds emerge at growth angles that pack them into two visible families of Fibonacci-numbered spirals.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Chou_math_Romanesco_broccoli_textures.jpg/1920px-Chou_math_Romanesco_broccoli_textures.jpg",
+      "imageAlt": "Close-up of lime-green Romanesco florets repeating as sharp cones arranged in nested spirals",
+      "sourceLabel": "University of Cambridge",
+      "sourceUrl": "https://www.eng.cam.ac.uk/news/cambridge-engineering-2025-rhs-chelsea-flower-show",
+      "size": "standard"
+    },
+    {
+      "id": "terracotta-warriors-lost-color",
+      "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Matter",
+        "Forces & Energy"
+      ],
+      "question": "Why did the Terracotta Army's colors vanish after excavation?",
+      "teaser": "The warriors were once brilliantly painted, but their fragile lacquer and pigment layers can curl and flake when newly exposed; surviving traces now demand painstaking conservation.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a6/Soldat_en_terre_cuite_peint.JPG",
+      "imageAlt": "Close view of a Terracotta Army soldier's face retaining rare patches of pink, red, black, and white pigment",
+      "sourceLabel": "Smithsonian Museum Conservation Institute",
+      "sourceUrl": "https://mci.si.edu/node/1284451",
+      "size": "tall"
+    },
+    {
+      "id": "shipibo-kene-visual-language",
+      "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Language",
+        "Matter",
+        "Art & Expression"
+      ],
+      "question": "How can one visual language travel across skin, cloth, wood, and clay?",
+      "teaser": "Shipibo-Konibo artists carry kené's interlocking paths across bodies and objects, joining aesthetic mastery with relationships among people, plants, animals, and cosmology.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Shipibo-art-1.jpg?width=1600",
+      "imageAlt": "Shipibo textile densely covered in bold black labyrinth lines over warm red, ochre, and cream geometry",
+      "sourceLabel": "Smithsonian National Museum of the American Indian",
+      "sourceUrl": "https://americanindian.si.edu/exhibitions/infinityofnations/amazon/181949.html",
+      "size": "wide"
+    },
+    {
+      "id": "qeswachaka-annual-rebuild",
+      "category": "Systems",
+      "dimensions": [
+        "Society",
+        "Design & Technology"
+      ],
+      "question": "Why rebuild a grass bridge from scratch every single year?",
+      "teaser": "Four Quechua communities twist local grass into cables and renew Q'eswachaka together, replacing weathered fibers while renewing knowledge, ritual, and social bonds.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Puente_Qeswachaka.jpg?width=1600",
+      "imageAlt": "A handwoven golden-grass suspension bridge crossing a steep rocky gorge in the Peruvian Andes",
+      "sourceLabel": "UNESCO Intangible Cultural Heritage",
+      "sourceUrl": "https://ich.unesco.org/en/RL/knowledge-skills-and-rituals-related-to-the-annual-renewal-of-the-q-eswachaka-bridge-00594",
+      "size": "wide"
+    },
+    {
+      "id": "eta-carinae-survived-eruption",
+      "category": "Space",
+      "dimensions": [
+        "Cosmos"
+      ],
+      "question": "How did a star survive the eruption that built this glowing hourglass?",
+      "teaser": "Eta Carinae expelled an enormous fraction of its mass in the 1840s without exploding completely; the debris expanded into the twin lobes of the Homunculus Nebula.",
+      "imageUrl": "https://science.nasa.gov/wp-content/uploads/2023/04/hs-2009-25-aw-full_jpg-1-jpg.webp",
+      "imageAlt": "Hubble view of Eta Carinae's luminous pink-and-violet hourglass nebula expanding around a brilliant central star",
+      "sourceLabel": "NASA Hubble",
+      "sourceUrl": "https://science.nasa.gov/asset/hubble/eta-carinae-the-great-eruption-of-a-massive-star/",
+      "size": "standard"
+    },
+    {
+      "id": "robobee-paperclip-flight",
+      "category": "Technology",
+      "dimensions": [
+        "Design & Technology"
+      ],
+      "question": "How can a robot smaller than a paperclip control its own flight?",
+      "teaser": "RoboBee's piezoelectric muscles flap ultralight wings about 120 times each second, producing enough precisely steered lift to take off and hover.",
+      "imageUrl": "https://seas.harvard.edu/sites/default/files/images/news/image_40.jpg",
+      "imageAlt": "Tiny insect-scale RoboBee with translucent wings and a carbon-fiber body perched beside a coin",
+      "sourceLabel": "Harvard SEAS",
+      "sourceUrl": "https://seas.harvard.edu/news/robotic-insects-make-first-controlled-flight",
+      "size": "compact"
+    },
+    {
+      "id": "arcimboldo-vertumnus-harvest-face",
+      "category": "Art",
+      "dimensions": [
+        "Art & Expression"
+      ],
+      "question": "How does a heap of fruit become a face you cannot unsee?",
+      "teaser": "Arcimboldo assembled pears, cherries, grain, flowers, and gourds into Emperor Rudolf II as Vertumnus, turning a harvest still life into an uncanny royal portrait.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Vertumnus_%C3%A5rstidernas_gud_m%C3%A5lad_av_Giuseppe_Arcimboldo_1591_-_Skoklosters_slott_-_91503.jpg?width=1600",
+      "imageAlt": "Arcimboldo's Vertumnus portrait forming a human face entirely from vivid fruits, vegetables, flowers, and grain",
+      "sourceLabel": "Skokloster Castle",
+      "sourceUrl": "https://skoklostersslott.se/en/the-history-of-skokloster-castle/skokloster-castles-collections/vertumnus-en/",
+      "size": "tall"
+    },
+    {
+      "id": "giant-waterlily-floating-truss",
+      "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Body",
+        "Planet Earth",
+        "Matter"
+      ],
+      "question": "How can a giant waterlily leaf support a small child?",
+      "teaser": "Beneath the broad floating surface, thick radiating ribs branch into a lightweight truss while trapped air adds buoyancy and distributes weight across the leaf.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Victoria_Amazonia_-_Giant_water_lilies_in_the_Amazon_basin_near_Manaus%2C_Brazil.jpg?width=1600",
+      "imageAlt": "Enormous round Victoria amazonica leaves with upturned rims floating across a dark Amazon pond",
+      "sourceLabel": "Royal Botanic Gardens, Kew",
+      "sourceUrl": "https://www.kew.org/plants/giant-waterlily",
+      "size": "wide"
+    },
+    {
+      "id": "fallstreak-hole-aircraft",
+      "category": "Science",
+      "dimensions": [
+        "Forces & Energy",
+        "Planet Earth"
+      ],
+      "question": "How can an airplane punch a vast hole through a cloud?",
+      "teaser": "Aircraft disturb a cloud of supercooled droplets, triggering ice crystals that grow and fall; the resulting chain reaction clears an expanding circle called a cavum.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Fallstreak_hole_%28cavum%29_embedded_in_altocumulus_-_Dortmund.jpg/1920px-Fallstreak_hole_%28cavum%29_embedded_in_altocumulus_-_Dortmund.jpg",
+      "imageAlt": "A dramatic circular fallstreak hole opening through a rippled cloud deck above Dortmund",
+      "sourceLabel": "NOAA NESDIS",
+      "sourceUrl": "https://www.nesdis.noaa.gov/fallstreak-clouds",
+      "size": "wide"
+    },
+    {
+      "id": "dogu-goggle-eyes",
+      "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Matter",
+        "Art & Expression"
+      ],
+      "question": "Why did Jōmon artists give clay figures enormous goggle-shaped eyes?",
+      "teaser": "The famous shakōki-dogū's eyes resemble snow goggles to modern viewers, yet its original makers left no explanation; even the figure's ritual purpose remains debated.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Dogu_with_goggle-shaped_eyes%2C_excavated_at_Kamegaoka%2C_Kizukuri%2C_Tsugaru-shi%2C_Aomori%2C_Jomon_period%2C_1%2C000-400_BC%2C_ceramic_-_Tokyo_National_Museum_-_Ueno_Park%2C_Tokyo%2C_Japan_-_DSC09105.jpg/1920px-thumbnail.jpg",
+      "imageAlt": "A richly patterned Jōmon clay dogū figure with enormous oval goggle-shaped eyes and a compact body",
+      "sourceLabel": "Tokyo National Museum",
+      "sourceUrl": "https://www.tnm.jp/modules/r_collection/index.php?controller=dtl&colid=J38304&lang=en",
+      "size": "tall"
+    },
+    {
+      "id": "gelede-masks-oral-history",
+      "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Belief & Ideas"
+      ],
+      "question": "How can a dancing mask carry satire, myth, and history at once?",
+      "teaser": "In the Gelede ceremony, sculpted masks move with costumes, songs, and dances whose humor, praise, irony, and stories transmit Yoruba-Nago knowledge in performance.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/British_Museum_Room_25_Gelede_mask_Yoruba_people_17022019_5003.jpg/1920px-British_Museum_Room_25_Gelede_mask_Yoruba_people_17022019_5003.jpg",
+      "imageAlt": "A colorful Yoruba Gelede mask crowned by an elaborate carved scene of figures and animals",
+      "sourceLabel": "UNESCO Intangible Cultural Heritage",
+      "sourceUrl": "https://ich.unesco.org/en/RL/oral-heritage-of-gelede-00002",
+      "size": "standard"
+    },
+    {
+      "id": "aflaj-water-by-time",
+      "category": "Systems",
+      "dimensions": [
+        "Society",
+        "Food & Agriculture",
+        "Planet Earth",
+        "Matter"
+      ],
+      "question": "How can a desert community divide water by time instead of volume?",
+      "teaser": "Oman's aflaj carry groundwater downhill by gravity, then open sluices according to timed shares—traditionally tracked with sundials—so scarce flow circulates among farms and homes.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/FalajDaris.JPG?width=1600",
+      "imageAlt": "A narrow turquoise falaj channel flowing between date palms and sunlit stone walls in Oman",
+      "sourceLabel": "UNESCO World Heritage Centre",
+      "sourceUrl": "https://whc.unesco.org/en/list/1207/",
+      "size": "standard"
+    },
+    {
+      "id": "pan-flying-saucer-moon",
+      "category": "Space",
+      "dimensions": [
+        "Cosmos"
+      ],
+      "question": "Why does Saturn have a moon shaped like a flying saucer?",
+      "teaser": "Tiny Pan orbits inside Saturn's rings, where material has built a tall ridge around its equator—giving the scarred moon its unmistakable brim.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Pan_Cassini_2017.jpg?width=1024",
+      "imageAlt": "Cassini close-up of Saturn's small moon Pan showing its round core and extraordinary equatorial ridge",
+      "sourceLabel": "NASA Cassini",
+      "sourceUrl": "https://science.nasa.gov/saturn/moons/pan/",
+      "size": "wide"
+    }
+  ]
+}

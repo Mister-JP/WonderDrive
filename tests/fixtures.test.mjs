@@ -32,7 +32,7 @@ test("accepts long starting questions up to the shared 5,000 character boundary"
   );
 });
 
-test("fixture turn is deterministic and returns exactly two distinct paths", () => {
+test("fixture turn is deterministic and returns a distinct fallback pair", () => {
   const first = buildFixtureTurn(input);
   const second = buildFixtureTurn(input);
 
@@ -44,7 +44,7 @@ test("fixture turn is deterministic and returns exactly two distinct paths", () 
   assert.ok(first.answerBlocks.every((block) => block.sourceIds.length > 0));
 });
 
-test("rejecting both paths produces a replacement pair", () => {
+test("rejecting the fallback paths produces a replacement pair", () => {
   const original = buildFixtureTurn(input);
   const replacement = buildFixtureTurn({
     ...input,

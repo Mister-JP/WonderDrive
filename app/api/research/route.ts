@@ -16,6 +16,7 @@ import type { PreparedLiveResearch } from "../../../lib/live-research";
 import { publicError, RepositoryError } from "../../../lib/errors";
 import { publicViewer, resolveViewer } from "../../../lib/viewer";
 import type { ViewerContext } from "../../../lib/viewer";
+import { providerAuthFromRequest } from "../../../lib/provider-auth";
 
 export const dynamic = "force-dynamic";
 
@@ -58,6 +59,7 @@ export async function POST(request: Request) {
   try {
     assertMutationOrigin(request);
     const viewer = await resolveViewer();
+    const providerAuth = providerAuthFromRequest(request);
     const body = (await readJson(request)) as LiveResearchRequest;
     const preparation = await prepareLiveResearch(viewer, body);
     const encoder = new TextEncoder();
@@ -115,6 +117,7 @@ export async function POST(request: Request) {
                   (event) => send({ type: "activity", event }),
                   abortController.signal,
                   () => assertLiveResearchLease(viewer, preparation.prepared),
+                  providerAuth,
                 );
               } catch (error) {
                 const retryable = error instanceof RepositoryError ? error.retryable : true;

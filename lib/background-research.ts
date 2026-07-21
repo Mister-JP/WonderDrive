@@ -25,8 +25,12 @@ import {
 import { recordOpenAIUsage } from "./provider-usage";
 import type { OpenAIResponse } from "./research/provider-response";
 import type { ViewerContext } from "./viewer";
+import {
+  APPLICATION_PROVIDER_AUTH,
+  type ProviderAuth,
+} from "./provider-auth";
 
-const FINALIZATION_TIMEOUT_MS = 2.5 * 60 * 1_000;
+const FINALIZATION_TIMEOUT_MS = 6 * 60 * 1_000;
 const FINALIZATION_LEASE_MS = FINALIZATION_TIMEOUT_MS + 15_000;
 export const BACKGROUND_RESEARCH_TIMEOUT_MS = 10 * 60 * 1_000;
 const PROVIDER_STATUS_TIMEOUT_MS = 10_000;
@@ -52,11 +56,13 @@ type BackgroundRow = {
 type BackgroundListOptions = {
   reconcile?: boolean;
   defer?: (work: Promise<unknown>) => void;
+  providerAuth?: ProviderAuth;
 };
 
 export async function startBackgroundResearch(
   viewer: ViewerContext,
   request: LiveResearchRequest,
+  providerAuth: ProviderAuth = APPLICATION_PROVIDER_AUTH,
 ): Promise<ResearchActivity> {
   const preparation = await prepareBackgroundLiveResearch(viewer, request);
   if (preparation.type === "existing") {
@@ -77,9 +83,10 @@ export async function startBackgroundResearch(
       operation: "live_research",
       requestBody,
       researchRequestId: prepared.requestId,
+      providerAuth,
     });
     reservationId = reservation.id;
-    const response = await submitWithRetries(requestBody, prepared.requestId);
+    const response = await submitWithRetries(requestBody, prepared.requestId, providerAuth);
     const payload = await response.json() as unknown;
     const responseId = isRecord(payload) && typeof payload.id === "string" ? payload.id : null;
     if (!responseId) {
@@ -93,10 +100,17 @@ export async function startBackgroundResearch(
     await getD1().prepare(
       `UPDATE research_requests
        SET status = 'researching', provider_response_id = ?, cost_reservation_id = ?,
-           started_at = ?, error_code = NULL, error_message = NULL
+           request_json = ?, started_at = ?, error_code = NULL, error_message = NULL
        WHERE id = ? AND identity_id = ? AND execution_mode = 'background'
          AND status = 'reserved'`,
-    ).bind(responseId, reservationId, Date.now(), prepared.requestId, viewer.identityId).run();
+    ).bind(
+      responseId,
+      reservationId,
+      JSON.stringify({ ...prepared, providerFunding: providerAuth.funding }),
+      Date.now(),
+      prepared.requestId,
+      viewer.identityId,
+    ).run();
     const row = await backgroundRow(viewer, prepared.requestId);
     if (!row) throw new RepositoryError("NOT_FOUND", "Research request not found.", 404);
     return activityFromRow(row);
@@ -109,7 +123,7 @@ export async function startBackgroundResearch(
 
 export async function listBackgroundResearch(
   viewer: ViewerContext,
-  { reconcile = true, defer }: BackgroundListOptions = {},
+  { reconcile = true, defer, providerAuth = APPLICATION_PROVIDER_AUTH }: BackgroundListOptions = {},
 ): Promise<ResearchActivity[]> {
   await expireBackgroundResearch(viewer);
   let rows = await backgroundRows(viewer);
@@ -117,7 +131,10 @@ export async function listBackgroundResearch(
     const work = Promise.allSettled(
       rows
         .filter((row) => row.status === "researching" && row.provider_response_id)
-        .map((row) => reconcileRow(viewer, row)),
+        .map((row) => {
+          const rowAuth = providerAuthForRow(row, providerAuth);
+          return rowAuth ? reconcileRow(viewer, row, rowAuth) : Promise.resolve();
+        }),
     ).then((results) => {
       for (const result of results) {
         if (result.status === "rejected") {
@@ -138,12 +155,20 @@ export async function listBackgroundResearch(
 export async function cancelBackgroundResearch(
   viewer: ViewerContext,
   requestId: string,
-  { defer }: Pick<BackgroundListOptions, "defer"> = {},
+  { defer, providerAuth = APPLICATION_PROVIDER_AUTH }: Pick<BackgroundListOptions, "defer" | "providerAuth"> = {},
 ): Promise<ResearchActivity> {
   const row = await backgroundRow(viewer, requestId);
   if (!row) throw new RepositoryError("NOT_FOUND", "Research request not found.", 404);
 
   if (row.status === "reserved" || row.status === "researching") {
+    const rowAuth = providerAuthForRow(row, providerAuth);
+    if (!rowAuth) {
+      throw new RepositoryError(
+        "PROVIDER_UNAVAILABLE",
+        "Reconnect the OpenAI API key used to start this background research before stopping it.",
+        409,
+      );
+    }
     await getD1().prepare(
       `UPDATE research_requests
        SET status = 'failed', error_code = 'CANCELLED',
@@ -153,7 +178,7 @@ export async function cancelBackgroundResearch(
          AND status IN ('reserved', 'researching')`,
     ).bind(Date.now(), requestId, viewer.identityId).run();
 
-    const cleanup = cancelProviderWork(viewer, row).catch((error) => {
+    const cleanup = cancelProviderWork(viewer, row, rowAuth).catch((error) => {
       console.error("Unable to cancel the background provider response", error);
     });
     if (defer) defer(cleanup);
@@ -183,10 +208,21 @@ export async function dismissFailedBackgroundResearch(
   return activityFromRow(row);
 }
 
-export async function retryBackgroundResearch(viewer: ViewerContext, requestId: string) {
+export async function retryBackgroundResearch(
+  viewer: ViewerContext,
+  requestId: string,
+  providerAuth: ProviderAuth = APPLICATION_PROVIDER_AUTH,
+) {
   const row = await backgroundRow(viewer, requestId);
   if (!row || row.status !== "failed") {
     throw new RepositoryError("BAD_REQUEST", "Only failed background research can be retried.", 400);
+  }
+  if (!providerAuthForRow(row, providerAuth)) {
+    throw new RepositoryError(
+      "PROVIDER_UNAVAILABLE",
+      "Reconnect the OpenAI API key used for this background research before retrying it.",
+      409,
+    );
   }
   if (
     row.provider_response_id
@@ -227,7 +263,7 @@ export async function retryBackgroundResearch(viewer: ViewerContext, requestId: 
         expectedVersion: prepared.expectedVersion!,
         idempotencyKey: crypto.randomUUID(),
       };
-  const activity = await startBackgroundResearch(viewer, request);
+  const activity = await startBackgroundResearch(viewer, request, providerAuth);
   await getD1().prepare(
     `UPDATE research_requests SET error_code = 'RETRIED'
      WHERE id = ? AND identity_id = ? AND status = 'failed'`,
@@ -235,12 +271,12 @@ export async function retryBackgroundResearch(viewer: ViewerContext, requestId: 
   return activity;
 }
 
-async function submitWithRetries(body: object, idempotencyKey: string) {
+async function submitWithRetries(body: object, idempotencyKey: string, providerAuth: ProviderAuth) {
   let lastResponse: Response | null = null;
   let lastError: unknown;
   for (let attempt = 1; attempt <= MAX_START_ATTEMPTS; attempt += 1) {
     try {
-      const response = await requestOpenAI(body, { idempotencyKey });
+      const response = await requestOpenAI(body, { idempotencyKey, apiKey: providerAuth.apiKey });
       if (response.ok) return response;
       lastResponse = response;
       if (response.status < 500 && response.status !== 429) break;
@@ -264,7 +300,7 @@ async function submitWithRetries(body: object, idempotencyKey: string) {
     : new RepositoryError("PROVIDER_UNAVAILABLE", "OpenAI could not start background research.", 503, true);
 }
 
-async function reconcileRow(viewer: ViewerContext, row: BackgroundRow) {
+async function reconcileRow(viewer: ViewerContext, row: BackgroundRow, providerAuth: ProviderAuth) {
   const controller = new AbortController();
   const timeout = setTimeout(
     () => controller.abort("CuriosityPedia background status timeout"),
@@ -275,6 +311,7 @@ async function reconcileRow(viewer: ViewerContext, row: BackgroundRow) {
     response = await retrieveOpenAIResponse(row.provider_response_id!, {
       include: LIVE_RESEARCH_RESPONSE_INCLUDES,
       signal: controller.signal,
+      apiKey: providerAuth.apiKey,
     });
   } catch (error) {
     if (!controller.signal.aborted) throw error;
@@ -371,12 +408,12 @@ async function reconcileRow(viewer: ViewerContext, row: BackgroundRow) {
         () => {},
         finalizationController.signal,
         () => assertLiveResearchLease(viewer, prepared),
-        { maxVisualCurationAttempts: 1 },
+        { maxVisualCurationAttempts: 1, providerAuth },
       ),
       new Promise<never>((_, reject) => {
         const rejectWhenAborted = () => reject(new RepositoryError(
           "PROVIDER_TIMEOUT",
-          "Research finished, but preparing its citations and images timed out. Please retry it.",
+          "Research finished, but composing and validating the visual session timed out. Please retry it.",
           504,
           true,
         ));
@@ -408,8 +445,9 @@ async function expireBackgroundResearch(viewer: ViewerContext) {
            error_message = 'Background research reached its 10-minute limit. Please retry it.',
            completed_at = ?, lease_token = NULL, lease_expires_at = NULL
        WHERE identity_id = ? AND execution_mode = 'background' AND status = 'researching'
-         AND COALESCE(started_at, created_at) <= ?`,
-    ).bind(now, viewer.identityId, now - BACKGROUND_RESEARCH_TIMEOUT_MS),
+         AND COALESCE(started_at, created_at) <= ?
+         AND (provider_response_id IS NULL OR lease_token IS NULL OR lease_expires_at IS NULL OR lease_expires_at <= ?)`,
+    ).bind(now, viewer.identityId, now - BACKGROUND_RESEARCH_TIMEOUT_MS, now),
   ]);
 }
 
@@ -435,7 +473,7 @@ async function markBackgroundFinalizationFailed(
   ).run();
 }
 
-async function cancelProviderWork(viewer: ViewerContext, row: BackgroundRow) {
+async function cancelProviderWork(viewer: ViewerContext, row: BackgroundRow, providerAuth: ProviderAuth) {
   if (!row.provider_response_id) {
     if (row.cost_reservation_id) await releaseProviderCost(row.cost_reservation_id);
     return;
@@ -447,7 +485,10 @@ async function cancelProviderWork(viewer: ViewerContext, row: BackgroundRow) {
     PROVIDER_CANCEL_TIMEOUT_MS,
   );
   try {
-    const response = await cancelOpenAIResponse(row.provider_response_id, { signal: controller.signal });
+    const response = await cancelOpenAIResponse(row.provider_response_id, {
+      signal: controller.signal,
+      apiKey: providerAuth.apiKey,
+    });
     const payload: unknown = response.ok ? await response.json() : undefined;
     if (!await hasRecordedBackgroundUsage(row)) {
       await recordOpenAIUsage({
@@ -528,6 +569,14 @@ async function backgroundRow(viewer: ViewerContext, requestId: string) {
   ).bind(requestId, viewer.identityId).first<BackgroundRow>();
 }
 
+function providerAuthForRow(row: BackgroundRow, requestAuth: ProviderAuth): ProviderAuth | null {
+  // App-funded and legacy responses use the deployment key that created them.
+  // BYOK work can only be resumed while the browser supplies its ephemeral key.
+  const funding = parsePrepared(row.request_json).providerFunding;
+  if (funding !== "user") return APPLICATION_PROVIDER_AUTH;
+  return requestAuth.funding === "user" ? requestAuth : null;
+}
+
 async function hasRecordedBackgroundUsage(row: BackgroundRow) {
   const existing = await getD1().prepare(
     `SELECT id FROM provider_usage_events
@@ -559,10 +608,9 @@ function activityFromRow(row: BackgroundRow): ResearchActivity {
     createdAt: row.created_at,
     startedAt: row.started_at,
     timeoutAt: row.status === "reserved" || row.status === "researching"
-      ? Math.min(
-        (row.started_at ?? row.created_at) + BACKGROUND_RESEARCH_TIMEOUT_MS,
-        row.lease_expires_at ?? Number.POSITIVE_INFINITY,
-      )
+      ? row.lease_token && row.lease_expires_at
+        ? row.lease_expires_at
+        : (row.started_at ?? row.created_at) + BACKGROUND_RESEARCH_TIMEOUT_MS
       : null,
     completedAt: row.completed_at,
   };

@@ -87,3 +87,29 @@ test("settles known cost and keeps ambiguous outcomes at the full hold", async (
     delete env.DB;
   }
 });
+
+test("BYOK validates model access without consuming or reserving application funds", async () => {
+  delete env.OPENAI_API_KEY;
+  let databaseTouched = false;
+  env.DB = {
+    prepare() {
+      databaseTouched = true;
+      throw new Error("BYOK must not create an application-funded reservation");
+    },
+  };
+  try {
+    const reservation = await reserveProviderCost({
+      callKey: "byok:research",
+      identityId: "guest-byok",
+      viewerMode: "guest",
+      modelId: "gpt-5.4-nano",
+      operation: "live_research",
+      requestBody: { model: "gpt-5.4-nano", max_output_tokens: 100 },
+      providerAuth: { funding: "user", apiKey: "sk-test-byok-credential-long-enough" },
+    });
+    assert.deepEqual(reservation, { id: null, reservedMicrousd: 0 });
+    assert.equal(databaseTouched, false);
+  } finally {
+    delete env.DB;
+  }
+});

@@ -5,11 +5,13 @@ import {
   advanceJourney,
   listRejectedQuestions,
 } from "../../../../../lib/repository";
+import { providerAuthFromRequest } from "../../../../../lib/provider-auth";
 
 type Context = { params: Promise<{ journeyId: string }> };
 
 export async function POST(request: Request, context: Context) {
   return mutation(request, async (viewer) => {
+    const providerAuth = providerAuthFromRequest(request);
     const { journeyId } = await context.params;
     const body = await readJson<AdvanceJourneyRequest>(request);
     return advanceJourney(viewer, journeyId, body, async ({ journey, turn }) =>
@@ -27,6 +29,7 @@ export async function POST(request: Request, context: Context) {
         ],
         adventure: body.adventure ?? 50,
         reason: body.reason?.trim() || undefined,
+        providerAuth,
       }),
     );
   });

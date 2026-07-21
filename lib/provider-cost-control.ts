@@ -3,6 +3,7 @@ import { MODELS } from "./catalog";
 import type { ModelId, Viewer } from "./contracts";
 import { RepositoryError } from "./errors";
 import { assertOpenAIAvailable } from "./openai";
+import type { ProviderAuth } from "./provider-auth";
 import {
   identitySpendLimitUsd,
   isModelAllowed,
@@ -28,10 +29,11 @@ type ReservationContext = {
   journeyId?: string;
   turnId?: string;
   unavailableMessage?: string;
+  providerAuth?: ProviderAuth;
 };
 
 export type ProviderCostReservation = {
-  id: string;
+  id: string | null;
   reservedMicrousd: number;
 };
 
@@ -45,7 +47,7 @@ type CostEnvelope = {
 export async function reserveProviderCost(
   input: ReservationContext,
 ): Promise<ProviderCostReservation> {
-  assertOpenAIAvailable(input.unavailableMessage);
+  assertOpenAIAvailable(input.unavailableMessage, input.providerAuth?.apiKey);
   if (!isModelAllowed(input.viewerMode, input.modelId)) {
     throw new RepositoryError("BAD_REQUEST", "Choose a supported live research model.", 400);
   }
@@ -54,6 +56,9 @@ export async function reserveProviderCost(
     throw new RepositoryError("BAD_REQUEST", "Choose a supported live research model.", 400);
   }
   const envelope = costEnvelope(input.requestBody, input.modelId);
+  if (input.providerAuth?.funding === "user") {
+    return { id: null, reservedMicrousd: 0 };
+  }
   const now = Date.now();
   const windowStart = now - ROLLING_USAGE_WINDOW_MS;
   const identityLimitMicrousd = Math.round(identitySpendLimitUsd(input.viewerMode) * 1_000_000);
@@ -110,7 +115,7 @@ export async function reserveProviderCost(
   if ((result.meta?.changes ?? 1) === 0) {
     throw new RepositoryError(
       "BUDGET_EXCEEDED",
-      "This OpenAI request would exceed the available rolling spend allowance.",
+      "This request would exceed the app-funded allowance. Add your OpenAI API key in Settings to continue with BYOK.",
       429,
       true,
     );

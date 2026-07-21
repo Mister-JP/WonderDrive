@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Sans, Newsreader } from "next/font/google";
 import { headers } from "next/headers";
 import "./globals.css";
@@ -19,6 +19,12 @@ const display = Newsreader({
 const title = "CuriosityPedia — Give curiosity a direction";
 const description =
   "Turn one question into a source-backed path of discovery, choose what to explore next, and keep the whole trail.";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 export async function generateMetadata(): Promise<Metadata> {
   const requestHeaders = await headers();

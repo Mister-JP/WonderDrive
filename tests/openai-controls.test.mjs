@@ -68,3 +68,23 @@ test("stored response retrieval preserves requested web evidence expansions", as
     delete env.OPENAI_API_KEY;
   }
 });
+
+test("an ephemeral BYOK credential overrides the deployment credential without exposure", async () => {
+  const originalFetch = globalThis.fetch;
+  let authorization = null;
+  globalThis.fetch = async (_input, init) => {
+    authorization = new Headers(init?.headers).get("authorization");
+    return Response.json({ status: "completed" });
+  };
+  env.OPENAI_API_KEY = "deployment-key";
+  try {
+    await requestOpenAI(
+      { model: "gpt-5.4-nano" },
+      { apiKey: "sk-user-ephemeral-key-long-enough" },
+    );
+    assert.equal(authorization, "Bearer sk-user-ephemeral-key-long-enough");
+  } finally {
+    globalThis.fetch = originalFetch;
+    delete env.OPENAI_API_KEY;
+  }
+});

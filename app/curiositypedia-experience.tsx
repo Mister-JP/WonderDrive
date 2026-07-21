@@ -27,14 +27,14 @@ import {
   CaretRight,
   ArrowSquareOut,
   MagicWand,
+  List,
   Pause,
   PencilSimple,
   Play,
   ShareNetwork,
-  MoonStars,
-  Sun,
   X,
 } from "@phosphor-icons/react";
+import { MoonIcon, SunIcon } from "@heroicons/react/20/solid";
 
 import {
   BOOTSTRAP_CATALOG,
@@ -42,7 +42,7 @@ import {
   PERFORMERS,
   PROMPT_VERSION,
 } from "../lib/catalog";
-import { LANDING_RECOMMENDATION_CATEGORIES, STARTING_QUESTION_MAX_LENGTH } from "../lib/contracts";
+import { LANDING_RECOMMENDATION_DIMENSIONS, STARTING_QUESTION_MAX_LENGTH } from "../lib/contracts";
 import type {
   AdvanceJourneyRequest,
   AnswerDensity,
@@ -94,6 +94,11 @@ import {
   type CuriosityPediaRoute,
 } from "./routes";
 import { validateDisplayImage } from "../lib/image-validation";
+import {
+  clearSessionOpenAIKey,
+  readSessionOpenAIKey,
+  writeSessionOpenAIKey,
+} from "./byok-client";
 
 export const validateImage = validateDisplayImage;
 
@@ -205,7 +210,7 @@ type ResearchPreview = Pick<
   "question" | "teaser" | "imageUrl" | "imageAlt" | "sourceLabel" | "sourceUrl"
 >;
 
-const DISCOVERY_CATEGORIES = ["All", ...LANDING_RECOMMENDATION_CATEGORIES] as const;
+const DISCOVERY_DIMENSIONS = ["All", ...LANDING_RECOMMENDATION_DIMENSIONS] as const;
 
 function CelestialMark({
   variant,
@@ -254,10 +259,12 @@ export function CuriosityPediaExperience() {
   const [usage, setUsage] = useState<UsageSummary | null>(null);
   const [usageLoading, setUsageLoading] = useState(false);
   const [usageError, setUsageError] = useState<string | null>(null);
+  const [byokConfigured, setByokConfigured] = useState(false);
   const [nextModelId, setNextModelId] = useState<ModelId | null>(null);
   const [nextPerformerId, setNextPerformerId] = useState<PerformerId | null>(null);
   const [sourcesRequestToken, setSourcesRequestToken] = useState(0);
   const [theme, setTheme] = useState<Theme>("light");
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const activeJourneyRef = useRef(activeJourney);
   const journeysRef = useRef(journeys);
   const viewerRef = useRef(viewer);
@@ -282,6 +289,21 @@ export function CuriosityPediaExperience() {
       delete document.documentElement.dataset.textSize;
     };
   }, [preferences.textSize]);
+
+  useEffect(() => {
+    // BYOK is intentionally scoped to the current browser tab.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setByokConfigured(Boolean(readSessionOpenAIKey()));
+  }, []);
+
+  useEffect(() => {
+    if (!mobileNavOpen) return;
+    const closeOnEscape = (event: globalThis.KeyboardEvent) => {
+      if (event.key === "Escape") setMobileNavOpen(false);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [mobileNavOpen]);
 
   useEffect(() => {
     if (!readyToast) return;
@@ -434,9 +456,10 @@ export function CuriosityPediaExperience() {
       if (current?.status === "running" && matching?.status === "researching") {
         setLiveResearch((state) => state && {
           ...state,
+          phase: matching.phase === "finalizing" ? "composition" : "research",
           message: matching.phase === "finalizing"
-            ? activityT("Checking citations and finding images")
-            : activityT("Searching sources and writing the answer"),
+            ? "Step 2 of 2 · Composing the visual session"
+            : "Step 1 of 2 · Building the evidence dossier",
         });
       }
       if (current?.status === "running" && matching?.status === "ready" && matching.journeyId) {
@@ -444,6 +467,7 @@ export function CuriosityPediaExperience() {
         presentJourney(journey.data, journey.viewer);
         setLiveResearch((state) => state && {
           ...state,
+          phase: "validation",
           status: "complete",
           result: journey.data,
           message: activityT("Research committed"),
@@ -571,6 +595,7 @@ export function CuriosityPediaExperience() {
         performerId: config.performerId,
         message: t("Researching in the background. You can safely leave this page."),
         events: [],
+        phase: "research",
         status: "running",
         result: null,
         error: null,
@@ -620,6 +645,7 @@ export function CuriosityPediaExperience() {
         performerId: activeJourney.performerId,
         message: t("Researching in the background. You can safely leave this page."),
         events: [],
+        phase: "research",
         status: "running",
         result: null,
         error: null,
@@ -674,13 +700,14 @@ export function CuriosityPediaExperience() {
           action === "delegate"
             ? fromTurn?.options.find((option) => option.position === fromTurn.preferredPosition)
             : fromTurn?.options.find((option) => option.id === input.optionId);
-        if (!fromTurn || !selected) throw new Error(t("Choose one of the two current paths."));
+        if (!fromTurn || !selected) throw new Error(t("Choose a current path."));
         setView("journey");
         setLiveResearch({
           question: selected.question,
           performerId: activeJourney.performerId,
           message: t("Researching in the background. You can safely leave this page."),
           events: [],
+          phase: "research",
           status: "running",
           result: null,
           error: null,
@@ -783,6 +810,7 @@ export function CuriosityPediaExperience() {
         ...current,
         message: t("Taking over research in this tab…"),
         events: [],
+        phase: "research",
         status: "running",
         result: null,
         error: null,
@@ -849,6 +877,8 @@ export function CuriosityPediaExperience() {
       || (nextPerformerId ?? activeJourney.performerId) !== activeJourney.performerId
     ),
   );
+  const nextTurnModelName = catalog.models.find((model) => model.id === (nextModelId ?? activeJourney?.modelId))?.name ?? t("Model");
+  const nextTurnPerformerName = catalog.performers.find((performer) => performer.id === (nextPerformerId ?? activeJourney?.performerId))?.name ?? t("Personality");
 
   async function toggleTurnBookmark(journeyId: string, turnId: string) {
     const saved = bookmarks.some((bookmark) => bookmark.turnId === turnId);
@@ -871,6 +901,7 @@ export function CuriosityPediaExperience() {
   }
 
   function navigate(next: View) {
+    setMobileNavOpen(false);
     if ((next === "journey" || next === "map") && !activeJourney) {
       const fallback = journeys.length ? "journeys" : "start";
       setView(fallback);
@@ -894,7 +925,7 @@ export function CuriosityPediaExperience() {
     <I18nProvider locale={preferences.interfaceLocale}>
     <main className={`app-shell ${preferences.reduceMotion ? "reduce-motion" : ""} ${view === "journey" && activeJourney && activeTurn ? "journey-stage-active" : ""} ${view === "map" && activeJourney && activeTurn ? "journey-map-active" : ""}`}>
       <header className="app-header">
-        <button className="wordmark" type="button" onClick={() => navigate("start")}>
+        <button className="wordmark" type="button" aria-label="CuriosityPedia" onClick={() => navigate("start")}>
           <CelestialMark variant="brand" />
           <span>
             CuriosityPedia
@@ -902,7 +933,23 @@ export function CuriosityPediaExperience() {
           </span>
         </button>
 
-        <nav className="app-nav" aria-label={t("CuriosityPedia views")}>
+        <button
+          className="mobile-nav-toggle"
+          type="button"
+          aria-expanded={mobileNavOpen}
+          aria-controls="primary-navigation"
+          aria-label={mobileNavOpen ? t("Close navigation") : t("Open navigation")}
+          onClick={() => setMobileNavOpen((open) => !open)}
+        >
+          {mobileNavOpen ? <X aria-hidden="true" /> : <List aria-hidden="true" />}
+          <span>{mobileNavOpen ? t("Close") : t("Menu")}</span>
+        </button>
+
+        <nav
+          id="primary-navigation"
+          className={`app-nav ${mobileNavOpen ? "mobile-open" : ""}`}
+          aria-label={t("CuriosityPedia views")}
+        >
           {navItems.map((item) => (
             <button
               type="button"
@@ -935,9 +982,9 @@ export function CuriosityPediaExperience() {
             aria-label={theme === "light" ? t("Switch to dark edition") : t("Switch to light edition")}
             title={theme === "light" ? t("Switch to dark edition") : t("Switch to light edition")}
           >
-            <Sun weight="fill" aria-hidden="true" />
+            <SunIcon aria-hidden="true" />
             <span aria-hidden="true" />
-            <MoonStars weight="fill" aria-hidden="true" />
+            <MoonIcon aria-hidden="true" />
           </button>
           <div className="identity-control">
             <span className={`identity-dot ${viewer?.mode ?? "loading"}`} aria-hidden="true" />
@@ -1090,6 +1137,8 @@ export function CuriosityPediaExperience() {
           error={usageError}
           onRefresh={() => void refreshUsage()}
           onOpenJourneys={() => navigate("journeys")}
+          byokConfigured={byokConfigured}
+          onOpenSettings={() => navigate("settings")}
         />
       ) : view === "settings" ? (
         <SettingsView
@@ -1098,6 +1147,7 @@ export function CuriosityPediaExperience() {
           preferences={preferences}
           catalog={catalog}
           busy={mutation === "preferences"}
+          byokConfigured={byokConfigured}
           onPreviewTextSize={(textSize) => setPreferences((current) => ({ ...current, textSize }))}
           onSave={async (next) => {
             await runMutation("preferences", async () => {
@@ -1109,69 +1159,86 @@ export function CuriosityPediaExperience() {
               setPreferences(payload.data);
             });
           }}
+          onSaveApiKey={(apiKey) => {
+            writeSessionOpenAIKey(apiKey);
+            setByokConfigured(true);
+          }}
+          onClearApiKey={() => {
+            clearSessionOpenAIKey();
+            setByokConfigured(false);
+          }}
         />
       ) : view === "about" ? (
         <AboutView onBegin={() => navigate("start")} />
       ) : activeJourney && activeTurn ? (
         <div className="active-journey-shell">
           <nav className="journey-view-switcher" aria-label={t("Current journey views")}>
-            <div className="journey-run-controls">
-              <label className="journey-model-switcher">
-                <span>{t("Model")}</span>
-                <select
-                  aria-label={t("Model for the next research turn")}
-                  disabled={mutation !== null}
-                  value={nextModelId ?? activeJourney.modelId}
-                  onChange={(event) => setNextModelId(event.target.value as ModelId)}
-                >
-                  {catalog.models.map((model) => (
-                    <option key={model.id} value={model.id}>{model.name}</option>
-                  ))}
-                </select>
-              </label>
-              <label className="journey-model-switcher journey-performer-switcher">
-                <span>Personality</span>
-                <select
-                  aria-label="Personality"
-                  disabled={mutation !== null}
-                  value={nextPerformerId ?? activeJourney.performerId}
-                  onChange={(event) => setNextPerformerId(event.target.value as PerformerId)}
-                >
-                  {catalog.performers.map((performer) => (
-                    <option key={performer.id} value={performer.id}>{performer.name}</option>
-                  ))}
-                </select>
-              </label>
-              {retryConfigChanged && (
-                <button
-                  className="retry-question"
-                  type="button"
-                  disabled={mutation !== null}
-                  onClick={() => void retryActiveQuestion()}
-                >
-                  Retry this question
-                </button>
-              )}
-            </div>
+            <details className={`journey-config-disclosure ${retryConfigChanged ? "changed" : ""}`}>
+              <summary>
+                <MagicWand aria-hidden="true" />
+                <span>{t("Next turn settings")}</span>
+                <small>{nextTurnModelName} · {nextTurnPerformerName}</small>
+              </summary>
+              <div className="journey-run-controls">
+                <label className="journey-model-switcher">
+                  <span>{t("Model")}</span>
+                  <select
+                    aria-label={t("Model for the next research turn")}
+                    disabled={mutation !== null}
+                    value={nextModelId ?? activeJourney.modelId}
+                    onChange={(event) => setNextModelId(event.target.value as ModelId)}
+                  >
+                    {catalog.models.map((model) => (
+                      <option key={model.id} value={model.id}>{model.name}</option>
+                    ))}
+                  </select>
+                </label>
+                <label className="journey-model-switcher journey-performer-switcher">
+                  <span>Personality</span>
+                  <select
+                    aria-label="Personality"
+                    disabled={mutation !== null}
+                    value={nextPerformerId ?? activeJourney.performerId}
+                    onChange={(event) => setNextPerformerId(event.target.value as PerformerId)}
+                  >
+                    {catalog.performers.map((performer) => (
+                      <option key={performer.id} value={performer.id}>{performer.name}</option>
+                    ))}
+                  </select>
+                </label>
+                {retryConfigChanged && (
+                  <button
+                    className="retry-question"
+                    type="button"
+                    disabled={mutation !== null}
+                    onClick={() => void retryActiveQuestion()}
+                  >
+                    Retry this question
+                  </button>
+                )}
+              </div>
+            </details>
             <div className="journey-session-question" aria-label={t("Current knowledge session question")}>
               <span><i aria-hidden="true" /> Knowledge session · {t("Turn {number}", { number: activeTurn.depth + 1 })}</span>
               <strong>{activeTurn.question}</strong>
             </div>
             <div className="journey-view-controls">
-              <button type="button" className={view === "journey" ? "active" : ""} aria-current={view === "journey" ? "page" : undefined} onClick={() => navigate("journey")}>{t("Full answer")}</button>
-              <button type="button" className={view === "map" ? "active" : ""} aria-current={view === "map" ? "page" : undefined} onClick={() => navigate("map")}>{t("Journey map")}</button>
-              {view === "journey" && <>
-                <button type="button" className="journey-source-control" onClick={() => setSourcesRequestToken((current) => current + 1)}>Sources <span>{activeTurn.sources.length}</span></button>
-                <button
-                  type="button"
-                  className={`journey-save-control ${bookmarks.some((bookmark) => bookmark.turnId === activeTurn.id) ? "saved" : ""}`}
-                  aria-pressed={bookmarks.some((bookmark) => bookmark.turnId === activeTurn.id)}
-                  onClick={() => void toggleTurnBookmark(activeJourney.id, activeTurn.id)}
-                >
-                  <BookmarkSimple weight={bookmarks.some((bookmark) => bookmark.turnId === activeTurn.id) ? "fill" : "regular"} aria-hidden="true" />
-                  {bookmarks.some((bookmark) => bookmark.turnId === activeTurn.id) ? "Saved" : "Save"}
-                </button>
-              </>}
+              <span className="journey-view-tabs">
+                <button type="button" className={view === "journey" ? "active" : ""} aria-current={view === "journey" ? "page" : undefined} onClick={() => navigate("journey")}>{t("Full answer")}</button>
+                <button type="button" className={view === "map" ? "active" : ""} aria-current={view === "map" ? "page" : undefined} onClick={() => navigate("map")}>{t("Journey map")}</button>
+              </span>
+              {view === "journey" && <span className="journey-view-actions">
+                  <button type="button" className="journey-source-control" onClick={() => setSourcesRequestToken((current) => current + 1)}>Sources <span>{activeTurn.sources.length}</span></button>
+                  <button
+                    type="button"
+                    className={`journey-save-control ${bookmarks.some((bookmark) => bookmark.turnId === activeTurn.id) ? "saved" : ""}`}
+                    aria-pressed={bookmarks.some((bookmark) => bookmark.turnId === activeTurn.id)}
+                    onClick={() => void toggleTurnBookmark(activeJourney.id, activeTurn.id)}
+                  >
+                    <BookmarkSimple weight={bookmarks.some((bookmark) => bookmark.turnId === activeTurn.id) ? "fill" : "regular"} aria-hidden="true" />
+                    {bookmarks.some((bookmark) => bookmark.turnId === activeTurn.id) ? "Saved" : "Save"}
+                  </button>
+                </span>}
             </div>
           </nav>
           {view === "map" ? (
@@ -1212,7 +1279,7 @@ export function CuriosityPediaExperience() {
 
       {view !== "start" && (
         <footer className="app-footer">
-          <p><span aria-hidden="true">W/V3</span> One personality. One researched turn. Exactly two ways forward.</p>
+          <p><span aria-hidden="true">W/V3</span> One personality. One researched turn. Many ways forward.</p>
           <div>
             <a href="https://github.com/Mister-JP/CuriosityPedia">{t("Source")}</a>
             <a href="https://github.com/Mister-JP/CuriosityPedia/blob/main/docs/curiosity-learning-north-star.md">{t("Product book")}</a>
@@ -1247,8 +1314,8 @@ function StartStage({
   const questionInputRef = useRef<HTMLTextAreaElement>(null);
   const performerId: PerformerId = "sage";
   const modelId = preferences.defaultModelId;
-  const [category, setCategory] = useState<(typeof DISCOVERY_CATEGORIES)[number]>("All");
-  const [loadedCategory, setLoadedCategory] = useState<(typeof DISCOVERY_CATEGORIES)[number]>("All");
+  const [dimension, setDimension] = useState<(typeof DISCOVERY_DIMENSIONS)[number]>("All");
+  const [loadedDimension, setLoadedDimension] = useState<(typeof DISCOVERY_DIMENSIONS)[number]>("All");
   const [failedEncounterIds, setFailedEncounterIds] = useState<string[]>([]);
   const catalogRequestRef = useRef(0);
   const [recommendationPage, setRecommendationPage] = useState<LandingRecommendationPage>({
@@ -1271,23 +1338,23 @@ function StartStage({
     placeholderQuestions,
     seed.length === 0 && !preferences.reduceMotion,
   );
-  const visibleEncounters = loadedCategory === category ? recommendationPage.items : [];
+  const visibleEncounters = loadedDimension === dimension ? recommendationPage.items : [];
 
   const loadRecommendationPage = useCallback(async (
     page: number,
-    selectedCategory: (typeof DISCOVERY_CATEGORIES)[number],
+    selectedDimension: (typeof DISCOVERY_DIMENSIONS)[number],
   ) => {
     const requestId = ++catalogRequestRef.current;
     setCatalogLoading(true);
     setCatalogError(null);
     setFailedEncounterIds([]);
     const searchParams = new URLSearchParams({ page: String(page) });
-    if (selectedCategory !== "All") searchParams.set("category", selectedCategory);
+    if (selectedDimension !== "All") searchParams.set("dimension", selectedDimension);
     try {
       const response = await api<LandingRecommendationPage>(`/api/landing-recommendations?${searchParams}`);
       if (catalogRequestRef.current !== requestId) return;
       setRecommendationPage(response.data);
-      setLoadedCategory(selectedCategory);
+      setLoadedDimension(selectedDimension);
     } catch (cause) {
       if (catalogRequestRef.current !== requestId) return;
       setCatalogError(messageFrom(cause));
@@ -1365,10 +1432,10 @@ function StartStage({
     explore(encounter);
   }
 
-  function selectCategory(selectedCategory: (typeof DISCOVERY_CATEGORIES)[number]) {
-    if (selectedCategory === category && loadedCategory === category && !catalogError) return;
-    setCategory(selectedCategory);
-    void loadRecommendationPage(1, selectedCategory);
+  function selectDimension(selectedDimension: (typeof DISCOVERY_DIMENSIONS)[number]) {
+    if (selectedDimension === dimension && loadedDimension === dimension && !catalogError) return;
+    setDimension(selectedDimension);
+    void loadRecommendationPage(1, selectedDimension);
   }
 
   return (
@@ -1395,14 +1462,15 @@ function StartStage({
           </div>
         </div>
 
-        <nav className="discovery-categories" aria-label="Browse concept categories">
-          {DISCOVERY_CATEGORIES.map((item) => (
+        <nav className="discovery-categories" aria-label="Browse knowledge dimensions">
+          <span className="discovery-dimension-label" aria-hidden="true">Explore by lens</span>
+          {DISCOVERY_DIMENSIONS.map((item) => (
             <button
               key={item}
-              className={category === item ? "active" : ""}
+              className={dimension === item ? "active" : ""}
               type="button"
-              aria-pressed={category === item}
-              onClick={() => selectCategory(item)}
+              aria-pressed={dimension === item}
+              onClick={() => selectDimension(item)}
             >
               {item}
             </button>
@@ -1410,7 +1478,7 @@ function StartStage({
           <button type="button" onClick={surpriseMe}>Surprise me</button>
         </nav>
 
-        <div className={`discovery-grid ${category !== "All" ? "filtered" : ""}`} aria-live="polite" aria-busy={creating || catalogLoading}>
+        <div className={`discovery-grid ${dimension !== "All" ? "filtered" : ""}`} aria-live="polite" aria-busy={creating || catalogLoading}>
           {visibleEncounters.map((encounter, index) => (
             <article className="discovery-card" key={encounter.id}>
               <button
@@ -1422,7 +1490,7 @@ function StartStage({
               >
                 {failedEncounterIds.includes(encounter.id) ? (
                   <span className="discovery-card-image-fallback" role="img" aria-label={encounter.imageAlt}>
-                    <span>{encounter.category}</span>
+                    <span>{encounter.dimensions[0] ?? encounter.category}</span>
                   </span>
                 ) : (
                   <>
@@ -1451,7 +1519,9 @@ function StartStage({
               </button>
               <div className="discovery-card-copy">
                 <div className="discovery-card-meta">
-                  <span className="discovery-card-category">{encounter.category}</span>
+                  <span className="discovery-card-dimensions" aria-label={`Dimensions: ${encounter.dimensions.join(", ")}`}>
+                    {encounter.dimensions.map((item) => <span key={item}>{item}</span>)}
+                  </span>
                   <span>{String(index + 1).padStart(2, "0")}</span>
                 </div>
                 <h2>{encounter.question}</h2>
@@ -1470,25 +1540,25 @@ function StartStage({
         </div>
         {catalogLoading && (
           <p className="discovery-catalog-status">
-            {category === "All" ? "Opening the latest editorial page…" : `Gathering all ${category.toLowerCase()} topics…`}
+            {dimension === "All" ? "Opening the latest editorial page…" : `Gathering every ${dimension.toLowerCase()} connection…`}
           </p>
         )}
         {!catalogLoading && catalogError && (
           <p className="discovery-catalog-status" role="alert">
-            {catalogError} <button type="button" onClick={() => void loadRecommendationPage(recommendationPage.page, category)}>Try again</button>
+            {catalogError} <button type="button" onClick={() => void loadRecommendationPage(recommendationPage.page, dimension)}>Try again</button>
           </p>
         )}
         {!catalogLoading && !catalogError && visibleEncounters.length === 0 && (
           <p className="discovery-catalog-status">
-            {category === "All" ? "No recommendation pages have been published yet." : `No ${category.toLowerCase()} topics have been published yet.`}
+            {dimension === "All" ? "No recommendation pages have been published yet." : `No ${dimension.toLowerCase()} connections have been published yet.`}
           </p>
         )}
-        {loadedCategory === category && recommendationPage.totalPages > 1 && (
+        {loadedDimension === dimension && recommendationPage.totalPages > 1 && (
           <nav className="discovery-pagination" aria-label="Recommendation archive pages">
             <button
               type="button"
               disabled={catalogLoading || recommendationPage.page <= 1}
-              onClick={() => void loadRecommendationPage(recommendationPage.page - 1, category)}
+              onClick={() => void loadRecommendationPage(recommendationPage.page - 1, dimension)}
             >
               ← Page Up
             </button>
@@ -1501,7 +1571,7 @@ function StartStage({
                   aria-label={`Open recommendation page ${page}`}
                   aria-current={page === recommendationPage.page ? "page" : undefined}
                   disabled={catalogLoading || page === recommendationPage.page}
-                  onClick={() => void loadRecommendationPage(page, category)}
+                  onClick={() => void loadRecommendationPage(page, dimension)}
                 >
                   {page}
                 </button>
@@ -1510,7 +1580,7 @@ function StartStage({
             <button
               type="button"
               disabled={catalogLoading || recommendationPage.page >= recommendationPage.totalPages}
-              onClick={() => void loadRecommendationPage(recommendationPage.page + 1, category)}
+              onClick={() => void loadRecommendationPage(recommendationPage.page + 1, dimension)}
             >
               Page Down →
             </button>
@@ -1604,6 +1674,14 @@ function JourneyBufferingStage({
   const workingLabel = state.retryAttempt > 0
     ? t("Retrying {attempt} of {max}", { attempt: state.retryAttempt, max: state.maxRetries })
     : activity.at(-1)?.label ?? state.message;
+  const compositionStarted = state.status === "complete"
+    || state.phase === "composition"
+    || state.phase === "validation"
+    || state.events.some((event) => event.phase === "composition" || event.phase === "validation");
+  const researchPhaseState = compositionStarted || state.status === "complete" ? "complete" : "active";
+  const compositionPhaseState = state.status === "complete"
+    ? "complete"
+    : compositionStarted ? "active" : "waiting";
 
   return (
     <section className="knowledge-loading" aria-labelledby="buffering-title" aria-busy={state.status === "running"}>
@@ -1616,6 +1694,17 @@ function JourneyBufferingStage({
           <div>
             <strong>{state.status === "complete" ? "The session is ready" : state.status === "error" ? stoppedLabel : "Building your visual story"}</strong>
             <small>{state.status === "running" ? workingLabel : state.status === "complete" ? "Arranging the final page" : state.error}</small>
+          </div>
+        </div>
+        <div className="knowledge-loading-phases" aria-label="Two-step generation progress">
+          <div className={researchPhaseState}>
+            <span>01</span>
+            <p><strong>Research dossier</strong><small>{researchPhaseState === "complete" ? "Evidence package complete" : "Finding and checking evidence"}</small></p>
+          </div>
+          <i aria-hidden="true" />
+          <div className={compositionPhaseState}>
+            <span>02</span>
+            <p><strong>Visual session</strong><small>{compositionPhaseState === "complete" ? "Page and image questions complete" : compositionPhaseState === "active" ? "Composing from the dossier" : "Waiting for the dossier"}</small></p>
           </div>
         </div>
         {state.status === "running" && (
@@ -1871,7 +1960,7 @@ function PerformanceStage({
                 </button>
                 <button type="button" aria-expanded="false" aria-controls="redraw-inline-controls" onClick={() => setRedrawOpen(true)}>
                   <ArrowsClockwise aria-hidden="true" />
-                  <span><strong>{t("Try two different questions")}</strong><small>{t("Change both choices")}</small></span>
+                  <span><strong>{t("Try different questions")}</strong><small>{t("Change these choices")}</small></span>
                   <CaretRight aria-hidden="true" />
                 </button>
               </>
@@ -1891,7 +1980,7 @@ function PerformanceStage({
                           if (event.key === "Escape") setRedrawNoteOpen(false);
                         }}
                         maxLength={240}
-                        placeholder={t("What should change about the next two questions?")}
+                        placeholder={t("What should change about the replacement questions?")}
                       />
                     </label>
                   </>
@@ -1899,7 +1988,7 @@ function PerformanceStage({
                   <>
                     <ArrowsClockwise className="redraw-inline-icon" aria-hidden="true" />
                     <div className="redraw-inline-modes" role="group" aria-label={t("Replacement question direction")}>
-                      <small>{t("Change both choices")}</small>
+                      <small>{t("Change these choices")}</small>
                       <button type="button" className={adventure === 20 ? "active" : ""} aria-pressed={adventure === 20} onClick={() => setAdventure(20)}>{t("Practical")}</button>
                       <button type="button" className={adventure === 78 ? "active" : ""} aria-pressed={adventure === 78} onClick={() => setAdventure(78)}>{t("Surprising")}</button>
                       <button type="button" className={adventure === 50 ? "active" : ""} aria-pressed={adventure === 50} onClick={() => setAdventure(50)}>{t("Different direction")}</button>
@@ -1911,7 +2000,7 @@ function PerformanceStage({
                   </>
                 )}
                 <button className="redraw-inline-close" type="button" aria-label={t("Dismiss")} onClick={closeRedraw}><X aria-hidden="true" /></button>
-                <button className="redraw-inline-submit" type="button" aria-label={t(busy === "reject" ? "Replacing…" : "Generate two new questions")} disabled={!actionable || busy !== null} onClick={submitRedraw}><ArrowRight aria-hidden="true" /></button>
+                <button className="redraw-inline-submit" type="button" aria-label={t(busy === "reject" ? "Replacing…" : "Generate replacement questions")} disabled={!actionable || busy !== null} onClick={submitRedraw}><ArrowRight aria-hidden="true" /></button>
               </div>
             )}
           </div>
@@ -2010,12 +2099,21 @@ function EditorialKnowledgeSession({
   const [knowledgeDeclarationOpen, setKnowledgeDeclarationOpen] = useState(false);
   const [knowledgeCheckOpen, setKnowledgeCheckOpen] = useState(false);
   const [mediaPalette, setMediaPalette] = useState<Record<string, string>>({});
+  const [compactAtlas, setCompactAtlas] = useState(false);
   const flipBookRef = useRef<FlipBookHandle | null>(null);
   const activeKnowledgeMedia = knowledgeMedia[knowledgeQuestionIndex];
   const activeSpread = atlasSpreads[activePanel] ?? [];
   const completedPageCount = activeSpread.length
     ? activeSpread[activeSpread.length - 1].mediaIndex + 1
     : 0;
+
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 620px)");
+    const update = () => setCompactAtlas(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
 
   useEffect(() => {
     if (!knowledgeAutoRotate || !knowledgeDeclarationOpen || knowledgeMedia.length < 2) return;
@@ -2260,20 +2358,21 @@ function EditorialKnowledgeSession({
           </section>
         ) : (
         <HTMLFlipBook
+          key={compactAtlas ? "compact-atlas" : "wide-atlas"}
           ref={flipBookRef}
           className="knowledge-stpageflip"
           style={{}}
-          width={800}
-          height={650}
+          width={compactAtlas ? 360 : 800}
+          height={compactAtlas ? 520 : 650}
           minWidth={280}
-          maxWidth={1100}
-          minHeight={360}
+          maxWidth={compactAtlas ? 620 : 1100}
+          minHeight={compactAtlas ? 300 : 360}
           maxHeight={1100}
           size="stretch"
           startPage={activePanel * 2}
           drawShadow
           flippingTime={760}
-          usePortrait={false}
+          usePortrait={compactAtlas}
           startZIndex={2}
           autoSize
           maxShadowOpacity={0.34}
@@ -2292,6 +2391,9 @@ function EditorialKnowledgeSession({
         >
         {atlasPages.map((page, pageIndex) => {
           const block = turn.answerBlocks[Math.min(page.mediaIndex, turn.answerBlocks.length - 1)];
+          const pageCopy = page.mediaIndex === 0
+            ? block?.text
+            : page.item.commentary?.trim() || block?.text;
           const opening = page.mediaIndex < 2;
           return (
             <KnowledgeFlipPage
@@ -2307,7 +2409,11 @@ function EditorialKnowledgeSession({
                 {page.mediaIndex === 0
                   ? <h2>{turn.topicLabel}</h2>
                   : <h3>{page.item.title ?? page.item.caption ?? turn.topicLabel}</h3>}
-                {block && <p className="knowledge-atlas-summary">{block.text} {citations(block.sourceIds)}</p>}
+                {pageCopy && (
+                  <p className="knowledge-atlas-summary">
+                    {pageCopy} {page.mediaIndex === 0 && block ? citations(block.sourceIds) : null}
+                  </p>
+                )}
               </header>
               <div className="knowledge-leaf-image">
                 <EditorialImage
@@ -2317,7 +2423,7 @@ function EditorialKnowledgeSession({
                   onOpen={() => setLightboxIndex(page.mediaIndex)}
                   onPalette={rememberPalette}
                   shareQuestion={turn.question}
-                  shareSummary={block?.text ?? turn.answer}
+                  shareSummary={pageCopy ?? turn.answer}
                 />
               </div>
               <span className="knowledge-leaf-folio" aria-hidden="true">{String(pageIndex + 1).padStart(2, "0")}</span>

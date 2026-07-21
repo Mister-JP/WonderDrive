@@ -1,0 +1,2378 @@
+{
+  "version": 1,
+  "journeys": [
+    {
+      "key": "blood-falls",
+      "seed": "Why does an Antarctic glacier appear to bleed?",
+      "title": "Why does an Antarctic glacier appear to bleed?",
+      "performerId": "sage",
+      "modelId": "gpt-5.4-nano",
+      "researchPreset": "standard",
+      "answerDensity": "rich",
+      "imagePreference": "prefer",
+      "outputLocale": "en",
+      "turn": {
+        "question": "Why does an Antarctic glacier appear to bleed?",
+        "answer": "A red stream seeps out at the edge of Taylor Glacier in Antarctica, staining the ice like it’s “bleeding.” The surprise is that it isn’t blood at all—it’s an invisible, salty liquid coming up from far below and turning red at the surface.\n\nInside the glacier, Taylor Glacier hosts a pressurized system that carries iron-rich subglacial brine upward in rare outflow events. The brine stays liquid because it’s extremely salty, and the ice-and-salt mix helps keep the freezing point low.\n\nThen the brine “meets the air.” When the oxygen in the atmosphere contacts the iron in the brine, the iron chemistry changes and red iron oxides precipitate, creating the crimson staining you can see and photograph.\n\nScientists have also tracked where the salty water likely travels using radar-like measurements and mapped a long brine pathway from beneath the glacier to the falls. This turns the “bleeding” scene into a traceable chain: hidden source → pressurized flow → surface exposure → rust-red deposits.\n\nCaveat: not every red patch in Antarctica is “Blood Falls.” “Red snow” can come from algae or other materials, but Blood Falls is specifically explained by iron-rich brine oxidizing at the surface—so the glacier looks gory only where the chemistry-bearing liquid reaches air.",
+        "answerPayload": {
+          "blocks": [
+            {
+              "text": "A red stream seeps out at the edge of Taylor Glacier in Antarctica, staining the ice like it’s “bleeding.” The surprise is that it isn’t blood at all—it’s an invisible, salty liquid coming up from far below and turning red at the surface.",
+              "sourceIds": [
+                "src_g3pcrx"
+              ]
+            },
+            {
+              "text": "Inside the glacier, Taylor Glacier hosts a pressurized system that carries iron-rich subglacial brine upward in rare outflow events. The brine stays liquid because it’s extremely salty, and the ice-and-salt mix helps keep the freezing point low.",
+              "sourceIds": [
+                "src_g3pcrx"
+              ]
+            },
+            {
+              "text": "Then the brine “meets the air.” When the oxygen in the atmosphere contacts the iron in the brine, the iron chemistry changes and red iron oxides precipitate, creating the crimson staining you can see and photograph.",
+              "sourceIds": [
+                "src_g3pcrx"
+              ]
+            },
+            {
+              "text": "Scientists have also tracked where the salty water likely travels using radar-like measurements and mapped a long brine pathway from beneath the glacier to the falls. This turns the “bleeding” scene into a traceable chain: hidden source → pressurized flow → surface exposure → rust-red deposits.",
+              "sourceIds": [
+                "src_1621x3g",
+                "src_8bmzl4",
+                "src_g3pcrx"
+              ]
+            },
+            {
+              "text": "Caveat: not every red patch in Antarctica is “Blood Falls.” “Red snow” can come from algae or other materials, but Blood Falls is specifically explained by iron-rich brine oxidizing at the surface—so the glacier looks gory only where the chemistry-bearing liquid reaches air.",
+              "sourceIds": [
+                "src_1hvqto1"
+              ]
+            }
+          ],
+          "media": [
+            {
+              "imageUrl": "https://www.merkur.de/assets/images/41/590/41590595-uralte-mikroben-werden-durch-den-blutfluss-aus-dem-gletscher-gespuelt-2qkoSuGl5dBG.jpg",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/ElALz6MFWGMip-VA_V3FBq9JydKN0wClgnoPQDaENZhV0X6d1AeR0vJepy8KkpODlCJga6jvw9X71tGFGOSvGkZVluVGarRntuWuY2rJLghcIgykFIZWa0X17KK4I91VLafruKP3H-nWY495bGP9hG6PdVDzDNI551-9tf2Zl9Q?purpose=inline",
+              "sourcePageUrl": "https://www.merkur.de/wissen/antarktis-gletscher-blutet-forscher-machen-durch-zufall-einzigartige-beobachtung-in-der-zr-94182027.html",
+              "caption": "Visual reference for Antarctic “Blood Falls” and iron-rich brine oxidation",
+              "alt": "Ground photograph of Blood Falls red discharge near Taylor Glacier",
+              "title": "Ground photograph of Blood Falls red discharge near Taylor Glacier",
+              "role": "phenomenon",
+              "commentary": "LOCATE the bright red streak descending from the glacier’s face into a pale icy area. NOTICE that the red material looks thicker at the emergence point and darker where it collects. DECODE that the color is tied to the emerging brine and the deposits it leaves as it chills and reacts with oxygen. CONNECT to the “bleeding” illusion: your eyes interpret color first, but the real driver is hidden chemical water rising and staining where it meets air.",
+              "evidenceRelation": "shows",
+              "knowledgeCheck": {
+                "question": "What turns the liquid look like rust-red?",
+                "options": [
+                  "Iron in the brine oxidizes after reaching air",
+                  "The glacier surface is made of red crystal rock",
+                  "The red color is from living algae spreading instantly",
+                  "The ocean underneath shoots hot lava into cracks",
+                  "Dust from Antarctica’s deserts chemically paints ice",
+                  "Solar heating causes ice to change color everywhere",
+                  "The red is caused by microbes producing red pigment",
+                  "A lens effect makes the water appear red in photos"
+                ],
+                "correctOptionIndex": 0,
+                "explanation": "The leading explanation is that iron-bearing brine becomes oxygen-exposed at the surface, and iron-oxide deposits form—turning the outflow and nearby ice red."
+              }
+            },
+            {
+              "imageUrl": "https://riosdelplaneta.com/wp-content/uploads/2021/04/CATARATAS-DE-SANGRE-3.jpg",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/WVzN_7Humg2WJPErvAf8lc5tRNRYxvP3BcW9ecmuDs7jUSVHQ4uec_EX50xBrLi8vT7uJhHZd-NoAnHkfZjFbobfaKLRZXQ9ZEta6nSMHzCBGPkcX0neOP7w0GxfKXrjqD2ffpIb9OjrawGypUP_JRqTrLMfgMT1uxb1Q-7-wYo?purpose=inline",
+              "sourcePageUrl": "https://riosdelplaneta.com/cataratas-de-sangre/",
+              "caption": "Visual reference for Antarctic “Blood Falls” and iron-rich brine oxidation",
+              "alt": "Close view of the red cascade and surrounding ice",
+              "title": "Close view of the red cascade and surrounding ice",
+              "role": "object",
+              "commentary": "LOCATE the curved red channel where the outflow spills from a crevasse-like opening. NOTICE the channel is bordered by darker ice/rock and that the red looks like it sits on top as a residue. DECODE that this is not a dye coating painted on afterward; it’s a surface deposit created as the brine emerges, reacts, and then freezes/stains along its path. CONNECT to the mechanism: the chemistry happens at the boundary between liquid brine and oxygen-containing air.",
+              "evidenceRelation": "supports",
+              "knowledgeCheck": {
+                "question": "Why does the red look like a residue on ice?",
+                "options": [
+                  "Red iron compounds precipitate as the brine meets air",
+                  "The red is only reflected light from dark ice",
+                  "The red forms because ice melts and re-freezes without chemistry",
+                  "The red is fine dust blown in and stuck to any wet spot",
+                  "The red is from temperature sensors warming the ice",
+                  "The red is algae cells coating everything instantly",
+                  "The red is sand particles embedded deep in the glacier",
+                  "The red is from iron ore inside rocks cracking open randomly"
+                ],
+                "correctOptionIndex": 0,
+                "explanation": "When the emerging iron-bearing brine is exposed to oxygen, the iron changes into red compounds that precipitate and remain as a stained residue."
+              }
+            },
+            {
+              "imageUrl": "https://imgs.elpais.com.uy/dims4/default/03c1488/2147483647/strip/true/crop/803x552%2B2%2B0/resize/1440x990%21/quality/90/?url=https%3A%2F%2Fel-pais-uruguay-production-web.s3.us-east-1.amazonaws.com%2Fbrightspot%2Fuploads%2F2020%2F10%2F26%2F5f96bdf930476.jpeg",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/cujrNUxaj55jPHgxEOYUkwN1nH4Kw05c59iMnZ01HUMgQxm0C7LPOM7IXKv5U5msoatZvVwxJ9nMAo-1i6xBzsvHwTMLkX2bkW3RloOqLHvgdbVyVLHT-M2CLkdxTTZ3OxNqhQ0OqmoTGA-qbuwXLK1nV15BDdodHA0p4bp6jto?purpose=inline",
+              "sourcePageUrl": "https://www.elpais.com.uy/mundo/cataratas-de-sangre-la-misteriosa-formacion-de-la-antartida-que-intrigo-a-los-cientificos-durante-un-siglo",
+              "caption": "Visual reference for Antarctic “Blood Falls” and iron-rich brine oxidation",
+              "alt": "Red torrent at the glacier face (Blood Falls scene)",
+              "title": "Red torrent at the glacier face (Blood Falls scene)",
+              "role": "comparison",
+              "commentary": "LOCATE how the red torrent contrasts strongly with the surrounding white glacier walls and gray-dark ground. NOTICE the glacier face itself isn’t uniformly red; only the outflow zone is. DECODE the comparison: the scene suggests a “local reaction” where hidden liquid is exposed, rather than the entire ice body changing color. CONNECT this to a key lesson: visible color can be a boundary effect at a specific chemical interface.",
+              "evidenceRelation": "illustrates",
+              "knowledgeCheck": {
+                "question": "Why isn’t the whole glacier face red?",
+                "options": [
+                  "Only brine pathways reach air and undergo iron-oxide formation",
+                  "All glacier ice is red, but cameras only show red in one area",
+                  "Red color forms only under strong sunlight and the rest is shadowed",
+                  "The red pigment spreads only by water vapor, not liquid flow",
+                  "The rest of the ice is protected from oxygen by windblown snow",
+                  "The red comes from a uniform internal pigment mix throughout",
+                  "The glacier face is covered with an invisible clear coating everywhere",
+                  "The red is from burning meteors that land only once at the outlet"
+                ],
+                "correctOptionIndex": 0,
+                "explanation": "Blood Falls is localized because brine rises through specific cracks/outlets. That means only those emergence spots get oxygen contact to form red iron oxides."
+              }
+            },
+            {
+              "imageUrl": "https://www.researchgate.net/publication/345494895/figure/fig1/AS%3A955534647771136%401604828621039/Overview-map-of-the-McMurdo-Dry-Valleys-Lake-Fryxell-is-located-in-the-eastern-portion.jpg",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/NQEDsnRfvpzV2-Gepk_TD3BV2fP2DlFDl0Yu9AOk9XvqaLnJrRs6OFd3KOgLoZ0dOnE_J39IRU76lHLfhT__S0IYPKWSuaqZV_yyd9LLraZ6XVjXi-FjleMLVSXBYj6CH0uu7-xtUU-xuM-gDmhpGEVLMHCXYad0Zzut3aSYmiQ?purpose=inline",
+              "sourcePageUrl": "https://www.researchgate.net/figure/Overview-map-of-the-McMurdo-Dry-Valleys-Lake-Fryxell-is-located-in-the-eastern-portion_fig1_345494895",
+              "caption": "Visual reference for Antarctic “Blood Falls” and iron-rich brine oxidation",
+              "alt": "Map showing McMurdo Dry Valleys lakes and Taylor Valley region",
+              "title": "Map showing McMurdo Dry Valleys lakes and Taylor Valley region",
+              "role": "context",
+              "commentary": "LOCATE Taylor Valley and the cluster of nearby ice-covered lakes labeled on the map. NOTICE the area is a small region inside the broader McMurdo Dry Valleys, with Taylor Glacier marked near the valley bottom. DECODE that Blood Falls is not a global Antarctic effect; it’s tied to one particular valley system and glacier terminus geometry. CONNECT to the big idea: “bleeding” needs a specific hidden liquid source and a way for it to reach the surface and air.",
+              "evidenceRelation": "contextualizes",
+              "knowledgeCheck": {
+                "question": "Why is Blood Falls tied to one valley?",
+                "options": [
+                  "A particular glacier-lake setting lets brine reach air at the terminus",
+                  "All Antarctic valleys have identical brine chemistry and flow routes",
+                  "Taylor Valley receives much more sunlight than nearby valleys",
+                  "Only valleys with algae always show red staining",
+                  "Blood Falls requires thunderstorms, which occur only there",
+                  "Every lake in the region has a volcano underneath that makes red lava",
+                  "It happens only where the map labels “Dry Valleys” (a trick)",
+                  "Brine forms only in the summer, and only this valley has summer melt"
+                ],
+                "correctOptionIndex": 0,
+                "explanation": "The red “bleeding” is linked to Taylor Glacier and its discharge into the local lake system. That specific setting allows pressurized brine to reach the surface and oxidize in air."
+              }
+            },
+            {
+              "imageUrl": "https://i.natgeofe.com/n/c9b9defd-d5ac-4794-9be2-dc3385ef1363/GettyImages-557126469aa_3x2.jpg",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/lgC-Q3GtlrGwkRa6R3jawR5aDaF6qlKsmvWPAbCp3WQ1_mhgX626AiQPUT_2ZpVdzmyiYE8-f72cG4ZY6Jyza1hOQ7z09LPkn0z9uTsYsxGbNAvLT4CPK1y7v2jNR_X_eTBDky2Aw49rBMh902gOF-kMdoZLnC2yBwXsG0Jvon4?purpose=inline",
+              "sourcePageUrl": "https://www.nationalgeographic.com/science/article/blood-falls-antarctica-explained",
+              "caption": "Visual reference for Antarctic “Blood Falls” and iron-rich brine oxidation",
+              "alt": "Blood Falls at Taylor Glacier—red brine at the ice face",
+              "title": "Blood Falls at Taylor Glacier—red brine at the ice face",
+              "role": "anchor",
+              "commentary": "A vivid crimson stream spills from the edge of an icy cliff, then spreads across darker sediment and thin icy patches. The contrast is the point: the red color looks like it’s erupting from inside the glacier, but the flow’s smooth, channel-like shape suggests a liquid discharge rather than paint or surface staining. Notice how the red is concentrated near the outlet area and fades outward over ice and rock.",
+              "evidenceRelation": "shows",
+              "knowledgeCheck": {
+                "question": "Why does the red outflow hug the ice face?",
+                "options": [
+                  "Iron-rich, salty brine rises and oxidizes",
+                  "Snow algae pigment stains the ice",
+                  "Volcanic ash dyes the surface",
+                  "Rust comes only from exposed rocks",
+                  "Red color forms from evaporating freshwater",
+                  "Impact heat burns ice into red streaks",
+                  "Birds scatter red material onto snow",
+                  "Wind-driven sand paints the glacier red"
+                ],
+                "correctOptionIndex": 0,
+                "explanation": "The outlet concentrates the red because the phenomenon is driven by upward, iron-bearing brine; when it reaches the air, the iron chemistry turns the flow rust-red."
+              }
+            },
+            {
+              "imageUrl": "https://earthsky.org/upl/2023/05/Blood-Falls-Peter-Rejcek-wikipedia.jpg",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/AsBCROXWUQM8dTYI8wf4nB2NJJ1zU6zpJGGhr0tcNBW3UXV4RfWXHv6SQfV5ol6R7vPvAvtXNqJdltDdbljwOyHnl7jNcWsu56un41LaqmaZiDFrLH0qrwLE8hJ8T6K8fHIDSDIQU4kcK_Zrf4LVuTCGlor6sUcbNNZqPCUQpGU?purpose=inline",
+              "sourcePageUrl": "https://earthsky.org/earth/what-makes-blood-falls-red-antarctica/",
+              "caption": "Visual reference for Antarctic “Blood Falls” and iron-rich brine oxidation",
+              "alt": "Blood Falls close-up—red flow emerging from cracks",
+              "title": "Blood Falls close-up—red flow emerging from cracks",
+              "role": "phenomenon",
+              "commentary": "The image frames a steep, ice-filled valley wall where a dark-red to rust-colored plume issues from a narrow source zone and then fans across nearby ground. The red appears textured, with branching streaks that look like channels for a fluid moving under pressure. Even without labels, the geometry matters: the brightest color aligns with where the outflow originates, reinforcing the idea of a controlled pathway to the surface.",
+              "evidenceRelation": "illustrates",
+              "knowledgeCheck": {
+                "question": "Why does the red color concentrate in one narrow source?",
+                "options": [
+                  "A pressurized channel delivers iron-rich brine",
+                  "Lightning strikes repeatedly paint the same spot",
+                  "Sunlight reflects red light uniformly",
+                  "A glacier fracture sprays fine red dust",
+                  "Red snow algae grow exactly where brine exits",
+                  "Wind deposits dye along a single crack",
+                  "Salt freezes and randomly crystals red everywhere",
+                  "Rock slides mix red soil into ice"
+                ],
+                "correctOptionIndex": 0,
+                "explanation": "A focused, pressurized discharge explains why the redest region stays near the outlet while the color disperses as the flow spreads."
+              }
+            },
+            {
+              "imageUrl": "https://www.antarctica.gov.au/site/assets/files/17038/16-blood-falls-copy.1600x0.jpg",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/Mi8Gqyc6q-P5FHZyXLh3MX4NGdEoyE0J3Ls3WAGszX3BPJnI05Ciji9Rreup6YUv5pqA9TwkbuXX8rdewswWKBbDO-4aXs9vNm85zSbelCqGg8pXjplElWyTLA3EviDx5kPgZGmMeasiPIIgYwhcljT5P6sVCbU_LfOnadL7DB4?purpose=inline",
+              "sourcePageUrl": "https://www.antarctica.gov.au/magazine/issue-23-december-2012/antarctic-treaty-meeting/continent-wide-studies-support-antarctic-environmental-protection/",
+              "caption": "Visual reference for Antarctic “Blood Falls” and iron-rich brine oxidation",
+              "alt": "Aerial view of Blood Falls—labeled discharge locations",
+              "title": "Aerial view of Blood Falls—labeled discharge locations",
+              "role": "context",
+              "commentary": "From above, the glacier front and moraine are visible alongside a striking red outflow, while arrows and labels point to where meltwater-related pathways connect to the discharge. The labeled lines emphasize that the red feature isn’t just a random drip—it has defined upstream routes. Look for two distinct discharge behaviors highlighted by annotations: one more cascade-like over the ice edge and another seeping along the glacier margin.",
+              "evidenceRelation": "contextualizes",
+              "knowledgeCheck": {
+                "question": "How do meltwater pathways feed the red discharge areas?",
+                "options": [
+                  "Water follows supraglacial channels to labeled discharge points",
+                  "Red appears without any surface meltwater connections",
+                  "Only subglacial brine rises straight upward",
+                  "Red forms where snow falls, not where channels go",
+                  "Wind transports brine across the ice surface",
+                  "The red results from glacier melting everywhere equally",
+                  "Red discharge happens only after storms, not melt",
+                  "Channels are unrelated; red is purely sediment staining"
+                ],
+                "correctOptionIndex": 0,
+                "explanation": "The image’s annotated pathways show that meltwater routes can connect to specific outlet points, helping explain where the crimson outflow concentrates."
+              }
+            },
+            {
+              "imageUrl": "https://static.cambridge.org/binary/version/id/urn%3Acambridge.org%3Aid%3Abinary%3A20260129124924833-0581%3AS0022143017000168%3AS0022143017000168_fig5g.jpeg?pub-status=live",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/RnDPYpo4hAZLV-MekNoZQQ_8kGofT_UDat4WT6nKQClOOvJiIedyStGyXQ3a2nzKroRKs-rHq3gljM-D27UbhwD8FO4_Ql8Y9Z4L7O4QgOvPcj_0uc3UsMHLamkhobdGQfdLd1aDiOXxsh2uWfQo8-RnaTqq5JN-11pe8YZooKY?purpose=inline",
+              "sourcePageUrl": "https://www.cambridge.org/core/journals/journal-of-glaciology/article/an-englacial-hydrologic-system-of-brine-within-a-cold-glacier-blood-falls-mcmurdo-dry-valleys-antarctica/B5C197906AD54619AEA26068AD92989A",
+              "caption": "Visual reference for Antarctic “Blood Falls” and iron-rich brine oxidation",
+              "alt": "Journal of Glaciology study showing mapped brine feeding pathways and Blood Falls location",
+              "title": "Journal of Glaciology study showing mapped brine feeding pathways and Blood Falls location",
+              "role": "mechanism",
+              "commentary": "LOCATE the study-area figure that identifies Taylor Glacier, Taylor Valley, and the Blood Falls site (often marked clearly). NOTICE how the paper’s figures treat Blood Falls as the surface result of an englacial/subglacial hydrologic system. DECODE the idea: the red waterfall is the end of a pathway inside the ice, which can be inferred from measurements rather than seen directly. CONNECT this to the mechanism steps: hidden pressurized brine → routed flow → localized emergence → oxygen-driven iron-oxide staining.",
+              "evidenceRelation": "supports",
+              "knowledgeCheck": {
+                "question": "How do researchers connect ice pathways to Blood Falls?",
+                "options": [
+                  "They infer brine flow routes using geophysical measurements",
+                  "They watch the brine through transparent sections of ice",
+                  "They scrape off ice until red dye appears everywhere",
+                  "They use microscopes on lake ice to guess the outlet location",
+                  "They listen to sound waves through the glacier using only echo timing",
+                  "They rely on weather forecasts to predict where red spots will be",
+                  "They assume the red comes from surface algae only",
+                  "They paint lines on the map by matching random red stains"
+                ],
+                "correctOptionIndex": 0,
+                "explanation": "The key is linking surface discharge to an inferred englacial hydrologic system. Studies use measurements to map the brine’s presence and routing inside the ice, connecting that to where Blood Falls emerges."
+              }
+            },
+            {
+              "imageUrl": "https://assets.iflscience.com/assets/articleNo/41457/iImg/60184/content-1493389805-flow.jpg",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/QBRQPs3sUSZcF9L9xHv9bCfoTgbbwd1THfHBy2XHpPPSwOhpLxM-jB18w6bE73zyaCltIWjvA9EFvNak4i8EMa6GVsrL-QtN9sFEOLLtol4nD-UTNbAp2EjtoAcfSF_j7qHiHTUtAnNi6ByELx-uj0Ca2ZGktdKM-aoVhaj5dCU?purpose=inline",
+              "sourcePageUrl": "https://www.iflscience.com/origin-point-antarctica-blood-falls-revealed-41457",
+              "caption": "Visual reference for Antarctic “Blood Falls” and iron-rich brine oxidation",
+              "alt": "Map of predicted brine routes toward Blood Falls",
+              "title": "Map of predicted brine routes toward Blood Falls",
+              "role": "scale",
+              "commentary": "A color-coded map shows a glacier region outlined by dark blue and then shaded with gradients, with route-like elements drawn in distinct colors. Green linework highlights centerlines associated with predicted pathways, while a red line traces a specific outflow crack. A small inset zooms into one localized area, and scale bars provide distance context. What to notice is how the map turns a dramatic surface event into an inferred journey from beneath the ice.",
+              "evidenceRelation": "illustrates",
+              "knowledgeCheck": {
+                "question": "What do the map colors represent for Blood Falls?",
+                "options": [
+                  "Likelihood of brine traveling along modeled pathways",
+                  "Average air temperature across the glacier",
+                  "How deep the snowpack is at each spot",
+                  "Where the ice is thinnest only",
+                  "Wind speed directions for the region",
+                  "Where algae blooms are expected",
+                  "Rock type boundaries beneath the glacier",
+                  "Locations of penguin nesting sites"
+                ],
+                "correctOptionIndex": 0,
+                "explanation": "The map colors and highlighted lines are used to indicate where brine is most likely routed through the glacier to reach the Blood Falls outlet."
+              }
+            },
+            {
+              "imageUrl": "https://static.cambridge.org/binary/version/id/urn%3Acambridge.org%3Aid%3Abinary%3A20201116072949727-0196%3AS0954102020000036%3AS0954102020000036_fig3.png?pub-status=live",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/R6TCVr4mh2XW59thgHHfcHXyJH8i2reebhJir5nSQF4HO0ChTpuNeRw6le8zGSeOvBdDEaahPOoNDJU0Bd6dXGlkrcLtI5IqRgMwzIbpiZqWp69Pc34OusArqLdux16LPR-5iMwaelLnoPwaNQKvt4g5Mjx0cndJQFa0uvEfIzQ?purpose=inline",
+              "sourcePageUrl": "https://www.cambridge.org/core/journals/antarctic-science/article/subglacial-brine-flow-and-windinduced-internal-waves-in-lake-bonney-antarctica/93E63BCF8FDF8A1C3510B3ADAAED465B",
+              "caption": "Visual reference for Antarctic “Blood Falls” and iron-rich brine oxidation",
+              "alt": "False-color satellite view—brine intrusion near Blood Falls",
+              "title": "False-color satellite view—brine intrusion near Blood Falls",
+              "role": "result",
+              "commentary": "A false-color, satellite-style view shows Lake Bonney beneath ice cover, where a bright, light-blue shape extends from the Blood Falls area into the lake. Labeled letters mark sampling or observation points, and a scale bar provides size context. The visible “plume” concept is the key: it suggests a submerged, spreading intrusion rather than surface-only staining. Notice how the light-blue region aligns with the terminus region.",
+              "evidenceRelation": "supports",
+              "knowledgeCheck": {
+                "question": "What does the light-blue plume indicate under the ice?",
+                "options": [
+                  "A saline brine discharge intruding and spreading",
+                  "A phytoplankton bloom on open water",
+                  "A sediment cloud stirred by waves",
+                  "A meltwater stream floating at the top",
+                  "Only wind patterns with no new water",
+                  "Ice thickness variations with no chemistry",
+                  "A volcanic gas bubble trail",
+                  "A map legend artifact unrelated to reality"
+                ],
+                "correctOptionIndex": 0,
+                "explanation": "The plume-like shape represents where salty, iron-rich water intrudes into the lake under the ice, matching the brine-discharge explanation."
+              }
+            },
+            {
+              "imageUrl": "https://media2.spaceref.com/news/2014/icemole-glacier-penetration.jpg",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/o2aZLI0w3DU3ptgV54SH9gnGXd_WZ1tOeB4yKY30BL5BTqiSZ1EBc7Ul3MiLtQ4OvLsWQ74DlBCBY4pRqVzHQf6WStqlfrVlWz4WkRmeOdra54ZJFPnDlxU_ZyBayU7aGAra0aufEtQ3bkQ6oUdeaUQM_3yLgwdXe7zc2YFTW88?purpose=inline",
+              "sourcePageUrl": "https://astrobiology.com/2014/03/exploring-below-antarcticas-blood-falls.html",
+              "caption": "Visual reference for Antarctic “Blood Falls” and iron-rich brine oxidation",
+              "alt": "IceMole-style melt probe—reaching deeper ice",
+              "title": "IceMole-style melt probe—reaching deeper ice",
+              "role": "object",
+              "commentary": "The image shows a long, rectangular probe assembly mounted on a tripod over an ice surface, with cables and equipment arranged around it. A researcher works near the setup, reinforcing that this is field engineering, not lab benchwork. The central point you can take from the visible design: the system is built to penetrate by melting and steering rather than by conventional drilling. It hints at how scientists can access hidden liquid zones below thick ice.",
+              "evidenceRelation": "contextualizes",
+              "knowledgeCheck": {
+                "question": "How does a melt probe reach hidden liquid in ice?",
+                "options": [
+                  "It melts and steers through ice using controlled heating",
+                  "It tunnels by compressing ice sideways only",
+                  "It drills by firing explosives into the glacier",
+                  "It relies on animals to create openings",
+                  "It drops samples from a helicopter without contact",
+                  "It uses only cameras—no physical penetration",
+                  "It waits for random cracks to appear first",
+                  "It collects liquid by scooping snow from the surface"
+                ],
+                "correctOptionIndex": 0,
+                "explanation": "The probe concept shown is consistent with reaching beneath thick ice by melting a controlled path so samples can be accessed where instruments can’t reach directly."
+              }
+            },
+            {
+              "imageUrl": "https://cenv.wwu.edu/sites/cenv.wwu.edu/files/2025-04/ellie%20ryan%20supp.jpeg",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/NALaS5Rgx706WyIQg5CbF87L8IuThYvg69t1vPn-OGZKdpuuhhHbbv9PhXKnWCRIQZbiC1I3h5JZGQw473hWXDV6jlto3_ZSvvc3BQ5ivxsdQZGrqJyOrFMBOW4ss7Bi69HGErweS7GjTJGY3JjnQ3MrqmkvIxncKJgHoESvIDA?purpose=inline",
+              "sourcePageUrl": "https://cenv.wwu.edu/speaker-series/cross-latitude-drivers-snowmelt-and-albedo-reduction-impact-snow-nutrients-growth",
+              "caption": "Visual reference for Antarctic “Blood Falls” and iron-rich brine oxidation",
+              "alt": "Red snow algae—‘blood snow’ from pigmented microbes",
+              "title": "Red snow algae—‘blood snow’ from pigmented microbes",
+              "role": "comparison",
+              "commentary": "A shoreline-like snowfield is tinted reddish-brown in patches across white snow, with dark rocks breaking the surface. The red pattern looks mottled and carpet-like rather than channel-shaped, spreading over broad areas where melt influences the surface. This is a useful contrast to Blood Falls: red color can come from living pigmentation in seasonal melt zones. Notice how the red covers the terrain broadly, not just a single outlet crack in ice.",
+              "evidenceRelation": "contextualizes",
+              "knowledgeCheck": {
+                "question": "Why can Antarctic snow look red without brine?",
+                "options": [
+                  "Pigmented snow algae growing in melt zones",
+                  "Iron-rich brine rising from deep glacier layers",
+                  "Volcanic ash coating the snow uniformly",
+                  "Sunlight reflecting off red dust everywhere",
+                  "Microbes in liquid water beneath the lake",
+                  "Red dye accidentally splashed by researchers",
+                  "Storm clouds casting a red shadow",
+                  "Red lichens drifting from trees far away"
+                ],
+                "correctOptionIndex": 0,
+                "explanation": "The image’s broad, patchy red snow pattern matches algae-driven “blood snow,” which is a different cause than iron-rich brine oxidizing at an ice outlet."
+              }
+            }
+          ]
+        },
+        "transition": "Try a new “Sage cue” lens: don’t just notice the color—follow it to the boundary where hidden liquid becomes changed matter.",
+        "topicLabel": "Antarctic “Blood Falls” and iron-rich brine oxidation",
+        "researchSummary": "Searched for authoritative explanations of Antarctica’s “Blood Falls,” focusing on iron-rich brine oxidation at the surface. Opened and extracted key mechanism statements from NASA Earth Observatory’s Blood Falls feature. Cross-checked the oxidation logic and glacier-to-outlet hydrologic pathway using a peer-reviewed Journal of Glaciology article. Used the Science paper PDF to connect Blood Falls brine chemistry to oxygen-free conditions under ice. Added event/history context from USAP and Smithsonian sources describing how radar-like measurements traced the pathway.",
+        "researchHandoff": {
+          "discoveries": [
+            "Blood Falls’ red color is linked to iron chemistry in brine that changes when exposed to oxygen.",
+            "Taylor Glacier hosts a pressurized englacial/subglacial brine system that intermittently feeds the surface outlet.",
+            "Geophysical methods (radar/echo sounding) can infer hidden brine pathways inside ice."
+          ],
+          "uncertainties": [
+            "The exact trigger for each intermittent discharge (timing, pressure changes, and crack opening) isn’t fully nailed down in the sources reviewed here."
+          ],
+          "unresolvedThreads": [
+            "How brine stays liquid under those extreme conditions over long timescales, and how heat/latent freezing couples to flow for specific outflow events."
+          ],
+          "sourceLeads": [
+            "https://www.cambridge.org/core/journals/journal-of-glaciology/article/an-englacial-hydrologic-system-of-brine-within-a-cold-glacier-blood-falls-mcmurdo-dry-valleys-antarctica/B5C197906AD54619AEA26068AD92989A",
+            "https://www.usap.gov/news/4536/",
+            "https://www.smithsonianmag.com/smart-news/antarcticas-blood-falls-reveals-inner-workings-glaciers-180963098/"
+          ]
+        },
+        "preferredPosition": 0,
+        "provider": "openai",
+        "modelId": "gpt-5.4-nano",
+        "promptVersion": "wonder-research-turn@4.1.0",
+        "performerVersion": "sage@1.0.0",
+        "modelSnapshot": "openai:gpt-5.4-nano@2026-07-14",
+        "answerDensity": "rich",
+        "imagePreference": "prefer",
+        "outputLocale": "en",
+        "options": [
+          {
+            "position": 0,
+            "question": "Why doesn’t the salty brine freeze before it reaches air?",
+            "angle": "freezing-point depression and heat/flow"
+          },
+          {
+            "position": 1,
+            "question": "What makes Blood Falls start spurting in sudden bursts?",
+            "angle": "intermittent discharge triggers and ice"
+          }
+        ],
+        "sources": [
+          {
+            "id": "src_18n5wap",
+            "url": "https://www.elpais.com.uy/mundo/cataratas-de-sangre-la-misteriosa-formacion-de-la-antartida-que-intrigo-a-los-cientificos-durante-un-siglo",
+            "title": "Visual reference for Antarctic “Blood Falls” and iron-rich brine oxidation",
+            "publisher": "elpais.com.uy",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_1bqxajh",
+            "url": "https://earthsky.org/earth/what-makes-blood-falls-red-antarctica/",
+            "title": "Visual reference for Antarctic “Blood Falls” and iron-rich brine oxidation",
+            "publisher": "earthsky.org",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_1jpognd",
+            "url": "https://www.researchgate.net/figure/Overview-map-of-the-McMurdo-Dry-Valleys-Lake-Fryxell-is-located-in-the-eastern-portion_fig1_345494895",
+            "title": "Visual reference for Antarctic “Blood Falls” and iron-rich brine oxidation",
+            "publisher": "researchgate.net",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_1ooo8cf",
+            "url": "https://www.antarctica.gov.au/magazine/issue-23-december-2012/antarctic-treaty-meeting/continent-wide-studies-support-antarctic-environmental-protection/",
+            "title": "Visual reference for Antarctic “Blood Falls” and iron-rich brine oxidation",
+            "publisher": "antarctica.gov.au",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_1qpzskt",
+            "url": "https://riosdelplaneta.com/cataratas-de-sangre/",
+            "title": "Visual reference for Antarctic “Blood Falls” and iron-rich brine oxidation",
+            "publisher": "riosdelplaneta.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_1yumo6b",
+            "url": "https://cenv.wwu.edu/speaker-series/cross-latitude-drivers-snowmelt-and-albedo-reduction-impact-snow-nutrients-growth",
+            "title": "Visual reference for Antarctic “Blood Falls” and iron-rich brine oxidation",
+            "publisher": "cenv.wwu.edu",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_687aib",
+            "url": "https://astrobiology.com/2014/03/exploring-below-antarcticas-blood-falls.html",
+            "title": "Visual reference for Antarctic “Blood Falls” and iron-rich brine oxidation",
+            "publisher": "astrobiology.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_q92dkp",
+            "url": "https://www.merkur.de/wissen/antarktis-gletscher-blutet-forscher-machen-durch-zufall-einzigartige-beobachtung-in-der-zr-94182027.html",
+            "title": "Visual reference for Antarctic “Blood Falls” and iron-rich brine oxidation",
+            "publisher": "merkur.de",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_vua9wn",
+            "url": "https://www.cambridge.org/core/journals/antarctic-science/article/subglacial-brine-flow-and-windinduced-internal-waves-in-lake-bonney-antarctica/93E63BCF8FDF8A1C3510B3ADAAED465B",
+            "title": "Visual reference for Antarctic “Blood Falls” and iron-rich brine oxidation",
+            "publisher": "cambridge.org",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_w01v4x",
+            "url": "https://www.iflscience.com/origin-point-antarctica-blood-falls-revealed-41457",
+            "title": "Visual reference for Antarctic “Blood Falls” and iron-rich brine oxidation",
+            "publisher": "iflscience.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_1ykutzw",
+            "url": "https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2018JG004411",
+            "title": "agupubs.onlinelibrary.wiley.com",
+            "publisher": "agupubs.onlinelibrary.wiley.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_nokbp6",
+            "url": "https://astrobiology.com/2026/02/23/ice-planet-recon-glacier-surface-lowering-and-subglacial-outflow-coincide-with-blood-falls-discharge-in-the-mcmurdo-dry-valleys/",
+            "title": "astrobiology.com",
+            "publisher": "astrobiology.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_g3pcrx",
+            "url": "https://www.cambridge.org/core/journals/journal-of-glaciology/article/an-englacial-hydrologic-system-of-brine-within-a-cold-glacier-blood-falls-mcmurdo-dry-valleys-antarctica/B5C197906AD54619AEA26068AD92989A",
+            "title": "cambridge.org",
+            "publisher": "cambridge.org",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "cited"
+          },
+          {
+            "id": "src_1mfp65n",
+            "url": "https://documents.ats.aq/recatt/att636_e.pdf",
+            "title": "documents.ats.aq",
+            "publisher": "documents.ats.aq",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_17kjavm",
+            "url": "https://en.wikipedia.org/wiki/IceMole",
+            "title": "en.wikipedia.org",
+            "publisher": "en.wikipedia.org",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_1v6ysxf",
+            "url": "https://en.wikipedia.org/wiki/Blood_Falls",
+            "title": "en.wikipedia.org",
+            "publisher": "en.wikipedia.org",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_1ijdtlv",
+            "url": "https://www.facebook.com/interestingengineering/posts/antarcticas-famous-blood-falls-looks-like-a-glacier-is-pouring-out-blood-but-the/1422748326563267/",
+            "title": "facebook.com",
+            "publisher": "facebook.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_h02m53",
+            "url": "https://www.facebook.com/NOVApbs/posts/blood-falls-terrifying-name-for-a-glacier-awesome-chemistry-glacier-chemistry-an/1236780538496328/",
+            "title": "facebook.com",
+            "publisher": "facebook.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_w48rhx",
+            "url": "https://www.facebook.com/thesciencepulse/posts/antarcticas-blood-falls-is-a-deep-red-flow-of-liquid-that-seeps-from-taylor-glac/1466357568868607/",
+            "title": "facebook.com",
+            "publisher": "facebook.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_11kn9gp",
+            "url": "https://hub.jhu.edu/2023/06/26/blood-falls-mystery/",
+            "title": "hub.jhu.edu",
+            "publisher": "hub.jhu.edu",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_1hvqto1",
+            "url": "https://www.nationalgeographic.com/science/article/blood-falls-antarctica-explained",
+            "title": "nationalgeographic.com",
+            "publisher": "nationalgeographic.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "cited"
+          },
+          {
+            "id": "src_1np77tu",
+            "url": "https://news.uaf.edu/researchers-solve-the-100-year-old-mystery-of-blood-falls/",
+            "title": "news.uaf.edu",
+            "publisher": "news.uaf.edu",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_w8g7xs",
+            "url": "https://www.sciencealert.com/there-s-a-waterfall-in-antarctica-that-bleeds-red-here-s-what-s-hiding-inside-it",
+            "title": "sciencealert.com",
+            "publisher": "sciencealert.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_8bmzl4",
+            "url": "https://www.smithsonianmag.com/smart-news/antarcticas-blood-falls-reveals-inner-workings-glaciers-180963098/",
+            "title": "smithsonianmag.com",
+            "publisher": "smithsonianmag.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "cited"
+          },
+          {
+            "id": "src_1621x3g",
+            "url": "https://www.usap.gov/news/4536/",
+            "title": "usap.gov",
+            "publisher": "usap.gov",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "cited"
+          },
+          {
+            "id": "src_q93wbr",
+            "url": "https://www.youtube.com/watch?v=qeB-UFtina8",
+            "title": "youtube.com",
+            "publisher": "youtube.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          }
+        ],
+        "research": {
+          "provider": "openai",
+          "modelId": "gpt-5.4-nano",
+          "preset": "standard",
+          "inputTokens": 69201,
+          "cachedInputTokens": 4736,
+          "outputTokens": 24070,
+          "reasoningTokens": 11089,
+          "totalTokens": 93271,
+          "webSearchCalls": 14,
+          "pageFetches": 3,
+          "latencyMs": 71335,
+          "estimatedCostMicrousd": 183075,
+          "rateEffectiveAt": "2026-07-14",
+          "events": [
+            {
+              "sequence": 0,
+              "kind": "status",
+              "label": "Retrieved completed background research for validation",
+              "sourceId": null
+            },
+            {
+              "sequence": 1,
+              "kind": "source",
+              "label": "Consulted news.uaf.edu: news.uaf.edu",
+              "sourceId": "src_1np77tu"
+            },
+            {
+              "sequence": 2,
+              "kind": "source",
+              "label": "Consulted nationalgeographic.com: nationalgeographic.com",
+              "sourceId": "src_1hvqto1"
+            },
+            {
+              "sequence": 3,
+              "kind": "source",
+              "label": "Consulted sciencealert.com: sciencealert.com",
+              "sourceId": "src_w8g7xs"
+            },
+            {
+              "sequence": 4,
+              "kind": "source",
+              "label": "Consulted hub.jhu.edu: hub.jhu.edu",
+              "sourceId": "src_11kn9gp"
+            },
+            {
+              "sequence": 5,
+              "kind": "source",
+              "label": "Consulted agupubs.onlinelibrary.wiley.com: agupubs.onlinelibrary.wiley.com",
+              "sourceId": "src_1ykutzw"
+            },
+            {
+              "sequence": 6,
+              "kind": "source",
+              "label": "Consulted en.wikipedia.org: en.wikipedia.org",
+              "sourceId": "src_1v6ysxf"
+            },
+            {
+              "sequence": 7,
+              "kind": "check",
+              "label": "Checked that citations resolve to sources consulted in this run",
+              "sourceId": null
+            },
+            {
+              "sequence": 8,
+              "kind": "search",
+              "label": "Curating a broader set of evidence-grade images for the visual story",
+              "sourceId": null
+            },
+            {
+              "sequence": 9,
+              "kind": "check",
+              "label": "Selected 12 source-matched visuals for the finished session",
+              "sourceId": null
+            },
+            {
+              "sequence": 10,
+              "kind": "check",
+              "label": "A citation pointer did not match the consulted source set; repairing pointers once",
+              "sourceId": null
+            },
+            {
+              "sequence": 11,
+              "kind": "check",
+              "label": "Revalidated the answer against the final consulted source set",
+              "sourceId": null
+            },
+            {
+              "sequence": 12,
+              "kind": "synthesis",
+              "label": "Validated the sourced answer and its continuation paths",
+              "sourceId": null
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "optical-color-mixing",
+      "seed": "Can your eyes mix colors the painter never mixed?",
+      "title": "Can your eyes mix colors the painter never mixed?",
+      "performerId": "sage",
+      "modelId": "gpt-5.4-nano",
+      "researchPreset": "standard",
+      "answerDensity": "rich",
+      "imagePreference": "prefer",
+      "outputLocale": "en",
+      "turn": {
+        "question": "Can your eyes mix colors the painter never mixed?",
+        "answer": "A pointillist painting can look like thousands of tiny colored dots up close—but from a few steps away, your eyes see smooth color “blobs” the painter never put on a palette as a single smear. In other words, your vision performs a kind of mixing even when the artist never physically mixed those paints together.\n\nThe key is that your retina has “cone” color-sensing cells (three types) that respond to light over broad wavelength ranges. When many tiny dots sit close together, their light falls on neighboring cones, and your visual system combines those signals into one perceived color instead of keeping each dot separate.\n\nSometimes the “mix” is not about paint at all—it’s about light spectra. Different combinations of wavelengths can produce the same cone responses, a phenomenon called metamerism, so your brain can report a color that wasn’t created by the painter’s exact pigment recipe.\n\nYes—your vision can “blend” tiny neighboring light sources into intermediate perceived colors. On screens, each pixel contains multiple light sources (typically red/green/blue) whose relative intensities add together (additive mixing) so your eye/brain interprets the overlap as new colors. Because those sub-pixels are extremely small and close together, spatial averaging means you don’t perceive each dot separately; instead you experience smooth intermediate tones. Printing uses a related trick: in halftoning, continuous tones are broken into a pattern of tiny dots of varying size, and the result exploits an optical illusion where the human eye blends the dots into smooth tones when viewed at normal distance.\n\nBut your eyes can’t invent colors that the scene’s light never contains. If the artwork (or its lighting) lacks enough wavelengths to strongly stimulate the relevant cone types, the “mix” you perceive will shift—or fail—within the limits of your visual system.",
+        "answerPayload": {
+          "blocks": [
+            {
+              "text": "A pointillist painting can look like thousands of tiny colored dots up close—but from a few steps away, your eyes see smooth color “blobs” the painter never put on a palette as a single smear. In other words, your vision performs a kind of mixing even when the artist never physically mixed those paints together.",
+              "sourceIds": [
+                "src_npuijg"
+              ]
+            },
+            {
+              "text": "The key is that your retina has “cone” color-sensing cells (three types) that respond to light over broad wavelength ranges. When many tiny dots sit close together, their light falls on neighboring cones, and your visual system combines those signals into one perceived color instead of keeping each dot separate.",
+              "sourceIds": [
+                "src_14xk42h"
+              ]
+            },
+            {
+              "text": "Sometimes the “mix” is not about paint at all—it’s about light spectra. Different combinations of wavelengths can produce the same cone responses, a phenomenon called metamerism, so your brain can report a color that wasn’t created by the painter’s exact pigment recipe.",
+              "sourceIds": [
+                "src_14xk42h"
+              ]
+            },
+            {
+              "text": "Yes—your vision can “blend” tiny neighboring light sources into intermediate perceived colors. On screens, each pixel contains multiple light sources (typically red/green/blue) whose relative intensities add together (additive mixing) so your eye/brain interprets the overlap as new colors. Because those sub-pixels are extremely small and close together, spatial averaging means you don’t perceive each dot separately; instead you experience smooth intermediate tones. Printing uses a related trick: in halftoning, continuous tones are broken into a pattern of tiny dots of varying size, and the result exploits an optical illusion where the human eye blends the dots into smooth tones when viewed at normal distance.",
+              "sourceIds": [
+                "src_1ku9epp",
+                "src_lqujri",
+                "src_juwe1p"
+              ]
+            },
+            {
+              "text": "But your eyes can’t invent colors that the scene’s light never contains. If the artwork (or its lighting) lacks enough wavelengths to strongly stimulate the relevant cone types, the “mix” you perceive will shift—or fail—within the limits of your visual system.",
+              "sourceIds": [
+                "src_13h39tj",
+                "src_14xk42h"
+              ]
+            }
+          ],
+          "media": [
+            {
+              "imageUrl": "https://cdn.shopify.com/s/files/1/2283/9155/files/seurat-close-up.jpg?v=1645185226",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/yFJ-gXkT1FreGmCEMl81I8BWHZ7ECQxDe4c8zx3JNT2pnTE2YD8pu85Iq_hubIdlcqxKeKp1l4XQDQQDA8hSn_7lymCiM7uJV0PbIwvmQJ6lk6zPpk2nj1wmFgKAE0wWEa3mHCuH_R50DiBFIiQHAJOWZl47JvPjyAZo9WwXuGU?purpose=inline",
+              "sourcePageUrl": "https://shop.zenartsupplies.co/blogs/toolkit/oil-painting-brush-strokes-and-techniques",
+              "caption": "Visual reference for Optical color mixing in human vision",
+              "alt": "Seurat’s Pointillist Technique Close-Up",
+              "title": "Seurat’s Pointillist Technique Close-Up",
+              "role": "phenomenon",
+              "commentary": "LOCATE the small colored dots packed across the painted surface. NOTICE that each dot stays visibly separate—blue next to yellow, green next to darker marks—without any “single blob” of premixed paint. DECODE what that means physically: the pigments are applied as discrete marks. CONNECT to the changed mental model: when those dots are far enough from your eyes, your cone signals and brain’s spatial averaging blend them into smoother perceived colors.",
+              "evidenceRelation": "supports",
+              "knowledgeCheck": {
+                "question": "Why do tiny dots look like one color?",
+                "options": [
+                  "Because pigments chemically fuse on the canvas",
+                  "Because your retina averages signals from many cones",
+                  "Because distant dots emit light like LEDs",
+                  "Because your eyes only detect blue wavelengths",
+                  "Because your brain ignores color and sees only brightness",
+                  "Because the paint surface magnifies each dot",
+                  "Because cones respond only to single wavelengths",
+                  "Because the dots cancel each other out to gray"
+                ],
+                "correctOptionIndex": 1,
+                "explanation": "Your cone cells respond to light and your brain pools signals from neighboring spots, producing a single perceived color rather than tracking each dot separately."
+              }
+            },
+            {
+              "imageUrl": "https://www.psy.ritsumei.ac.jp/akitaoka/ichigo-IMG_20160227_220021ps-strong-MC50-AC50linear-TC50-V2.jpg",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/0f-EHlpETVbXW1fyF2Zu3fOAvEdy4cQrewmxiCaQYYvh7jgXsK5gh57cdOWMUbIRN2eN_R4sil9si_UbKuKvZ83LF48xoyI0vYExWmYKVEFSNz_BWtocGvY68lo7K7h02SyDUSH1Z2S8dT1qc5TrugpwgygzoibPuhrGRIj5E2Y?purpose=inline",
+              "sourcePageUrl": "https://www.psy.ritsumei.ac.jp/akitaoka/chicollo2018.html",
+              "caption": "Visual reference for Optical color mixing in human vision",
+              "alt": "Cyan overlay color constancy experiment (strawberry scene)",
+              "title": "Cyan overlay color constancy experiment (strawberry scene)",
+              "role": "comparison",
+              "commentary": "LOCATE the strawberry images labeled “original image” and the versions where cyan is overlaid in different ways. NOTICE that the strawberry’s apparent color changes less than you might expect from the pixel-level color shift. DECODE the point: the same scene can look similar across different “light mixes” because the brain tries to keep color stable under assumed illumination. CONNECT to the painter question: context and illumination can change how much your brain “re-mixes” colors from the incoming signals.",
+              "evidenceRelation": "supports",
+              "knowledgeCheck": {
+                "question": "Why does the same strawberry look different?",
+                "options": [
+                  "Because the brain assumes the light source changed",
+                  "Because cyan overlay deletes cone responses permanently",
+                  "Because strawberries contain hidden RGB LEDs",
+                  "Because your eyes swap cone types mid-sentence",
+                  "Because the image is secretly re-drawn by the retina",
+                  "Because color constancy uses only brightness cues",
+                  "Because all humans see identical colors always",
+                  "Because the overlay changes the lens’s focus only"
+                ],
+                "correctOptionIndex": 0,
+                "explanation": "Color constancy is your brain’s adjustment: it uses context to interpret the light source, helping preserve perceived object colors."
+              }
+            },
+            {
+              "imageUrl": "https://www.nei.nih.gov/sites/default/files/styles/small/public/2023-06/Array%20of%20cone%20photoreceptor%20terminals.jpg?itok=PNM4Z7OJ",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/5UiVJudfJ_VMIvWOrOsETVkaP1RT47OfMy4R2xM6VbnrqxwuU00O3-QmvESLdkvxSGibThC0ucq574_Gx7AVG_kiScJB_sow-bW-gRl2w5qgi9-VBBKrTxrsj9zOgDyfXH847IYO8CJ-5j00hqMDMXDS7zn9hT7Mp5SN6CX6G6o?purpose=inline",
+              "sourcePageUrl": "https://www.nei.nih.gov/research-and-training/research-news/study-uncovers-novel-synaptic-intricacies-inside-retina",
+              "caption": "Visual reference for Optical color mixing in human vision",
+              "alt": "Cone Photoreceptor Synaptic Array (microscopy)",
+              "title": "Cone Photoreceptor Synaptic Array (microscopy)",
+              "role": "mechanism",
+              "commentary": "LOCATE the dense network of cone terminals and surrounding signal structures in the retina image. NOTICE that cones’ synaptic regions are highlighted in distinct colors, emphasizing locations where signals are passed onward. DECODE the physical meaning: the cones connect to other retinal neurons through synapses rather than “blending pigments.” CONNECT back to color mixing: the brain’s combination happens after light is converted to electrical signals at these cone connections, so the final color is computed from a",
+              "evidenceRelation": "contextualizes",
+              "knowledgeCheck": {
+                "question": "What do these cone synapse patterns represent?",
+                "options": [
+                  "Places where cones connect to next retinal cells",
+                  "Tiny paint spots on the retina surface",
+                  "Locations where incoming light is reflected back",
+                  "A map of blood vessels only",
+                  "Areas where cones dissolve light into heat",
+                  "Chemical pigments stored for later use",
+                  "Dots from a halftone printer",
+                  "Hair-like rods that form the image directly"
+                ],
+                "correctOptionIndex": 0,
+                "explanation": "Synapses are the connection sites where cones pass electrical signals to other retinal neurons, enabling processing that leads to color perception."
+              }
+            },
+            {
+              "imageUrl": "https://sjmusart.org/sites/default/files/styles/content_block/public/2022-09/IMG_2724.jpg?h=0952ea33&itok=CieISCMn",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/2i_9i8PEnRTOz4d_QdLa8yE4Jfoq1XgObDhq89rhbcsTNxeR2hM1fSBMaBaxsCBKVZZQZdPfIBAUZSJBGkqPYiPIB6O-Nv4aEMrgOgokMMIBkyZR7LhN4SCfwVhIPcHW8fKXY2zpR6X10OrjXmEj1N3DnP3ur7NUMV1ZKOnc0m4?purpose=inline",
+              "sourcePageUrl": "https://sjmusart.org/education/K-12-school-tours",
+              "caption": "Visual reference for Optical color mixing in human vision",
+              "alt": "Interactive Color Mixing Activity (three spotlights)",
+              "title": "Interactive Color Mixing Activity (three spotlights)",
+              "role": "process",
+              "commentary": "LOCATE three colored spotlights projecting onto a wall, with visible overlap zones. NOTICE how blocking one beam changes which overlaps remain, changing the color you see on the wall. DECODE this as additive light mixing: new colors appear where light from different projectors lands together. CONNECT to the painter question: even if an artist never “mixed” pigments into that exact shade, your brain can still create it when the right light combinations reach your cones.",
+              "evidenceRelation": "contextualizes",
+              "knowledgeCheck": {
+                "question": "What creates the new colors in the overlap?",
+                "options": [
+                  "A chemical reaction in the wall paint",
+                  "Red, green, and blue light combining additively",
+                  "A hidden filter turning one color into another",
+                  "The room lighting changing the beams’ wavelengths",
+                  "Your eyes averaging only the brightest beam",
+                  "The spotlights projecting different pictures onto the wall",
+                  "A clock delay in your visual system",
+                  "The wall absorbing certain colors while reflecting others"
+                ],
+                "correctOptionIndex": 1,
+                "explanation": "Additive mixing happens when multiple colored light beams land together, stimulating cones in combination."
+              }
+            },
+            {
+              "imageUrl": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/a44f/2637a052bba4c2ec7bf727e465cf5914e480bb6b8a069c64759b4edacc4e.jpg",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/LJMVcvf14C7LdvjJb9uL6E5pDWAFPl1fv133KMxIrzZ28MIA8o9qmhOsX8NL7C6GlWzWJwlYufpfWMJ2KGN2vaEFeWs3GgtyOv_38e4Fv3fQ7C26jWWhMfpg7MvjkzvO_TLjPgTSefD040h3RNWprA-Waiy3pY_8RPjLEY-3VGU?purpose=inline",
+              "sourcePageUrl": "https://www.coupang.com/vp/products/8989441835",
+              "caption": "Visual reference for Optical color mixing in human vision",
+              "alt": "RGB Light Mixing Demonstration (overlap of beams)",
+              "title": "RGB Light Mixing Demonstration (overlap of beams)",
+              "role": "mechanism",
+              "commentary": "LOCATE the three separate colored beams aimed at the same screen area, and NOTICE the circular overlap region where the colors combine. DECODE the physical meaning: in overlapping regions, red, green, and blue light are arriving together. CONNECT to the answer: your visual system “mixes” colors based on cone stimulation from the incoming light, so the final perception depends on how wavelengths overlap—not on the painter having previously blended the pigments.",
+              "evidenceRelation": "illustrates",
+              "knowledgeCheck": {
+                "question": "How do overlapping beams change the perceived color?",
+                "options": [
+                  "Overlaps physically blend the air pigments",
+                  "Overlaps add light wavelengths that stimulate cones",
+                  "Overlaps remove all color and make gray",
+                  "Overlaps create new wavelengths inside your eye",
+                  "Overlaps only affect brightness, not hue",
+                  "Overlaps cause the retina to chemically repaint cells",
+                  "Overlaps block the lens so color disappears",
+                  "Overlaps work only if the screen is black"
+                ],
+                "correctOptionIndex": 1,
+                "explanation": "Where beams overlap, multiple wavelengths reach the eye at once, stimulating different cone types and changing the hue you perceive."
+              }
+            },
+            {
+              "imageUrl": "https://www.ncbi.nlm.nih.gov/books/NBK554706/bin/Archetecture_Fovea-Image021.jpg",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/h9f0ORpJDRIyz5Jc-f7YLb-qzriqc2GYa2aias4Raevs2EBrktieQLNSB7M_dCQuy7_CWV0CA4wYeHyZb8dQL_VOkh1I-W15XoDCMyn3RnrOqbJjH10cSMTqHIzWQ2d-Qev_teYRly1W9CLFFlsvb1TVWukEKWCFtxBTPNlh3yg?purpose=inline",
+              "sourcePageUrl": "https://www.ncbi.nlm.nih.gov/books/NBK554706/figure/Archetecture_Fovea.F16/",
+              "caption": "Visual reference for Optical color mixing in human vision",
+              "alt": "Retinal Cone Photoreceptor Staining (near peripheral cones)",
+              "title": "Retinal Cone Photoreceptor Staining (near peripheral cones)",
+              "role": "anchor",
+              "commentary": "LOCATE the elongated, regularly spaced cone outer segments shown in a fluorescent micrograph. NOTICE that the cones appear in different colors (green and red labels) rather than as a single uniform type. DECODE what you’re seeing physically: cone cells differ in their photopigments and are distributed across the retina. CONNECT to the answer: because multiple cone types contribute overlapping responses, nearby colored elements can produce one unified color experience for your brain.",
+              "evidenceRelation": "supports",
+              "knowledgeCheck": {
+                "question": "Why are there different types of cone cells?",
+                "options": [
+                  "To increase the brightness but not color",
+                  "To detect shapes instead of colors",
+                  "To respond to different wavelength ranges",
+                  "To make the retina act like a camera shutter",
+                  "To replace rods in dim light automatically",
+                  "To make dots chemically blend on skin",
+                  "To correct for gravity’s pull on light",
+                  "To convert all colors into red-only signals"
+                ],
+                "correctOptionIndex": 2,
+                "explanation": "Different cone types have different spectral sensitivities, so they respond differently across wavelength ranges and enable color perception."
+              }
+            },
+            {
+              "imageUrl": "https://images.imagerenderer.com/images-medium-large/retina-rod-cells-sem-steve-gschmeissner.jpg",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/--xaQ4SkyR40ChWIDoFsd8BBdKG5_U6IuvDncHUcmR6o6-H5_9KRdIv_HT2QWjgiFZ3Q8IrhWm9NR7cE3ShIhh7QK_SKHKa79DX1I6BD1hhpl6yg5oB9IC9RP1sii83C63VkG6e3ep5Xe3Y__LIt7xh9wuK4XYmG3LRt9HCEqTI?purpose=inline",
+              "sourcePageUrl": "https://sciencephotogallery.com/featured/retina-rod-cells-sem-steve-gschmeissner.html",
+              "caption": "Visual reference for Optical color mixing in human vision",
+              "alt": "Retina Rod Cells SEM (rod architecture)",
+              "title": "Retina Rod Cells SEM (rod architecture)",
+              "role": "context",
+              "commentary": "LOCATE the long, cylindrical structures packed across the image—rods—visible in scanning electron microscope style. NOTICE the contrast: rods dominate this micrograph while cones (for color) are different cells with other shapes and distributions. DECODE the role split: rods are mainly for low-light detection and color is not their strength. CONNECT to the caveat: if a scene is dim, rods take over and your “color mixing” experience changes or becomes weaker.",
+              "evidenceRelation": "contextualizes",
+              "knowledgeCheck": {
+                "question": "Why do rods matter more in dim light?",
+                "options": [
+                  "Because rods add color pigments to the scene",
+                  "Because rods respond better at low light levels",
+                  "Because rods can see ultraviolet only",
+                  "Because rods replace cones in bright light",
+                  "Because rods physically blend nearby colors",
+                  "Because rods move into the lens automatically",
+                  "Because rods detect only one wavelength of light",
+                  "Because rods stop all signal processing in the retina"
+                ],
+                "correctOptionIndex": 1,
+                "explanation": "Rods are more sensitive in low light and support vision when cones are less active, changing how color is perceived."
+              }
+            },
+            {
+              "imageUrl": "https://dereksarthistorytimeline.weebly.com/uploads/9/6/6/4/9664944/5096690_orig.jpg",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/mV34JEfUJe4ooliwu40VGKm0Qw9q870ox3rYCgwJaxe9isNXvs67w0JB4iImLDYPWw6xu5GViJO3QuPgC3GrxSx-2bMlAuvHN9THIzhk4kyhjiar8j2tKdvdnbsyLiTqvwijfme5mwS8ZhwC9a62g0sGPUj0EXn0ylxx3XUqZ2U?purpose=inline",
+              "sourcePageUrl": "https://dereksarthistorytimeline.weebly.com/late-19th-century.html",
+              "caption": "Visual reference for Optical color mixing in human vision",
+              "alt": "Same scene from farther away (smoother color impression)",
+              "title": "Same scene from farther away (smoother color impression)",
+              "role": "phenomenon",
+              "commentary": "This wider view of the same pointillist idea makes the visual blending effect obvious: large regions like grass, water, and skin tones look smooth and continuous rather than dotted. Stand mentally at “distance mode” and notice that dot edges are no longer separable. That shift changes your mental model from “paint applied in dots” to “vision interprets a dot grid as continuous color.” It’s optical mixing driven by how your eyes sample space.",
+              "evidenceRelation": "shows",
+              "knowledgeCheck": {
+                "question": "Why does the distant view look smoothly blended?",
+                "options": [
+                  "Dot spacing becomes too small for individual resolution",
+                  "The painting’s colors change because the air filters wavelengths",
+                  "The painter switches to normal brush smears at distance",
+                  "Your eyes refocus and blend pigments chemically",
+                  "The varnish reflects light differently at each viewing angle",
+                  "The brain ignores color and uses brightness only",
+                  "Your pupils adjust to cancel the dots’ chroma",
+                  "The scene is projected through a smoothing filter"
+                ],
+                "correctOptionIndex": 0,
+                "explanation": "At distance, individual dots fall below your spatial resolution, so your visual system integrates them into continuous-looking color areas."
+              }
+            },
+            {
+              "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Georges_seurat%2C_la_senna_alla_grande-jatte%2C_1888%2C_03.jpg",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/u80Pm8U6tdZTP-d7fMERRpehIFJDkelwxj3wM15-VxWXCGLEzamUklAeSPhfMcY41YumoQftuIk2LjzObLnlrYq9c_g7NulmhOVTVQCMQSSK9Or8F8V4TT42zRoQ-KuUfO9Mf80zU_-rPEIO960QRcsJiEHKvoESuXWpZ-TIjlU?purpose=inline",
+              "sourcePageUrl": "https://commons.wikimedia.org/wiki/File%3AGeorges_seurat%2C_la_senna_alla_grande-jatte%2C_1888%2C_03.jpg",
+              "caption": "Visual reference for Optical color mixing in human vision",
+              "alt": "Pointillist dots in the river surface (close-up)",
+              "title": "Pointillist dots in the river surface (close-up)",
+              "role": "anchor",
+              "commentary": "This close-up shows a Seurat surface built from thousands of individual colored dots—no continuous paint smears are visible. Notice how blues, greens, yellows, and warm tones sit side by side in tiny specks, forming gradients on the river. When you step back, your visual system stops resolving single dots and instead blends neighboring signals into smoother color fields, even though the painter never laid down those blended colors as single paint strokes.",
+              "evidenceRelation": "illustrates",
+              "knowledgeCheck": {
+                "question": "How do separate dots become one smooth color?",
+                "options": [
+                  "Your retina averages neighboring dot signals",
+                  "The pigments physically melt together on the canvas",
+                  "The dots are actually single premixed blobs",
+                  "Your brain replaces color using memory only",
+                  "The camera lens performs true color mixing blur",
+                  "Only one dot in each area contributes",
+                  "Your eyes chemically mix the pigments in tears",
+                  "The dots emit new wavelengths not present in light"
+                ],
+                "correctOptionIndex": 0,
+                "explanation": "From a dot pattern, many small color signals land near each other on your retina. Spatial averaging and neural processing combine them into one perceived color field."
+              }
+            },
+            {
+              "imageUrl": "https://atsunnyside.blog/wp-content/uploads/2018/10/20screenshot_2018-10-30-signac_-_portrait_de_fc3a9lix_fc3a9nc3a9on-jpg-jpeg-image-6229-c397-4973-pixels.jpg",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/fjuptE-hAfZwowcmX2rNLVCGAhQgMG0KJ4Jfg-Q8mS-zjzmhYcqKQndIbw7fwjXQU2_A7Yg2t48xtB7wY-Vbv4n4Xjm7lFO2Z4N6nW9ku3WZbPvGMd0WKeUn8YDkByTwQyXfvZHwTQ7eYndI4dm0uAmmmVnL1bROetcadIx35ww?purpose=inline",
+              "sourcePageUrl": "https://atsunnyside.blog/2018/10/31/paul-signac-opus-217-portrait-of-felix-feneon-1890/",
+              "caption": "Visual reference for Optical color mixing in human vision",
+              "alt": "Divisionist dots building a realistic hand and flower",
+              "title": "Divisionist dots building a realistic hand and flower",
+              "role": "process",
+              "commentary": "In this detail, a hand and thin stem are constructed out of tiny pointillist marks. Notice that the contour of the fingers and the shading of the skin are not drawn with continuous lines; they emerge from local clusters of different colored dots. This sharpens the idea of optical mixing: your perception reconstructs shapes and tonal transitions from discrete color samples placed close together, rather than relying on the painter to physically pre-mix intermediate paints.",
+              "evidenceRelation": "supports",
+              "knowledgeCheck": {
+                "question": "How can tiny dots form a realistic hand?",
+                "options": [
+                  "Your vision integrates neighboring colors into edges and shading",
+                  "The hand is painted with a single uniform base color",
+                  "Darker dots block light like tiny lenses",
+                  "Your eyes track outlines only, ignoring color entirely",
+                  "The dots are raised and physically blur your sight",
+                  "The pigments undergo chemical color change after drying",
+                  "The flower’s stem is digitally composited in paint",
+                  "Only the brightest dot determines the local tone"
+                ],
+                "correctOptionIndex": 0,
+                "explanation": "Close dot patterns provide color cues that your visual system combines into continuous-looking edges and gradients."
+              }
+            },
+            {
+              "imageUrl": "https://d2o51ft7emegr.cloudfront.net/pub/media/wysiwyg/image-folder/glasses/eye/cone-cells/02-S-Cone-M-Cone-L-Cone-900x600.jpg",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/R-3uyg3JcXo_yMBHvaRMnrz_llJfTlJO8bLMAVUpaPuKivZbYaPIaKt7sDqI9UED1q6RuKJNAhNwI1nzx3WyWVdqbZ6rgwmc9pZveC6Pg7znRH73k0RmXr4S0oNVWzg2lKAuWMgdOygXzK8iPq0ousmGIf9hdtFIcnPkZ1cjKp8?purpose=inline",
+              "sourcePageUrl": "https://oscarwylee.ca/glasses/eye/cone-cells",
+              "caption": "Visual reference for Optical color mixing in human vision",
+              "alt": "Three cone types for human color sensing",
+              "title": "Three cone types for human color sensing",
+              "role": "mechanism",
+              "commentary": "This diagram simplifies the eye’s color sensing into three cone types: short-, medium-, and long-wavelength cones. Notice the three distinct cone “characters” side by side and their wavelength associations. The key mechanism is that each perceived color is encoded by the relative pattern of stimulation across all three cones. That means two different light spectra (or two different pixel/paint mixtures) can look the same if they drive the cones similarly—even if the materials were never “mixed” in the way you’d see",
+              "evidenceRelation": "contextualizes",
+              "knowledgeCheck": {
+                "question": "How can three cone types make many colors?",
+                "options": [
+                  "Different light wavelengths trigger different cone combinations",
+                  "Cone cells physically mix paint pigments inside the retina",
+                  "Color is determined only by long-wavelength cones",
+                  "Your brain ignores cone signals and uses brightness rules",
+                  "Cones emit their own colored light to match pixels",
+                  "Only rods control color perception in daylight",
+                  "Color depends entirely on the eye’s lens tint",
+                  "The eye measures wavelength one at a time"
+                ],
+                "correctOptionIndex": 0,
+                "explanation": "Each cone type responds strongly to a range of wavelengths, and the brain maps the combined cone responses to perceived color."
+              }
+            }
+          ]
+        },
+        "transition": "Next, try breaking the “blending” by changing distance or lighting.",
+        "topicLabel": "Optical color mixing in human vision",
+        "researchSummary": "I searched for vision-science explanations of how human color perception works, focusing on cone photoreceptors and how their signals combine in the retina/visual system. I also looked for color-science and neuroscience sources that connect perceived “mixing” to light spectra (metamerism) and to spatial averaging effects (relevant to pointillism/halftone dots). Finally, I curated image candidates by searching for visual evidence of: (1) additive RGB light mixing, (2) CMYK halftone dot patterns, (3) retinal cone/rod anatomy from reputable medical/government sources, and (4) a perception experiment showing color consti",
+        "researchHandoff": {
+          "discoveries": [
+            "Pointillist and halftone artworks can produce intermediate perceived colors because the eye/brain combines signals from many nearby colored elements rather than requiring pigment to be premixed.",
+            "Human color perception relies on three cone types that respond to broad wavelength ranges, and cone signals are combined through spatial pooling.",
+            "Metamerism means different light recipes can lead to similar cone responses, so perceived color can differ from pigment-level “recipes” or from how the scene is lit."
+          ],
+          "uncertainties": [
+            "This turn focuses on the mechanism of spatial/retinal mixing; it does not provide a single definitive “yes/no” limit for every possible pigment set or viewing distance.",
+            "Some curated images are more demonstration-oriented than primary experimental photographs of metameric pairs, so the metamerism visual evidence is indirect."
+          ],
+          "unresolvedThreads": [
+            "How exactly does retinal spatial pooling depend on dot size, viewing distance, and blur (and when does “mixing” break down)?",
+            "How do different lighting spectra shift which pigment-based colors look “mixed” versus separate?",
+            "How do color-opponent pathways shape what intermediate hues you see from dot patterns?"
+          ],
+          "sourceLeads": [
+            "https://www.ncbi.nlm.nih.gov/books/NBK11059/",
+            "https://www.aao.org/eye-health/tips-prevention/how-humans-see-in-color"
+          ]
+        },
+        "preferredPosition": 0,
+        "provider": "openai",
+        "modelId": "gpt-5.4-nano",
+        "promptVersion": "wonder-research-turn@4.1.0",
+        "performerVersion": "sage@1.0.0",
+        "modelSnapshot": "openai:gpt-5.4-nano@2026-07-14",
+        "answerDensity": "rich",
+        "imagePreference": "prefer",
+        "outputLocale": "en",
+        "options": [
+          {
+            "position": 0,
+            "question": "What happens if you view the dots up close?",
+            "angle": "spatial-resolution limit"
+          },
+          {
+            "position": 1,
+            "question": "Why do the same paints look different under new light?",
+            "angle": "metamerism and illumination change"
+          }
+        ],
+        "sources": [
+          {
+            "id": "src_13htyev",
+            "url": "https://atsunnyside.blog/2018/10/31/paul-signac-opus-217-portrait-of-felix-feneon-1890/",
+            "title": "Visual reference for Optical color mixing in human vision",
+            "publisher": "atsunnyside.blog",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_19tmjr3",
+            "url": "https://oscarwylee.ca/glasses/eye/cone-cells",
+            "title": "Visual reference for Optical color mixing in human vision",
+            "publisher": "oscarwylee.ca",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_1bdfr3n",
+            "url": "https://sciencephotogallery.com/featured/retina-rod-cells-sem-steve-gschmeissner.html",
+            "title": "Visual reference for Optical color mixing in human vision",
+            "publisher": "sciencephotogallery.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_1e3mjsu",
+            "url": "https://www.ncbi.nlm.nih.gov/books/NBK554706/figure/Archetecture_Fovea.F16/",
+            "title": "Visual reference for Optical color mixing in human vision",
+            "publisher": "ncbi.nlm.nih.gov",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_1kkhuo9",
+            "url": "https://www.psy.ritsumei.ac.jp/akitaoka/chicollo2018.html",
+            "title": "Visual reference for Optical color mixing in human vision",
+            "publisher": "psy.ritsumei.ac.jp",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_1nrsf2l",
+            "url": "https://shop.zenartsupplies.co/blogs/toolkit/oil-painting-brush-strokes-and-techniques",
+            "title": "Visual reference for Optical color mixing in human vision",
+            "publisher": "shop.zenartsupplies.co",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_1ti45ew",
+            "url": "https://www.nei.nih.gov/research-and-training/research-news/study-uncovers-novel-synaptic-intricacies-inside-retina",
+            "title": "Visual reference for Optical color mixing in human vision",
+            "publisher": "nei.nih.gov",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_d18o09",
+            "url": "https://sjmusart.org/education/K-12-school-tours",
+            "title": "Visual reference for Optical color mixing in human vision",
+            "publisher": "sjmusart.org",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_gau8sj",
+            "url": "https://dereksarthistorytimeline.weebly.com/late-19th-century.html",
+            "title": "Visual reference for Optical color mixing in human vision",
+            "publisher": "dereksarthistorytimeline.weebly.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_h9a38j",
+            "url": "https://commons.wikimedia.org/wiki/File%3AGeorges_seurat%2C_la_senna_alla_grande-jatte%2C_1888%2C_03.jpg",
+            "title": "Visual reference for Optical color mixing in human vision",
+            "publisher": "commons.wikimedia.org",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_ra362r",
+            "url": "https://www.coupang.com/vp/products/8989441835",
+            "title": "Visual reference for Optical color mixing in human vision",
+            "publisher": "coupang.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_13h39tj",
+            "url": "https://www.aao.org/eye-health/tips-prevention/how-humans-see-in-color",
+            "title": "aao.org",
+            "publisher": "aao.org",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "cited"
+          },
+          {
+            "id": "src_12k2b9n",
+            "url": "https://www.beyondeveryart.com/pointillism-optical-mixing-vs-pigment-mixing/?srsltid=AfmBOoobxfpT0E51sImFr9tOhh9HvsJh22SSRmhvxJdk9K4UYM79j_4V",
+            "title": "beyondeveryart.com",
+            "publisher": "beyondeveryart.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_ovaiix",
+            "url": "https://www.beyondeveryart.com/pointillism-optical-mixing-vs-pigment-mixing/?srsltid=AfmBOoqZawGnSJYnAz_xAkNe3LfUghjybNIQU5w2Ymti_APk3N1j1fb2",
+            "title": "beyondeveryart.com",
+            "publisher": "beyondeveryart.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_yfsiiy",
+            "url": "https://www.colorduels.com/what-is-simultaneous-contrast/",
+            "title": "colorduels.com",
+            "publisher": "colorduels.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_1ku9epp",
+            "url": "https://colourliteracy.org/additive-mixing-process",
+            "title": "colourliteracy.org",
+            "publisher": "colourliteracy.org",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "cited"
+          },
+          {
+            "id": "src_jhsoc4",
+            "url": "https://www.datacolor.com/business-solutions/blog/what-is-metamerism/",
+            "title": "datacolor.com",
+            "publisher": "datacolor.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_juwe1p",
+            "url": "https://www.digitizationguidelines.gov/term.php?term=printedhalftone",
+            "title": "digitizationguidelines.gov",
+            "publisher": "digitizationguidelines.gov",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "cited"
+          },
+          {
+            "id": "src_17wr6yd",
+            "url": "https://en.wikipedia.org/wiki/Metamerism_%28color%29",
+            "title": "en.wikipedia.org",
+            "publisher": "en.wikipedia.org",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_1qdrahe",
+            "url": "https://www.erco.com/en_us/designing-with-light/lighting-knowledge/colorimetry/additive-colour-mixing-7492/",
+            "title": "erco.com",
+            "publisher": "erco.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_wextyi",
+            "url": "https://evidentscientific.com/en/microscope-resource/knowledge-hub/lightandcolor/primarycolorsintro",
+            "title": "evidentscientific.com",
+            "publisher": "evidentscientific.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_1fiz25w",
+            "url": "https://www.facebook.com/USMArtandDesign/posts/pointillism-doesnt-blend-colors-on-the-canvas-it-blends-them-in-your-brain-your-/1381797650625603/",
+            "title": "facebook.com",
+            "publisher": "facebook.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_tf6d50",
+            "url": "https://nba.uth.tmc.edu/neuroscience/m/s2/chapter14.html",
+            "title": "nba.uth.tmc.edu",
+            "publisher": "nba.uth.tmc.edu",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_14xk42h",
+            "url": "https://www.ncbi.nlm.nih.gov/books/NBK11059/",
+            "title": "ncbi.nlm.nih.gov",
+            "publisher": "ncbi.nlm.nih.gov",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "cited"
+          },
+          {
+            "id": "src_lqujri",
+            "url": "https://pages.cs.wisc.edu/~dyer/ah336/papers/07_additive-color.pdf",
+            "title": "pages.cs.wisc.edu",
+            "publisher": "pages.cs.wisc.edu",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "cited"
+          },
+          {
+            "id": "src_npuijg",
+            "url": "https://web.iisermohali.ac.in/Faculty/kavita/kd-dots.pdf",
+            "title": "web.iisermohali.ac.in",
+            "publisher": "web.iisermohali.ac.in",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "cited"
+          },
+          {
+            "id": "src_1puo562",
+            "url": "https://www.xrite.com/blog/what-is-metamerism",
+            "title": "xrite.com",
+            "publisher": "xrite.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          }
+        ],
+        "research": {
+          "provider": "openai",
+          "modelId": "gpt-5.4-nano",
+          "preset": "standard",
+          "inputTokens": 93145,
+          "cachedInputTokens": 0,
+          "outputTokens": 38526,
+          "reasoningTokens": 22657,
+          "totalTokens": 131671,
+          "webSearchCalls": 21,
+          "pageFetches": 1,
+          "latencyMs": 115685,
+          "estimatedCostMicrousd": 276787,
+          "rateEffectiveAt": "2026-07-14",
+          "events": [
+            {
+              "sequence": 0,
+              "kind": "status",
+              "label": "Retrieved completed background research for validation",
+              "sourceId": null
+            },
+            {
+              "sequence": 1,
+              "kind": "source",
+              "label": "Consulted pages.cs.wisc.edu: pages.cs.wisc.edu",
+              "sourceId": "src_lqujri"
+            },
+            {
+              "sequence": 2,
+              "kind": "source",
+              "label": "Consulted facebook.com: facebook.com",
+              "sourceId": "src_1fiz25w"
+            },
+            {
+              "sequence": 3,
+              "kind": "source",
+              "label": "Consulted en.wikipedia.org: en.wikipedia.org",
+              "sourceId": "src_17wr6yd"
+            },
+            {
+              "sequence": 4,
+              "kind": "source",
+              "label": "Consulted evidentscientific.com: evidentscientific.com",
+              "sourceId": "src_wextyi"
+            },
+            {
+              "sequence": 5,
+              "kind": "source",
+              "label": "Consulted beyondeveryart.com: beyondeveryart.com",
+              "sourceId": "src_ovaiix"
+            },
+            {
+              "sequence": 6,
+              "kind": "source",
+              "label": "Consulted datacolor.com: datacolor.com",
+              "sourceId": "src_jhsoc4"
+            },
+            {
+              "sequence": 7,
+              "kind": "check",
+              "label": "Checked that citations resolve to sources consulted in this run",
+              "sourceId": null
+            },
+            {
+              "sequence": 8,
+              "kind": "search",
+              "label": "Curating a broader set of evidence-grade images for the visual story",
+              "sourceId": null
+            },
+            {
+              "sequence": 9,
+              "kind": "check",
+              "label": "Selected 11 source-matched visuals for the finished session",
+              "sourceId": null
+            },
+            {
+              "sequence": 10,
+              "kind": "check",
+              "label": "A citation pointer did not match the consulted source set; repairing pointers once",
+              "sourceId": null
+            },
+            {
+              "sequence": 11,
+              "kind": "search",
+              "label": "Checked the remaining claims against fresh supporting evidence",
+              "sourceId": null
+            },
+            {
+              "sequence": 12,
+              "kind": "check",
+              "label": "Revalidated the answer against the final consulted source set",
+              "sourceId": null
+            },
+            {
+              "sequence": 13,
+              "kind": "synthesis",
+              "label": "Validated the sourced answer and its continuation paths",
+              "sourceId": null
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "kelvin-helmholtz-clouds",
+      "seed": "Why can the sky suddenly grow a row of breaking ocean waves?",
+      "title": "Why can the sky suddenly grow a row of breaking ocean waves?",
+      "performerId": "sage",
+      "modelId": "gpt-5.4-nano",
+      "researchPreset": "standard",
+      "answerDensity": "rich",
+      "imagePreference": "prefer",
+      "outputLocale": "en",
+      "turn": {
+        "question": "Why can the sky suddenly grow a row of breaking ocean waves?",
+        "answer": "When cloud tops suddenly buckle and roll into a neat row of breakers, the sky can look like it’s surfboarding just like the ocean. That “ocean-wave” look is usually caused by wind shear making a cloud layer behave like a fluid surface with an instability.\n\nWind shear means one air layer slides past another at different speeds. Small wiggles start at the boundary; the faster side overruns the slower side, and the cloud layer can curl over into repeating whirlpools, which is why the tops look like they are breaking.\n\nNOAA’s Physical Sciences Laboratory shows this with radar: their cloud-radar pictures reveal wave patterns inside clouds that grow stronger and begin to break. The National Weather Service glossary also describes Kelvin–Helmholtz waves as vertical waves tied to wind shear, and says they can appear as breaking waves in both radar images and cloud photos.\n\nSometimes the “wave clouds” people notice are not the same physics. NOAA describes gravity waves as ripples made when stable air is forced over hills or mountains and then oscillates, often forming more banded patterns than curled, torn-up tops. And Fluctus (the Kelvin–Helmholtz-type “wave breaker” clouds) can hold its shape for only a few moments, which makes the scene feel sudden.\n\nPortable model: look for a stable, moist air layer plus a sharp speed change with height. When the faster air overtakes the slower air at that boundary, the cloud can roll into vortices—so you get a row of breaking-looking waves in the sky.",
+        "answerPayload": {
+          "blocks": [
+            {
+              "text": "When cloud tops suddenly buckle and roll into a neat row of breakers, the sky can look like it’s surfboarding just like the ocean. That “ocean-wave” look is usually caused by wind shear making a cloud layer behave like a fluid surface with an instability.",
+              "sourceIds": [
+                "src_1456vwi"
+              ]
+            },
+            {
+              "text": "Wind shear means one air layer slides past another at different speeds. Small wiggles start at the boundary; the faster side overruns the slower side, and the cloud layer can curl over into repeating whirlpools, which is why the tops look like they are breaking.",
+              "sourceIds": [
+                "src_13b4dor",
+                "src_1456vwi"
+              ]
+            },
+            {
+              "text": "NOAA’s Physical Sciences Laboratory shows this with radar: their cloud-radar pictures reveal wave patterns inside clouds that grow stronger and begin to break. The National Weather Service glossary also describes Kelvin–Helmholtz waves as vertical waves tied to wind shear, and says they can appear as breaking waves in both radar images and cloud photos.",
+              "sourceIds": [
+                "src_13pjbcd",
+                "src_1456vwi"
+              ]
+            },
+            {
+              "text": "Sometimes the “wave clouds” people notice are not the same physics. NOAA describes gravity waves as ripples made when stable air is forced over hills or mountains and then oscillates, often forming more banded patterns than curled, torn-up tops. And Fluctus (the Kelvin–Helmholtz-type “wave breaker” clouds) can hold its shape for only a few moments, which makes the scene feel sudden.",
+              "sourceIds": [
+                "src_11qfns1"
+              ]
+            },
+            {
+              "text": "Portable model: look for a stable, moist air layer plus a sharp speed change with height. When the faster air overtakes the slower air at that boundary, the cloud can roll into vortices—so you get a row of breaking-looking waves in the sky.",
+              "sourceIds": [
+                "src_1456vwi",
+                "src_13pjbcd",
+                "src_13b4dor"
+              ]
+            }
+          ],
+          "media": [
+            {
+              "imageUrl": "https://s.abcnews.com/images/US/clouds-waves-ht-ml-190619_hpMain.jpg",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/RX8uQb2AV32KpPneuZciie4_VTCPrvKTeVc7XbtdBKVH5qeFnSidQg8JpTJRL08yguMcbI9kQ3qQmMbz38aPk_aiBOrx9Pxo5cA8ccrjLuvfZZoZb7XhHMk08j2vPCFYlhuPuVzT835pFSHD0cWlzbgKDTMUR1yaAGyZ0cZEbd4?purpose=inline",
+              "sourcePageUrl": "https://abcnews.com/US/woman-captures-rare-wave-shaped-clouds-hovering-virginia/story?id=63811155",
+              "caption": "Visual reference for Kelvin–Helmholtz cloud waves (fluctus)",
+              "alt": "Wave-shaped Kelvin–Helmholtz cloud tops hovering over a Virginia skyline",
+              "title": "Wave-shaped Kelvin–Helmholtz cloud tops hovering over a Virginia skyline",
+              "role": "scale",
+              "commentary": "LOCATE the wave-like cloud tops hovering just above trees and buildings. NOTICE the scene includes a familiar ground reference (homes and landscape), while the cloud layer forms a sharp, repeating “crest-and-curl” line. DECODE that the instability can be close to us—high enough to look dramatic, but low enough that we can compare the cloud motion scale against the ground. CONNECT that to the “sudden row” feel: the instability organizes quickly into visible patterns at a boundary.",
+              "evidenceRelation": "supports",
+              "knowledgeCheck": {
+                "question": "Why can these sky waves appear right above buildings?",
+                "options": [
+                  "Wind shear can exist low in the atmosphere near the ground",
+                  "Clouds must form only at the ocean surface",
+                  "It always happens after a hurricane passes overhead",
+                  "It requires the sky to be perfectly clear of wind",
+                  "The waves only happen in the far upper atmosphere",
+                  "It’s caused by reflections off windows and roofs",
+                  "It’s just birds flying through cloud edges",
+                  "Cloud wave patterns are caused by tides pulling air upward"
+                ],
+                "correctOptionIndex": 0,
+                "explanation": "Kelvin–Helmholtz-type billows need a shear boundary and moisture, which can occur at various heights—including low enough to be seen over cities."
+              }
+            },
+            {
+              "imageUrl": "https://live-production.wcms.abc-cdn.net.au/064708aebd7c82f9213a5d2fcc89b4c0?cropH=1869&cropW=2794&height=575&impolicy=wcms_crop_resize&width=862&xPos=0&yPos=8",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/isP1jtvGrlwIWA_yrUbeYKc9hWkB-D4-wNnG8-jhUdz0rmMvMFr2UGBvFPuL9SID234MQ_me2-Eu9eTdshf9s8o6Faj5pGXKPJQEmqJTxSPC_5lEHY6fj5O_VGYllMl_yOmAKjRBWpcq3Y-CldqZuw3W9aLo2AYOClUiBIzY1Gk?purpose=inline",
+              "sourcePageUrl": "https://www.abc.net.au/news/2018-11-06/pilots-can-ride-alongside-breakers-in-the-atmosphere/10469280",
+              "caption": "Visual reference for Kelvin–Helmholtz cloud waves (fluctus)",
+              "alt": "Fluctus clouds rolling across the sky like ocean surf",
+              "title": "Fluctus clouds rolling across the sky like ocean surf",
+              "role": "object",
+              "commentary": "LOCATE the dark cloud base and the lighter, curling tops above it. NOTICE the tops fold over into bulb-like rolls rather than staying as smooth sheets. DECODE that the visible curls correspond to the boundary losing its smoothness and overturning, which is what turns a “flow” into a “breaking” cloud appearance. CONNECT the shape to the cloud-top instability idea: where air speeds differ, the top becomes the place that rolls first.",
+              "evidenceRelation": "illustrates",
+              "knowledgeCheck": {
+                "question": "Why do the cloud tops fold over like surf?",
+                "options": [
+                  "The faster layer overruns the slower one and curls the boundary",
+                  "A storm front pushes the whole cloud forward unchanged",
+                  "The cloud is simply thinning and lighting is changing",
+                  "Wind makes the cloud texture look curled without overturning",
+                  "A mountain forces gravity waves that curl at the crest",
+                  "Ice crystals scatter light in a misleading pattern",
+                  "The cloud is falling as rain so the top collapses",
+                  "The effect is caused by waves in Earth’s gravitational field"
+                ],
+                "correctOptionIndex": 0,
+                "explanation": "When wind speed changes sharply with height, the boundary can overturn. That overturning shows up as curled cloud tops that look like waves breaking."
+              }
+            },
+            {
+              "imageUrl": "https://www.washingtonpost.com/wp-apps/imrs.php?src=http%3A%2F%2Fwww.washingtonpost.com%2Fblogs%2Fcapital-weather-gang%2Ffiles%2F2015%2F07%2Fkh-galapagos.jpg&w=1440",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/SOvb6ttkmEQ1iT2poI6tE9ptAC6A9xYfTvooGXHO5Cn58IwzxXilza3cNzyI8yLqKLghH1AhlmXTzU2--jiasXipPnyALaS9ObN-cmqZ8iKEgA-C_Gibv39XCf8ht_bBMo6dSmZHZII4j-P5oEWkabMLsuMNjThW-ibAZ0JA668?purpose=inline",
+              "sourcePageUrl": "https://www.washingtonpost.com/news/capital-weather-gang/wp/2015/07/28/shark-fins-in-the-sky-awesome-kelvin-helmholtz-clouds-from-the-galapagos/",
+              "caption": "Visual reference for Kelvin–Helmholtz cloud waves (fluctus)",
+              "alt": "Kelvin–Helmholtz billows over the ocean, nicknamed 'shark fins'",
+              "title": "Kelvin–Helmholtz billows over the ocean, nicknamed 'shark fins'",
+              "role": "comparison",
+              "commentary": "LOCATE the repeated, fin-like cloud crests against the sky, with the ocean horizon below. NOTICE how the cloud tops curl at the same height scale across the row, creating a pattern that resembles surf silhouettes. DECODE that the similarity is about shared fluid behavior: air shear can roll cloud layers the way seawater can roll a crest. CONNECT this to the main shift: you’re seeing fluid instability in air, not actual ocean water in the sky.",
+              "evidenceRelation": "contextualizes",
+              "knowledgeCheck": {
+                "question": "Why do these cloud crests look like ocean surf?",
+                "options": [
+                  "Shear makes air roll like a breaking fluid interface",
+                  "The ocean is evaporating upward into identical wave shapes",
+                  "The sky is reflecting ocean waves like a mirror",
+                  "Storm lightning patterns are mapping onto clouds",
+                  "Gravity waves from pressure oscillations create the same curl",
+                  "The cloud is a single rigid sheet that folds from heat alone",
+                  "Bird flocks create the crest pattern in the clouds",
+                  "The look is purely coincidence between unrelated cloud types"
+                ],
+                "correctOptionIndex": 0,
+                "explanation": "Kelvin–Helmholtz-type shear boundaries can overturn into repeating rolls. That fluid overturning produces shapes that visually resemble breaking ocean crests."
+              }
+            },
+            {
+              "imageUrl": "https://www.rmets.org/sites/default/files/inline-images/Third%20Place-%20Main-Winner-Public%20Vote-Luk%C3%A1%C5%A1%20Gallo-Sky%20Surfing-SCWPY2025.jpg",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/IU2P76Ft1iuHTRUNLBPj5KjT6YDlt6BmI-jpDZwX8qyNXslP0oUmMFSCM7c3zk8mIeZ2MSY1ca4HK5-Kp0jZOeAmeiTGJV4gEYwxg7t8rhCp-0ncHAA_JpcMkYmVVZDABqeqs7MJJ23eZgpp363l-SaXwrGmvQYQ3Un4d7X-mTo?purpose=inline",
+              "sourcePageUrl": "https://www.rmets.org/metmatters/picture-perfect-2025s-winning-weather-photos",
+              "caption": "Visual reference for Kelvin–Helmholtz cloud waves (fluctus)",
+              "alt": "Kelvin–Helmholtz wave clouds over farmland ('Sky Surfing')",
+              "title": "Kelvin–Helmholtz wave clouds over farmland ('Sky Surfing')",
+              "role": "scale",
+              "commentary": "LOCATE the farmland in the foreground and the row of sculpted, rounded wave crests in the sky. NOTICE the way the wave tops maintain a repeating structure over a broad area while the ground stays calm-looking. DECODE that the organizing forces are happening in the air layers above, not just at a single spot. CONNECT the broad, organized row to the wind-shear boundary: once that boundary is set up, the instability can span a wide region.",
+              "evidenceRelation": "supports",
+              "knowledgeCheck": {
+                "question": "Why does one whole row of billows form at once?",
+                "options": [
+                  "A large shear boundary organizes many roll-ups",
+                  "The wind simply blows cloud fragments into a line",
+                  "A single cloud puff expands and cools everywhere together",
+                  "The waves are caused by waves in the ocean below",
+                  "The pattern is produced by mountain gravity waves alone",
+                  "Sunlight causes the clouds to blink in a repeating cycle",
+                  "A camera filter turns turbulence into rows",
+                  "Air stops moving briefly and clouds settle into ripples"
+                ],
+                "correctOptionIndex": 0,
+                "explanation": "Kelvin–Helmholtz billows form along a shear interface. If that interface extends across a wide region, the visible rolling pattern can span a broad row."
+              }
+            },
+            {
+              "imageUrl": "https://arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/CMQHJAHX2RAX5CBNJBUUEETRM4.jpg",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/HTGpHDvHCcnF22nNhin3kYdDNDH1fuHoA4d7FzLhxv_u-oAJMnaAXug-gYDvAWs5QEdmhpbdYTMKYE8P1r8T7U1BLRf0G0EBJZyZSRQpr-d82mnKnnn8wmRTPkhrIAN4uqu9THu2EgqYQ1yDLLnz4w3Zk6W3BN1aHgwi5hPcMbU?purpose=inline",
+              "sourcePageUrl": "https://www.washingtonpost.com/weather/2022/12/08/kelvin-helmholtz-wave-clouds-wyoming/",
+              "caption": "Visual reference for Kelvin–Helmholtz cloud waves (fluctus)",
+              "alt": "KH wave clouds curling over snowy mountains",
+              "title": "KH wave clouds curling over snowy mountains",
+              "role": "process",
+              "commentary": "In this mountainous view, the wave clouds appear to climb and roll as they cross the ridge line, with smooth, rounded crests that crack into curls. Notice how the motion-like texture follows the same general direction across multiple waves instead of scattering. The snowy slopes below act as a strong backdrop, making it easier to see that the instability is producing coherent, repeating rolls in the cloud layer.",
+              "evidenceRelation": "supports",
+              "knowledgeCheck": {
+                "question": "Why are the curls aligned over the ridge?",
+                "options": [
+                  "Moist air is guided into a sheared flow over terrain",
+                  "The sky waves are caused by ocean currents up through clouds",
+                  "The pattern is wildfire smoke turning into ripples",
+                  "Clouds are formed only by temperature drops at ground level",
+                  "Wind direction flips every few seconds, forcing symmetry",
+                  "Sun glare from snow makes the clouds look wavy",
+                  "Gravity waves from cliffs dominate with no shear",
+                  "Aurora glow condenses into cloud billows"
+                ],
+                "correctOptionIndex": 0,
+                "explanation": "When terrain helps steer rising, moisture-rich air into a region where winds change speed with height, the sheared boundary can become unstable. Kelvin–Helmholtz billows then produce aligned crest-and-trough curls that track that flow."
+              }
+            },
+            {
+              "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/4/48/Kelvin-Helmholtz_waves.jpg",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/fazGTDKhyLZs1QkDk7cT7GBVtJNjTZsZygGRiV2SrZKiUQ26lMd6g_TFNyfvQJ0H1FxoEMRX7QSHnyLctDI7BcxWlM6RcjadVEhkPGjIXelEMw69YhMA6CXI12Myg7AKn1rDu4M620lgnW3y2eXYWinkWPgRX1vAfwLDyeuf0kw?purpose=inline",
+              "sourcePageUrl": "https://commons.wikimedia.org/wiki/File%3AKelvin-Helmholtz_waves.jpg",
+              "caption": "Visual reference for Kelvin–Helmholtz cloud waves (fluctus)",
+              "alt": "Kelvin–Helmholtz waves in cirrus over the Pacific",
+              "title": "Kelvin–Helmholtz waves in cirrus over the Pacific",
+              "role": "anchor",
+              "commentary": "In this photo, the sky shows a stacked set of bright cloud “crests” with darker troughs between them, forming a repeating, ocean-surf-like pattern over the horizon. Notice how the curls look like a rolling boundary rather than random wisps. That instantly reframes the sky-surf impression: you’re not seeing waves in water—you’re seeing a sheared air boundary behaving fluid-like, so the cloud top rolls into billows.",
+              "evidenceRelation": "shows",
+              "knowledgeCheck": {
+                "question": "What makes these cloud crests evenly spaced?",
+                "options": [
+                  "Ocean swells reflecting onto cloud ice",
+                  "Wind shear rolling a Kelvin–Helmholtz boundary",
+                  "Satellite blur creating fake ripples",
+                  "Volcanic ash drifting into wave bands",
+                  "Thunderstorm tops cracking into patterns",
+                  "Only gravity waves with no shear layer",
+                  "Sunlight shadows moving across the sky",
+                  "Raindrops striking up and splashing clouds"
+                ],
+                "correctOptionIndex": 1,
+                "explanation": "Wind shear between two air layers amplifies small disturbances at the boundary. The cloud interface then rolls up into a repeating Kelvin–Helmholtz wave-train that looks evenly “spaced” across the sky."
+              }
+            },
+            {
+              "imageUrl": "https://lostcoastoutpost.com/loco-media/cache/c5/16/c5160cbcbc994d6f082025890b6e19db.jpg",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/cUvR_8L6yfdyFa8bgxeiIB-tKPQi1xmdXPkz4iAf2SJ9Lf9MiuXoeLsAcb3J5ef-ARL9oZolyKRjafdZDGuxjB4K8uwbyQYTRwaKvpJAb6xYDz7PFt7wemTdpmBuBNT9jU5JLoLGt6Xdi34Goymp6nk4oX9LZDa_3bWZDJPHKOk?purpose=inline",
+              "sourcePageUrl": "https://lostcoastoutpost.com/2017/apr/16/rare-wave-clouds-captured-over-bald-hills-mountain/",
+              "caption": "Visual reference for Kelvin–Helmholtz cloud waves (fluctus)",
+              "alt": "Wave-like cloud crests stretched across coastal hills",
+              "title": "Wave-like cloud crests stretched across coastal hills",
+              "role": "scale",
+              "commentary": "Here, the wave look spans a broad landscape: multiple crests stretch across the horizon above the ocean and coastal terrain. Notice how the cloud “waves” appear aligned and continuous, rather than isolated curls. The scale cue is the way the wave texture remains coherent over long distances compared with the foreground shoreline. That helps you picture the underlying fluid-flow instability as a large, organized atmospheric structure.",
+              "evidenceRelation": "illustrates",
+              "knowledgeCheck": {
+                "question": "Why does the wave pattern stay in a line?",
+                "options": [
+                  "Two air layers must have a sharp speed boundary",
+                  "Uniform temperature without wind shear can do it",
+                  "Sea foam under the water creates the sky pattern",
+                  "Thunderstorm outflows randomly scatter clouds",
+                  "Volcanic gases generate repeating crests",
+                  "Aurora particles directly paint wave bands",
+                  "Clouds always form exactly where waves hit rocks",
+                  "The ocean’s surface is visible through clear air"
+                ],
+                "correctOptionIndex": 0,
+                "explanation": "A Kelvin–Helmholtz wave train forms where a boundary exists between air layers moving at different speeds. That boundary repeatedly rolls into crest-and-trough structure, keeping the pattern lined up."
+              }
+            },
+            {
+              "imageUrl": "https://www.eoas.ubc.ca/courses/atsc113/flying/met_concepts/03-met_concepts/03e-CAT/images-03e/KHwave-Stull-fig5.17.png",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/xGurLdL1anIcZdnHSdK_ic_mZGn4jPyZSYDCHcqxGNw7FGYBXMPxFNG07uTxmbxCIHc-lnHAZKup_7JfhUmEzFGoQcPsKNY7c0eAgQeiDnC1gmpfUBpcH1XNgC-tl2gPqLp_JO_zi0zwm0lkCjYwLv0rS7nkWsmfaf4o-5CXfvY?purpose=inline",
+              "sourcePageUrl": "https://www.eoas.ubc.ca/courses/atsc113/flying/met_concepts/03-met_concepts/03e-CAT/index.html",
+              "caption": "Visual reference for Kelvin–Helmholtz cloud waves (fluctus)",
+              "alt": "Wind-shear blueprint for Kelvin–Helmholtz billow clouds",
+              "title": "Wind-shear blueprint for Kelvin–Helmholtz billow clouds",
+              "role": "mechanism",
+              "commentary": "This diagram breaks the phenomenon into layers: a faster moving, warmer air region above a slower, cooler region. Look at the shear vector and the way the interface develops wavelike undulations, then transitions toward turbulence. In the oblique view, the cloud layer forms parallel “billow” rolls labeled as wave/billow clouds. Mentally, it turns “sky surf” into a predictable instability driven by velocity differences, not just artistic cloud shapes.",
+              "evidenceRelation": "illustrates",
+              "knowledgeCheck": {
+                "question": "How does wind shear bend a cloud layer?",
+                "options": [
+                  "If air moves at the same speed, rolls appear",
+                  "Faster air slides over slower air, amplifying a boundary wave",
+                  "Waves only form when wind is zero",
+                  "Clouds roll because the ocean is directly above",
+                  "Convection puffs clouds randomly without a boundary",
+                  "Earth’s rotation alone curls cloud layers",
+                  "Gravity waves always create KH-like billows",
+                  "Radiation pressure directly shapes cloud crests"
+                ],
+                "correctOptionIndex": 1,
+                "explanation": "Kelvin–Helmholtz instability grows when there’s wind shear across a stable boundary. The faster layer overruns the slower one, amplifying interface waves that roll into billows."
+              }
+            },
+            {
+              "imageUrl": "https://kids.weather.gov.hk/eBook/ebook_cloud/images/canvas/schematics/kelvinhelmholtz_e.png",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/bJziR-WdIDEyJoXk-XTy66jx1RdzInPtdKLlEoWBHDfzAxV3O7qmIkcnmEC0BctZcKGKjmMWQyLRGqNXXTzbge95z6jRujN9Mvmi6SIigsbeU0WpRrR9dG_TBQtZrtw1eZk9ut_IcvYrVUP5CBPUo528f8Z1ZUsKHo4qmUMMBlA?purpose=inline",
+              "sourcePageUrl": "https://kids.weather.gov.hk/eBook/ebook_cloud/m_ebook_cloud09_e.htm",
+              "caption": "Visual reference for Kelvin–Helmholtz cloud waves (fluctus)",
+              "alt": "Fluctus schematic: faster air intrudes over slower air",
+              "title": "Fluctus schematic: faster air intrudes over slower air",
+              "role": "mechanism",
+              "commentary": "This schematic highlights the same boundary idea using warm-air and cooler-air labels plus clear airflow arrows. The key visible idea is that the faster (yellow-arrow) layer intrudes into the slower one, distorting the boundary into smooth wave shapes. The diagram also calls out that the resulting Fluctus pattern is short-lived and forms mainly on the cloud top surface. It’s a “follow-the-arrows” mechanism picture that makes the curl geometry feel less mysterious.",
+              "evidenceRelation": "illustrates",
+              "knowledgeCheck": {
+                "question": "Why does the slower air get cut into?",
+                "options": [
+                  "Because the warm air must sink below cool air",
+                  "Because aircraft engines inject turbulence directly",
+                  "Faster air intrudes, distorting the boundary into rolls",
+                  "Because clouds evaporate instantly at the boundary",
+                  "Because sunlight itself carves the interface",
+                  "Because radio signals paint shapes in clouds",
+                  "Because ocean waves propagate upward intact",
+                  "Because wind direction reverses every instant"
+                ],
+                "correctOptionIndex": 2,
+                "explanation": "When one air layer moves faster than the one below, it pushes into the slower layer along the interface. That shearing distortion produces rolling Kelvin–Helmholtz waves at the cloud top."
+              }
+            },
+            {
+              "imageUrl": "https://media2.spaceref.com/modis/image03292013_500m.jpg",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/0vefn88JzK-dlqdjQAG4vUOS1sTHv85cmQlzUUvLITyl13lDywyqYeHTArfdppWLYJkxnFj8rCtlOWi397odkDku42zqhe-BU6SjFtgQ1MnHAI7LD6luY60GKljbS-YRJ5V5sHMEJvIf2E_q26ooggstMcuCgOpzY5DfJyhEJD4?purpose=inline",
+              "sourcePageUrl": "https://spaceref.com/status-report/nasa-modis-image-of-the-day-march-29-2013-wave-clouds-in-the-gulf-of-mexico/",
+              "caption": "Visual reference for Kelvin–Helmholtz cloud waves (fluctus)",
+              "alt": "Wave-cloud bands from undular bores (gravity-wave comparison)",
+              "title": "Wave-cloud bands from undular bores (gravity-wave comparison)",
+              "role": "comparison",
+              "commentary": "From space, the satellite shows long, ripple-like wave clouds across the Gulf of Mexico, with a distinct boundary line along the image. Unlike many close-up KH photos, the pattern reads as broad atmospheric “ripples” spread over a wide region. Use this as a comparison: wave clouds can also come from gravity-wave processes triggered by a cold front and stable air, producing alternating cloud-and-clear bands. It shows why the “ocean-wave” look isn’t always one specific mechanism.",
+              "evidenceRelation": "contextualizes",
+              "knowledgeCheck": {
+                "question": "What forms those huge wave-cloud bands offshore?",
+                "options": [
+                  "Kelvin–Helmholtz shear at a cloud boundary",
+                  "A cold front forcing stable air into rolling gravity waves",
+                  "Smoke plumes from coastal cities",
+                  "Volcanic eruptions spreading uniform cloud ripples",
+                  "Convection cells rising with no stable layer",
+                  "Ocean evaporation alone making bands",
+                  "Aircraft wakes near the surface shaping clouds",
+                  "Aurora-related ice forming offshore waves only"
+                ],
+                "correctOptionIndex": 1,
+                "explanation": "Large wave-cloud bands offshore can be produced when a cold front pushes air into a stable layer, creating rolling gravity waves (undular bores). Cloud forms at wave crests while other parts clear at troughs, making a surf-like offshore pattern."
+              }
+            },
+            {
+              "imageUrl": "https://media.springernature.com/lw685/springer-static/image/art%3A10.1186%2Fs40623-018-0935-0/MediaObjects/40623_2018_935_Fig4_HTML.png",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/MbcXIvlBcvCtweAprFCmdPGBIbp-X-wJamotBEqn-klMY_GAqzCpcsCMpycR-TrQN7hTDSqbEmPQ0fHj-Jc4JSwjfftegyIL-PqaNwc6uXymIEj00c-oo4N-83sp3BwkFKLCMjKg152hxiVJjcidqKxly4g-lcIaC80DhUHtLio?purpose=inline",
+              "sourcePageUrl": "https://link.springer.com/article/10.1186/s40623-018-0935-0",
+              "caption": "Visual reference for Kelvin–Helmholtz cloud waves (fluctus)",
+              "alt": "Radar view of Kelvin–Helmholtz billows (MU radar)",
+              "title": "Radar view of Kelvin–Helmholtz billows (MU radar)",
+              "role": "primary-source",
+              "commentary": "This figure is filled with structured color bands rather than a visible sky scene. Look for the stacked panels: they display measurements like vertical-velocity and wind-speed patterns over time/height, with repeating, parallel wave-like structures. The visual message is that the “breaking” look corresponds to coherent atmospheric motion, not just cloud appearance. It connects the curled cloud tops to organized dynamics detected by radar and related instruments.",
+              "evidenceRelation": "supports",
+              "knowledgeCheck": {
+                "question": "What do these radar bands reveal about billows?",
+                "options": [
+                  "Only ground temperature changes",
+                  "Repeating updraft/downdraft bands from KH billows",
+                  "Rainfall rate in millimeters only",
+                  "Lightning location timing",
+                  "Ocean currents below the clouds",
+                  "Random camera shake patterns",
+                  "Global time-zone errors in instruments",
+                  "Gravity-wave ripples with no wind-shear layer"
+                ],
+                "correctOptionIndex": 1,
+                "explanation": "The radar signatures show coherent, repeating bands consistent with Kelvin–Helmholtz billows—organized vertical motion and shear structures—rather than random cloud texture."
+              }
+            },
+            {
+              "imageUrl": "https://s.w-x.co/kelvin-helmholtz_va.jpg?format=auto&optimize=medium&width=3840",
+              "thumbnailUrl": "https://images.openai.com/static-rsc-4/Yo0YMFAVMaYBYCvbrc_2g9mmu4aP0RZKpQSpc60i8U9jGM6mCOI10NdApCxan935E7GsEvrX1nCQ6RY_L8i_y3jZohKygo18UtY3BGauzGk8ulCLuhuVmsw4f0LZuYJTTmT32YxyQfmodK729RhmaRwoJ8r2qbW-yh7CmLwzwQk?purpose=inline",
+              "sourcePageUrl": "https://weather.com/news/weather/news/2019-06-20-kelvin-helmholtz-wave-clouds-virginia",
+              "caption": "Visual reference for Kelvin–Helmholtz cloud waves (fluctus)",
+              "alt": "Curling KH billows over a calm foreground",
+              "title": "Curling KH billows over a calm foreground",
+              "role": "context",
+              "commentary": "This photo juxtaposes a calm ground scene—houses and green grass—with dramatic, curling cloud billows above. The wave crests look like they’re folding over, giving a “breaking” appearance even though everything is high aloft. Notice that the curls live mainly at the cloud top and along a narrow layer, while the surrounding sky is smoother. That layer-at-the-top clue points to a boundary instability created by wind shear.",
+              "evidenceRelation": "contextualizes",
+              "knowledgeCheck": {
+                "question": "What conditions let these clouds look breaking?",
+                "options": [
+                  "Calm air with no wind-shear contrast",
+                  "Only a cold front, with no cloud layer present",
+                  "Strong vertical wind shear plus enough moisture at the boundary",
+                  "Satellite glitches with no atmosphere involved",
+                  "Clouds forming from dry dust alone",
+                  "Ocean spray directly condensing into billows",
+                  "Jet exhaust mixing into fog layers",
+                  "High humidity but perfectly uniform wind speeds"
+                ],
+                "correctOptionIndex": 2,
+                "explanation": "Clouds become visible as Kelvin–Helmholtz billows when moisture is present near the sheared boundary. A strong speed change with height then makes those visible cloud tops curl and roll into a breaking-wave look."
+              }
+            }
+          ]
+        },
+        "transition": "Once you know it’s a shear-driven “air-wave boundary,” several new questions naturally appear.",
+        "topicLabel": "Kelvin–Helmholtz cloud waves (fluctus)",
+        "researchSummary": "Searched for credible explanations and definitions of cloud wave formations that resemble breaking ocean waves, focusing on Kelvin–Helmholtz waves and related instability. Used NOAA sources to connect the visual “breaking waves” description to wind shear and to radar observations that show strengthening and breaking. Looked for a contrasting mechanism (gravity waves) to make clear why not all wave clouds are the same physics. Curated an image set by selecting (1) direct, high-resolution radar images from NOAA’s PSL gallery and (2) high-resolution cloud photos from Wikimedia and major news outlets, then keeping only “",
+        "researchHandoff": {
+          "discoveries": [
+            "Kelvin–Helmholtz waves are vertical waves associated with wind shear and can appear as breaking waves in both radar and cloud photos.",
+            "NOAA’s PSL radar images show wave patterns in clouds that grow stronger and can begin to break, providing an observation-level link between the wave look and fluid instability.",
+            "Gravity waves in the atmosphere can also produce rippled cloud bands, but their cause is different: stable air oscillates after being forced up over terrain."
+          ],
+          "uncertainties": [
+            "From photos alone, it can be hard to distinguish Kelvin–Helmholtz billows from other “wave cloud” types without wind-profile or stability information."
+          ],
+          "unresolvedThreads": [
+            "What moisture amount and atmospheric stability most strongly control whether the wave crests become clearly curled and “breaking” (fluctus) versus staying as gentle undulations?",
+            "How quickly does the wave pattern grow for typical atmospheric shear conditions, and how does that vary with height and humidity?"
+          ],
+          "sourceLeads": []
+        },
+        "preferredPosition": 0,
+        "provider": "openai",
+        "modelId": "gpt-5.4-nano",
+        "promptVersion": "wonder-research-turn@4.1.0",
+        "performerVersion": "sage@1.0.0",
+        "modelSnapshot": "openai:gpt-5.4-nano@2026-07-14",
+        "answerDensity": "rich",
+        "imagePreference": "prefer",
+        "outputLocale": "en",
+        "options": [
+          {
+            "position": 0,
+            "question": "What wind speed change with height makes billows start?",
+            "angle": "mechanism"
+          },
+          {
+            "position": 1,
+            "question": "How can you tell KH billows from gravity-wave clouds?",
+            "angle": "boundary"
+          }
+        ],
+        "sources": [
+          {
+            "id": "src_17quzhz",
+            "url": "https://www.rmets.org/metmatters/picture-perfect-2025s-winning-weather-photos",
+            "title": "Visual reference for Kelvin–Helmholtz cloud waves (fluctus)",
+            "publisher": "rmets.org",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_18a6v8g",
+            "url": "https://lostcoastoutpost.com/2017/apr/16/rare-wave-clouds-captured-over-bald-hills-mountain/",
+            "title": "Visual reference for Kelvin–Helmholtz cloud waves (fluctus)",
+            "publisher": "lostcoastoutpost.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_1r8m6j2",
+            "url": "https://spaceref.com/status-report/nasa-modis-image-of-the-day-march-29-2013-wave-clouds-in-the-gulf-of-mexico/",
+            "title": "Visual reference for Kelvin–Helmholtz cloud waves (fluctus)",
+            "publisher": "spaceref.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_1s7b2fx",
+            "url": "https://kids.weather.gov.hk/eBook/ebook_cloud/m_ebook_cloud09_e.htm",
+            "title": "Visual reference for Kelvin–Helmholtz cloud waves (fluctus)",
+            "publisher": "kids.weather.gov.hk",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_1yo3lv0",
+            "url": "https://www.washingtonpost.com/news/capital-weather-gang/wp/2015/07/28/shark-fins-in-the-sky-awesome-kelvin-helmholtz-clouds-from-the-galapagos/",
+            "title": "Visual reference for Kelvin–Helmholtz cloud waves (fluctus)",
+            "publisher": "washingtonpost.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_3o6b0e",
+            "url": "https://abcnews.com/US/woman-captures-rare-wave-shaped-clouds-hovering-virginia/story?id=63811155",
+            "title": "Visual reference for Kelvin–Helmholtz cloud waves (fluctus)",
+            "publisher": "abcnews.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_66ts5u",
+            "url": "https://link.springer.com/article/10.1186/s40623-018-0935-0",
+            "title": "Visual reference for Kelvin–Helmholtz cloud waves (fluctus)",
+            "publisher": "link.springer.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_bs1q14",
+            "url": "https://www.washingtonpost.com/weather/2022/12/08/kelvin-helmholtz-wave-clouds-wyoming/",
+            "title": "Visual reference for Kelvin–Helmholtz cloud waves (fluctus)",
+            "publisher": "washingtonpost.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_bwn8ho",
+            "url": "https://commons.wikimedia.org/wiki/File%3AKelvin-Helmholtz_waves.jpg",
+            "title": "Visual reference for Kelvin–Helmholtz cloud waves (fluctus)",
+            "publisher": "commons.wikimedia.org",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_sd2ild",
+            "url": "https://www.abc.net.au/news/2018-11-06/pilots-can-ride-alongside-breakers-in-the-atmosphere/10469280",
+            "title": "Visual reference for Kelvin–Helmholtz cloud waves (fluctus)",
+            "publisher": "abc.net.au",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_tyreul",
+            "url": "https://www.eoas.ubc.ca/courses/atsc113/flying/met_concepts/03-met_concepts/03e-CAT/index.html",
+            "title": "Visual reference for Kelvin–Helmholtz cloud waves (fluctus)",
+            "publisher": "eoas.ubc.ca",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_vyg2ss",
+            "url": "https://weather.com/news/weather/news/2019-06-20-kelvin-helmholtz-wave-clouds-virginia",
+            "title": "Visual reference for Kelvin–Helmholtz cloud waves (fluctus)",
+            "publisher": "weather.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "image"
+          },
+          {
+            "id": "src_ezod0k",
+            "url": "https://www.emetsoc.org/rare-kelvin-helmholtz-clouds-spotted-in-the-east-of-ireland/",
+            "title": "emetsoc.org",
+            "publisher": "emetsoc.org",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_1rxtgzx",
+            "url": "https://en.wikipedia.org/wiki/Kelvin%E2%80%93Helmholtz_instability",
+            "title": "en.wikipedia.org",
+            "publisher": "en.wikipedia.org",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_1hveoki",
+            "url": "https://www.facebook.com/KOCOdamonlane/posts/kelvin-helmholtz-clouds-in-norman-oklahoma-happening-right-now-1135am-these-clou/987437992748502/",
+            "title": "facebook.com",
+            "publisher": "facebook.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_cng00b",
+            "url": "https://www.facebook.com/groups/968580683281312/posts/2951632634976097/",
+            "title": "facebook.com",
+            "publisher": "facebook.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_ojz3ms",
+            "url": "https://www.facebook.com/MeteorologistEddieSheerr/posts/see-that-neat-little-row-of-clouds-evenly-spaced-thats-the-air-rippling-like-wat/1563603215123471/",
+            "title": "facebook.com",
+            "publisher": "facebook.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_1456vwi",
+            "url": "https://forecast.weather.gov/glossary.php?word=Kelvin-Helmholtz+waves",
+            "title": "forecast.weather.gov",
+            "publisher": "forecast.weather.gov",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "cited"
+          },
+          {
+            "id": "src_1ke1i0n",
+            "url": "https://mountwashington.org/the-science-behind-kelvin-helmholtz-wave-clouds/",
+            "title": "mountwashington.org",
+            "publisher": "mountwashington.org",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_11qfns1",
+            "url": "https://www.nesdis.noaa.gov/our-environment/clouds/wave-clouds",
+            "title": "nesdis.noaa.gov",
+            "publisher": "nesdis.noaa.gov",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "cited"
+          },
+          {
+            "id": "src_191e98t",
+            "url": "https://ntrs.nasa.gov/citations/19730043466",
+            "title": "ntrs.nasa.gov",
+            "publisher": "ntrs.nasa.gov",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_9rhnt1",
+            "url": "https://ntrs.nasa.gov/citations/19850024187",
+            "title": "ntrs.nasa.gov",
+            "publisher": "ntrs.nasa.gov",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_13pjbcd",
+            "url": "https://psl.noaa.gov/data/image_archive/",
+            "title": "psl.noaa.gov",
+            "publisher": "psl.noaa.gov",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "cited"
+          },
+          {
+            "id": "src_1vvsgp5",
+            "url": "https://www.reddit.com/r/meteorology/comments/l4cua4/what_causes_these_types_of_clouds_and_what_are/",
+            "title": "reddit.com",
+            "publisher": "reddit.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_ynny17",
+            "url": "https://www.researchgate.net/figure/Kelvin-Helmholtz-billows-revealed-by-clouds-a-Side-view-from_fig1_263617190",
+            "title": "researchgate.net",
+            "publisher": "researchgate.net",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_iy5v01",
+            "url": "https://www.sciencedirect.com/topics/earth-and-planetary-sciences/kelvin-helmholtz-instability",
+            "title": "sciencedirect.com",
+            "publisher": "sciencedirect.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          },
+          {
+            "id": "src_13b4dor",
+            "url": "https://skybrary.aero/articles/kelvin-helmholtz-waves",
+            "title": "skybrary.aero",
+            "publisher": "skybrary.aero",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "cited"
+          },
+          {
+            "id": "src_45mz3n",
+            "url": "https://www.youtube.com/watch?v=j-W7l1kaBYw",
+            "title": "youtube.com",
+            "publisher": "youtube.com",
+            "publishedAt": null,
+            "providerSourceId": null,
+            "warning": null,
+            "licenseNote": null,
+            "relation": "consulted"
+          }
+        ],
+        "research": {
+          "provider": "openai",
+          "modelId": "gpt-5.4-nano",
+          "preset": "standard",
+          "inputTokens": 97664,
+          "cachedInputTokens": 0,
+          "outputTokens": 42893,
+          "reasoningTokens": 24112,
+          "totalTokens": 140557,
+          "webSearchCalls": 23,
+          "pageFetches": 9,
+          "latencyMs": 139625,
+          "estimatedCostMicrousd": 303149,
+          "rateEffectiveAt": "2026-07-14",
+          "events": [
+            {
+              "sequence": 0,
+              "kind": "status",
+              "label": "Retrieved completed background research for validation",
+              "sourceId": null
+            },
+            {
+              "sequence": 1,
+              "kind": "source",
+              "label": "Consulted forecast.weather.gov: forecast.weather.gov",
+              "sourceId": "src_1456vwi"
+            },
+            {
+              "sequence": 2,
+              "kind": "source",
+              "label": "Consulted en.wikipedia.org: en.wikipedia.org",
+              "sourceId": "src_1rxtgzx"
+            },
+            {
+              "sequence": 3,
+              "kind": "source",
+              "label": "Consulted psl.noaa.gov: psl.noaa.gov",
+              "sourceId": "src_13pjbcd"
+            },
+            {
+              "sequence": 4,
+              "kind": "source",
+              "label": "Consulted facebook.com: facebook.com",
+              "sourceId": "src_cng00b"
+            },
+            {
+              "sequence": 5,
+              "kind": "source",
+              "label": "Consulted youtube.com: youtube.com",
+              "sourceId": "src_45mz3n"
+            },
+            {
+              "sequence": 6,
+              "kind": "source",
+              "label": "Consulted skybrary.aero: skybrary.aero",
+              "sourceId": "src_13b4dor"
+            },
+            {
+              "sequence": 7,
+              "kind": "check",
+              "label": "Checked that citations resolve to sources consulted in this run",
+              "sourceId": null
+            },
+            {
+              "sequence": 8,
+              "kind": "search",
+              "label": "Curating a broader set of evidence-grade images for the visual story",
+              "sourceId": null
+            },
+            {
+              "sequence": 9,
+              "kind": "check",
+              "label": "Selected 12 source-matched visuals for the finished session",
+              "sourceId": null
+            },
+            {
+              "sequence": 10,
+              "kind": "synthesis",
+              "label": "Validated the sourced answer and its continuation paths",
+              "sourceId": null
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

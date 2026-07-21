@@ -9,10 +9,24 @@ import {
 
 export const dynamic = "force-dynamic";
 
+const LEGACY_CATEGORY_DIMENSION: Record<string, string> = {
+  Nature: "Living World",
+  Science: "Forces & Energy",
+  History: "Time & History",
+  Culture: "Society",
+  Systems: "Design & Technology",
+  Space: "Cosmos",
+  Technology: "Design & Technology",
+  Art: "Art & Expression",
+};
+
 export async function GET(request: Request) {
   const searchParams = new URL(request.url).searchParams;
   const requestedPage = Number(searchParams.get("page") ?? "1");
-  return query(() => getLandingRecommendationPage(requestedPage, searchParams.get("category")));
+  const legacyCategory = searchParams.get("category");
+  const requestedDimension = searchParams.get("dimension")
+    ?? (legacyCategory ? LEGACY_CATEGORY_DIMENSION[legacyCategory] ?? legacyCategory : null);
+  return query(() => getLandingRecommendationPage(requestedPage, requestedDimension));
 }
 
 export async function POST(request: Request) {

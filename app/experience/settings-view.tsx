@@ -18,19 +18,27 @@ export function SettingsView({
   preferences,
   catalog,
   busy,
+  byokConfigured,
   onPreviewTextSize,
   onSave,
+  onSaveApiKey,
+  onClearApiKey,
 }: {
   viewer: Viewer | null;
   savedJourneyCount: number;
   preferences: UserPreferences;
   catalog: BootstrapCatalog;
   busy: boolean;
+  byokConfigured: boolean;
   onPreviewTextSize: (textSize: TextSize) => void;
   onSave: (next: UserPreferences) => Promise<void>;
+  onSaveApiKey: (apiKey: string) => void;
+  onClearApiKey: () => void;
 }) {
   const { t } = useI18n();
   const [draft, setDraft] = useState(preferences);
+  const [apiKeyDraft, setApiKeyDraft] = useState("");
+  const [apiKeyMessage, setApiKeyMessage] = useState<string | null>(null);
   const displayName = viewer?.displayName ?? t("Opening journeys…");
   const initials = displayName
     .split(/\s+/)
@@ -97,6 +105,65 @@ export function SettingsView({
                 <div aria-hidden="true"><span>{t("Quick read")}</span><span>{t("Balanced")}</span><span>{t("Deep dive")}</span></div>
               </label>
             </div>
+          </section>
+          <section className="api-key-panel" aria-labelledby="api-key-title">
+            <header className="settings-section-heading">
+              <div className="api-key-heading-line">
+                <h2 id="api-key-title">{t("Bring your own OpenAI key")}</h2>
+                <span className={byokConfigured ? "connected" : "trial"}>
+                  {t(byokConfigured ? "Connected for this tab" : "App-funded trial")}
+                </span>
+              </div>
+              <p>{t(viewer?.mode === "guest"
+                ? "Guests receive up to $0.50 of app-funded research. Add your key for continued live use."
+                : "Your account receives up to $1.00 of app-funded research. Add your key for continued live use.")}</p>
+            </header>
+            <div className="api-key-control">
+              <label>
+                <span>{t("OpenAI API key")}</span>
+                <input
+                  type="password"
+                  value={apiKeyDraft}
+                  placeholder={byokConfigured ? "••••••••••••••••••••" : "sk-…"}
+                  autoComplete="off"
+                  autoCapitalize="none"
+                  spellCheck={false}
+                  onChange={(event) => {
+                    setApiKeyDraft(event.target.value);
+                    setApiKeyMessage(null);
+                  }}
+                />
+              </label>
+              <button
+                className="api-key-save"
+                type="button"
+                disabled={!apiKeyDraft.trim()}
+                onClick={() => {
+                  try {
+                    onSaveApiKey(apiKeyDraft);
+                    setApiKeyDraft("");
+                    setApiKeyMessage(t("Key saved for this browser tab."));
+                  } catch (cause) {
+                    setApiKeyMessage(cause instanceof Error ? cause.message : t("The key could not be saved."));
+                  }
+                }}
+              >{t(byokConfigured ? "Replace key" : "Use my key")}</button>
+              {byokConfigured && (
+                <button
+                  className="api-key-remove"
+                  type="button"
+                  onClick={() => {
+                    onClearApiKey();
+                    setApiKeyDraft("");
+                    setApiKeyMessage(t("Key removed from this tab."));
+                  }}
+                >{t("Remove")}</button>
+              )}
+            </div>
+            <p className="api-key-privacy">
+              <strong>{t("Session-only.")}</strong> {t("The key is kept in this tab, sent only to CuriosityPedia for your OpenAI requests, and never saved to your account or database.")}
+            </p>
+            {apiKeyMessage && <p className="api-key-message" role="status">{apiKeyMessage}</p>}
           </section>
           <section className="comfort-panel" aria-labelledby="comfort-title">
             <header className="settings-section-heading">

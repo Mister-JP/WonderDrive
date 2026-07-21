@@ -318,7 +318,7 @@ test("export preserves shape, privacy text, clock, snapshot projection, and dupl
   ]);
   assert.equal(result.exportVersion, "curiositypedia-export@1");
   assert.equal(result.exportedAt, "2026-07-18T17:24:05.000Z");
-  assert.equal(result.catalogVersion, "wonder-research-turn@4.1.0");
+  assert.equal(result.catalogVersion, "wonder-research-turn@4.1.2");
   assert.equal(result.journey.id, "journey-alpha");
   assert.deepEqual(result.snapshots, [
     { id: "snapshot-one", journeyId: "journey-alpha", label: "One", graphVersion: 7, summary: "Snapshot summary", createdAt: 300 },

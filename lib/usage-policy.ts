@@ -23,7 +23,7 @@ export const CURRENT_USER_POLICIES: Readonly<Record<Viewer["mode"], CurrentUserP
       funding: "application",
       allowedModelIds: CURRENT_LIVE_MODEL_IDS,
       liveResearchLimit: 25,
-      identitySpendLimitUsd: 3,
+      identitySpendLimitUsd: 0.5,
       journeyLimit: 50,
     }),
     chatgpt: Object.freeze({
@@ -31,7 +31,7 @@ export const CURRENT_USER_POLICIES: Readonly<Record<Viewer["mode"], CurrentUserP
       funding: "application",
       allowedModelIds: CURRENT_LIVE_MODEL_IDS,
       liveResearchLimit: 100,
-      identitySpendLimitUsd: 15,
+      identitySpendLimitUsd: 1,
       journeyLimit: 25,
     }),
   });

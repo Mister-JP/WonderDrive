@@ -10,12 +10,14 @@ import type {
   PerformerId,
   ResearchEvent,
 } from "../lib/contracts";
+import { openAIKeyRequestHeaders } from "./byok-client";
 
 export type LiveResearchState = {
   question: string;
   performerId: PerformerId;
   message: string;
   events: ResearchEvent[];
+  phase?: "research" | "composition" | "validation";
   status: "running" | "complete" | "error";
   result: JourneyDetail | null;
   error: string | null;
@@ -38,9 +40,17 @@ class ApiRequestError extends Error {
 }
 
 export async function api<T>(url: string, init?: RequestInit): Promise<ApiSuccess<T>> {
+  const providerHeaders = url.startsWith("/api/research")
+    || /^\/api\/journeys\/[^/]+\/advance(?:[/?]|$)/.test(url)
+    ? openAIKeyRequestHeaders()
+    : {};
   const response = await fetch(url, {
     ...init,
-    headers: { "content-type": "application/json", ...(init?.headers ?? {}) },
+    headers: {
+      "content-type": "application/json",
+      ...providerHeaders,
+      ...(init?.headers ?? {}),
+    },
   });
   const payload = (await response.json()) as ApiSuccess<T> | ApiFailure;
   if (!response.ok || "error" in payload) {
@@ -64,7 +74,7 @@ export async function streamLiveResearch(
 ) {
   const response = await fetch("/api/research", {
     method: "POST",
-    headers: { "content-type": "application/json" },
+    headers: { "content-type": "application/json", ...openAIKeyRequestHeaders() },
     body: JSON.stringify(request),
     signal,
   });
@@ -100,6 +110,7 @@ export async function streamLiveResearch(
         if (event.type === "started") {
           setState((current) => current && {
             ...current,
+            phase: "research",
             question: event.question,
             message: event.message,
             diagnosticId: event.requestId,
@@ -109,6 +120,7 @@ export async function streamLiveResearch(
         } else if (event.type === "retry") {
           setState((current) => current && {
             ...current,
+            phase: "research",
             message: event.message,
             events: [],
             retryAttempt: event.attempt,
@@ -117,6 +129,7 @@ export async function streamLiveResearch(
         } else if (event.type === "activity") {
           setState((current) => current && {
             ...current,
+            phase: event.event.phase ?? current.phase,
             events: current.events.some(({ id }) => id === event.event.id)
               ? current.events
               : [...current.events, event.event],

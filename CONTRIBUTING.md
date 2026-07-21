@@ -4,7 +4,7 @@
 
 1. Read [docs/architecture.md](docs/architecture.md) and use [docs/code-index.md](docs/code-index.md) to identify the owning module.
 2. Keep provider keys, database credentials, identity headers, and administrative values in server-only code.
-3. Preserve API idempotency, ownership checks, atomic turn commits, citation allowlisting, and the two-option turn invariant.
+3. Preserve API idempotency, ownership checks, atomic turn commits, citation allowlisting, and the linkage between visual evidence, its canonical curiosity question, and journey-map paths.
 4. Add or update automated tests for behavioral changes.
 5. Run `npm run architecture:update` after adding, deleting, or changing local module imports.
 6. Run `npm run architecture:check`, `npm run lint`, `npm run typecheck`, `npm run audit`, and `npm test`.

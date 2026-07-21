@@ -38,7 +38,7 @@ test("server-renders the honest CuriosityPedia V3 product shell", async () => {
   assert.match(html, /<title>CuriosityPedia — Give curiosity a direction<\/title>/i);
   assert.match(html, /CuriosityPedia/);
   assert.doesNotMatch(html, /curiosity, performed/i);
-  assert.match(html, /exactly two/i);
+  assert.match(html, /many ways forward/i);
   assert.match(html, /Opening your CuriosityPedia journeys/i);
   assert.match(html, /Resolving a durable guest identity/i);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton|Starter Project/i);

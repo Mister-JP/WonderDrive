@@ -4,7 +4,7 @@
 [![Live site](https://img.shields.io/badge/live-CuriosityPedia-111827)](https://curiositypedia.jigs.chatgpt.site)
 [![License: MIT](https://img.shields.io/badge/license-MIT-2563eb.svg)](LICENSE)
 
-CuriosityPedia turns one question into a persistent, source-backed path of discovery. Every researched turn preserves its answer, evidence, provider usage, and exactly two possible directions for what to explore next.
+CuriosityPedia turns one question into a persistent, source-backed map of discovery. Every researched turn preserves its answer, evidence, provider usage, and a set of image-linked questions that open different directions for what to explore next.
 
 [Open CuriosityPedia](https://curiositypedia.jigs.chatgpt.site) · [Read the product principles](docs/curiosity-learning-north-star.md) · [Explore the architecture](docs/architecture.md)
 
@@ -12,7 +12,7 @@ CuriosityPedia turns one question into a persistent, source-backed path of disco
 
 - Builds branching research journeys with citations and durable history.
 - Lets people revisit, search, map, bookmark, snapshot, export, and continue their learning.
-- Supports guest sessions and ChatGPT-authenticated identities without exposing provider credentials to the browser.
+- Supports guest sessions and ChatGPT-authenticated identities with small app-funded allowances and optional session-only BYOK.
 - Uses background research status, usage controls, and failure-safe persistence for long-running provider work.
 - Serves an editor-managed discovery catalog for approachable starting questions.
 
@@ -48,6 +48,8 @@ The development server listens on `http://localhost:3000` by default.
 | `EDITOR_API_KEY` | Editorial publishing only | Authorizes permanent discovery-catalog batches. |
 
 Keep real values in ignored local environment files or Sites runtime configuration. Never expose a server value through a `NEXT_PUBLIC_` variable.
+
+Learners may instead add their own OpenAI API key in Settings. That key stays in the current tab's `sessionStorage`, is attached only to provider-backed same-origin API routes, and is never written to D1. App-funded rolling allowances are $0.50 for guests and $1.00 for signed-in identities; BYOK requests do not consume those dollar allowances.
 
 ## Development
 

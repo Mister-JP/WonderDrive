@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { api, streamLiveResearch } from "../app/client-api.ts";
+import { clearSessionOpenAIKey, writeSessionOpenAIKey } from "../app/byok-client.ts";
 
 test("live research makes automatic retries visible and clears stale activity", async (context) => {
   const originalFetch = globalThis.fetch;
@@ -77,5 +78,39 @@ test("live admission errors preserve the identity-scoped takeover target", async
     () => streamLiveResearch({ kind: "create", idempotencyKey: "request-key" }, () => {}),
     (error) => error?.code === "ALREADY_IN_PROGRESS"
       && error?.diagnosticId === "request-active",
+  );
+});
+
+test("BYOK is attached only to provider-backed same-origin API calls", async (context) => {
+  const originalFetch = globalThis.fetch;
+  const originalWindow = globalThis.window;
+  const values = new Map();
+  globalThis.window = {
+    sessionStorage: {
+      getItem: (key) => values.get(key) ?? null,
+      setItem: (key, value) => values.set(key, String(value)),
+      removeItem: (key) => values.delete(key),
+    },
+  };
+  const requests = [];
+  globalThis.fetch = async (url, init) => {
+    requests.push({ url, headers: new Headers(init?.headers) });
+    return Response.json({ data: {}, viewer: { mode: "guest" } });
+  };
+  context.after(() => {
+    clearSessionOpenAIKey();
+    globalThis.fetch = originalFetch;
+    if (originalWindow === undefined) delete globalThis.window;
+    else globalThis.window = originalWindow;
+  });
+
+  writeSessionOpenAIKey("sk-test-browser-session-key-long-enough");
+  await api("/api/usage");
+  await api("/api/research/background");
+
+  assert.equal(requests[0].headers.get("x-curiositypedia-openai-key"), null);
+  assert.equal(
+    requests[1].headers.get("x-curiositypedia-openai-key"),
+    "sk-test-browser-session-key-long-enough",
   );
 });

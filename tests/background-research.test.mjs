@@ -156,6 +156,29 @@ test("background research expires to a retryable terminal status after ten minut
   }
 });
 
+test("an active phase-two finalization lease survives the phase-one watchdog", async () => {
+  const database = migratedDatabase();
+  const requestId = "request-active-composition";
+  const leaseExpiresAt = Date.now() + 5 * 60_000;
+  insertBackground(database, {
+    requestId,
+    providerResponseId: "resp_active_composition",
+    startedAt: Date.now() - BACKGROUND_RESEARCH_TIMEOUT_MS - 1,
+    leaseToken: "lease-active-composition",
+    leaseExpiresAt,
+  });
+  env.DB = new SQLiteD1(database);
+  try {
+    const activities = await listBackgroundResearch(viewer, { reconcile: false });
+    const activity = activities.find(({ id }) => id === requestId);
+    assert.equal(activity.status, "researching");
+    assert.equal(activity.phase, "finalizing");
+    assert.equal(activity.timeoutAt, leaseExpiresAt);
+  } finally {
+    delete env.DB;
+  }
+});
+
 test("learner cancellation is idempotent and fences stale finalizers", async () => {
   const database = migratedDatabase();
   const requestId = "request-cancelled-background";

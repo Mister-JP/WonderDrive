@@ -28,6 +28,11 @@ export const OPENAI_PROMPT_LIMITS = Object.freeze({
     }),
   }),
   starterGeneration: Object.freeze({ maxOutputTokens: 10_000, reasoning: "high" }),
+  turnComposition: Object.freeze({
+    maxOutputTokens: 20_000,
+    reasoning: "high",
+    timeoutMs: 180_000,
+  }),
   questionRedraw: Object.freeze({ maxOutputTokens: 8_000, reasoning: "high" }),
   visualCuration: Object.freeze({
     maxToolCalls: 12,

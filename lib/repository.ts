@@ -88,7 +88,7 @@ export async function advanceJourney(
     throw new RepositoryError("BAD_REQUEST", "The selected turn is not part of this journey.", 400);
   }
   if (fromTurn.options.length !== 2) {
-    throw new RepositoryError("INTERNAL_ERROR", "The turn does not have exactly two paths.", 500);
+    throw new RepositoryError("INTERNAL_ERROR", "The turn does not have its required fallback path pair.", 500);
   }
   const now = Date.now();
 
@@ -206,7 +206,7 @@ export async function advanceJourney(
       ? fromTurn.options.find((option) => option.position === fromTurn.preferredPosition)
       : fromTurn.options.find((option) => option.id === request.optionId);
   if (!selected || selected.state !== "proposed") {
-    throw new RepositoryError("BAD_REQUEST", "Choose one of the two current paths.", 400);
+    throw new RepositoryError("BAD_REQUEST", "Choose a current path.", 400);
   }
 
   const childId = crypto.randomUUID();
@@ -503,7 +503,7 @@ function validateAdvanceRequest(viewer: ViewerContext, request: AdvanceJourneyRe
     throw new RepositoryError("BAD_REQUEST", "Choose, reject, or delegate the current paths.", 400);
   }
   if (request.action === "choose" && !request.optionId) {
-    throw new RepositoryError("BAD_REQUEST", "Choose one of the two path IDs.", 400);
+    throw new RepositoryError("BAD_REQUEST", "Choose a valid fallback path ID.", 400);
   }
   if (request.optionId) assertId(request.optionId, "option");
   if (request.modelId !== undefined && !isModelAllowed(viewer.mode, request.modelId)) {

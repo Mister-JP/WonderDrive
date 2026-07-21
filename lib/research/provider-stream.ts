@@ -3,6 +3,7 @@ import { RepositoryError } from "../errors";
 import { isRecord, requestOpenAI } from "../openai";
 import { releaseProviderCost, reserveProviderCost } from "../provider-cost-control";
 import { recordOpenAIUsage } from "../provider-usage";
+import type { ProviderAuth } from "../provider-auth";
 import type { OpenAIResponse } from "./provider-response";
 
 type ProviderStreamUsageContext = {
@@ -34,6 +35,7 @@ type RunProviderStreamInput = {
   usageContext: ProviderStreamUsageContext;
   externalSignal?: AbortSignal;
   onProgress?: (progress: ProviderStreamProgress) => void;
+  providerAuth?: ProviderAuth;
 };
 
 export async function runProviderStream({
@@ -43,6 +45,7 @@ export async function runProviderStream({
   usageContext,
   externalSignal,
   onProgress = () => {},
+  providerAuth,
 }: RunProviderStreamInput): Promise<ProviderStreamResult> {
   let outputText = "";
   let completedResponse: OpenAIResponse | null = null;
@@ -64,9 +67,10 @@ export async function runProviderStream({
     researchRequestId: usageContext.researchRequestId,
     journeyId: usageContext.journeyId,
     turnId: usageContext.turnId,
+    providerAuth,
   });
   if (externalSignal?.aborted) {
-    await releaseProviderCost(reservation.id);
+    if (reservation.id) await releaseProviderCost(reservation.id);
     throw clientAbortError();
   }
 
@@ -91,7 +95,7 @@ export async function runProviderStream({
   const recordOutcome = (input: Parameters<typeof recordOpenAIUsage>[0]) =>
     recordOpenAIUsage({
       ...usageContext,
-      costReservationId: reservation.id,
+      costReservationId: reservation.id ?? undefined,
       ...input,
       metadata: {
         ...usageContext.metadata,
@@ -109,6 +113,7 @@ export async function runProviderStream({
     response = await requestOpenAI(requestBody, {
       signal: controller.signal,
       unavailableMessage: "Live research is not configured on this deployment.",
+      apiKey: providerAuth?.apiKey,
     });
     providerRequestId = response.headers.get("x-request-id");
 
@@ -137,9 +142,13 @@ export async function runProviderStream({
           ? "PROVIDER_UNAVAILABLE"
           : "PROVIDER_ERROR",
         response.status === 401 || response.status === 403
-          ? "This deployment cannot access the selected OpenAI model. Choose another model or verify the production OpenAI project access."
+          ? providerAuth?.funding === "user"
+            ? "Your OpenAI API key was rejected or cannot access the selected model. Replace it in Settings and try again."
+            : "This deployment cannot access the selected OpenAI model. Choose another model or verify the production OpenAI project access."
           : response.status === 429
-            ? "Live research is busy or has reached its provider limit. Please try again shortly."
+            ? providerAuth?.funding === "user"
+              ? "Your OpenAI project is rate limited or has reached its billing limit. Check it in OpenAI Platform and try again."
+              : "Live research is busy or has reached its provider limit. Please try again shortly."
             : retryable
               ? "Live research could not reach the provider. The journey was not committed; it is safe to retry."
               : "The provider rejected this research request. Verify the selected model and shared generation configuration.",

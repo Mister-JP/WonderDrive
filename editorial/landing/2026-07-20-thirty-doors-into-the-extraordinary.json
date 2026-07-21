@@ -4,6 +4,10 @@
     {
       "id": "thorny-devil-skin-straws",
       "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Body"
+      ],
       "question": "How can a thorny devil sip a puddle with its feet?",
       "teaser": "Microscopic channels between its scales pull water by capillary action across the lizard's skin and deliver it to the corners of its mouth.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Thorny_Devil_%28Coolgardie%29.jpg?width=1600",
@@ -15,6 +19,10 @@
     {
       "id": "lencois-rain-lagoons",
       "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Planet Earth"
+      ],
       "question": "Why does this 'desert' fill with thousands of turquoise lagoons?",
       "teaser": "Lençóis Maranhenses is not a true desert: seasonal rain gathers between migrating coastal dunes, creating temporary freshwater lagoons.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Len%C3%A7%C3%B3is_Maranhenses_2018_%28cropped%29.jpg?width=1600",
@@ -26,6 +34,11 @@
     {
       "id": "thermokarst-methane-bubbles",
       "category": "Science",
+      "dimensions": [
+        "Matter",
+        "Planet Earth",
+        "Forces & Energy"
+      ],
       "question": "What fills the frozen bubbles stacked beneath this lake?",
       "teaser": "Microbes consume carbon exposed by thawing permafrost and release methane; when winter seals the lake, rising bubbles become suspended in ice.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Frozen_Methane_Bubbles_%2811927906233%29.jpg?width=1600",
@@ -37,6 +50,11 @@
     {
       "id": "aurora-gas-color-code",
       "category": "Science",
+      "dimensions": [
+        "Forces & Energy",
+        "Cosmos",
+        "Matter"
+      ],
       "question": "Why does an aurora paint different gases different colors?",
       "teaser": "Incoming particles energize oxygen and nitrogen high in the atmosphere; the gas and altitude determine whether the released light is green, red, blue, or pink.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Colorful_aurora_borealis_%28Unsplash%29.jpg?width=1600",
@@ -48,6 +66,10 @@
     {
       "id": "soap-bubble-pop-clock",
       "category": "Science",
+      "dimensions": [
+        "Matter",
+        "Forces & Energy"
+      ],
       "question": "How can a soap bubble forecast the instant it will pop?",
       "teaser": "Interference colors map the film's changing thickness. Just before rupture, the thinnest region can turn black as reflected wavelengths cancel.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Thin_Film_Interference_Soap_Bubble.jpg?width=1600",
@@ -59,6 +81,11 @@
     {
       "id": "radiolarian-glass-cathedral",
       "category": "Science",
+      "dimensions": [
+        "Living World",
+        "Body",
+        "Matter"
+      ],
       "question": "Why does a single cell build a skeleton like a glass cathedral?",
       "teaser": "A radiolarian extracts silica from seawater and assembles it into an intricate mineral shell that protects the drifting cell.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Simetria_Radiol%C3%A1ria.jpg?width=1600",
@@ -70,6 +97,11 @@
     {
       "id": "derinkuyu-underground-breathing",
       "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Society",
+        "Design & Technology"
+      ],
       "question": "How did an underground city breathe eight stories below Cappadocia?",
       "teaser": "A deep vertical shaft carried both water and fresh air through Derinkuyu, while stone doors could seal its refuge corridors from intruders.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Derinkuyu_Underground_City_T%C3%BCrkiye.jpg?width=1600",
@@ -81,6 +113,10 @@
     {
       "id": "pompeii-ash-void-casts",
       "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Body"
+      ],
       "question": "How can archaeologists cast a body that disappeared 2,000 years ago?",
       "teaser": "At Pompeii, hardened ash preserved the empty shape left after a victim decomposed; pouring plaster into that void recovered the body's final outline.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Cast_victim_eruptions_Pompeii.jpg?width=1600",
@@ -92,6 +128,11 @@
     {
       "id": "dunhuang-sealed-library-cave",
       "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Language",
+        "Planet Earth"
+      ],
       "question": "Why were 50,000 manuscripts sealed inside one tiny cave?",
       "teaser": "Dunhuang's Cave 17 held texts in about twenty languages for centuries. Whether it was a monastic library, a sacred deposit, or something else remains unresolved.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Paul_Pelliot_examining_manuscripts_in_Cave_17_at_Mogao_Caves_in_1908.jpg",
@@ -103,6 +144,9 @@
     {
       "id": "tollund-bog-tanned-face",
       "category": "History",
+      "dimensions": [
+        "Time & History"
+      ],
       "question": "How did a peat bog preserve a 2,300-year-old face?",
       "teaser": "Acid in the Danish bog acted like a tanning agent on Tollund Man's skin, preserving eyelashes, wrinkles, and stubble from the early Iron Age.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Tollundmanden_DO-10895_original.jpg?width=1600",
@@ -114,6 +158,10 @@
     {
       "id": "moon-jar-joined-hemispheres",
       "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Cosmos"
+      ],
       "question": "Why is a Korean moon jar never a perfect sphere?",
       "teaser": "Joseon potters joined two separately thrown porcelain hemispheres; the visible seam and subtle kiln movement gave each white moon its living asymmetry.",
       "imageUrl": "https://www.artic.edu/iiif/2/e8ec6920-7f8b-5854-ea60-13f7d7614ae0/full/1200,/0/default.jpg",
@@ -125,6 +173,12 @@
     {
       "id": "marshallese-wave-stick-chart",
       "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Planet Earth",
+        "Cosmos",
+        "Forces & Energy"
+      ],
       "question": "How can a map be read through waves instead of roads?",
       "teaser": "Marshallese navigators lashed palm ribs into charts whose curves represented ocean swells and whose intersections could mark islands.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Marshall_Islands_stick_chart%2C_Rebbelib_type._LOC_2010586182.jpg?width=1600",
@@ -136,6 +190,10 @@
     {
       "id": "ghanaian-life-story-coffins",
       "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Living World"
+      ],
       "question": "Why can a coffin look like a fish, a phone, or an airplane?",
       "teaser": "Ga fantasy coffins turn an important part of the deceased's work, status, or character into a vivid final sculpture.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Accra_%28Ghana%29_-_Fantasy_coffins_%28adebuu_adekai%29_-_7.jpg?width=1600",
@@ -147,6 +205,11 @@
     {
       "id": "indigo-air-reveals-blue",
       "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Matter",
+        "Art & Expression"
+      ],
       "question": "Why does indigo cloth turn blue only after it leaves the dye bath?",
       "teaser": "The soluble dye enters the fiber in a reduced state; exposure to air oxidizes it into the insoluble blue pigment that stays attached.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Indigobad_fr%C3%A5n_Japan.jpg?width=1600",
@@ -158,6 +221,11 @@
     {
       "id": "pysanky-wax-written-color",
       "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Forces & Energy",
+        "Art & Expression"
+      ],
       "question": "How do artists write an image onto an eggshell with wax?",
       "teaser": "Pysanky makers protect one pattern at a time with wax, dye from light to dark, then melt the wax away to reveal every saved layer of color.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Painted_Easter_Eggs_-_Pysanky_Museum_-_Kolomiya_-_The_Carpathians_-_Ukraine_-_05_%2827012456390%29_%282%29.jpg?width=1600",
@@ -169,6 +237,10 @@
     {
       "id": "oaxacan-alebrije-hybrid-creatures",
       "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Living World"
+      ],
       "question": "Why do Oaxacan alebrijes combine animals that never meet in nature?",
       "teaser": "Carvers transform copal wood into imagined hybrids, then cover every surface with vivid patterns; one origin story traces their name to Pedro Linares's dream creatures.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Alebrijes_en_Oaxaca.jpg?width=1600",
@@ -180,6 +252,10 @@
     {
       "id": "leafcutter-ant-fungus-farm",
       "category": "Systems",
+      "dimensions": [
+        "Living World",
+        "Food & Agriculture"
+      ],
       "question": "Why do leafcutter ants carry leaves they never eat?",
       "teaser": "The ants use fresh leaf fragments to cultivate a domesticated underground fungus, then harvest the fungus as their food crop.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Leafcutter_ants_transporting_leaves.jpg?width=1600",
@@ -191,6 +267,12 @@
     {
       "id": "bali-subak-water-temples",
       "category": "Systems",
+      "dimensions": [
+        "Society",
+        "Belief & Ideas",
+        "Food & Agriculture",
+        "Planet Earth"
+      ],
       "question": "How can water temples coordinate an entire landscape?",
       "teaser": "Bali's subak networks join ritual with cooperative decisions about canals and weirs, sharing irrigation across whole watersheds and terraced farms.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Rice_fields_at_Jatiluwih._Bali%2C_Indonesia.JPG?width=1600",
@@ -202,6 +284,11 @@
     {
       "id": "dutch-sand-motor-coast",
       "category": "Systems",
+      "dimensions": [
+        "Design & Technology",
+        "Planet Earth",
+        "Forces & Energy"
+      ],
       "question": "How can one artificial peninsula defend kilometers of coast?",
       "teaser": "The Netherlands placed 21.5 million cubic metres of sand in one hook-shaped reserve, then let waves, wind, and currents redistribute it along the shore.",
       "imageUrl": "https://cms.deltares.nl/assets/common/migrated_dont_move/_1536x1000_crop_center-center_none/Zandmotorbeeldbank.rws_.nl_-300x200.jpg?stamp=2212081557&tag=2xl",
@@ -213,6 +300,10 @@
     {
       "id": "pluto-heart-lava-lamp",
       "category": "Space",
+      "dimensions": [
+        "Cosmos",
+        "Planet Earth"
+      ],
       "question": "Why is Pluto's heart shaped like a giant lava lamp?",
       "teaser": "Slow convection turns over the nitrogen ice of Sputnik Planitia, replacing older terrain with fresh polygonal cells in Pluto's bright heart.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Pluto-01_Stern_03_Pluto_Color_TXT.jpg?width=1600",
@@ -224,6 +315,11 @@
     {
       "id": "mars-carbon-dioxide-spiders",
       "category": "Space",
+      "dimensions": [
+        "Cosmos",
+        "Living World",
+        "Art & Expression"
+      ],
       "question": "What carves giant 'spiders' into the surface of Mars?",
       "teaser": "Spring sunlight turns carbon-dioxide ice directly into trapped gas; when it erupts through the seasonal cap, escaping dust traces branching araneiform channels.",
       "imageUrl": "https://assets.science.nasa.gov/content/dam/science/psd/mars/resources/detail_files/7/7045_alien-mars-weird-spiders-mro-hirise-pia12249c1-full2.jpg/jcr:content/renditions/cq5dam.web.1280.1280.jpeg",
@@ -235,6 +331,10 @@
     {
       "id": "cartwheel-galaxy-collision-ripple",
       "category": "Space",
+      "dimensions": [
+        "Cosmos",
+        "Forces & Energy"
+      ],
       "question": "How did a galactic collision make a 150,000-light-year cartwheel?",
       "teaser": "A smaller galaxy punched through a larger disk, sending an expanding shock wave through its gas and igniting a vast outer ring of star formation.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Cartwheel_Galaxy_%28NIRCam_and_MIRI_Composite_Image%29_%28weic2211a%29.jpeg?width=1600",
@@ -246,6 +346,9 @@
     {
       "id": "cats-eye-eleven-shells",
       "category": "Space",
+      "dimensions": [
+        "Cosmos"
+      ],
       "question": "Why does a dying star wear eleven glowing shells?",
       "teaser": "The Cat's Eye Nebula records repeated episodes of stellar mass loss as nested bubbles; what paced those pulses is still debated.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Euclid_and_Hubble%27s_view_of_Cat%27s_Eye_Nebula_%28potm2602c%29.jpg?width=1600",
@@ -257,6 +360,9 @@
     {
       "id": "vine-robot-tip-growth",
       "category": "Technology",
+      "dimensions": [
+        "Design & Technology"
+      ],
       "question": "How can a robot grow 100 times longer without dragging its body?",
       "teaser": "A vine robot everts new material at its tip like an inside-out sock, letting the front advance through tight spaces while the deployed body stays still.",
       "imageUrl": "https://images.squarespace-cdn.com/content/v1/66b6b61fc5e5030973bd431f/85fb019d-4166-421c-ba36-73629cc2ac23/VineOnGrass-2.jpg",
@@ -268,6 +374,10 @@
     {
       "id": "loftid-inflatable-heat-shield",
       "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Forces & Energy"
+      ],
       "question": "How can an inflatable shield survive a 3,000-degree plunge?",
       "teaser": "LOFTID pairs rings woven from high-strength polymer with flexible insulation and an outer ceramic fabric, so a packed shield can inflate before reentry.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Artist_rendering_of_the_LOFTID_aeroshell_and_payload.jpg?width=1600",
@@ -279,6 +389,11 @@
     {
       "id": "flat-metalens-nanopillars",
       "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Matter",
+        "Forces & Energy"
+      ],
       "question": "How can a lens focus light without being curved?",
       "teaser": "Millions of differently sized nanopillars on a flat glass surface reshape incoming wavefronts, making a thin metalens focus like bulky curved optics.",
       "imageUrl": "https://www.nist.gov/sites/default/files/images/2022/07/26/atom-trapping.png",
@@ -290,6 +405,10 @@
     {
       "id": "mexican-feather-mosaic-light",
       "category": "Art",
+      "dimensions": [
+        "Art & Expression",
+        "Forces & Energy"
+      ],
       "question": "How can feathers become paint that changes when you move?",
       "teaser": "Mexican featherworkers laid down minute pieces like mosaic tesserae, using their radiant color and iridescence to make images shift with the viewer and light.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/%22Saint_Augustine-San_Agust%C3%ADn%22_feather_mosaic_at_%22Relatos%2C_Art%C3%ADsticos_de_la_Conquista%22%2C_Museo_Franz_Mayer%2C_Angled_Zoom_1.jpg?width=1600",
@@ -301,6 +420,10 @@
     {
       "id": "lusterware-metallic-clay",
       "category": "Art",
+      "dimensions": [
+        "Art & Expression",
+        "Matter"
+      ],
       "question": "Why can glazed clay shine like hammered metal?",
       "teaser": "Lusterware potters applied silver- or copper-based pigment over glaze, then fired it with little oxygen to leave an iridescent metallic layer.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Bowl_MET_sf13-153s1.jpg?width=1346",
@@ -312,6 +435,11 @@
     {
       "id": "ebru-painting-on-water",
       "category": "Art",
+      "dimensions": [
+        "Art & Expression",
+        "Planet Earth",
+        "Matter"
+      ],
       "question": "How can a painting be made on water, then lifted whole onto paper?",
       "teaser": "Ebru artists float pigments on a thickened liquid, comb and brush them into swirls, then lay down paper to capture the entire surface pattern at once.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Battal_Ebru.jpg?width=1509",
@@ -323,6 +451,9 @@
     {
       "id": "fore-edge-disappearing-painting",
       "category": "Art",
+      "dimensions": [
+        "Art & Expression"
+      ],
       "question": "How can a book hide a painting until its pages bend?",
       "teaser": "A fore-edge image is painted across minutely offset page edges; closing the book scrambles or gilds it away, while fanning the pages realigns the scene.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Arch_of_Traianus%2C_Ancona_-_Tasso_in_Prison%3B_-_the_Bridge_of_Sighs.jpg?width=1200",

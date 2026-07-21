@@ -1,0 +1,465 @@
+{
+  "title": "Thirty fresh doors into wonder — July 21, 2026",
+  "recommendations": [
+    {
+      "id": "blue-footed-booby-courtship-steps",
+      "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Mind",
+        "Planet Earth"
+      ],
+      "question": "Why does a seabird turn its blue feet into a courtship spotlight?",
+      "teaser": "Blue-footed boobies parade with deliberate high steps because vivid feet advertise health; a watching partner can judge both the color and the dancer displaying it.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Blue-footed_Booby_%28Sula_nebouxii%29_-displaying.jpg/1920px-Blue-footed_Booby_%28Sula_nebouxii%29_-displaying.jpg",
+      "imageAlt": "A blue-footed booby in the Galápagos pointing its beak skyward with wings spread and brilliant turquoise feet visible",
+      "sourceLabel": "Smithsonian Ocean",
+      "sourceUrl": "https://ocean.si.edu/ocean-life/seabirds/blue-footed-booby",
+      "size": "wide"
+    },
+    {
+      "id": "penitentes-sun-carved-ice",
+      "category": "Science",
+      "dimensions": [
+        "Forces & Energy",
+        "Planet Earth",
+        "Matter"
+      ],
+      "question": "Why does mountain snow sharpen itself into a field of sun-pointing blades?",
+      "teaser": "In the cold, dry Andes, intense sunlight drives uneven sublimation. Hollows trap more radiation and deepen while the colder ridges survive as penitentes that can tower over a person.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Icy_Penitents_on_Chajnantor.jpg/1920px-Icy_Penitents_on_Chajnantor.jpg",
+      "imageAlt": "A field of tall jagged penitente ice blades glowing beneath a deep blue sky on the Chajnantor plateau",
+      "sourceLabel": "U.S. Geological Survey",
+      "sourceUrl": "https://pubs.usgs.gov/pp/p1386i/chile-arg/dry/",
+      "size": "tall"
+    },
+    {
+      "id": "shigir-idol-peat-time-capsule",
+      "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Matter"
+      ],
+      "question": "How did a wooden face survive in a bog for more than 11,000 years?",
+      "teaser": "Peat's waterlogged, oxygen-poor chemistry slowed the microbes that normally erase wood, preserving the Shigir Idol and its stacked geometric faces from the early Holocene.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Shigir_Idol_%28May_2024%29_-_1.jpg/1920px-Shigir_Idol_%28May_2024%29_-_1.jpg",
+      "imageAlt": "The extraordinarily tall Shigir Idol, a dark ancient wooden sculpture carved with angular faces and zigzag patterns",
+      "sourceLabel": "Quaternary International",
+      "sourceUrl": "https://www.sciencedirect.com/science/article/pii/S1040618220306455",
+      "size": "tall"
+    },
+    {
+      "id": "guna-mola-reverse-applique",
+      "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Art & Expression"
+      ],
+      "question": "How can cutting holes in cloth reveal a picture instead of destroying it?",
+      "teaser": "Guna artists stack contrasting fabrics, cut through selected layers, turn under the edges, and stitch them down so every opening releases another band of color.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4b/Mola%2C_blouse_%28BM_Am1924%2C0619.120%29.jpg",
+      "imageAlt": "A vivid Guna mola blouse densely patterned with red, orange, black, white, and blue reverse-appliqué geometry",
+      "sourceLabel": "The British Museum",
+      "sourceUrl": "https://www.britishmuseum.org/collection/object/E_Am1924-0619-120",
+      "size": "standard"
+    },
+    {
+      "id": "yakhchal-desert-ice-house",
+      "category": "Systems",
+      "dimensions": [
+        "Design & Technology",
+        "Planet Earth",
+        "Matter"
+      ],
+      "question": "How could a mud-brick dome keep ice through a desert summer?",
+      "teaser": "A yakhchāl combines thick insulating walls, deep storage, shade, dry air, and wintertime radiative cooling so harvested or night-frozen ice melts remarkably slowly.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Yakhch%C4%81l_of_Kashmar2021-04-05_7.jpg/1920px-Yakhch%C4%81l_of_Kashmar2021-04-05_7.jpg",
+      "imageAlt": "A monumental conical mud-brick yakhchāl rising from the ochre desert landscape near Kashmar, Iran",
+      "sourceLabel": "Passive ice-making research",
+      "sourceUrl": "https://doi.org/10.1016/j.enbuild.2018.09.032",
+      "size": "wide"
+    },
+    {
+      "id": "mira-thirteen-light-year-tail",
+      "category": "Space",
+      "dimensions": [
+        "Cosmos",
+        "Forces & Energy"
+      ],
+      "question": "How can one star leave a tail three times longer than the distance to our nearest neighbor?",
+      "teaser": "The aging star Mira sheds gas while racing through interstellar material, producing a bow shock and a 13-light-year ultraviolet wake that remained invisible until GALEX mapped it.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Mira_the_star-by_Nasa_alt_crop.jpg/1920px-Mira_the_star-by_Nasa_alt_crop.jpg",
+      "imageAlt": "NASA ultraviolet mosaic of Mira as a bright blue point dragging an immense luminous tail across black space",
+      "sourceLabel": "NASA Jet Propulsion Laboratory",
+      "sourceUrl": "https://www.jpl.nasa.gov/images/pia09958-mira-soars-through-the-sky/",
+      "size": "wide"
+    },
+    {
+      "id": "transparent-wood-light-window",
+      "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Matter",
+        "Forces & Energy"
+      ],
+      "question": "How can wood become transparent without losing its internal architecture?",
+      "teaser": "Researchers remove light-absorbing lignin while keeping the cellulose scaffold, then fill its pores with a clear material whose refractive behavior lets light pass through.",
+      "imageUrl": "https://www.kth.se/polopoly_fs/1.1071304.1620106440!/image/N%C3%A4sta%20generations%20transparent%20tr%C3%A4%20%C3%A4r%20h%C3%A4r_2016-2019-2021%20liten.jpg",
+      "imageAlt": "Three samples showing successive generations of translucent wood held over a leafy plant",
+      "sourceLabel": "KTH Royal Institute of Technology",
+      "sourceUrl": "https://www.kth.se/fpt/biocomposites/research-areas/transparent-wood-1.979466",
+      "size": "standard"
+    },
+    {
+      "id": "micromosaic-glass-painting",
+      "category": "Art",
+      "dimensions": [
+        "Art & Expression",
+        "Matter"
+      ],
+      "question": "How can thousands of glass splinters masquerade as a miniature oil painting?",
+      "teaser": "Micromosaic makers set hair-thin colored glass tesserae so tightly that individual pieces disappear, leaving gradients, shadows, fur, and sky at the scale of a brooch.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b4/Italian_-_Boar_Hunt_in_Spring_-_Walters_4321.jpg",
+      "imageAlt": "An Italian micromosaic of a boar hunt whose tiny colored glass tesserae resemble finely brushed paint",
+      "sourceLabel": "The Walters Art Museum",
+      "sourceUrl": "https://art.thewalters.org/object/43.21/",
+      "size": "wide"
+    },
+    {
+      "id": "giant-clam-solar-farm",
+      "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Body",
+        "Cosmos"
+      ],
+      "question": "How can a giant clam farm sunlight inside its own body?",
+      "teaser": "Microscopic algae live throughout the clam's exposed mantle, turning sunlight into food while the clam supplies shelter and nutrients—and their pigments help create its electric colors.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Giant_clam_mantle_opening_closeup.JPG/1920px-Giant_clam_mantle_opening_closeup.JPG",
+      "imageAlt": "Close-up of a giant clam's rippling iridescent mantle patterned in intense blue, teal, green, and gold",
+      "sourceLabel": "Monterey Bay Aquarium",
+      "sourceUrl": "https://www.montereybayaquarium.org/animals/animals-a-to-z/giant-clam",
+      "size": "wide"
+    },
+    {
+      "id": "ijen-burning-blue-sulfur",
+      "category": "Science",
+      "dimensions": [
+        "Matter",
+        "Planet Earth"
+      ],
+      "question": "Why is this volcano burning blue when its lava is not?",
+      "teaser": "At Ijen, sulfur-rich gases emerge hot enough to ignite in oxygen. The electric-blue streams are burning sulfur—not blue molten rock—and are easiest to see at night.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/The_blue_fire_of_Kawah_Ijen_2.jpg/1920px-The_blue_fire_of_Kawah_Ijen_2.jpg",
+      "imageAlt": "Electric-blue sulfur flames flowing across dark volcanic rock inside Indonesia's Ijen crater at night",
+      "sourceLabel": "UNESCO Global Geoparks",
+      "sourceUrl": "https://www.unesco.org/en/iggp/ijen-unesco-global-geopark",
+      "size": "tall"
+    },
+    {
+      "id": "herculaneum-scroll-virtual-unwrapping",
+      "category": "History",
+      "dimensions": [
+        "Time & History"
+      ],
+      "question": "How can X-rays unroll a scroll no hand can safely open?",
+      "teaser": "Tomography maps the crumpled layers inside a carbonized Herculaneum papyrus; software then follows, flattens, and enhances those hidden surfaces so faint ink can be read.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Herculaneum_papyri.jpg/1920px-Herculaneum_papyri.jpg",
+      "imageAlt": "Charred black Herculaneum papyrus fragments with fragile rolled layers and faint ancient writing",
+      "sourceLabel": "EduceLab research",
+      "sourceUrl": "https://arxiv.org/abs/2304.02084",
+      "size": "standard"
+    },
+    {
+      "id": "imigongo-earth-relief-patterns",
+      "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Planet Earth",
+        "Numbers & Logic",
+        "Art & Expression"
+      ],
+      "question": "How does cow dung become precise, odorless geometric art?",
+      "teaser": "Rwandan imigongo artists mix dung with ash, sculpt raised spirals and zigzags, let the relief harden, then paint it in bold earth-derived colors.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Imigongo_art.jpg/1920px-Imigongo_art.jpg",
+      "imageAlt": "A tall panel of Rwandan imigongo art with raised black, white, and rust-red spirals and triangles",
+      "sourceLabel": "UNESCO",
+      "sourceUrl": "https://www.unesco.org/en/articles/capacity-building-safeguarding-rwandas-imigongo-decorative-art",
+      "size": "tall"
+    },
+    {
+      "id": "whale-fall-deep-sea-succession",
+      "category": "Systems",
+      "dimensions": [
+        "Living World",
+        "Planet Earth"
+      ],
+      "question": "How can one fallen whale feed a deep-sea neighborhood for decades?",
+      "teaser": "A whale fall passes through ecological stages: scavengers remove flesh, detritus enriches sediment, and bone lipids fuel sulfide-loving microbes and specialized animals for years.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f6/MBNMS_Whale_Fall_Octopuses_%2849050941487%29.jpg",
+      "imageAlt": "A whale skeleton on the dark seafloor crowded with pale octopuses, fish, crabs, and other deep-sea life",
+      "sourceLabel": "NOAA Ocean Service",
+      "sourceUrl": "https://oceanservice.noaa.gov/facts/whale-fall.html",
+      "size": "wide"
+    },
+    {
+      "id": "hoags-object-ring-within-ring",
+      "category": "Space",
+      "dimensions": [
+        "Cosmos",
+        "Numbers & Logic"
+      ],
+      "question": "Why does this galaxy have a blue ring, an empty gap, and another galaxy hiding inside?",
+      "teaser": "Hoag's Object places young blue stars in a nearly perfect outer ring around an older yellow core; by chance, a far more distant ring galaxy is visible through the gap.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/d/da/Hoag%27s_object.jpg",
+      "imageAlt": "Hubble view of Hoag's Object with a golden stellar core floating inside a nearly perfect ring of blue stars",
+      "sourceLabel": "NASA Hubble",
+      "sourceUrl": "https://science.nasa.gov/missions/hubble/a-wheel-within-a-wheel/",
+      "size": "standard"
+    },
+    {
+      "id": "nanobionic-glowing-plants",
+      "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Living World"
+      ],
+      "question": "Can a living plant become a lamp without wires or a battery?",
+      "teaser": "MIT engineers placed nanoparticles carrying the firefly enzyme luciferase inside leaves, letting the plant's own metabolism power a soft, sustained glow.",
+      "imageUrl": "https://news.mit.edu/sites/default/files/images/201712/MIT-Glowing-Plants.jpg",
+      "imageAlt": "Two softly glowing watercress plants illuminating the open pages of Paradise Lost in a dark room",
+      "sourceLabel": "MIT News",
+      "sourceUrl": "https://news.mit.edu/2017/engineers-create-nanobionic-plants-that-glow-1213",
+      "size": "wide"
+    },
+    {
+      "id": "carved-lacquer-hidden-layers",
+      "category": "Art",
+      "dimensions": [
+        "Art & Expression"
+      ],
+      "question": "Why apply a hundred layers of lacquer before carving a single line?",
+      "teaser": "Each thin coat must cure before the next is added; only after a deep surface has accumulated can an artist cut richly modeled scenes whose relief is made entirely of lacquer.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Carved_red_lacquer_box.jpg/1920px-Carved_red_lacquer_box.jpg",
+      "imageAlt": "A round cinnabar-red Chinese lacquer box deeply carved with a dragon twisting through waves",
+      "sourceLabel": "Victoria and Albert Museum",
+      "sourceUrl": "https://www.vam.ac.uk/__data/assets/pdf_file/0020/240491/China-Teachers-Resource-.pdf",
+      "size": "standard"
+    },
+    {
+      "id": "satin-bowerbird-blue-gallery",
+      "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Mind"
+      ],
+      "question": "Why does a bowerbird curate a gallery made almost entirely of blue?",
+      "teaser": "A male satin bowerbird builds a courtship avenue, paints its walls, and arranges blue berries, feathers, flowers, caps, or straws into a display that visiting females inspect.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Satin_Bowerbird%2C_Lamington_National_Park%2C_Queensland_DSC_lop.jpg/1920px-Satin_Bowerbird%2C_Lamington_National_Park%2C_Queensland_DSC_lop.jpg",
+      "imageAlt": "A glossy satin bowerbird beside its twig avenue surrounded by a striking collection of bright blue objects",
+      "sourceLabel": "American Museum of Natural History",
+      "sourceUrl": "https://www.amnh.org/explore/news-blogs/bowerbird-facts",
+      "size": "wide"
+    },
+    {
+      "id": "lichtenberg-frozen-lightning",
+      "category": "Science",
+      "dimensions": [
+        "Forces & Energy",
+        "Matter"
+      ],
+      "question": "How can lightning be trapped as a three-dimensional tree inside solid acrylic?",
+      "teaser": "An electron beam stores charge deep in an insulating block. A sudden discharge then fractures branching paths through it, leaving a permanent Lichtenberg figure like frozen lightning.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Lichtenberg_figure_within_a_acrylic_block.jpg/1920px-Lichtenberg_figure_within_a_acrylic_block.jpg",
+      "imageAlt": "A brilliant branching Lichtenberg figure spreading like a white electrical tree through a clear acrylic block",
+      "sourceLabel": "American Physical Society",
+      "sourceUrl": "https://www.aps.org/apsnews/2012/11/november-1777-discovery-lichtenberg-figures",
+      "size": "standard"
+    },
+    {
+      "id": "great-zimbabwe-dry-stone-curves",
+      "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Matter",
+        "Design & Technology"
+      ],
+      "question": "How did builders make an immense curving wall stand without mortar?",
+      "teaser": "Great Zimbabwe's masons shaped and coursed local granite so carefully that gravity and interlocking contact stabilize walls whose chevrons, curves, and narrow passages still command the landscape.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Wall_of_the_great_enclosure%2C_Great_Zimbabwe.JPG/1920px-Wall_of_the_great_enclosure%2C_Great_Zimbabwe.JPG",
+      "imageAlt": "The massive curved dry-stone wall and conical tower of Great Zimbabwe glowing in warm sunlight",
+      "sourceLabel": "UNESCO World Heritage Centre",
+      "sourceUrl": "https://whc.unesco.org/en/list/364/",
+      "size": "wide"
+    },
+    {
+      "id": "maori-feather-cloak-weaving",
+      "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Art & Expression"
+      ],
+      "question": "How can thousands of feathers become a cloak of identity and prestige?",
+      "teaser": "Māori weavers secure feathers into the cloak's fiber foundation as it is made, selecting placement and pattern so material, ancestry, artistry, and status travel together.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Maori_korowai_at_Pasifika_Festival._%28PASF-D-2015-080%29.jpg/1920px-Maori_korowai_at_Pasifika_Festival._%28PASF-D-2015-080%29.jpg",
+      "imageAlt": "A richly textured Māori feather cloak displayed with bands of cream, brown, black, orange, and iridescent green feathers",
+      "sourceLabel": "Museum of New Zealand Te Papa Tongarewa",
+      "sourceUrl": "https://collections.tepapa.govt.nz/topic/3625",
+      "size": "tall"
+    },
+    {
+      "id": "salmon-carry-ocean-into-forest",
+      "category": "Systems",
+      "dimensions": [
+        "Living World",
+        "Planet Earth"
+      ],
+      "question": "How can a salmon carry the ocean into the trunks of forest trees?",
+      "teaser": "Migrating salmon bring marine nutrients upstream; bears and other predators move carcasses onto land, where nitrogen from the fish can be traced into streamside plants.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Black_Bear_feeding_on_Salmon-Tongass-JWA-001_%2852502820391%29.jpg/1920px-Black_Bear_feeding_on_Salmon-Tongass-JWA-001_%2852502820391%29.jpg",
+      "imageAlt": "A black bear gripping a bright salmon beside a rushing forest stream in Alaska's Tongass National Forest",
+      "sourceLabel": "U.S. Forest Service Research",
+      "sourceUrl": "https://research.fs.usda.gov/treesearch/20067",
+      "size": "wide"
+    },
+    {
+      "id": "phobos-stickney-near-shatter",
+      "category": "Space",
+      "dimensions": [
+        "Cosmos"
+      ],
+      "question": "How did a crater nearly half a moon wide fail to break the moon apart?",
+      "teaser": "Stickney spans roughly nine kilometers across tiny Phobos. The impact came close to shattering the moon, leaving a vast bowl and a surface crossed by enigmatic grooves.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Phobos_colour_2008.jpg/1920px-Phobos_colour_2008.jpg",
+      "imageAlt": "Enhanced-color close-up of Mars's battered moon Phobos dominated by the enormous blue-rimmed Stickney crater",
+      "sourceLabel": "NASA Science",
+      "sourceUrl": "https://science.nasa.gov/mars/moons/phobos/",
+      "size": "standard"
+    },
+    {
+      "id": "frequency-comb-ruler-for-light",
+      "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Cosmos",
+        "Forces & Energy"
+      ],
+      "question": "How can a laser become a ruler with a million perfectly spaced colors?",
+      "teaser": "Ultrashort pulses create a spectrum of evenly spaced frequency 'teeth.' Because their spacing is precisely known, optical combs can measure light, improve clocks, and calibrate planet-hunting instruments.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/d/da/Comb_Apparatus_%287187334463%29.jpg",
+      "imageAlt": "A colorful NIST optical frequency-comb apparatus filled with gold mirrors, red mounts, lenses, and crossing laser beams",
+      "sourceLabel": "National Institute of Standards and Technology",
+      "sourceUrl": "https://www.nist.gov/topics/physics/optical-frequency-combs",
+      "size": "standard"
+    },
+    {
+      "id": "bojagi-scraps-into-light",
+      "category": "Art",
+      "dimensions": [
+        "Art & Expression",
+        "Planet Earth",
+        "Forces & Energy"
+      ],
+      "question": "How can leftover silk become a painting made of seams and light?",
+      "teaser": "Korean jogakbo joins small fabric remnants into wrapping cloths whose irregular grids turn thrift into composition; when held up, translucent silk makes the colors appear illuminated.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/%EC%A1%B0%EA%B0%81%EB%B3%B4-Patchwork_wrapping_cloth_%28jogakbo%29_MET_DP158239.jpg/1920px-%EC%A1%B0%EA%B0%81%EB%B3%B4-Patchwork_wrapping_cloth_%28jogakbo%29_MET_DP158239.jpg",
+      "imageAlt": "A translucent Korean jogakbo wrapping cloth assembled from luminous irregular patches of pink, blue, amber, cream, and green silk",
+      "sourceLabel": "The Metropolitan Museum of Art",
+      "sourceUrl": "https://www.metmuseum.org/art/collection/search/73786",
+      "size": "standard"
+    },
+    {
+      "id": "frogfish-fin-fishing-rod",
+      "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Body"
+      ],
+      "question": "How did a fish turn part of its fin into a fishing rod?",
+      "teaser": "A frogfish's first dorsal spine evolved into a movable rod tipped with a lure that mimics a worm or shrimp, drawing curious prey within range of its explosive suction strike.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Antennarius_striatus_%2830559623856%29.jpg/1920px-Antennarius_striatus_%2830559623856%29.jpg",
+      "imageAlt": "Macro portrait of a shaggy orange-and-cream hairy frogfish with its delicate wormlike lure held above its eyes",
+      "sourceLabel": "Smithsonian Ocean",
+      "sourceUrl": "https://ocean.si.edu/ocean-life/fish/anglerfish-lure-prey-throughout-ocean",
+      "size": "tall"
+    },
+    {
+      "id": "green-flash-last-sunlight",
+      "category": "Science",
+      "dimensions": [
+        "Forces & Energy",
+        "Planet Earth"
+      ],
+      "question": "Why can the Sun flash emerald green at the instant it disappears?",
+      "teaser": "Near a clear horizon, the atmosphere acts as both prism and lens. Refraction separates the Sun's colors, briefly leaving a magnified green rim as the redder image sinks from view.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Green_flash_at_sunset_%28greenflash-20161214-cc%29.jpg/1920px-Green_flash_at_sunset_%28greenflash-20161214-cc%29.jpg",
+      "imageAlt": "A sequence of sunset photographs showing the upper rim of the orange Sun erupting into a vivid green flash",
+      "sourceLabel": "NASA Astronomy Picture of the Day",
+      "sourceUrl": "https://apod.nasa.gov/apod/ap230328.html",
+      "size": "standard"
+    },
+    {
+      "id": "cyrus-cylinder-buried-proclamation",
+      "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Language",
+        "Matter"
+      ],
+      "question": "Why write a king's proclamation on clay and bury it where nobody could read it?",
+      "teaser": "The Cyrus Cylinder was a foundation deposit: its Babylonian text legitimized a new ruler, described restored cults and rebuilding, then was sealed into the city wall itself.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Cyrus_Cylinder_front.jpg/1920px-Cyrus_Cylinder_front.jpg",
+      "imageAlt": "The warm brown Cyrus Cylinder covered edge to edge with dense horizontal lines of Babylonian cuneiform",
+      "sourceLabel": "The British Museum",
+      "sourceUrl": "https://www.britishmuseum.org/collection/object/W_1880-0617-1941",
+      "size": "standard"
+    },
+    {
+      "id": "roman-hypocaust-heated-floor",
+      "category": "Systems",
+      "dimensions": [
+        "Design & Technology",
+        "Forces & Energy",
+        "Time & History"
+      ],
+      "question": "How could one furnace heat a Roman room through its floor and walls?",
+      "teaser": "A hypocaust raised the floor on tile pillars, creating a cavity for furnace-heated air; wall flues then pulled that heat upward before venting it through the roof.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Hypocaust_at_Chedworth_Roman_Villa.jpg/1920px-Hypocaust_at_Chedworth_Roman_Villa.jpg",
+      "imageAlt": "Rows of small brick pillars exposed beneath the raised floor of a Roman hypocaust at Chedworth Villa",
+      "sourceLabel": "English Heritage",
+      "sourceUrl": "https://www.english-heritage.org.uk/learn/story-of-england/romans/roman-bathing/",
+      "size": "wide"
+    },
+    {
+      "id": "solar-corona-hotter-than-surface",
+      "category": "Space",
+      "dimensions": [
+        "Cosmos"
+      ],
+      "question": "Why is the Sun's ghostly outer crown far hotter than the surface below it?",
+      "teaser": "The visible surface is about 5,500°C, yet the tenuous corona reaches more than a million degrees. How magnetic waves and tiny eruptions deliver that energy remains an active puzzle.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/2017_Total_Solar_Eclipse_%28AFRC2017-0233-008%29.jpg/1920px-2017_Total_Solar_Eclipse_%28AFRC2017-0233-008%29.jpg",
+      "imageAlt": "The black disk of the Moon surrounded by the pearly streamers and delicate white loops of the Sun's corona during totality",
+      "sourceLabel": "NASA Parker Solar Probe",
+      "sourceUrl": "https://www.nasa.gov/science-research/heliophysics/nasas-parker-solar-probe-and-the-curious-case-of-the-hot-corona/",
+      "size": "wide"
+    },
+    {
+      "id": "bacterial-concrete-heals-cracks",
+      "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Living World",
+        "Planet Earth",
+        "Matter"
+      ],
+      "question": "How can sleeping bacteria wake up and seal a crack in concrete?",
+      "teaser": "Moisture entering a crack activates embedded bacterial spores. Their metabolism produces calcium carbonate, growing mineral across the gap and reducing the path for water and corrosive chemicals.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Basilisk_self-healing_concrete_exhibit_at_science_museum.jpg/1920px-Basilisk_self-healing_concrete_exhibit_at_science_museum.jpg",
+      "imageAlt": "A science museum display comparing cracked concrete samples before and after pale mineral growth seals the fissures",
+      "sourceLabel": "Delft University of Technology",
+      "sourceUrl": "https://repository.tudelft.nl/record/uuid:8326f8b3-a290-4bc5-941d-c2577740fb96",
+      "size": "standard"
+    }
+  ]
+}

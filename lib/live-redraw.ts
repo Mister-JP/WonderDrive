@@ -12,6 +12,7 @@ import {
 import { recordOpenAIUsage } from "./provider-usage";
 import { reserveProviderCost } from "./provider-cost-control";
 import { localeName } from "./i18n";
+import type { ProviderAuth } from "./provider-auth";
 
 type RedrawResult = {
   preferredPosition: 0 | 1;
@@ -52,6 +53,7 @@ export async function runLiveRedraw(input: {
   rejectedQuestions: string[];
   adventure: number;
   reason?: string;
+  providerAuth?: ProviderAuth;
 }): Promise<RedrawResult> {
   const performer = performerById(input.performerId);
   const startedAt = Date.now();
@@ -78,10 +80,12 @@ export async function runLiveRedraw(input: {
       journeyId: input.journeyId,
       turnId: input.turn.id,
       unavailableMessage: "Live question redrawing is not configured on this deployment.",
+      providerAuth: input.providerAuth,
     });
-    costReservationId = reservation.id;
+    costReservationId = reservation.id ?? undefined;
     response = await requestOpenAI(requestBody, {
       unavailableMessage: "Live question redrawing is not configured on this deployment.",
+      apiKey: input.providerAuth?.apiKey,
     });
   } catch (error) {
     if (costReservationId) await recordOpenAIUsage({

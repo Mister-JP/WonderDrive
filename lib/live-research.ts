@@ -26,14 +26,22 @@ import {
 import { OPENAI_IMAGE_SEARCH_MAX_RESULTS } from "./research-config";
 import { recordOpenAIUsage } from "./provider-usage";
 import { reserveProviderCost } from "./provider-cost-control";
+import type { ProviderAuth } from "./provider-auth";
 import { localeName } from "./i18n";
 import {
-  buildInstructions,
-  buildResearchInput,
-  densityVerbosity,
   KNOWLEDGE_CHECK_SCHEMA,
-  turnSchemaForDensity,
 } from "./research/prompt-policy";
+import {
+  addLegacyOptionProjection,
+  buildCompositionInput,
+  buildCompositionInstructions,
+  buildResearchDeskInput,
+  buildResearchDeskInstructions,
+  parseResearchDossier,
+  RESEARCH_DOSSIER_SCHEMA,
+  turnCompositionSchemaForDensity,
+  type ResearchDossier,
+} from "./research/two-step-prompt-policy";
 import {
   countPageFetches,
   countWebSearchCalls,
@@ -101,6 +109,8 @@ export type PreparedLiveResearch = {
   expectedVersion?: number;
   idempotencyKey: string;
   payloadHash: string;
+  /** Persisted funding marker for resumable background work; never contains a credential. */
+  providerFunding?: ProviderAuth["funding"];
 };
 
 export type LiveTurnDraft = {
@@ -152,19 +162,26 @@ export async function runLiveResearch(
   emit: ActivityEmitter,
   externalSignal?: AbortSignal,
   assertProviderAttempt: () => Promise<void> = async () => {},
+  providerAuth?: ProviderAuth,
 ): Promise<LiveTurnDraft> {
   await assertProviderAttempt();
   const limits = PRESET_LIMITS[prepared.researchPreset];
   const events: ResearchEvent[] = [];
   const startedAt = Date.now();
   let searchStarted = false;
-  let synthesisStarted = false;
+  let dossierStarted = false;
 
-  const addActivity = (kind: ResearchEvent["kind"], label: string, sourceId: string | null = null) => {
+  const addActivity = (
+    kind: ResearchEvent["kind"],
+    label: string,
+    sourceId: string | null = null,
+    phase?: ResearchEvent["phase"],
+  ) => {
     const event: ResearchEvent = {
       id: crypto.randomUUID(),
       sequence: events.length,
       kind,
+      ...(phase ? { phase } : {}),
       label,
       sourceId,
     };
@@ -172,21 +189,22 @@ export async function runLiveResearch(
     emit(event);
   };
 
-  addActivity("status", `Prepared a ${prepared.researchPreset} foreground research run`);
+  addActivity("status", `Step 1 of 2 · Prepared the ${prepared.researchPreset} research desk`, null, "research");
   const streamed = await runProviderStream({
     requestBody: liveResearchRequestBody(prepared),
     timeoutMs: limits.timeoutMs,
     startedAt,
     usageContext: researchUsageContext(prepared),
     externalSignal,
+    providerAuth,
     onProgress: (progress) => {
       if (progress.kind === "search" && !searchStarted) {
         searchStarted = true;
-        addActivity("search", "OpenAI began a live web search for relevant evidence");
+        addActivity("search", "Step 1 of 2 · Searching for sources and visual evidence", null, "research");
       }
-      if (progress.kind === "output_delta" && !synthesisStarted) {
-        synthesisStarted = true;
-        addActivity("synthesis", "The performer began composing from the retrieved evidence");
+      if (progress.kind === "output_delta" && !dossierStarted) {
+        dossierStarted = true;
+        addActivity("synthesis", "Step 1 of 2 · Assembling the evidence dossier", null, "research");
       }
     },
   });
@@ -200,7 +218,7 @@ export async function runLiveResearch(
     emit,
     externalSignal,
     assertProviderAttempt,
-    { events, outputText, startedAt },
+    { events, outputText, startedAt, providerAuth },
   );
 }
 
@@ -212,8 +230,8 @@ export function liveResearchRequestBody(
   const performer = PERFORMERS.find((candidate) => candidate.id === prepared.performerId)!;
   return {
     model: prepared.modelId,
-    instructions: buildInstructions(performer),
-    input: buildResearchInput(prepared),
+    instructions: buildResearchDeskInstructions(performer),
+    input: buildResearchDeskInput(prepared),
     tools: [prepared.imagePreference === "avoid"
       ? { type: "web_search" }
       : {
@@ -228,11 +246,7 @@ export function liveResearchRequestBody(
     max_tool_calls: limits.maxToolCalls,
     max_output_tokens: limits.maxOutputTokens,
     reasoning: { effort: limits.reasoning },
-    text: structuredOutput(
-      "curiositypedia_turn",
-      turnSchemaForDensity(prepared.answerDensity),
-      densityVerbosity(prepared.answerDensity),
-    ),
+    text: structuredOutput("curiositypedia_research_dossier", RESEARCH_DOSSIER_SCHEMA, "low"),
     safety_identifier: `wd_${prepared.identityId}`.slice(0, 64),
     store: background,
     stream: !background,
@@ -252,24 +266,33 @@ export async function finalizeLiveResearchResponse(
     startedAt?: number;
     allowSupplemental?: boolean;
     maxVisualCurationAttempts?: number;
+    providerAuth?: ProviderAuth;
   } = {},
 ): Promise<LiveTurnDraft> {
   const events = context.events ?? [];
   const startedAt = context.startedAt ?? Date.now();
   const allowSupplemental = context.allowSupplemental ?? true;
   const maxVisualCurationAttempts = context.maxVisualCurationAttempts ?? 2;
-  const addActivity = (kind: ResearchEvent["kind"], label: string, sourceId: string | null = null) => {
+  const addActivity = (
+    kind: ResearchEvent["kind"],
+    label: string,
+    sourceId: string | null = null,
+    phase?: ResearchEvent["phase"],
+  ) => {
     const event: ResearchEvent = {
       id: crypto.randomUUID(),
       sequence: events.length,
       kind,
+      ...(phase ? { phase } : {}),
       label,
       sourceId,
     };
     events.push(event);
     emit(event);
   };
-  if (!events.length) addActivity("status", "Retrieved completed background research for validation");
+  if (!events.length) {
+    addActivity("status", "Step 1 of 2 · Retrieved the completed research dossier", null, "research");
+  }
   const outputText = context.outputText || extractOutputText(completedResponse);
 
   let providerSources = extractSources(completedResponse);
@@ -278,18 +301,49 @@ export async function finalizeLiveResearchResponse(
   }
 
   providerSources.slice(0, 6).forEach((source) => {
-    addActivity("source", `Consulted ${source.publisher}: ${source.title}`, stableKey(source.url));
+    addActivity("source", `Consulted ${source.publisher}: ${source.title}`, stableKey(source.url), "research");
   });
-  addActivity("check", "Checked that citations resolve to sources consulted in this run");
+  addActivity("check", "Step 1 of 2 · Evidence dossier ready for the editor", null, "research");
 
   let providerImages = prepared.imagePreference === "avoid" ? [] : extractImages(completedResponse);
   const renderedImagePreference = imagePreferenceForQuestion(prepared.imagePreference, prepared.question);
-  let modelTurn = parseModelTurn(
-    outputText,
-    validationFailure,
-    (error) => console.error("OpenAI structured output was not JSON", error),
-  );
   const supplementalResponses: OpenAIResponse[] = [];
+  const dossier = parseResearchDossier(outputText);
+  let modelTurn;
+  if (dossier) {
+    addActivity("status", "Step 2 of 2 · Turning the dossier into the visual session", null, "composition");
+    const composition = await runTurnCompositionWithRetries(
+      dossier,
+      providerSources,
+      providerImages,
+      { ...prepared, imagePreference: renderedImagePreference },
+      externalSignal,
+      assertProviderAttempt,
+      context.providerAuth,
+      (attempt) => addActivity(
+        "synthesis",
+        attempt === 1
+          ? "Step 2 of 2 · Writing the answer and one question per image"
+          : "Step 2 of 2 · Rechecking the page composition",
+        null,
+        "composition",
+      ),
+    );
+    supplementalResponses.push(composition.response);
+    modelTurn = parseModelTurn(
+      addLegacyOptionProjection(composition.outputText),
+      validationFailure,
+      (error) => console.error("OpenAI composition output was not JSON", error),
+    );
+  } else {
+    // Backward compatibility for already-running background responses and older
+    // fixtures created before the two-step prompt boundary was introduced.
+    modelTurn = parseModelTurn(
+      outputText,
+      validationFailure,
+      (error) => console.error("OpenAI structured output was not JSON", error),
+    );
+  }
   let initialMedia = validateMediaGallery(
     providerImages,
     normalizeGeneratedProse(modelTurn.topicLabel),
@@ -297,7 +351,7 @@ export async function finalizeLiveResearchResponse(
     prepared.outputLocale,
   );
   if (allowSupplemental && renderedImagePreference === "prefer" && initialMedia.length < 8) {
-    addActivity("search", "Curating a broader set of evidence-grade images for the visual story");
+    addActivity("search", "Step 2 of 2 · Expanding the evidence-grade image set", null, "composition");
     for (
       let curationAttempt = 0;
       curationAttempt < maxVisualCurationAttempts && initialMedia.length < 8;
@@ -311,6 +365,7 @@ export async function finalizeLiveResearchResponse(
           prepared,
           curationAttempt,
           externalSignal,
+          context.providerAuth,
         );
         supplementalResponses.push(curated.response);
         providerImages = dedupeProviderImages([...providerImages, ...extractImages(curated.response)]).slice(0, 30);
@@ -360,7 +415,13 @@ export async function finalizeLiveResearchResponse(
     } else if (allowSupplemental) {
       await assertProviderAttempt();
       try {
-        const repaired = await runImageNoteRepair(modelTurn, providerImages, prepared, externalSignal);
+        const repaired = await runImageNoteRepair(
+          modelTurn,
+          providerImages,
+          prepared,
+          externalSignal,
+          context.providerAuth,
+        );
         supplementalResponses.push(repaired.response);
         modelTurn = applyImageNoteRepair(modelTurn, providerImages, repaired.repair, prepared.outputLocale);
       } catch (repairError) {
@@ -392,7 +453,13 @@ export async function finalizeLiveResearchResponse(
       let repairResult: CitationRepairResult = { turn: modelTurn, unsupportedIndexes: invalidIndexes };
       try {
         await assertProviderAttempt();
-        const repaired = await runCitationRepair(modelTurn, providerSources, prepared, externalSignal);
+        const repaired = await runCitationRepair(
+          modelTurn,
+          providerSources,
+          prepared,
+          externalSignal,
+          context.providerAuth,
+        );
         supplementalResponses.push(repaired.response);
         repairResult = applyCitationRepair(modelTurn, providerSources, repaired.repair);
       } catch (repairError) {
@@ -414,6 +481,7 @@ export async function finalizeLiveResearchResponse(
             repairResult.unsupportedIndexes,
             prepared,
             externalSignal,
+            context.providerAuth,
           );
           supplementalResponses.push(recovered.response);
           const recoverySources = extractSources(recovered.response);
@@ -444,9 +512,9 @@ export async function finalizeLiveResearchResponse(
       prepared.outputLocale,
       LIVE_TURN_VALIDATION_DIAGNOSTICS,
     );
-    addActivity("check", "Revalidated the answer against the final consulted source set");
+    addActivity("check", "Revalidated the answer against the final consulted source set", null, "validation");
   }
-  addActivity("synthesis", "Validated the sourced answer and exactly two distinct next paths");
+  addActivity("synthesis", "Step 2 of 2 · Validated the answer and image questions", null, "validation");
 
   const responseUsages = [completedResponse, ...supplementalResponses].map((response) => response.usage ?? {});
   const webSearchCalls = [completedResponse, ...supplementalResponses]
@@ -546,6 +614,74 @@ function providerCallKey(prepared: PreparedLiveResearch, operation: string) {
   return `${prepared.requestId}:${prepared.providerAttempt ?? 0}:${operation}`;
 }
 
+async function runTurnCompositionWithRetries(
+  dossier: ResearchDossier,
+  providerSources: ProviderSource[],
+  providerImages: ProviderImage[],
+  prepared: PreparedLiveResearch,
+  externalSignal: AbortSignal | undefined,
+  assertProviderAttempt: () => Promise<void>,
+  providerAuth: ProviderAuth | undefined,
+  onAttempt: (attempt: number) => void,
+): Promise<{ outputText: string; response: OpenAIResponse }> {
+  const performer = PERFORMERS.find((candidate) => candidate.id === prepared.performerId)!;
+  const limits = OPENAI_PROMPT_LIMITS.turnComposition;
+  let lastError: unknown;
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    await assertProviderAttempt();
+    onAttempt(attempt);
+    try {
+      const streamed = await runProviderStream({
+        requestBody: {
+          model: prepared.modelId,
+          instructions: buildCompositionInstructions(
+            performer,
+            prepared.outputLocale,
+            prepared.imagePreference,
+          ),
+          input: buildCompositionInput({
+            question: prepared.question,
+            answerDensity: prepared.answerDensity,
+            dossier,
+            sources: providerSources,
+            images: providerImages,
+          }),
+          max_output_tokens: limits.maxOutputTokens,
+          reasoning: { effort: limits.reasoning },
+          text: structuredOutput(
+            "curiositypedia_composed_turn",
+            turnCompositionSchemaForDensity(prepared.answerDensity),
+            prepared.answerDensity === "rich" ? "high" : prepared.answerDensity === "brief" ? "low" : "medium",
+          ),
+          safety_identifier: `wd_compose_${prepared.identityId}`.slice(0, 64),
+          store: false,
+          stream: true,
+        },
+        timeoutMs: limits.timeoutMs,
+        startedAt: Date.now(),
+        usageContext: {
+          ...researchUsageContext(prepared, { phase: "composition", compositionAttempt: attempt }),
+          purpose: "turn_composition",
+          callKey: providerCallKey(prepared, `turn_composition_${attempt}`),
+        },
+        externalSignal,
+        providerAuth,
+      });
+      const compositionText = streamed.outputText || extractOutputText(streamed.completedResponse);
+      // Strict output should already guarantee JSON, but checking here lets a
+      // malformed provider envelope retry phase two without repeating research.
+      addLegacyOptionProjection(compositionText);
+      return { outputText: compositionText, response: streamed.completedResponse };
+    } catch (error) {
+      lastError = error;
+      if (externalSignal?.aborted || (error instanceof RepositoryError && !error.retryable)) throw error;
+    }
+  }
+  throw lastError instanceof Error
+    ? lastError
+    : validationFailure("The editorial composer could not produce a valid structured page.");
+}
+
 const VISUAL_NOTE_SCHEMA = {
   type: "object",
   additionalProperties: false,
@@ -578,6 +714,7 @@ async function runVisualCuration(
   prepared: PreparedLiveResearch,
   curationAttempt: number,
   externalSignal?: AbortSignal,
+  providerAuth?: ProviderAuth,
 ): Promise<{ visualNotes: ModelVisualNote[]; response: OpenAIResponse }> {
   const limits = OPENAI_PROMPT_LIMITS.visualCuration;
   const startedAt = Date.now();
@@ -641,6 +778,7 @@ async function runVisualCuration(
       callKey: providerCallKey(prepared, `visual_curation_${curationAttempt + 1}`),
     },
     externalSignal,
+    providerAuth,
   });
   const response = streamed.completedResponse;
   const text = streamed.outputText || extractOutputText(response);
@@ -682,6 +820,7 @@ async function runImageNoteRepair(
   providerImages: ProviderImage[],
   prepared: PreparedLiveResearch,
   externalSignal?: AbortSignal,
+  providerAuth?: ProviderAuth,
 ): Promise<{ repair: ImageNoteRepair; response: OpenAIResponse }> {
   const images = providerImages.slice(0, 12);
   const notes = (modelTurn.visualNotes ?? []).slice(0, 12);
@@ -764,9 +903,13 @@ async function runImageNoteRepair(
       researchRequestId: prepared.requestId,
       journeyId: prepared.journeyId,
       turnId: prepared.fromTurnId,
+      providerAuth,
     });
-    costReservationId = reservation.id;
-    const response = await requestOpenAI(requestBody, { signal: controller.signal });
+    costReservationId = reservation.id ?? undefined;
+    const response = await requestOpenAI(requestBody, {
+      signal: controller.signal,
+      apiKey: providerAuth?.apiKey,
+    });
     if (!response.ok) {
       usageRecorded = true;
       await recordOpenAIUsage({
@@ -865,6 +1008,7 @@ async function runCitationRepair(
   providerSources: ProviderSource[],
   prepared: PreparedLiveResearch,
   externalSignal?: AbortSignal,
+  providerAuth?: ProviderAuth,
 ): Promise<{ repair: CitationRepair; response: OpenAIResponse }> {
   const startedAt = Date.now();
   let usageRecorded = false;
@@ -942,9 +1086,13 @@ async function runCitationRepair(
       researchRequestId: prepared.requestId,
       journeyId: prepared.journeyId,
       turnId: prepared.fromTurnId,
+      providerAuth,
     });
-    costReservationId = reservation.id;
-    const response = await requestOpenAI(requestBody, { signal: controller.signal });
+    costReservationId = reservation.id ?? undefined;
+    const response = await requestOpenAI(requestBody, {
+      signal: controller.signal,
+      apiKey: providerAuth?.apiKey,
+    });
     if (!response.ok) {
       usageRecorded = true;
       await recordOpenAIUsage({
@@ -1046,6 +1194,7 @@ async function runCitationRecovery(
   unsupportedIndexes: number[],
   prepared: PreparedLiveResearch,
   externalSignal?: AbortSignal,
+  providerAuth?: ProviderAuth,
 ): Promise<{ recovery: CitationRecovery; response: OpenAIResponse }> {
   const startedAt = Date.now();
   let usageRecorded = false;
@@ -1123,9 +1272,13 @@ async function runCitationRecovery(
       researchRequestId: prepared.requestId,
       journeyId: prepared.journeyId,
       turnId: prepared.fromTurnId,
+      providerAuth,
     });
-    costReservationId = reservation.id;
-    const response = await requestOpenAI(requestBody, { signal: controller.signal });
+    costReservationId = reservation.id ?? undefined;
+    const response = await requestOpenAI(requestBody, {
+      signal: controller.signal,
+      apiKey: providerAuth?.apiKey,
+    });
     if (!response.ok) {
       usageRecorded = true;
       await recordOpenAIUsage({

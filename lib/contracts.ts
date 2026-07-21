@@ -94,11 +94,32 @@ export const LANDING_RECOMMENDATION_CATEGORIES = [
 ] as const;
 
 export type LandingRecommendationCategory = (typeof LANDING_RECOMMENDATION_CATEGORIES)[number];
+
+export const LANDING_RECOMMENDATION_DIMENSIONS = [
+  "Living World",
+  "Planet Earth",
+  "Cosmos",
+  "Matter",
+  "Forces & Energy",
+  "Numbers & Logic",
+  "Body",
+  "Mind",
+  "Time & History",
+  "Society",
+  "Language",
+  "Belief & Ideas",
+  "Art & Expression",
+  "Design & Technology",
+  "Food & Agriculture",
+] as const;
+
+export type LandingRecommendationDimension = (typeof LANDING_RECOMMENDATION_DIMENSIONS)[number];
 export type LandingRecommendationSize = "wide" | "tall" | "standard" | "compact";
 
 export type LandingRecommendation = {
   id: string;
   category: LandingRecommendationCategory;
+  dimensions: LandingRecommendationDimension[];
   question: string;
   teaser: string;
   imageUrl: string;
@@ -169,6 +190,7 @@ export type ResearchEvent = {
   id: string;
   sequence: number;
   kind: "search" | "source" | "check" | "synthesis" | "status";
+  phase?: "research" | "composition" | "validation";
   label: string;
   sourceId: string | null;
 };

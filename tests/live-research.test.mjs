@@ -10,6 +10,14 @@ import {
   densityVerbosity,
   turnSchemaForDensity,
 } from "../lib/research/prompt-policy.ts";
+import {
+  RESEARCH_DOSSIER_SCHEMA,
+  addLegacyOptionProjection,
+  buildCompositionInstructions,
+  buildResearchDeskInput,
+  buildResearchDeskInstructions,
+  turnCompositionSchemaForDensity,
+} from "../lib/research/two-step-prompt-policy.ts";
 import * as providerResponsePolicy from "../lib/research/provider-response.ts";
 import { readServerSentEvents, runProviderStream } from "../lib/research/provider-stream.ts";
 import * as turnValidationPolicy from "../lib/research/turn-validation.ts";
@@ -54,6 +62,38 @@ test("freezes one standard request configuration across every live model", () =>
     assert.equal(body.max_output_tokens, 30_000);
     assert.equal(body.max_tool_calls, 12);
   }
+});
+
+test("splits active generation into a research dossier and an option-free composer schema", () => {
+  const body = liveResearchRequestBody(preparedResearch({ imagePreference: "prefer" }));
+  assert.equal(body.text.format.name, "curiositypedia_research_dossier");
+  assert.deepEqual(body.text.format.schema, RESEARCH_DOSSIER_SCHEMA);
+  assert.match(body.instructions, /only job is to research/i);
+  assert.doesNotMatch(body.instructions, /own the whole turn/i);
+
+  const composerSchema = turnCompositionSchemaForDensity("balanced");
+  assert.ok(!composerSchema.required.includes("options"));
+  assert.ok(!composerSchema.required.includes("preferredPosition"));
+  assert.equal(composerSchema.properties.options, undefined);
+  assert.equal(composerSchema.properties.preferredPosition, undefined);
+  const composerInstructions = buildCompositionInstructions(PERFORMERS[0], "en", "prefer");
+  assert.match(composerInstructions, /ONE IMAGE, ONE QUESTION/);
+  assert.match(composerInstructions, /Do not generate the retired pair/);
+});
+
+test("projects image questions into legacy option rows without asking the model for global paths", () => {
+  const projected = JSON.parse(addLegacyOptionProjection(JSON.stringify({
+    topicLabel: "root systems",
+    visualNotes: [
+      { role: "mechanism", knowledgeCheck: { question: "Why do these roots twist together?" } },
+      { role: "scale", knowledgeCheck: { question: "How far can one root network spread?" } },
+    ],
+  })));
+  assert.equal(projected.preferredPosition, 0);
+  assert.deepEqual(projected.options, [
+    { question: "Why do these roots twist together?", angle: "mechanism" },
+    { question: "How far can one root network spread?", angle: "scale" },
+  ]);
 });
 
 test("lease ownership is checked before the first provider attempt", async () => {
@@ -190,6 +230,75 @@ const knowledgeCheckFixture = {
   correctOptionIndex: 0,
   explanation: "The visible suspenders, main cables, towers, and anchorages form a continuous path that carries the roadway load into the ground.",
 };
+
+test("runs the dossier and composition as two visible provider phases", async () => {
+  const originalFetch = globalThis.fetch;
+  env.OPENAI_API_KEY = "test-key";
+  usageWriteCounter();
+  const dossier = {
+    topicLabel: "evidence systems",
+    bigIdea: "Reliable evidence becomes useful when each claim remains traceable to the observation that supports it.",
+    visiblePhenomenon: "Two independent records converge on the same repeatable pattern while preserving different context.",
+    surprise: "Agreement is useful because the records remain independently inspectable, not because one repeats the other.",
+    mechanism: [
+      "A source records an observation and exposes enough context to inspect it.",
+      "A second source tests or explains the same pattern from a different position.",
+    ],
+    concreteAnchor: "The two consulted records preserve a checkable connection between claim and source.",
+    evidence: [
+      { claim: "The first record supports the observed pattern.", sourceUrls: ["https://example.org/evidence"] },
+      { claim: "The second record provides independent context.", sourceUrls: ["https://research.example.net/context"] },
+    ],
+    visualDirections: [],
+    uncertainties: ["The boundary conditions still need a separate test."],
+  };
+  const composedTurn = structuredClone(validTurn);
+  delete composedTurn.preferredPosition;
+  delete composedTurn.options;
+  delete composedTurn.media;
+  const phaseOneResponse = {
+    id: "resp_dossier",
+    output: providerResponse.output,
+    usage: { input_tokens: 80, output_tokens: 30, total_tokens: 110 },
+  };
+  const phaseTwoResponse = {
+    id: "resp_composition",
+    output: [],
+    usage: { input_tokens: 60, output_tokens: 40, total_tokens: 100 },
+  };
+  const sse = (text, response) => [
+    { type: "response.output_text.delta", delta: text },
+    { type: "response.completed", response },
+  ].map((event) => `data: ${JSON.stringify(event)}\n\n`).join("") + "data: [DONE]\n\n";
+  const requests = [];
+  globalThis.fetch = async (_url, init) => {
+    requests.push(JSON.parse(init.body));
+    const body = requests.length === 1
+      ? sse(JSON.stringify(dossier), phaseOneResponse)
+      : sse(JSON.stringify(composedTurn), phaseTwoResponse);
+    return new Response(body, { status: 200, headers: { "content-type": "text/event-stream" } });
+  };
+  const events = [];
+  try {
+    const draft = await runLiveResearch(preparedResearch({ imagePreference: "avoid" }), (event) => events.push(event));
+    assert.equal(requests.length, 2);
+    assert.equal(requests[0].text.format.name, "curiositypedia_research_dossier");
+    assert.equal(requests[1].text.format.name, "curiositypedia_composed_turn");
+    assert.equal(requests[1].tools, undefined);
+    assert.match(requests[1].instructions, /Do not browse/);
+    assert.equal(requests[1].text.format.schema.properties.options, undefined);
+    assert.equal(JSON.parse(requests[1].input).researchDossier.bigIdea, dossier.bigIdea);
+    assert.equal(draft.options.length, 2);
+    assert.equal(draft.usage.totalTokens, 210);
+    assert.ok(events.some((event) => event.phase === "research"));
+    assert.ok(events.some((event) => event.phase === "composition"));
+    assert.ok(events.some((event) => event.phase === "validation"));
+  } finally {
+    globalThis.fetch = originalFetch;
+    delete env.OPENAI_API_KEY;
+    delete env.DB;
+  }
+});
 
 test("normalizes and deduplicates provider-returned web sources", () => {
   const sources = liveResearchTestHooks.extractSources(providerResponse);
@@ -1147,14 +1256,14 @@ test("runs exactly one no-search repair after an initial citation mismatch", asy
       image_settings: { max_results: 10, caption: true },
     }]);
     assert.equal(requests[0].model, "gpt-5.6-luna");
-    assert.equal(requests[0].instructions, buildInstructions(
+    assert.equal(requests[0].instructions, buildResearchDeskInstructions(
       PERFORMERS.find((performer) => performer.id === "sage"),
     ));
-    assert.equal(requests[0].input, buildResearchInput({
+    assert.equal(requests[0].input, buildResearchDeskInput({
       question: "How does Bluetooth avoid interference?",
       researchPreset: "standard",
-      answerDensity: "balanced",
       imagePreference: "when-useful",
+      outputLocale: "en",
       topicTrail: [],
     }));
     assert.deepEqual(requests[0].include, [
@@ -1167,11 +1276,11 @@ test("runs exactly one no-search repair after an initial citation mismatch", asy
     assert.deepEqual(requests[0].text, {
       format: {
         type: "json_schema",
-        name: "curiositypedia_turn",
+        name: "curiositypedia_research_dossier",
         strict: true,
-        schema: turnSchemaForDensity("balanced"),
+        schema: RESEARCH_DOSSIER_SCHEMA,
       },
-      verbosity: "medium",
+      verbosity: "low",
     });
     assert.equal(requests[0].safety_identifier, "wd_identity-123");
     assert.equal(requests[0].store, false);

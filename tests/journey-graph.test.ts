@@ -248,7 +248,7 @@ test("finds selected nodes and paths and preserves missing-node results", () => 
   assert.equal(findGraphPath(graph, "missing"), null);
 });
 
-test("uses every generated image question as an open journey instead of the two fallback options", () => {
+test("uses every generated image question as an open journey instead of stored fallback options", () => {
   const journey = journeyFixture();
   const current = journey.turns.find((candidate) => candidate.id === "current")!;
   current.media = Array.from({ length: 10 }, (_, index) => ({

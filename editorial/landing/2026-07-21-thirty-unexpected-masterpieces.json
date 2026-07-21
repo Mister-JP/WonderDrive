@@ -1,0 +1,491 @@
+{
+  "title": "Thirty unexpected masterpieces — July 21, 2026",
+  "recommendations": [
+    {
+      "id": "pufferfish-underwater-sand-garden",
+      "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Mind",
+        "Numbers & Logic",
+        "Planet Earth"
+      ],
+      "question": "Why does a tiny pufferfish rake a giant geometric garden into the seafloor?",
+      "teaser": "A male only about ten centimeters long plows radial ridges for days; the finished circle influences mate choice and becomes a nest for the eggs.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/9/98/The-white-spotted-pufferfish-Torquigener-albomaculosus-Lateral-view-of-a-male-a-and.png",
+      "imageAlt": "White-spotted pufferfish beside the large radial sand circle it constructs on the seabed",
+      "sourceLabel": "Scientific Reports",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3696902/",
+      "size": "wide"
+    },
+    {
+      "id": "pollia-berry-color-without-pigment",
+      "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Matter",
+        "Forces & Energy"
+      ],
+      "question": "How can this berry stay brilliantly blue for decades without any blue pigment?",
+      "teaser": "Spiraling layers of cellulose in Pollia fruit reflect selected wavelengths, producing structural color that can remain vivid even in old museum specimens.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/7/76/Marble_Berry_%28Pollia_condensata%29%2C_Mount_Mabu%2C_Mozambique_1.jpg",
+      "imageAlt": "Cluster of intensely reflective metallic-blue Pollia condensata berries among green leaves",
+      "sourceLabel": "Royal Botanic Gardens, Kew",
+      "sourceUrl": "https://www.kew.org/read-and-watch/plant-colours-not-pigments",
+      "size": "tall"
+    },
+    {
+      "id": "pistol-shrimp-flashing-cavitation",
+      "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Forces & Energy",
+        "Matter"
+      ],
+      "question": "How can a shrimp's claw launch a bubble that flashes with light?",
+      "teaser": "The snapping claw fires a high-speed water jet; its cavitation bubble collapses with a pressure pulse, a loud crack, and a light flash lasting only an instant.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Alpheus_bellulus_57108149.jpg",
+      "imageAlt": "Colorful tiger pistol shrimp with one enlarged snapping claw on a reef",
+      "sourceLabel": "University of Twente research",
+      "sourceUrl": "https://research.utwente.nl/en/publications/how-snapping-shrimp-snap-through-cavitating-bubbles/",
+      "size": "standard"
+    },
+    {
+      "id": "siphonophore-colony-one-body",
+      "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Planet Earth",
+        "Body"
+      ],
+      "question": "How can one ghostly sea creature be a whole colony of specialized bodies?",
+      "teaser": "A siphonophore is built from genetically identical zooids joined together, with different members handling swimming, feeding, defense, or reproduction.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b1/Praya_dubia_%28Giant_siphonophore%29.jpg",
+      "imageAlt": "Transparent giant siphonophore glowing blue and violet against black deep water",
+      "sourceLabel": "NOAA Ocean Exploration",
+      "sourceUrl": "https://oceanexplorer.noaa.gov/explainers/marine-life/",
+      "size": "wide"
+    },
+    {
+      "id": "wood-frog-freezes-and-restarts",
+      "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Body",
+        "Matter"
+      ],
+      "question": "How can a frog freeze until its heart stops, then wake in spring?",
+      "teaser": "Wood frogs flood their tissues with protective sugars as much of their body water freezes; breathing and heartbeat cease, then resume after thawing.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a1/Rana_sylvatica_SC.jpg",
+      "imageAlt": "Brown wood frog with a dark eye mask resting among copper-colored leaves",
+      "sourceLabel": "U.S. National Park Service",
+      "sourceUrl": "https://www.nps.gov/gaar/learn/nature/wood-frog-page-2.htm",
+      "size": "standard"
+    },
+    {
+      "id": "red-sprites-above-thunderstorms",
+      "category": "Science",
+      "dimensions": [
+        "Forces & Energy",
+        "Planet Earth",
+        "Cosmos"
+      ],
+      "question": "Why does some lightning leap upward toward space like a red jellyfish?",
+      "teaser": "Sprites are millisecond electrical discharges high above thunderstorms, where branching red tendrils can stretch tens of kilometers through the upper atmosphere.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/2/22/Red_Sprites_from_the_ISS_%2853791152564%29.jpg",
+      "imageAlt": "Branching crimson lightning sprites photographed above a thunderstorm from the International Space Station",
+      "sourceLabel": "NASA Scientific Visualization Studio",
+      "sourceUrl": "https://svs.gsfc.nasa.gov/31111/",
+      "size": "wide"
+    },
+    {
+      "id": "naica-giant-gypsum-crystals",
+      "category": "Science",
+      "dimensions": [
+        "Matter",
+        "Planet Earth",
+        "Time & History"
+      ],
+      "question": "How did a cave grow crystals longer than a city bus?",
+      "teaser": "For hundreds of thousands of years, hot mineral-rich water held nearly ideal conditions for gypsum to grow extraordinarily slowly into beams up to about eleven meters long.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/2/29/Cristales_cueva_de_Naica.JPG",
+      "imageAlt": "Person standing among enormous translucent gypsum beams in Mexico's Naica crystal cave",
+      "sourceLabel": "Chemical Society Reviews",
+      "sourceUrl": "https://pubs.rsc.org/en/content/articlelanding/2014/cs/c3cs60320b",
+      "size": "tall"
+    },
+    {
+      "id": "brocken-spectre-rainbow-shadow",
+      "category": "Science",
+      "dimensions": [
+        "Forces & Energy",
+        "Mind",
+        "Planet Earth"
+      ],
+      "question": "Why can your shadow become a giant surrounded by rainbow rings?",
+      "teaser": "With the Sun behind you, fog receives your projected shadow while tiny droplets scatter light back as a colored glory centered on your viewpoint.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c1/Fog_bow_and_Brocken_spectre_with_glory_at_Hinlopen_strait%2C_Svalbard.jpg",
+      "imageAlt": "Enlarged human shadow encircled by colored rings on fog above a mountain landscape",
+      "sourceLabel": "UK Met Office",
+      "sourceUrl": "https://weather.metoffice.gov.uk/learn-about/weather/optical-effects",
+      "size": "standard"
+    },
+    {
+      "id": "rainbow-is-really-a-circle",
+      "category": "Science",
+      "dimensions": [
+        "Forces & Energy",
+        "Numbers & Logic",
+        "Planet Earth"
+      ],
+      "question": "Why is every rainbow secretly a complete circle?",
+      "teaser": "Raindrops send the rainbow's colors toward an observer along a cone; the ground normally hides its lower half, but altitude can reveal the full ring.",
+      "imageUrl": "https://www.nesdis.noaa.gov/s3/2025-09/Circular-rainbow-plane-16x9.png",
+      "imageAlt": "Complete circular rainbow seen from an aircraft above clouds and green land",
+      "sourceLabel": "NOAA NESDIS",
+      "sourceUrl": "https://www.nesdis.noaa.gov/about/k-12-education/optical-phenomena/what-causes-rainbow",
+      "size": "wide"
+    },
+    {
+      "id": "egyptian-blue-hippo-lotus-rebirth",
+      "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Belief & Ideas",
+        "Art & Expression"
+      ],
+      "question": "Why cover a dangerous hippopotamus with flowers of rebirth?",
+      "teaser": "Middle Kingdom faience hippos joined a powerful Nile animal with lotus imagery linked to marsh life, creation, and regeneration, and many were placed in tombs.",
+      "imageUrl": "https://images.metmuseum.org/CRDImages/eg/original/LC-32_1_230_EGDP026460.jpg",
+      "imageAlt": "Turquoise ancient Egyptian faience hippopotamus painted with black lotus flowers and leaves",
+      "sourceLabel": "The Metropolitan Museum of Art",
+      "sourceUrl": "https://www.metmuseum.org/essays/hippopotami-in-ancient-egypt",
+      "size": "standard"
+    },
+    {
+      "id": "liangzhu-jade-cong-enigma",
+      "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Belief & Ideas",
+        "Art & Expression",
+        "Matter"
+      ],
+      "question": "Why bore a perfect circle through a square block of jade 4,500 years ago?",
+      "teaser": "Liangzhu artisans spent immense labor shaping jade cong and carving subtle corner faces, yet their precise ritual meaning remains unknown.",
+      "imageUrl": "https://images.metmuseum.org/CRDImages/as/original/DP161556.jpg",
+      "imageAlt": "Tall dark-green Neolithic jade cong with a square exterior, round opening, and stacked carved faces",
+      "sourceLabel": "The Metropolitan Museum of Art",
+      "sourceUrl": "https://www.metmuseum.org/art/collection/search/72376",
+      "size": "tall"
+    },
+    {
+      "id": "oxus-gold-chariot-protective-face",
+      "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Belief & Ideas",
+        "Art & Expression",
+        "Design & Technology"
+      ],
+      "question": "Why put a protective god's face on a chariot small enough to hold in one hand?",
+      "teaser": "This intricate Achaemenid gold model copied working details of a full-size chariot; its Bes head may indicate it was made to protect a young owner.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/3/3c/Oxus-Schatz_Ach%C3%A4menidenreich_Oxus_Treasure%2C_Achaemenid_Empire_Mohammad_Nemat_Zadeh.jpg",
+      "imageAlt": "Tiny ancient gold chariot with four horses and seated figures from the Oxus Treasure",
+      "sourceLabel": "The British Museum",
+      "sourceUrl": "https://www.britishmuseum.org/collection/object/W_1897-1231-7",
+      "size": "standard"
+    },
+    {
+      "id": "babylon-processional-brick-lions",
+      "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Belief & Ideas",
+        "Art & Expression",
+        "Society"
+      ],
+      "question": "Why did lions march along Babylon's most important street?",
+      "teaser": "Repeated glazed-brick lions represented Ishtar, goddess of love and war, protecting and guiding ritual processions through a city made brilliant with color.",
+      "imageUrl": "https://images.metmuseum.org/CRDImages/an/original/DT891.jpg",
+      "imageAlt": "Large striding lion formed from molded yellow and blue glazed bricks from ancient Babylon",
+      "sourceLabel": "The Metropolitan Museum of Art",
+      "sourceUrl": "https://www.metmuseum.org/art/collection/search/322585",
+      "size": "wide"
+    },
+    {
+      "id": "djenne-mosque-annual-replastering",
+      "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Belief & Ideas",
+        "Design & Technology",
+        "Art & Expression"
+      ],
+      "question": "Why does a whole city replaster its great mosque every year?",
+      "teaser": "Rain and heat weather Djenné's earthen surface, so an annual community festival renews the protective plaster while passing building knowledge between generations.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f1/MaliDjenn%C3%A9Mosqu%C3%A9e.JPG",
+      "imageAlt": "Monumental earthen Great Mosque of Djenne with three towers and projecting wooden beams",
+      "sourceLabel": "UNESCO World Heritage Centre",
+      "sourceUrl": "https://whc.unesco.org/en/urban-heritage-atlas/djenne/",
+      "size": "wide"
+    },
+    {
+      "id": "jeju-haenyeo-one-breath-harvest",
+      "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Planet Earth",
+        "Body",
+        "Food & Agriculture"
+      ],
+      "question": "How do Jeju's women divers harvest the sea on a single breath?",
+      "teaser": "Haenyeo descend without air tanks, read currents and marine life, surface with a signature whistle, and teach ecological knowledge through families and cooperatives.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/5/58/Haenyo_8101.jpg",
+      "imageAlt": "Jeju haenyeo diver in a black wetsuit surfacing beside an orange collection float in blue water",
+      "sourceLabel": "UNESCO Intangible Cultural Heritage",
+      "sourceUrl": "https://ich.unesco.org/en/RL/culture-of-jeju-haenyeo-women-divers-01068",
+      "size": "standard"
+    },
+    {
+      "id": "theyyam-costume-living-deity",
+      "category": "Culture",
+      "dimensions": [
+        "Art & Expression",
+        "Belief & Ideas",
+        "Society"
+      ],
+      "question": "How can paint, flame, dance, and a towering crown turn a performer into a deity?",
+      "teaser": "In northern Kerala's Theyyam, character-specific makeup, headgear, natural materials, music, discipline, and ritual let performers embody divine and ancestral figures.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d1/Theyyam_of_Kerala_by_Shagil_Kannur_2024_%2830%29.jpg",
+      "imageAlt": "Theyyam performer in vivid red face paint and an enormous circular ceremonial headdress",
+      "sourceLabel": "Kerala Tourism",
+      "sourceUrl": "https://www.keralatourism.org/artforms/theyyam-ritual/1/",
+      "size": "tall"
+    },
+    {
+      "id": "ikat-pattern-dyed-before-weaving",
+      "category": "Culture",
+      "dimensions": [
+        "Art & Expression",
+        "Matter",
+        "Society",
+        "Design & Technology"
+      ],
+      "question": "How can a cloth's pattern exist before the cloth is woven?",
+      "teaser": "Ikat makers bind and dye selected sections of loose warp or weft threads first, then align them on the loom so the image emerges with characteristic soft edges.",
+      "imageUrl": "https://images.metmuseum.org/CRDImages/is/original/DP335041.jpg",
+      "imageAlt": "Finely woven ikat textile fragment with deep blue geometric bands and a gold inscription",
+      "sourceLabel": "The Metropolitan Museum of Art",
+      "sourceUrl": "https://www.metmuseum.org/essays/textiles-island-southeast-asia",
+      "size": "standard"
+    },
+    {
+      "id": "dutch-sand-motor-moving-coast",
+      "category": "Systems",
+      "dimensions": [
+        "Design & Technology",
+        "Planet Earth",
+        "Forces & Energy"
+      ],
+      "question": "How can one artificial peninsula teach waves to rebuild a coastline?",
+      "teaser": "The Netherlands placed 21.5 million cubic meters of sand at one site, then let wind, waves, and currents distribute it gradually along beaches and dunes.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/63/Zandmotor_in_2012_1.jpg",
+      "imageAlt": "Aerial view of the hook-shaped Sand Motor peninsula extending into the North Sea",
+      "sourceLabel": "Rijkswaterstaat",
+      "sourceUrl": "https://www.rijkswaterstaat.nl/en/projects/iconic-structures/the-sand-motor",
+      "size": "wide"
+    },
+    {
+      "id": "oyster-reef-filter-and-breakwater",
+      "category": "Systems",
+      "dimensions": [
+        "Living World",
+        "Planet Earth",
+        "Forces & Energy"
+      ],
+      "question": "How can a reef clean a bay and soften its waves at the same time?",
+      "teaser": "Oysters build craggy habitat while filtering suspended material from water; established reefs can also dissipate wave energy and stabilize vulnerable shorelines.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/bd/Underwater_images_of_the_last_native_oysters_beds_in_Brittany_%28France%29_%28Ifremer_00377-48842_-_6%29.jpg",
+      "imageAlt": "Dense living oyster reef carpeting the seafloor in green-blue coastal water",
+      "sourceLabel": "NOAA Fisheries",
+      "sourceUrl": "https://www.fisheries.noaa.gov/national/habitat-conservation/oyster-reef-habitat",
+      "size": "standard"
+    },
+    {
+      "id": "slime-mold-designs-rail-network",
+      "category": "Systems",
+      "dimensions": [
+        "Living World",
+        "Numbers & Logic",
+        "Design & Technology"
+      ],
+      "question": "How can a brainless slime mold redraw a railway network?",
+      "teaser": "Placed among food sources arranged like cities around Tokyo, Physarum grew and pruned nutrient tubes into networks comparable to the real rail system in efficiency and resilience.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ea/Physarum_polycephalum_network.jpg",
+      "imageAlt": "Bright yellow branching Physarum slime-mold transport network spreading across a dark surface",
+      "sourceLabel": "Science research paper",
+      "sourceUrl": "https://www.science.org/doi/10.1126/science.1177894",
+      "size": "wide"
+    },
+    {
+      "id": "red-rectangle-nebula-ladder",
+      "category": "Space",
+      "dimensions": [
+        "Cosmos",
+        "Forces & Energy",
+        "Matter"
+      ],
+      "question": "Why does a dying star build an X-shaped ladder of light?",
+      "teaser": "A dense dust disk around a binary system helps channel stellar outflow into opposed cones; seen edge-on, their rims and episodic shells form an uncanny X with rungs.",
+      "imageUrl": "https://science.nasa.gov/wp-content/uploads/2023/04/hubble_friday_04082016-jpg.webp",
+      "imageAlt": "Hubble view of the Red Rectangle Nebula as a glowing red X crossed by ladder-like bands",
+      "sourceLabel": "NASA Hubble",
+      "sourceUrl": "https://science.nasa.gov/missions/hubble/hubble-frames-a-unique-red-rectangle/",
+      "size": "tall"
+    },
+    {
+      "id": "miranda-patchwork-moon-cliffs",
+      "category": "Space",
+      "dimensions": [
+        "Cosmos",
+        "Matter",
+        "Forces & Energy"
+      ],
+      "question": "Why does this tiny moon look stitched together from mismatched worlds?",
+      "teaser": "Voyager 2 found Miranda divided into ancient cratered terrain, enormous canyons, ridges, and younger coronae—evidence of a surprisingly complicated geologic past.",
+      "imageUrl": "https://assets.science.nasa.gov/content/dam/science/psd/solar/2023/07/PIA00141.jpg/jcr:content/renditions/cq5dam.web.1280.1280.jpeg",
+      "imageAlt": "Voyager mosaic of Uranus's moon Miranda showing fractured patchwork terrain and immense cliffs",
+      "sourceLabel": "NASA Science",
+      "sourceUrl": "https://science.nasa.gov/uranus/moons/miranda/",
+      "size": "standard"
+    },
+    {
+      "id": "cosmic-hand-pulsar-wind-nebula",
+      "category": "Space",
+      "dimensions": [
+        "Cosmos",
+        "Forces & Energy"
+      ],
+      "question": "What drew a ghostly hand in X-rays across the Milky Way?",
+      "teaser": "A rapidly spinning neutron star drives jets and a wind of energetic matter and antimatter, sculpting the pulsar-wind nebula MSH 15-52 into a handlike form.",
+      "imageUrl": "https://chandra.harvard.edu/photo/2023/msh1552/msh1552_lg.jpg",
+      "imageAlt": "Blue and purple X-ray nebula resembling an outstretched translucent human hand in space",
+      "sourceLabel": "NASA Chandra X-ray Observatory",
+      "sourceUrl": "https://chandra.harvard.edu/photo/2023/msh1552/",
+      "size": "wide"
+    },
+    {
+      "id": "comet-67p-rubber-duck-collision",
+      "category": "Space",
+      "dimensions": [
+        "Cosmos",
+        "Matter",
+        "Time & History"
+      ],
+      "question": "How did two ancient worlds meet gently enough to become one rubber-duck comet?",
+      "teaser": "Rosetta's images revealed aligned layers in each lobe of comet 67P, evidence that two separately formed bodies merged in a low-speed collision.",
+      "imageUrl": "https://www.esa.int/var/esa/storage/images/esa_multimedia/images/2015/09/rosetta_s_comet/15624734-1-eng-GB/Rosetta_s_comet_pillars.jpg",
+      "imageAlt": "Rosetta spacecraft image of the dark double-lobed nucleus of comet 67P against black space",
+      "sourceLabel": "European Space Agency",
+      "sourceUrl": "https://sci.esa.int/web/rosetta/-/56543-how-rosetta-s-comet-got-its-shape",
+      "size": "standard"
+    },
+    {
+      "id": "origami-solar-array-bloom",
+      "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Cosmos",
+        "Numbers & Logic"
+      ],
+      "question": "How can a spacecraft unfold a solar array like a paper flower?",
+      "teaser": "Origami-inspired crease patterns let a broad rigid-panel array pack tightly for launch and deploy through coordinated motion with fewer mechanical inputs.",
+      "imageUrl": "https://images-assets.nasa.gov/image/PIA18654/PIA18654~orig.jpg",
+      "imageAlt": "Researcher opening a large circular origami-inspired solar-array prototype with radial folds",
+      "sourceLabel": "NASA Jet Propulsion Laboratory",
+      "sourceUrl": "https://images.nasa.gov/details/PIA18654",
+      "size": "wide"
+    },
+    {
+      "id": "metal-foam-floats-on-water",
+      "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Matter",
+        "Forces & Energy"
+      ],
+      "question": "How can a piece of metal float even after its surface is damaged?",
+      "teaser": "A magnesium matrix filled with hollow silicon-carbide spheres has a bulk density below water while retaining strength and heat resistance.",
+      "imageUrl": "https://www.asme.org/getmedia/a59bd619-0716-4067-b589-389d74f0943d/lightweight-metal-composite-floats-on-water_hero.jpg.aspx?width=920&height=720&ext=.jpg",
+      "imageAlt": "Small rectangular block of porous metal composite floating at the surface of a glass beaker",
+      "sourceLabel": "NYU Tandon School of Engineering",
+      "sourceUrl": "https://engineering.nyu.edu/news/metal-composite-floats-water",
+      "size": "standard"
+    },
+    {
+      "id": "sofi-soft-robotic-fish",
+      "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Living World",
+        "Mind"
+      ],
+      "question": "How can a robot swim with wild fish without frightening them away?",
+      "teaser": "SoFi uses a soft hydraulic tail, buoyancy control, quiet acoustic commands, and an onboard camera to maneuver untethered through real coral reefs.",
+      "imageUrl": "https://news.mit.edu/sites/default/files/images/201803/1SoFi%2520swimming%2520close-up.jpeg",
+      "imageAlt": "White soft robotic fish swimming above a colorful coral reef beside living fish",
+      "sourceLabel": "MIT CSAIL",
+      "sourceUrl": "https://www.csail.mit.edu/research/sofi-soft-robotic-fish",
+      "size": "wide"
+    },
+    {
+      "id": "millefiori-thousand-glass-flowers",
+      "category": "Art",
+      "dimensions": [
+        "Art & Expression",
+        "Matter",
+        "Design & Technology"
+      ],
+      "question": "How can one glass cane bloom into a thousand identical flowers?",
+      "teaser": "Makers bundle colored rods into a pattern, draw the bundle into a long cane, slice its cross-section into repeated motifs, then fuse and polish the pieces.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/0/07/Glass_Bowl_in_Millefiori_Technique_MET_DP212286.jpg",
+      "imageAlt": "Green glass bowl densely patterned with repeated yellow and red millefiori flower roundels",
+      "sourceLabel": "The Metropolitan Museum of Art",
+      "sourceUrl": "https://www.metmuseum.org/essays/mosaic-glass-from-islamic-lands",
+      "size": "tall"
+    },
+    {
+      "id": "martinez-black-on-black-pottery",
+      "category": "Art",
+      "dimensions": [
+        "Art & Expression",
+        "Matter",
+        "Society"
+      ],
+      "question": "How can one black clay surface hold two completely different kinds of light?",
+      "teaser": "Maria and Julian Martinez combined polished and matte slips, then used an oxygen-reducing outdoor firing so reflected light—not added color—revealed the design.",
+      "imageUrl": "https://ids.si.edu/ids/deliveryService?id=SAAM-1966.27.14_1&max=2600",
+      "imageAlt": "Rounded black-on-black Pueblo pottery bowl with glossy surface and matte feather motifs",
+      "sourceLabel": "Smithsonian American Art Museum",
+      "sourceUrl": "https://americanart.si.edu/artwork/bowl-16386",
+      "size": "standard"
+    },
+    {
+      "id": "reverse-glass-painting-backward",
+      "category": "Art",
+      "dimensions": [
+        "Art & Expression",
+        "Matter",
+        "Design & Technology"
+      ],
+      "question": "How do you paint a picture backward, starting with the eyelashes and ending with the sky?",
+      "teaser": "Reverse-glass painters apply highlights and fine details first, then progressively deeper layers and the background before turning the pane over for viewing.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b0/Anonymous_reverse_painting_on_glass_of_a_woman%2C_western_India%2C_late_19th_century%2C_HAA.JPG",
+      "imageAlt": "Vivid nineteenth-century reverse-glass portrait of a richly dressed woman from western India",
+      "sourceLabel": "Corning Museum of Glass",
+      "sourceUrl": "https://info.cmog.org/publication/reverse-painting-glass-ryser-collection",
+      "size": "wide"
+    }
+  ]
+}

@@ -1,0 +1,801 @@
+{
+  "title": "Encyclopedic wonders 2 of 3",
+  "recommendations": [
+    {
+      "id": "seven-bridges-birth-of-networks",
+      "category": "Science",
+      "dimensions": [
+        "Numbers & Logic",
+        "Time & History",
+        "Society"
+      ],
+      "question": "How did an impossible walk across seven bridges invent network mathematics?",
+      "teaser": "Euler ignored distances and shapes, keeping only landmasses and connections. That abstraction proved the route impossible and helped create graph theory.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Tabuleiro_representando_as_sete_pontes_de_K%C3%B6nigsberg_02.jpg/1920px-Tabuleiro_representando_as_sete_pontes_de_K%C3%B6nigsberg_02.jpg",
+      "imageAlt": "Historic map of Konigsberg showing seven bridges across the Pregel river",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Seven_Bridges_of_K%C3%B6nigsberg",
+      "size": "wide"
+    },
+    {
+      "id": "trabecular-bone-micro-lattice",
+      "category": "Science",
+      "dimensions": [
+        "Body",
+        "Design & Technology",
+        "Matter"
+      ],
+      "question": "Why is the inside of a bone built like a weightless cathedral?",
+      "teaser": "Trabecular bone forms a porous lattice that remodels along habitual loads, combining low mass with strength and housing marrow between its struts.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Spongy_bone_-_Trabecular_bone_-_Normal_trabecular_bone_Trabecular_bone_etc_--_Smart-Servier.jpg/1920px-Spongy_bone_-_Trabecular_bone_-_Normal_trabecular_bone_Trabecular_bone_etc_--_Smart-Servier.jpg",
+      "imageAlt": "Magnified lattice of pale trabecular bone with intricate branching spaces",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Trabecular_bone",
+      "size": "wide"
+    },
+    {
+      "id": "kanizsa-triangle-invented-edges",
+      "category": "Science",
+      "dimensions": [
+        "Mind",
+        "Numbers & Logic"
+      ],
+      "question": "Why do you see a bright white triangle that was never drawn?",
+      "teaser": "Aligned gaps and angles cause the visual system to infer an occluding surface, constructing crisp Kanizsa-triangle edges where the image contains no line at all.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Kanizsa_triangle.svg/1920px-Kanizsa_triangle.svg.png",
+      "imageAlt": "Kanizsa triangle illusion made from three black circles with wedges removed",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Illusory_contours",
+      "size": "wide"
+    },
+    {
+      "id": "otzi-copper-age-tattoos",
+      "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Body",
+        "Belief & Ideas"
+      ],
+      "question": "Why did a 5,300-year-old traveler carry more than sixty tattoos?",
+      "teaser": "Ötzi's mostly linear tattoos were made by rubbing pigment into small incisions; many cluster near joints and the lower back, though their exact purpose remains debated.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/5/51/Archeoparc_-_Museum_%C3%96tzi_Kleidung.jpg",
+      "imageAlt": "Reconstruction of Otzi the Iceman beside a close view of ancient tattoos",
+      "sourceLabel": "South Tyrol Museum of Archaeology",
+      "sourceUrl": "https://www.iceman.it/en/the-iceman/",
+      "size": "tall"
+    },
+    {
+      "id": "georgian-supra-toastmaster",
+      "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Food & Agriculture",
+        "Language"
+      ],
+      "question": "How can a feast become a carefully guided conversation for an entire table?",
+      "teaser": "At a Georgian supra, a tamada proposes a sequence of toasts that invites memory, humor, gratitude, and response, structuring the gathering without scripting it.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ed/Bronze_Tamada.jpg",
+      "imageAlt": "Georgian supra feast table with a toastmaster raising a drinking horn",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Supra_(feast)",
+      "size": "wide"
+    },
+    {
+      "id": "cherokee-syllabary-one-inventor",
+      "category": "Culture",
+      "dimensions": [
+        "Language",
+        "Society",
+        "Time & History"
+      ],
+      "question": "How did Sequoyah build a writing system for a language he could not previously read?",
+      "teaser": "Sequoyah devised symbols for Cherokee syllables, allowing fluent speakers to learn the system rapidly and supporting newspapers, letters, and public life.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Cherokee_sample.svg/1920px-Cherokee_sample.svg.png",
+      "imageAlt": "Historic Cherokee syllabary chart filled with handwritten characters",
+      "sourceLabel": "National Museum of the American Indian",
+      "sourceUrl": "https://americanindian.si.edu/nk360/sequoyah/",
+      "size": "wide"
+    },
+    {
+      "id": "palitana-temple-mountain",
+      "category": "Culture",
+      "dimensions": [
+        "Belief & Ideas",
+        "Design & Technology",
+        "Society"
+      ],
+      "question": "Why climb thousands of steps before sunrise to a city of marble temples?",
+      "teaser": "Shatrunjaya is a major Jain pilgrimage landscape, where generations of patrons built dense clusters of temples around a mountain associated with liberation.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Palitana_temples_01.jpg/1920px-Palitana_temples_01.jpg",
+      "imageAlt": "Dense cluster of white marble Jain temples covering Shatrunjaya Hill",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Palitana_temples",
+      "size": "wide"
+    },
+    {
+      "id": "papel-picado-air-drawings",
+      "category": "Art",
+      "dimensions": [
+        "Art & Expression",
+        "Design & Technology",
+        "Society"
+      ],
+      "question": "How can tissue paper become a drawing made mostly of air?",
+      "teaser": "Artisans stack thin sheets and chisel repeating openings through them, turning fragile paper into banners whose images appear through light, color, and negative space.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Papel_picado_by_timlewisnm.jpg/1920px-Papel_picado_by_timlewisnm.jpg",
+      "imageAlt": "Rows of brightly colored papel picado banners fluttering above a street",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Papel_picado",
+      "size": "wide"
+    },
+    {
+      "id": "sharkskin-drag-reducing-riblets",
+      "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Living World",
+        "Forces & Energy"
+      ],
+      "question": "How can copying microscopic sharkskin grooves reduce drag?",
+      "teaser": "Fast-swimming sharks carry aligned riblets on tooth-like dermal denticles; engineered surfaces inspired by that texture can alter near-wall flow and resist fouling.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fa/Denticules_cutan%C3%A9s_du_requin_citron_Negaprion_brevirostris_vus_au_microscope_%C3%A9lectronique_%C3%A0_balayage.jpg",
+      "imageAlt": "Colorized electron micrograph of overlapping sharkskin denticles and grooves",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Shark_skin",
+      "size": "wide"
+    },
+    {
+      "id": "cranberry-bog-floating-harvest",
+      "category": "Culture",
+      "dimensions": [
+        "Food & Agriculture",
+        "Matter",
+        "Design & Technology"
+      ],
+      "question": "Why do cranberry fields become red lakes at harvest time?",
+      "teaser": "Ripe cranberries contain air pockets and float, so growers flood suitable beds and use water reels to loosen fruit for collection at the surface.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Cranberrys_beim_Ernten.jpeg/1920px-Cranberrys_beim_Ernten.jpeg",
+      "imageAlt": "Workers standing in a flooded cranberry bog surrounded by a lake of floating red berries",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Cranberry",
+      "size": "wide"
+    },
+    {
+      "id": "bombardier-beetle-pulse-cannon",
+      "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Forces & Energy",
+        "Matter"
+      ],
+      "question": "How does a beetle fire a near-boiling chemical cannon without cooking itself?",
+      "teaser": "Separate chemicals react inside a reinforced chamber and escape in rapid pulses, letting the beetle aim a hot, irritating spray while limiting heat buildup.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Manchaca_Brachinus_-_bombardier_beetle_15.jpg/1920px-Manchaca_Brachinus_-_bombardier_beetle_15.jpg",
+      "imageAlt": "Bombardier beetle with a dark body and orange head on a leaf",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Bombardier_beetle",
+      "size": "wide"
+    },
+    {
+      "id": "hillier-pink-lake",
+      "category": "Nature",
+      "dimensions": [
+        "Planet Earth",
+        "Living World",
+        "Matter"
+      ],
+      "question": "Why can an Australian lake stay bubble-gum pink even in a bottle?",
+      "teaser": "Its durable color is linked to salt-loving microbes and pigments thriving in hypersaline water, rather than a temporary trick of sunset or sediment.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Lake_Hillier_2_Middle_Island_Recherche_Archipelago_NR_IV-2011.JPG/1920px-Lake_Hillier_2_Middle_Island_Recherche_Archipelago_NR_IV-2011.JPG",
+      "imageAlt": "Aerial view of bright pink Lake Hillier beside the deep-blue ocean",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Lake_Hillier",
+      "size": "wide"
+    },
+    {
+      "id": "mars-avalanche-in-motion",
+      "category": "Space",
+      "dimensions": [
+        "Cosmos",
+        "Planet Earth",
+        "Time & History"
+      ],
+      "question": "How did a spacecraft photograph an avalanche while it was falling on Mars?",
+      "teaser": "Spring sunlight destabilizes carbon-dioxide frost and rock along steep polar scarps; orbiting cameras have caught ochre dust clouds billowing from fresh falls.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Martian_Avalanche.jpg/1920px-Martian_Avalanche.jpg",
+      "imageAlt": "Martian polar cliff with a rust-colored avalanche cloud in progress",
+      "sourceLabel": "NASA/JPL",
+      "sourceUrl": "https://www.jpl.nasa.gov/images/pia24035-an-avalanche-on-mars",
+      "size": "tall"
+    },
+    {
+      "id": "gallium-melts-in-hand",
+      "category": "Science",
+      "dimensions": [
+        "Matter",
+        "Forces & Energy"
+      ],
+      "question": "How can a metal spoon melt in a warm cup without the drink being hot?",
+      "teaser": "Gallium is metallic and solid at room temperature but melts just below body temperature, while its high boiling point keeps it from immediately vaporizing.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Gallium_bar_cracked_open_to_show_crystal_structure_with_scale_1.png/1920px-Gallium_bar_cracked_open_to_show_crystal_structure_with_scale_1.png",
+      "imageAlt": "Silvery gallium melting into a reflective pool in a hand",
+      "sourceLabel": "Royal Society of Chemistry",
+      "sourceUrl": "https://www.rsc.org/periodic-table/element/31/gallium",
+      "size": "wide"
+    },
+    {
+      "id": "plasma-globe-follows-finger",
+      "category": "Science",
+      "dimensions": [
+        "Forces & Energy",
+        "Matter",
+        "Design & Technology"
+      ],
+      "question": "Why do a plasma globe's lightning filaments chase your fingertip?",
+      "teaser": "High-frequency voltage ionizes the low-pressure gas, while your conductive body changes the local electric field and offers a capacitive path toward ground.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Plasma_globe_60th.jpg/1920px-Plasma_globe_60th.jpg",
+      "imageAlt": "Purple and blue plasma globe filaments converging beneath a fingertip",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Plasma_globe",
+      "size": "tall"
+    },
+    {
+      "id": "mobius-strip-one-side",
+      "category": "Science",
+      "dimensions": [
+        "Numbers & Logic",
+        "Art & Expression"
+      ],
+      "question": "How can a strip of paper have only one side and one edge?",
+      "teaser": "Give a band a half-twist before joining its ends: a traveler following the surface returns flipped, having covered what seemed like both sides without crossing an edge.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/M%C3%B6bius_Strip.jpg/1920px-M%C3%B6bius_Strip.jpg",
+      "imageAlt": "Paper Mobius strip with a colored line traveling around its single surface",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/M%C3%B6bius_strip",
+      "size": "wide"
+    },
+    {
+      "id": "brainbow-neurons-color-code",
+      "category": "Science",
+      "dimensions": [
+        "Body",
+        "Mind",
+        "Living World"
+      ],
+      "question": "How can scientists give neighboring neurons different colors without painting them one by one?",
+      "teaser": "Brainbow uses recombination to make individual neurons express different mixtures of fluorescent proteins, turning tangled circuits into color-coded paths that researchers can trace.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/8/8c/Brainbow_%28Smith_2007%29.jpg",
+      "imageAlt": "Dense field of neurons glowing red green blue yellow and violet against a dark brain section",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Brainbow",
+      "size": "wide"
+    },
+    {
+      "id": "muller-lyer-arrowhead-length",
+      "category": "Science",
+      "dimensions": [
+        "Mind",
+        "Numbers & Logic"
+      ],
+      "question": "Why can arrowheads change the apparent length of an identical line?",
+      "teaser": "In the Müller-Lyer illusion, inward- and outward-pointing fins alter the context used to judge endpoints, so equal segments can look conspicuously unequal.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/M%C3%BCller-Lyer_illusion_-_simple.svg/1920px-M%C3%BCller-Lyer_illusion_-_simple.svg.png",
+      "imageAlt": "Muller-Lyer illusion with equal lines framed by inward and outward arrowheads",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/M%C3%BCller-Lyer_illusion",
+      "size": "wide"
+    },
+    {
+      "id": "viking-sunstone-polarized-sky",
+      "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Forces & Energy",
+        "Design & Technology"
+      ],
+      "question": "Could a translucent crystal reveal the hidden Sun on a cloudy sea?",
+      "teaser": "Iceland spar splits and polarizes skylight. Experiments show its changing brightness patterns could help estimate the Sun's direction when clouds obscure it.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Silfurberg.jpg/1920px-Silfurberg.jpg",
+      "imageAlt": "Clear calcite sunstone splitting an image into two views",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Sunstone_(medieval)",
+      "size": "wide"
+    },
+    {
+      "id": "kimjang-community-winter",
+      "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Food & Agriculture",
+        "Time & History"
+      ],
+      "question": "Why do whole communities make winter kimchi together?",
+      "teaser": "Kimjang coordinates large seasonal batches of fermented vegetables, with recipes, labor, and finished food shared among households and passed between generations.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Gimjang_in_Gaemi_Village%2C_1_December_2012.jpg/1920px-Gimjang_in_Gaemi_Village%2C_1_December_2012.jpg",
+      "imageAlt": "People preparing bright red kimchi together in many large bowls",
+      "sourceLabel": "UNESCO",
+      "sourceUrl": "https://ich.unesco.org/en/RL/kimjang-making-and-sharing-kimchi-in-the-republic-of-korea-00881",
+      "size": "wide"
+    },
+    {
+      "id": "silbo-gomero-whistled-speech",
+      "category": "Culture",
+      "dimensions": [
+        "Language",
+        "Forces & Energy",
+        "Society"
+      ],
+      "question": "How can a conversation travel across a canyon as a whistle?",
+      "teaser": "Silbo Gomero converts features of spoken Spanish into a small set of whistled pitches and transitions that carry much farther than ordinary speech across La Gomera.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/8/86/El_Silbo.jpg",
+      "imageAlt": "Whistler using fingers at the mouth above a steep green canyon on La Gomera",
+      "sourceLabel": "UNESCO",
+      "sourceUrl": "https://ich.unesco.org/en/RL/whistled-language-of-the-island-of-la-gomera-canary-islands-the-silbo-gomero-00172",
+      "size": "wide"
+    },
+    {
+      "id": "day-of-dead-marigold-path",
+      "category": "Culture",
+      "dimensions": [
+        "Belief & Ideas",
+        "Society",
+        "Art & Expression"
+      ],
+      "question": "How can flowers, food, and photographs prepare a welcome for the dead?",
+      "teaser": "Mexican Día de Muertos traditions create ofrendas with personal objects and fragrant marigolds, joining family remembrance with public art, food, and cemetery visits.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Catrina_3.jpg/1920px-Catrina_3.jpg",
+      "imageAlt": "Glowing Day of the Dead ofrenda covered with orange marigolds candles and photographs",
+      "sourceLabel": "UNESCO",
+      "sourceUrl": "https://ich.unesco.org/en/RL/indigenous-festivity-dedicated-to-the-dead-00054",
+      "size": "wide"
+    },
+    {
+      "id": "iranian-mirror-mosaic-infinity",
+      "category": "Art",
+      "dimensions": [
+        "Art & Expression",
+        "Forces & Energy",
+        "Numbers & Logic",
+        "Design & Technology"
+      ],
+      "question": "Why cover a room with thousands of tiny mirrors instead of a single reflection?",
+      "teaser": "Iranian āina-kāri cuts mirror into geometric facets that break visitors, lamps, and architecture into a shifting field of repeated light.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Aina-kari_near_Zarih_of_Fatima_Masumeh_Shrine%2C_Qom%2C_Iran.jpg/1920px-Aina-kari_near_Zarih_of_Fatima_Masumeh_Shrine%2C_Qom%2C_Iran.jpg",
+      "imageAlt": "Interior covered in dazzling geometric Iranian mirror mosaics",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Iranian_architecture",
+      "size": "wide"
+    },
+    {
+      "id": "starshade-petal-shadow",
+      "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Cosmos",
+        "Forces & Energy",
+        "Numbers & Logic"
+      ],
+      "question": "Why would a space telescope need a second spacecraft shaped like a giant flower?",
+      "teaser": "A starshade's carefully curved petals suppress diffraction around its shadow. Flying tens of thousands of kilometers ahead of a telescope, it could block a star while leaving nearby planets visible.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e7/Starshade_Deployed_at_JPL_2014_PIA20909.jpg",
+      "imageAlt": "Huge black flower-shaped starshade test model deployed inside a bright hangar",
+      "sourceLabel": "NASA/JPL",
+      "sourceUrl": "https://www.jpl.nasa.gov/missions/starshade/",
+      "size": "wide"
+    },
+    {
+      "id": "vanilla-hand-pollination",
+      "category": "Culture",
+      "dimensions": [
+        "Food & Agriculture",
+        "Living World",
+        "Society"
+      ],
+      "question": "Why is most of the world's vanilla pollinated by hand, flower by flower?",
+      "teaser": "Outside its native pollinator range, each short-lived vanilla flower must be manually pollinated during a narrow morning window if it is to produce a pod.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Vanilla_culture_in_Puerto_Rico_%281948%29_%2820560916232%29.jpg/1920px-Vanilla_culture_in_Puerto_Rico_%281948%29_%2820560916232%29.jpg",
+      "imageAlt": "Hands delicately pollinating a pale vanilla orchid flower",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hand_pollination",
+      "size": "wide"
+    },
+    {
+      "id": "horned-lizard-blood-defense",
+      "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Body"
+      ],
+      "question": "Why can a horned lizard squirt blood from the corners of its eyes?",
+      "teaser": "Several horned lizard species can raise pressure around the eye until small vessels rupture, spraying foul-tasting blood that deters canine predators.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Texas_horned_lizard_phrynosoma_cornutum_close_up_high_definition_lizard_photography.jpg/1920px-Texas_horned_lizard_phrynosoma_cornutum_close_up_high_definition_lizard_photography.jpg",
+      "imageAlt": "Spiny horned lizard resting on desert sand",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Horned_lizard",
+      "size": "wide"
+    },
+    {
+      "id": "namib-fairy-circle-grid",
+      "category": "Nature",
+      "dimensions": [
+        "Planet Earth",
+        "Living World",
+        "Numbers & Logic"
+      ],
+      "question": "Why is the Namib desert polka-dotted with millions of bare circles?",
+      "teaser": "The circles form an immense self-organized pattern. Competing explanations emphasize plant competition for scarce water, termite engineering, or interactions between both.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Aerial_view_of_Fairy_circles%2C_Namibia_%282017%29.jpg/1920px-Aerial_view_of_Fairy_circles%2C_Namibia_%282017%29.jpg",
+      "imageAlt": "Aerial view of evenly spaced fairy circles across Namib grassland",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Fairy_circle_(arid_grass_formation)",
+      "size": "wide"
+    },
+    {
+      "id": "uranus-rings-webb",
+      "category": "Space",
+      "dimensions": [
+        "Cosmos",
+        "Forces & Energy"
+      ],
+      "question": "Why did Uranus's faint rings suddenly look luminous to Webb?",
+      "teaser": "Infrared imaging reveals dusty rings, a bright polar cap, and atmospheric clouds that are difficult to see in ordinary visible-light portraits of the pale ice giant.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c6/NASA%E2%80%99s_Webb_Scores_Another_Ringed_World_With_New_Image_of_Uranus_-_Flickr_-_James_Webb_Space_Telescope.png",
+      "imageAlt": "Infrared portrait of blue Uranus encircled by bright rings",
+      "sourceLabel": "NASA Webb",
+      "sourceUrl": "https://science.nasa.gov/missions/webb/nasas-webb-scores-another-ringed-world-with-new-image-of-uranus/",
+      "size": "tall"
+    },
+    {
+      "id": "quasicrystal-forbidden-order",
+      "category": "Science",
+      "dimensions": [
+        "Matter",
+        "Numbers & Logic"
+      ],
+      "question": "How can a crystal be orderly forever without ever repeating?",
+      "teaser": "Quasicrystals possess sharp long-range order but lack ordinary translational repetition, allowing symmetries—such as fivefold order—once considered impossible for crystals.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/0/0d/Rendering_of_quasicrystal_structure.jpg",
+      "imageAlt": "Colorful diffraction pattern showing fivefold quasicrystal symmetry",
+      "sourceLabel": "Nobel Prize",
+      "sourceUrl": "https://www.nobelprize.org/prizes/chemistry/2011/press-release/",
+      "size": "wide"
+    },
+    {
+      "id": "wimshurst-machine-long-spark",
+      "category": "Science",
+      "dimensions": [
+        "Forces & Energy",
+        "Design & Technology",
+        "Time & History"
+      ],
+      "question": "How can two spinning disks pull a lightning bolt from ordinary air?",
+      "teaser": "Oppositely rotating insulated sectors amplify tiny charge imbalances by electrostatic induction until the voltage is high enough to bridge the spark gap.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Wimshurst_machine_Leyden_jar_Katowice_2020.jpg/1920px-Wimshurst_machine_Leyden_jar_Katowice_2020.jpg",
+      "imageAlt": "Wimshurst electrostatic machine producing a bright branching spark",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Wimshurst_machine",
+      "size": "wide"
+    },
+    {
+      "id": "klein-bottle-no-outside",
+      "category": "Science",
+      "dimensions": [
+        "Numbers & Logic",
+        "Art & Expression"
+      ],
+      "question": "What would a bottle with no inside and no outside look like?",
+      "teaser": "A true Klein bottle is a closed one-sided surface requiring four spatial dimensions to avoid self-intersection; glass models show a three-dimensional immersion of it.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/2/21/Acme_klein_bottle.jpg",
+      "imageAlt": "Transparent glass Klein bottle looping through itself",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Klein_bottle",
+      "size": "tall"
+    },
+    {
+      "id": "mitosis-spindle-pulls-chromosomes",
+      "category": "Science",
+      "dimensions": [
+        "Body",
+        "Living World",
+        "Forces & Energy"
+      ],
+      "question": "How does one cell separate two complete libraries of DNA without tangling them?",
+      "teaser": "After chromosomes are copied, microtubules build a bipolar spindle, attach to paired chromosomes, and pull one complete set toward each future daughter cell.",
+      "imageUrl": "https://nigms.nih.gov/sites/nigms/files/image-and-video-gallery/5_topright_Cells_Dividing_0.jpg",
+      "imageAlt": "Fluorescence micrograph of purple chromosomes being separated by a bright green mitotic spindle",
+      "sourceLabel": "NIH National Institute of General Medical Sciences",
+      "sourceUrl": "https://nigms.nih.gov/image-gallery/3631",
+      "size": "wide"
+    },
+    {
+      "id": "ponzo-railway-depth-illusion",
+      "category": "Science",
+      "dimensions": [
+        "Mind",
+        "Numbers & Logic"
+      ],
+      "question": "Why does the upper bar look longer when two identical bars cross railway tracks?",
+      "teaser": "Converging lines imply depth, so the visual system treats the upper bar as farther away and scales its perceived size upward even though both bars match.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Ponzo_illusion.svg/1920px-Ponzo_illusion.svg.png",
+      "imageAlt": "Ponzo illusion with two equal bars crossing converging railway tracks",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Ponzo_illusion",
+      "size": "wide"
+    },
+    {
+      "id": "mary-rose-raised-seabed",
+      "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Design & Technology",
+        "Matter"
+      ],
+      "question": "How do you raise a 400-year-old ship without letting it collapse?",
+      "teaser": "The Mary Rose's surviving hull was lifted in a supporting cradle, then conserved for decades as water in its fragile timbers was gradually replaced and removed.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/AnthonyRoll-2_Mary_Rose.jpg/1920px-AnthonyRoll-2_Mary_Rose.jpg",
+      "imageAlt": "Tudor warship Mary Rose being lifted from the sea in a steel cradle",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Mary_Rose",
+      "size": "wide"
+    },
+    {
+      "id": "vanuatu-sand-drawing-message",
+      "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Language",
+        "Art & Expression",
+        "Numbers & Logic"
+      ],
+      "question": "How can one finger draw a complete story without ever leaving the sand?",
+      "teaser": "Vanuatu sand drawings use a continuous line to encode routes, objects, myths, and messages; mastery joins graphic pattern with oral explanation.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Sand_drawing%2C_Vanuatu.jpg/1920px-Sand_drawing%2C_Vanuatu.jpg",
+      "imageAlt": "Intricate symmetrical Vanuatu sand drawing made with one continuous line",
+      "sourceLabel": "UNESCO",
+      "sourceUrl": "https://ich.unesco.org/en/RL/vanuatu-sand-drawings-00073",
+      "size": "wide"
+    },
+    {
+      "id": "talking-drum-tonal-sentences",
+      "category": "Culture",
+      "dimensions": [
+        "Language",
+        "Forces & Energy",
+        "Society",
+        "Art & Expression"
+      ],
+      "question": "How can a drum repeat the tones and rhythms of a spoken sentence?",
+      "teaser": "By squeezing tension cords while striking, a drummer bends pitch to imitate tonal speech; conventional phrases add enough context for distant listeners to understand.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/9/93/Talking_drum_%28tama%29player.jpg",
+      "imageAlt": "West African talking-drum player squeezing an hourglass drum under one arm",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Talking_drum",
+      "size": "tall"
+    },
+    {
+      "id": "tibetan-yak-butter-sculpture",
+      "category": "Culture",
+      "dimensions": [
+        "Belief & Ideas",
+        "Art & Expression",
+        "Matter"
+      ],
+      "question": "Why sculpt an intricate palace from colored butter if it is destined to melt?",
+      "teaser": "Tibetan Buddhist artists model dyed butter into temporary flowers, deities, and architecture for festivals, making concentrated skill part of an impermanent offering.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Yak_butter_sculptures%2C_Tibet_-5926.jpg/1920px-Yak_butter_sculptures%2C_Tibet_-5926.jpg",
+      "imageAlt": "Elaborate brightly colored Tibetan butter sculptures shaped like flowers and deities",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Butter_sculpture",
+      "size": "wide"
+    },
+    {
+      "id": "malagan-one-ceremony-carving",
+      "category": "Art",
+      "dimensions": [
+        "Art & Expression",
+        "Belief & Ideas",
+        "Society",
+        "Time & History"
+      ],
+      "question": "Why carve a dazzling sculpture for just one ceremony?",
+      "teaser": "In northern New Ireland, malagan carvings are commissioned for funerary ceremonies that honor the dead and transfer names, land, and social rights; after display, the object has completed its work.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Malagan_carvings.jpg/1920px-Malagan_carvings.jpg",
+      "imageAlt": "Towering openwork malagan carving alive with painted birds fish and interlocking figures",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Malagan",
+      "size": "tall"
+    },
+    {
+      "id": "metropol-parasol-woven-shade",
+      "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Art & Expression",
+        "Forces & Energy",
+        "Numbers & Logic"
+      ],
+      "question": "How can a wooden honeycomb turn a scorching city square into a walkable cloud?",
+      "teaser": "Thousands of digitally cut laminated-timber pieces interlock into a vast undulating canopy. Its porous shell casts shifting shade while a raised walkway traces the roof's curves.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Sevilla_-_Metropol_Parasol_%26_Iglesia_de_la_Anunciaci%C3%B3n.jpg/1920px-Sevilla_-_Metropol_Parasol_%26_Iglesia_de_la_Anunciaci%C3%B3n.jpg",
+      "imageAlt": "Immense cream-colored timber lattice of Metropol Parasol floating above Seville",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Metropol_Parasol",
+      "size": "wide"
+    },
+    {
+      "id": "saffron-three-red-threads",
+      "category": "Culture",
+      "dimensions": [
+        "Food & Agriculture",
+        "Living World",
+        "Matter"
+      ],
+      "question": "Why must the world's most precious spice be harvested one flower at a time?",
+      "teaser": "Each saffron crocus carries only three crimson stigmas; they are picked by hand and carefully dried, so a small mass of spice represents tens of thousands of flowers.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Saffron_-_premium_spice.jpg/1920px-Saffron_-_premium_spice.jpg",
+      "imageAlt": "Purple saffron crocus flowers with vivid red stigmas being harvested by hand",
+      "sourceLabel": "Royal Botanic Gardens, Kew",
+      "sourceUrl": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:436552-1",
+      "size": "wide"
+    },
+    {
+      "id": "cuttlefish-moving-clouds",
+      "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Body",
+        "Mind",
+        "Forces & Energy"
+      ],
+      "question": "How does a cuttlefish send moving clouds across its skin?",
+      "teaser": "Layers of pigment cells and light-reflecting structures are controlled directly by the nervous system, producing waves, stripes, and texture changes in fractions of a second.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Sepia_com%C3%BAn_%28Sepia_officinalis%29%2C_Parque_natural_de_la_Arr%C3%A1bida%2C_Portugal%2C_2020-07-21%2C_DD_62.jpg/1920px-Sepia_com%C3%BAn_%28Sepia_officinalis%29%2C_Parque_natural_de_la_Arr%C3%A1bida%2C_Portugal%2C_2020-07-21%2C_DD_62.jpg",
+      "imageAlt": "Colorful cuttlefish displaying rippling patterns across its skin",
+      "sourceLabel": "Smithsonian Ocean",
+      "sourceUrl": "https://ocean.si.edu/ocean-life/invertebrates/cephalopods",
+      "size": "wide"
+    },
+    {
+      "id": "catatumbo-lightning-night-engine",
+      "category": "Nature",
+      "dimensions": [
+        "Planet Earth",
+        "Forces & Energy",
+        "Cosmos"
+      ],
+      "question": "Why does lightning return to the same lake on so many nights?",
+      "teaser": "Around Lake Maracaibo, moist low-level air is funneled between mountain ranges and lifted into deep nighttime storms. The geography repeatedly rebuilds towering clouds and intense electrical activity.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Catatumbo_Lightning_-_Rayo_del_Catatumbo.jpg/1920px-Catatumbo_Lightning_-_Rayo_del_Catatumbo.jpg",
+      "imageAlt": "Multiple violet lightning bolts branching over dark water beneath a turbulent night sky",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Catatumbo_lightning",
+      "size": "wide"
+    },
+    {
+      "id": "ring-nebula-barrel",
+      "category": "Space",
+      "dimensions": [
+        "Cosmos",
+        "Matter",
+        "Numbers & Logic"
+      ],
+      "question": "Is the Ring Nebula really a ring, or are we looking down a glowing barrel?",
+      "teaser": "Webb's infrared view supports a three-dimensional structure with a dense equatorial ring, a central cavity, and lobes extending toward and away from us.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Webb_captures_detailed_beauty_of_Ring_Nebula_%28NIRCam_image%29_%28weic2320b%29.jpg/1920px-Webb_captures_detailed_beauty_of_Ring_Nebula_%28NIRCam_image%29_%28weic2320b%29.jpg",
+      "imageAlt": "Detailed multicolored Ring Nebula seen by the James Webb Space Telescope",
+      "sourceLabel": "ESA Webb",
+      "sourceUrl": "https://esawebb.org/images/potm2308a/",
+      "size": "wide"
+    },
+    {
+      "id": "mercury-mirror-droplets",
+      "category": "Science",
+      "dimensions": [
+        "Matter",
+        "Forces & Energy"
+      ],
+      "question": "Why does liquid mercury roll into mirror-bright beads instead of wetting glass?",
+      "teaser": "Mercury's atoms attract one another strongly, giving the liquid unusually high surface tension; on clean glass, cohesion wins and pulls it into rounded droplets.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/9/99/Pouring_liquid_mercury_bionerd.jpg",
+      "imageAlt": "Mirror-bright liquid mercury gathered into many rounded droplets",
+      "sourceLabel": "Royal Society of Chemistry",
+      "sourceUrl": "https://www.rsc.org/periodic-table/element/80/mercury",
+      "size": "wide"
+    },
+    {
+      "id": "eddy-current-copper-fall",
+      "category": "Science",
+      "dimensions": [
+        "Forces & Energy",
+        "Matter",
+        "Design & Technology"
+      ],
+      "question": "Why does a magnet fall through a copper pipe as if gravity became weaker?",
+      "teaser": "The moving magnetic field induces circular currents in the pipe; their magnetic field opposes the motion, converting gravitational energy into heat without contact.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Electrical_Induction_Science_Toy.jpg/1920px-Electrical_Induction_Science_Toy.jpg",
+      "imageAlt": "Strong magnet dropping slowly through a vertical copper pipe",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Eddy_current",
+      "size": "tall"
+    },
+    {
+      "id": "hilbert-curve-fills-square",
+      "category": "Science",
+      "dimensions": [
+        "Numbers & Logic",
+        "Design & Technology"
+      ],
+      "question": "How can one unbroken line come arbitrarily close to filling an entire square?",
+      "teaser": "Repeatedly folding a path into smaller copies produces a space-filling limit curve, turning one-dimensional order into a map through two-dimensional space.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Krivulja_Hilbertova_n6.svg/1920px-Krivulja_Hilbertova_n6.svg.png",
+      "imageAlt": "Rainbow-colored Hilbert curve densely filling a square",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hilbert_curve",
+      "size": "wide"
+    },
+    {
+      "id": "neutrophil-casts-dna-net",
+      "category": "Science",
+      "dimensions": [
+        "Body",
+        "Living World",
+        "Matter"
+      ],
+      "question": "Why would an immune cell throw out its own DNA as a net?",
+      "teaser": "Some neutrophils release chromatin coated with antimicrobial proteins, creating extracellular traps that can immobilize microbes but may also damage tissue when overused.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/a/ac/Agregation_of_neutrophils_around_spontaneously_activated_netosis_observed_in_Alzheimers%27_Desease_patients_blood.jpg",
+      "imageAlt": "Fluorescence micrograph of a neutrophil surrounded by glowing DNA strands",
+      "sourceLabel": "National Library of Medicine",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2780555/",
+      "size": "wide"
+    },
+    {
+      "id": "mirror-box-phantom-hand",
+      "category": "Science",
+      "dimensions": [
+        "Mind",
+        "Body",
+        "Design & Technology"
+      ],
+      "question": "How can a mirror let someone move a hand that is no longer there?",
+      "teaser": "A mirror box reflects the intact limb into the missing limb's space, giving the brain visual feedback that can sometimes loosen painful phantom postures.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/US_Navy_110613-N-YM336-079_Lynn_Boulanger%2C_an_occupational_therapy_assistant_and_certified_hand_therapist%2C_uses_mirror_therapy_to_help_address_phan.jpg/1920px-US_Navy_110613-N-YM336-079_Lynn_Boulanger%2C_an_occupational_therapy_assistant_and_certified_hand_therapist%2C_uses_mirror_therapy_to_help_address_phan.jpg",
+      "imageAlt": "Person placing both arms beside a mirror box for phantom-limb therapy",
+      "sourceLabel": "National Library of Medicine",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3468806/",
+      "size": "wide"
+    },
+    {
+      "id": "chauvet-lions-moving-wall",
+      "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Art & Expression",
+        "Living World"
+      ],
+      "question": "Why did Ice Age artists draw cave lions as if they were moving?",
+      "teaser": "Overlapping outlines, repeated legs, and the cave wall's contours create sequences of motion in animal panels made more than 30,000 years ago.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c0/Paintings_from_the_Chauvet_cave_%28museum_replica%29.jpg",
+      "imageAlt": "Charcoal panel of overlapping cave lions in Chauvet Cave",
+      "sourceLabel": "UNESCO World Heritage Centre",
+      "sourceUrl": "https://whc.unesco.org/en/list/1426/",
+      "size": "wide"
+    },
+    {
+      "id": "naadam-three-games",
+      "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Time & History",
+        "Art & Expression"
+      ],
+      "question": "Why does one festival crown wrestlers, archers, and long-distance riders together?",
+      "teaser": "Mongolia's Naadam joins three games with music, clothing, praise songs, and regional identity, connecting modern competition to pastoral history.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Naadam_Festival_2024_Opening_Ceremony.jpg/1920px-Naadam_Festival_2024_Opening_Ceremony.jpg",
+      "imageAlt": "Colorfully dressed Mongolian archers competing at Naadam",
+      "sourceLabel": "UNESCO",
+      "sourceUrl": "https://ich.unesco.org/en/RL/naadam-mongolian-traditional-festival-00395",
+      "size": "wide"
+    }
+  ]
+}

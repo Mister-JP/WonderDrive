@@ -4,7 +4,7 @@ This document captures the current product intent. It is deliberately compact: i
 
 ## Product promise
 
-CuriosityPedia helps someone stay with a question long enough for it to become genuinely interesting. It turns an initial question into a researched, source-backed journey, offers two meaningful ways forward after every completed turn, and preserves the resulting map for later exploration.
+CuriosityPedia helps someone stay with a question long enough for it to become genuinely interesting. It turns an initial question into a researched, source-backed journey, reveals a varied set of meaningful ways forward after every completed turn, and preserves the resulting map for later exploration.
 
 The experience should feel guided without being restrictive, playful without becoming careless with evidence, and visually expressive without getting in the way of reading.
 
@@ -14,10 +14,10 @@ The experience should feel guided without being restrictive, playful without bec
 2. Select a research personality and answer depth.
 3. Read one complete, cited research turn.
 4. Inspect its sources, save it, or view its place in the journey map.
-5. Choose one of exactly two grounded next questions, ask for two replacements, or delegate the choice.
+5. Look across the open questions revealed by the turn and choose any direction worth exploring.
 6. Return later through Journeys or Bookmarks and continue from any useful point.
 
-The two-option rule is the product's defining constraint. The options must be understandable to a curious beginner, meaningfully different from each other, grounded in the visible turn, and specific enough to suggest a real next investigation.
+Open questions should be understandable to a curious beginner, grounded in the visible turn, specific enough to suggest a real investigation, and meaningfully varied across mechanisms, consequences, comparisons, scales, histories, places, disciplines, and unresolved boundaries. A turn should expand the learner's map rather than restate the question it just answered.
 
 ## Experience map
 
@@ -53,7 +53,7 @@ Language, answer density, research model, text size, and reduced motion are user
 - Provider credentials, identity headers, administrative keys, and raw provider details remain server-side.
 - Ownership is checked before private data is read or mutated.
 - Mutating requests are idempotent where retries are expected.
-- A completed turn exposes exactly two current next-question options.
+- A completed visual turn exposes its distinct image-linked curiosity questions as open paths in the journey map.
 - Citations may reference only normalized sources returned by the provider.
 - Older ready turns remain readable as the product evolves.
 - Reduced motion and keyboard access do not remove functionality.

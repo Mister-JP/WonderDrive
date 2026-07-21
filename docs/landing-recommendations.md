@@ -28,7 +28,8 @@ Continue through `totalPages`. This complete-catalog read is an editor-only audi
 - Prefer questions that a curious beginner can understand immediately.
 - Favor primary sources and responsible institutions: research papers, museums, archives, government science agencies, observatories, and the institution responsible for a site or object.
 - Check the existing catalog for both exact duplicates and near-duplicate ideas.
-- Balance the eight supported categories: `Nature`, `Science`, `History`, `Culture`, `Systems`, `Space`, `Technology`, and `Art`.
+- Give each card one legacy category for compatibility and one to four precise dimensions. The 15 dimensions are `Living World`, `Planet Earth`, `Cosmos`, `Matter`, `Forces & Energy`, `Numbers & Logic`, `Body`, `Mind`, `Time & History`, `Society`, `Language`, `Belief & Ideas`, `Art & Expression`, `Design & Technology`, and `Food & Agriculture`.
+- Classify the question being asked, not every noun visible in the image. A shrimp producing a flash can be `Living World` plus `Forces & Energy`; it does not need every remotely related lens.
 - Use concrete visual evidence rather than generic stock photography.
 - Verify the teaser is supported by the linked source. Keep uncertainty explicit for unresolved subjects.
 - Confirm image reuse terms and use an attribution/source link appropriate to the asset.
@@ -43,6 +44,7 @@ Each card requires:
 {
   "id": "stable-unique-slug",
   "category": "Science",
+  "dimensions": ["Forces & Energy", "Matter"],
   "question": "Why does this happen?",
   "teaser": "One concise, source-supported explanation.",
   "imageUrl": "https://example.org/image.jpg",
@@ -53,7 +55,7 @@ Each card requires:
 }
 ```
 
-Allowed sizes are `wide`, `tall`, `standard`, and `compact`. A batch can contain 1–100 cards, although 20 is the standard replenishment size because it maps cleanly to one page.
+Allowed sizes are `wide`, `tall`, `standard`, and `compact`. Each card may carry one to four unique dimensions. Older files without `dimensions` remain publishable and receive one compatibility dimension from their legacy category. A batch can contain 1–100 cards, although 20 is the standard replenishment size because it maps cleanly to one page.
 
 ### 4. Validate without writing
 
@@ -90,7 +92,7 @@ For a standard 20-card replenishment, verify:
 - every full page has 20 rows and only the last page may have fewer;
 - `totalItems` increased by 20 and `totalPages` equals `ceil(totalItems / 20)`;
 - page-number buttons request the selected page and update `aria-current`;
-- category filtering applies only to the currently fetched page;
+- dimension filtering queries the complete published catalog before pagination;
 - images, alt text, source links, and Explore actions work.
 
 ```sh

@@ -4,6 +4,9 @@
     {
       "id": "mars-blue-sunset",
       "category": "Space",
+      "dimensions": [
+        "Cosmos"
+      ],
       "question": "Why are sunsets blue on Mars?",
       "teaser": "Fine Martian dust sends blue light forward near the setting Sun while the wider sky stays reddish.",
       "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/MarsSunset.jpg/1280px-MarsSunset.jpg",
@@ -15,6 +18,10 @@
     {
       "id": "hydrothermal-vent-life",
       "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Cosmos"
+      ],
       "question": "How can an ecosystem live without sunlight?",
       "teaser": "At deep-sea vents, microbes turn chemicals from Earth’s crust into energy that supports an entire food web.",
       "imageUrl": "https://oceanexplorer.noaa.gov/wp-content/uploads/2021/10/may2-hires.jpg",
@@ -26,6 +33,10 @@
     {
       "id": "axolotl-regeneration",
       "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Body"
+      ],
       "question": "How can an axolotl regrow a missing limb?",
       "teaser": "Cells near the wound rebuild a developmental program, replacing bone, muscle, nerves, and skin in the right arrangement.",
       "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/2Axolotl.jpg/1280px-2Axolotl.jpg",
@@ -37,6 +48,11 @@
     {
       "id": "singing-sand",
       "category": "Science",
+      "dimensions": [
+        "Forces & Energy",
+        "Planet Earth",
+        "Matter"
+      ],
       "question": "Why can a sand dune sing?",
       "teaser": "When very dry grains avalanche together, their motion can synchronize into a deep hum that carries across the desert.",
       "imageUrl": "https://www.nps.gov/subjects/sound/images/GRSA_rippledDunes_jkw.jpg",
@@ -48,6 +64,10 @@
     {
       "id": "snowflake-sixfold",
       "category": "Science",
+      "dimensions": [
+        "Matter",
+        "Planet Earth"
+      ],
       "question": "Why do snowflakes keep choosing six sides?",
       "teaser": "Water molecules lock into a hexagonal crystal lattice while temperature and humidity sculpt each branching journey.",
       "imageUrl": "https://www.nesdis.noaa.gov/s3/2025-09/snowflake-card.png",
@@ -59,6 +79,11 @@
     {
       "id": "glass-frog-transparency",
       "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Body",
+        "Matter"
+      ],
       "question": "How does a glass frog nearly disappear?",
       "teaser": "While resting, it hides most red blood cells inside a reflective liver, making the rest of its body more transparent.",
       "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Glass_frog_-_Cibelle_de_Castro_Pedroso.jpg/1280px-Glass_frog_-_Cibelle_de_Castro_Pedroso.jpg",
@@ -70,6 +95,9 @@
     {
       "id": "monarch-super-generation",
       "category": "Nature",
+      "dimensions": [
+        "Living World"
+      ],
       "question": "How does one monarch generation fly so much farther?",
       "teaser": "Late-summer monarchs delay reproduction, live months longer, and ride sun cues and rising air toward Mexico.",
       "imageUrl": "https://www.fws.gov/sites/default/files/styles/facebook_1200x630/public/banner_images/2021-06/Monarch%20butterfly%20sumac.jpg?h=0eca74ac&itok=5QaGM_IA",
@@ -81,6 +109,11 @@
     {
       "id": "mangrove-salt",
       "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Body",
+        "Planet Earth"
+      ],
       "question": "How can a tree drink seawater without drying out?",
       "teaser": "Mangroves exclude much of the salt at their roots or push it through leaves while aerial roots gather oxygen.",
       "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Mangrove_roots%2C_Havelock_Island%2C_Andamans.jpg/1280px-Mangrove_roots%2C_Havelock_Island%2C_Andamans.jpg",
@@ -92,6 +125,11 @@
     {
       "id": "inca-quipu",
       "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Language",
+        "Time & History"
+      ],
       "question": "How can knots hold an empire’s information?",
       "teaser": "Cord color, position, twist, and carefully placed knots let Inka record keepers organize quantities and perhaps more.",
       "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Inca._Quipu.jpg/1280px-Inca._Quipu.jpg",
@@ -103,6 +141,9 @@
     {
       "id": "nazca-lines",
       "category": "History",
+      "dimensions": [
+        "Time & History"
+      ],
       "question": "Why have the Nazca Lines survived for centuries?",
       "teaser": "Builders exposed lighter ground beneath dark stones, and the desert’s extreme dryness preserved the enormous designs.",
       "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/L%C3%ADneas_de_Nazca%2C_Nazca%2C_Per%C3%BA%2C_2015-07-29%2C_DD_52.JPG/1280px-L%C3%ADneas_de_Nazca%2C_Nazca%2C_Per%C3%BA%2C_2015-07-29%2C_DD_52.JPG",
@@ -114,6 +155,9 @@
     {
       "id": "roman-dodecahedron",
       "category": "History",
+      "dimensions": [
+        "Time & History"
+      ],
       "question": "What were Roman dodecahedrons actually for?",
       "teaser": "Dozens survive with twelve pierced faces and corner knobs, yet no Roman text explains how people used them.",
       "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Ancient_Roman_dodecahedron%2C_Gallo-Roman_Museum_of_Tongeren%2C_Belgium_%2827543850102%29.jpg/1280px-Ancient_Roman_dodecahedron%2C_Gallo-Roman_Museum_of_Tongeren%2C_Belgium_%2827543850102%29.jpg",
@@ -125,6 +169,9 @@
     {
       "id": "sutton-hoo-imprint",
       "category": "History",
+      "dimensions": [
+        "Time & History"
+      ],
       "question": "How can soil preserve a ship that vanished?",
       "teaser": "At Sutton Hoo, acidic earth consumed the timber but retained its outline, rivets, and a chamber filled with evidence.",
       "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Time_Team_excavation_at_Sutton_Hoo_-_geograph.org.uk_-_7806214.jpg/1280px-Time_Team_excavation_at_Sutton_Hoo_-_geograph.org.uk_-_7806214.jpg",
@@ -136,6 +183,10 @@
     {
       "id": "submarine-cables",
       "category": "Systems",
+      "dimensions": [
+        "Design & Technology",
+        "Planet Earth"
+      ],
       "question": "How does the internet cross an ocean?",
       "teaser": "Hair-thin optical fibers inside armored cables carry pulses between coastal landing stations and onward across continents.",
       "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/8/89/Submarine_cable_map_umap.png",
@@ -147,6 +198,10 @@
     {
       "id": "maeslant-barrier",
       "category": "Systems",
+      "dimensions": [
+        "Design & Technology",
+        "Planet Earth"
+      ],
       "question": "How can two floating gates stop a storm surge?",
       "teaser": "The Maeslant Barrier swings hollow arms across a waterway, fills them, and sinks them into a temporary wall.",
       "imageUrl": "https://rijkswaterstaat.imgix.net/maeslant-barrier_tcm26-329679.jpg?crop=entropy&w=1200&h=630",
@@ -158,6 +213,9 @@
     {
       "id": "termite-mound-airflow",
       "category": "Systems",
+      "dimensions": [
+        "Living World"
+      ],
       "question": "Why do termite mounds need so many tunnels?",
       "teaser": "A porous network responds to wind, heat, and colony metabolism, moving respiratory gases through a crowded underground home.",
       "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Namibia_Kalahari_Desert_Termite_Mound.jpg/1280px-Namibia_Kalahari_Desert_Termite_Mound.jpg",
@@ -169,6 +227,9 @@
     {
       "id": "phantom-traffic-jam",
       "category": "Systems",
+      "dimensions": [
+        "Society"
+      ],
       "question": "How can a traffic jam begin without a crash?",
       "teaser": "Tiny braking differences can amplify backward through dense traffic until a moving wave of stopping appears from nowhere.",
       "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Traffic_Jam_on_Pyramid_Highway%2C_Sparks%2C_Nevada_%2815702680485%29.jpg/1280px-Traffic_Jam_on_Pyramid_Highway%2C_Sparks%2C_Nevada_%2815702680485%29.jpg",
@@ -180,6 +241,10 @@
     {
       "id": "shape-memory-metal",
       "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Matter"
+      ],
       "question": "How can a bent metal remember its old shape?",
       "teaser": "Heating a shape-memory alloy switches its crystal structure, pulling the metal back toward a form set earlier.",
       "imageUrl": "https://www.nasa.gov/wp-content/uploads/2025/06/othmanebenafansurprisinglystem.png",
@@ -191,6 +256,11 @@
     {
       "id": "webb-origami",
       "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Planet Earth",
+        "Cosmos"
+      ],
       "question": "How did a giant telescope fit inside a rocket?",
       "teaser": "Webb folded its segmented mirror and layered sunshield for launch, then completed a precise month-long unfolding in space.",
       "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/James_Webb_Space_Telescope_Wings_Arrive_for_Testing_at_Marshall.jpg/1280px-James_Webb_Space_Telescope_Wings_Arrive_for_Testing_at_Marshall.jpg",
@@ -202,6 +272,11 @@
     {
       "id": "pointillist-color",
       "category": "Art",
+      "dimensions": [
+        "Art & Expression",
+        "Mind",
+        "Forces & Energy"
+      ],
       "question": "Can your eyes mix colors the painter never mixed?",
       "teaser": "Pointillists placed separate dots of contrasting pigment so distance and vision could fuse them into luminous color.",
       "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/A_Sunday_on_La_Grande_Jatte%2C_Georges_Seurat%2C_1884.jpg/1280px-A_Sunday_on_La_Grande_Jatte%2C_Georges_Seurat%2C_1884.jpg",
@@ -213,6 +288,11 @@
     {
       "id": "m87-black-hole",
       "category": "Space",
+      "dimensions": [
+        "Cosmos",
+        "Planet Earth",
+        "Design & Technology"
+      ],
       "question": "How did Earth become one giant telescope?",
       "teaser": "Observatories synchronized with atomic clocks, then combined radio data to resolve a black hole’s distant shadow.",
       "imageUrl": "https://cdn.eso.org/images/screen/eso1907a.jpg",

@@ -1,5 +1,6 @@
 import { mutation } from "../../../../../../lib/api";
 import { retryBackgroundResearch } from "../../../../../../lib/background-research";
+import { providerAuthFromRequest } from "../../../../../../lib/provider-auth";
 
 export const dynamic = "force-dynamic";
 
@@ -9,6 +10,6 @@ export function POST(
 ) {
   return mutation(request, async (viewer) => {
     const { requestId } = await context.params;
-    return retryBackgroundResearch(viewer, requestId);
+    return retryBackgroundResearch(viewer, requestId, providerAuthFromRequest(request));
   }, 202);
 }

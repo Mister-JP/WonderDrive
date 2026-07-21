@@ -1,0 +1,376 @@
+{
+  "title": "Patterns that should not be possible — July 20, 2026",
+  "recommendations": [
+    {
+      "id": "orchid-mantis-flower-disguise",
+      "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Mind"
+      ],
+      "question": "Why does this predator look more like a flower than the flower does?",
+      "teaser": "An orchid mantis does more than hide among petals: its color and petal-shaped legs can lure curious pollinators close enough to become prey.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Mantis_Hymenopus_coronatus_6_Luc_Viatour_%28cropped%29.jpg?width=1600",
+      "imageAlt": "Pink-and-white orchid mantis poised on a pale flower with its petal-shaped legs spread",
+      "sourceLabel": "Royal Society Biology Letters",
+      "sourceUrl": "https://royalsocietypublishing.org/doi/10.1098/rsbl.2014.0306",
+      "size": "tall"
+    },
+    {
+      "id": "kelvin-helmholtz-cloud-waves",
+      "category": "Science",
+      "dimensions": [
+        "Forces & Energy",
+        "Planet Earth"
+      ],
+      "question": "Why can the sky suddenly grow a row of breaking ocean waves?",
+      "teaser": "When neighboring air layers slide past each other at different speeds, their boundary can roll into a fleeting train of Kelvin–Helmholtz billows.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Nubes_de_Kelvin-Helmholtz_Kelvin-Helmholtz_Clouds_%2840846169194%29.jpg?width=1600",
+      "imageAlt": "A row of white curling Kelvin–Helmholtz clouds shaped like breaking waves against a blue sky",
+      "sourceLabel": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nubes_de_Kelvin-Helmholtz_Kelvin-Helmholtz_Clouds_(40846169194).jpg",
+      "size": "wide"
+    },
+    {
+      "id": "pazyryk-carpet-frozen-color",
+      "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Planet Earth",
+        "Matter",
+        "Forces & Energy"
+      ],
+      "question": "How did ice preserve the colors of a 2,500-year-old carpet?",
+      "teaser": "Water entered a looted burial mound in the Altai, froze, and sealed its felt and knotted textiles inside a protective block of permafrost.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Pazyryk_carpet_%2810169022503%29.jpg?width=1600",
+      "imageAlt": "The red Pazyryk carpet covered with repeating horsemen, deer, flowers, and geometric borders",
+      "sourceLabel": "Wikimedia Commons / State Hermitage Museum",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pazyryk_carpet_(10169022503).jpg",
+      "size": "standard"
+    },
+    {
+      "id": "inuit-snow-goggles-slit-vision",
+      "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Planet Earth"
+      ],
+      "question": "How can two narrow slits make a blinding Arctic landscape easier to see?",
+      "teaser": "Carved snow goggles admit only a thin band of light, reducing glare and sharpening vision while shielding the eyes from wind-driven ice.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Inuit_snow_goggles_and_wooden_case_Wellcome_L0035531.jpg?width=1600",
+      "imageAlt": "Dark carved Inuit snow goggles with two narrow eye slits displayed beside their fitted wooden case",
+      "sourceLabel": "Wellcome Collection / Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Inuit_snow_goggles_and_wooden_case_Wellcome_L0035531.jpg",
+      "size": "compact"
+    },
+    {
+      "id": "xochimilco-chinampa-living-grid",
+      "category": "Systems",
+      "dimensions": [
+        "Food & Agriculture",
+        "Living World",
+        "Planet Earth",
+        "Numbers & Logic"
+      ],
+      "question": "How can a lake become a grid of farms without being drained?",
+      "teaser": "Chinampa growers build fertile plots between canals, recycling lake mud and vegetation while water routes crops, people, nutrients, and wildlife.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Vista_a%C3%A9rea_del_Parque_Ecol%C3%B3gico_de_Xochimilco_01.jpg?width=1600",
+      "imageAlt": "Aerial view of Xochimilco's long green plots and dark canals forming a vivid agricultural grid",
+      "sourceLabel": "UNESCO World Heritage Centre",
+      "sourceUrl": "https://whc.unesco.org/en/list/412/",
+      "size": "wide"
+    },
+    {
+      "id": "hh211-newborn-star-jet",
+      "category": "Space",
+      "dimensions": [
+        "Cosmos"
+      ],
+      "question": "Why is a newborn star firing two enormous jets before we can even see it?",
+      "teaser": "A hidden protostar feeds from a dusty disk while magnetic fields redirect some infalling material into opposing supersonic jets and bow shocks.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/HH_211_%28NIRCam_image%2C_cropped%29_%28weic2322a%29.jpg?width=1600",
+      "imageAlt": "Webb image of the pink, blue, and amber bipolar jets and bow shocks of Herbig-Haro 211",
+      "sourceLabel": "NASA / ESA / CSA Webb",
+      "sourceUrl": "https://science.nasa.gov/asset/webb/hh-211-nircam-image/",
+      "size": "wide"
+    },
+    {
+      "id": "lightsail-photon-pressure",
+      "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Cosmos",
+        "Forces & Energy",
+        "Art & Expression"
+      ],
+      "question": "How can a spacecraft sail on sunlight when space has no wind?",
+      "teaser": "Reflected photons transfer tiny pulses of momentum to a vast, mirror-thin sail; the push is gentle but needs no propellant tank.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/LightSail_2.jpg?width=1600",
+      "imageAlt": "Artist's view of LightSail 2's vast silver sail gliding above the curved blue Earth",
+      "sourceLabel": "The Planetary Society",
+      "sourceUrl": "https://www.planetary.org/articles/what-is-solar-sailing",
+      "size": "standard"
+    },
+    {
+      "id": "pietra-dura-stone-painting",
+      "category": "Art",
+      "dimensions": [
+        "Art & Expression",
+        "Matter"
+      ],
+      "question": "How can a bouquet be painted without using a single drop of paint?",
+      "teaser": "Pietra dura artists slice naturally colored stones into exact shapes, then fit and polish them until separate minerals read as petals, stems, and light.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Anonymous_Pietra_dura_picture_with_flowers_in_a_vase_01.jpg?width=1600",
+      "imageAlt": "Framed pietra dura bouquet assembled from vivid red, blue, yellow, green, and black stone",
+      "sourceLabel": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Anonymous_Pietra_dura_picture_with_flowers_in_a_vase_01.jpg",
+      "size": "tall"
+    },
+    {
+      "id": "leaf-tailed-gecko-dead-leaf",
+      "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Mind"
+      ],
+      "question": "How does a gecko turn its whole body into a dead leaf?",
+      "teaser": "A flattened tail, vein-like markings, ragged edges, and mottled skin break up the animal's outline until bark and leaf litter swallow it.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Satanic_leaf-tailed_gecko_%28Uroplatus_phantasticus%29_Ranomafana_1.jpg?width=1600",
+      "imageAlt": "A mottled brown leaf-tailed gecko blending into dry leaves and bark in Madagascar",
+      "sourceLabel": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Satanic_leaf-tailed_gecko_(Uroplatus_phantasticus)_Ranomafana_1.jpg",
+      "size": "standard"
+    },
+    {
+      "id": "fata-morgana-stacked-horizon",
+      "category": "Science",
+      "dimensions": [
+        "Forces & Energy"
+      ],
+      "question": "Why can a distant ship stretch, split, and float above the horizon?",
+      "teaser": "A steep temperature inversion bends light through stacked layers of air, repeatedly flipping and magnifying pieces of the distant view into a Fata Morgana.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/A_Fata_Morgana_of_a_cargo_ship_seen_off_the_coast_of_Oceanside%2C_California.jpg?width=1600",
+      "imageAlt": "A cargo ship stretched into a tall, blocky form that appears to hover above the sea",
+      "sourceLabel": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:A_Fata_Morgana_of_a_cargo_ship_seen_off_the_coast_of_Oceanside,_California.jpg",
+      "size": "wide"
+    },
+    {
+      "id": "archimedes-palimpsest-hidden-math",
+      "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Language"
+      ],
+      "question": "How did an erased prayer book give back Archimedes' lost mathematics?",
+      "teaser": "A medieval scribe scraped and reused older parchment; multispectral light later separated the faint mathematical ink from the prayers written across it.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/1/1b/ArPalimTypPage.jpg",
+      "imageAlt": "A parchment page with dark medieval prayer text crossing faint lines and diagrams from Archimedes beneath",
+      "sourceLabel": "The Archimedes Palimpsest Project",
+      "sourceUrl": "http://archimedespalimpsest.org/about/",
+      "size": "tall"
+    },
+    {
+      "id": "castells-human-tower-foundation",
+      "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Design & Technology"
+      ],
+      "question": "How can hundreds of people turn trust into a ten-story tower?",
+      "teaser": "Catalan castellers build a broad pinya to absorb force, stack lighter climbers above it, and count success only when everyone returns safely to the ground.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/3d10_fm_de_vilafranca.jpg?width=1600",
+      "imageAlt": "A ten-level Catalan human tower rising above a dense circular base in a crowded town square",
+      "sourceLabel": "UNESCO Intangible Cultural Heritage",
+      "sourceUrl": "https://ich.unesco.org/en/RL/human-towers-00364",
+      "size": "tall"
+    },
+    {
+      "id": "venice-submerged-timber-foundations",
+      "category": "Systems",
+      "dimensions": [
+        "Design & Technology",
+        "Matter",
+        "Time & History"
+      ],
+      "question": "Why does Venice's stone city rest on a buried forest of timber?",
+      "teaser": "Closely packed piles transfer buildings into firmer lagoon layers; waterlogged, oxygen-poor mud slows the organisms that would normally rot the wood.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/ISS-39_Venice_Lagoon%2C_Italy.jpg/1920px-ISS-39_Venice_Lagoon%2C_Italy.jpg",
+      "imageAlt": "Oblique astronaut view of Venice and its pale fish-shaped islands surrounded by the blue-green lagoon",
+      "sourceLabel": "NASA Earth Observatory / Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:ISS-39_Venice_Lagoon,_Italy.jpg",
+      "size": "wide"
+    },
+    {
+      "id": "io-tvashtar-volcanic-fountain",
+      "category": "Space",
+      "dimensions": [
+        "Cosmos",
+        "Planet Earth"
+      ],
+      "question": "How can a volcano throw a fountain 330 kilometers above a moon?",
+      "teaser": "Jupiter's gravity continually flexes Io's interior, generating intense heat that drives giant eruptions in the most volcanically active world we know.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Jupiter%26Io.jpg?width=1600",
+      "imageAlt": "Color NASA montage of banded Jupiter beside Io, where lava glows beneath a blue volcanic plume",
+      "sourceLabel": "NASA New Horizons",
+      "sourceUrl": "https://science.nasa.gov/resource/jupiter-io-montage/",
+      "size": "standard"
+    },
+    {
+      "id": "octobot-soft-chemical-logic",
+      "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Matter",
+        "Numbers & Logic"
+      ],
+      "question": "How can a robot move with no battery, motor, or electronic brain?",
+      "teaser": "The entirely soft Octobot turns liquid fuel into gas, then routes pressure through microfluidic logic that alternately inflates its silicone arms.",
+      "imageUrl": "https://seas.harvard.edu/sites/default/files/images/news/OctobotSquare1.jpg",
+      "imageAlt": "Translucent blue-and-red Octobot soft robot with eight silicone arms and visible internal channels",
+      "sourceLabel": "Harvard SEAS",
+      "sourceUrl": "https://seas.harvard.edu/news/first-autonomous-entirely-soft-robot",
+      "size": "standard"
+    },
+    {
+      "id": "cloisonne-wire-cells",
+      "category": "Art",
+      "dimensions": [
+        "Art & Expression",
+        "Matter",
+        "Design & Technology"
+      ],
+      "question": "Why does cloisonné begin with hundreds of tiny metal walls?",
+      "teaser": "Artists bend fine wire into cells, fill each compartment with colored enamel, then fire, refill, grind, and polish until the boundaries become part of the image.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Japan_Kyoto_Cloisonne_Enamel_Vase_1875th_-_1880th.JPG?width=1600",
+      "imageAlt": "A Japanese cloisonné vase densely patterned with multicolored flowers and birds divided by fine metal lines",
+      "sourceLabel": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Japan_Kyoto_Cloisonne_Enamel_Vase_1875th_-_1880th.JPG",
+      "size": "tall"
+    },
+    {
+      "id": "crown-shyness-rivers-of-sky",
+      "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Planet Earth"
+      ],
+      "question": "Why do neighboring treetops leave rivers of sky between them?",
+      "teaser": "In crown shyness, mature canopies stop short of touching; abrasion, light sensing, and insect defense may all contribute, and no single cause fits every forest.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/River_of_Blue.jpg?width=1600",
+      "imageAlt": "Looking upward through a forest canopy whose green crowns leave bright branching rivers of blue sky",
+      "sourceLabel": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:River_of_Blue.jpg",
+      "size": "wide"
+    },
+    {
+      "id": "lotus-effect-rolling-water",
+      "category": "Science",
+      "dimensions": [
+        "Matter",
+        "Living World",
+        "Planet Earth"
+      ],
+      "question": "Why does water roll off a leaf like quicksilver and carry dirt with it?",
+      "teaser": "Microscopic bumps coated in water-repelling wax trap air beneath each droplet, minimizing contact so rolling beads collect loose dust on their way.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Dew_on_nasturtium_leaf.JPG?width=1600",
+      "imageAlt": "Round silver water droplets beading on the radiating green surface of a nasturtium leaf",
+      "sourceLabel": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dew_on_nasturtium_leaf.JPG",
+      "size": "compact"
+    },
+    {
+      "id": "phaistos-disc-stamped-script",
+      "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Language"
+      ],
+      "question": "Was the Phaistos Disc an ancient experiment in movable type?",
+      "teaser": "Its 45 picture-signs were pressed into wet clay with reusable stamps, but the spiral text is unique, too short, and still undeciphered.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Phaistos_Disc_%E2%80%94_Side_A.jpg?width=1600",
+      "imageAlt": "Close view of the clay Phaistos Disc covered in a spiral of tiny stamped human, animal, plant, and tool signs",
+      "sourceLabel": "Wikimedia Commons / Heraklion Archaeological Museum",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Phaistos_Disc_%E2%80%94_Side_A.jpg",
+      "size": "standard"
+    },
+    {
+      "id": "temari-thread-geometry",
+      "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Matter",
+        "Numbers & Logic",
+        "Art & Expression"
+      ],
+      "question": "How can thread turn a soft ball into exact geometric symmetry?",
+      "teaser": "Temari makers divide a wrapped sphere with guide threads, then count and layer stitches so repeating stars and polygons meet cleanly around a curved surface.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Japanese_Temari_ball_flanked_by_a_maneki_neko_%2801%29_%2850532211976%29.jpg?width=1600",
+      "imageAlt": "A Japanese temari ball embroidered with dense red, gold, white, and blue geometric star patterns",
+      "sourceLabel": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Japanese_Temari_ball_flanked_by_a_maneki_neko_(01)_(50532211976).jpg",
+      "size": "standard"
+    },
+    {
+      "id": "beaver-dam-wetland-engineer",
+      "category": "Systems",
+      "dimensions": [
+        "Living World",
+        "Planet Earth"
+      ],
+      "question": "How can one family of beavers redesign an entire watershed?",
+      "teaser": "Their dams slow streams into ponds, spread water across floodplains, trap sediment, and create a shifting mosaic of wetland habitats for other species.",
+      "imageUrl": "https://www.nps.gov/kaww/learn/nature/images/DSC_3729.jpg?maxwidth=1300&autorotate=false&quality=78&format=webp",
+      "imageAlt": "A beaver dam of interwoven branches holding a reflective pond beneath bright autumn trees",
+      "sourceLabel": "U.S. National Park Service",
+      "sourceUrl": "https://home.nps.gov/kaww/learn/nature/beavers.htm",
+      "size": "wide"
+    },
+    {
+      "id": "butterfly-nebula-hidden-star",
+      "category": "Space",
+      "dimensions": [
+        "Cosmos",
+        "Living World",
+        "Forces & Energy",
+        "Art & Expression"
+      ],
+      "question": "What sculpted a dying star's gas into wings three light-years wide?",
+      "teaser": "A hidden, extremely hot central star ionizes cast-off gas while a dense equatorial belt channels the outflow into the Butterfly Nebula's opposing lobes.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/NGC_6302_Hubble_2009.full.jpg?width=1600",
+      "imageAlt": "Hubble portrait of the Butterfly Nebula with fiery orange, pink, blue, and white wings split by a dark waist",
+      "sourceLabel": "NASA / ESA Hubble",
+      "sourceUrl": "https://science.nasa.gov/asset/hubble/ngc-6302/",
+      "size": "tall"
+    },
+    {
+      "id": "lung-on-chip-breathing-membrane",
+      "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Body"
+      ],
+      "question": "How can a chip the size of an eraser imitate a breathing human lung?",
+      "teaser": "Two microchannels place lung and blood-vessel cells across a porous membrane while side chambers rhythmically stretch it like a tiny breathing wall.",
+      "imageUrl": "https://wyss-prod.imgix.net/app/uploads/2016/08/05180631/lung-on-chip-FF-300.jpg?auto=format%2Ccompress&crop=faces%2Centropy&fit=crop&q=50&w=800&s=b609ac2bf898877b8f3256c9e97b3859",
+      "imageAlt": "Transparent lung-on-a-chip device with fine internal channels held between a researcher's fingers",
+      "sourceLabel": "Wyss Institute at Harvard",
+      "sourceUrl": "https://wyss.harvard.edu/news/living-breathing-human-lung-on-a-chip-a-potential-drug-testing-alternative/",
+      "size": "wide"
+    },
+    {
+      "id": "quilling-paper-volume",
+      "category": "Art",
+      "dimensions": [
+        "Art & Expression"
+      ],
+      "question": "How can narrow strips of paper become a solid-looking sculpture?",
+      "teaser": "Quilling artists coil, pinch, curve, and glue edge-set strips so the paper walls and their shadows supply depth, contour, and structure.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Quilled_bike.jpg?width=1600",
+      "imageAlt": "A detailed red, gold, black, and silver motorcycle sculpted from curled and folded paper strips",
+      "sourceLabel": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Quilled_bike.jpg",
+      "size": "standard"
+    }
+  ]
+}

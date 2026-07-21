@@ -1157,7 +1157,7 @@ async function normalizeRequest(viewer: ViewerContext, request: LiveResearchRequ
       ? fromTurn.options.find((option) => option.position === fromTurn.preferredPosition)
       : fromTurn.options.find((option) => option.id === request.optionId);
   if (!selected || (fromTurn.id === journey.currentTurnId && selected.state !== "proposed")) {
-    throw new RepositoryError("BAD_REQUEST", "Choose one of the two current paths.", 400);
+    throw new RepositoryError("BAD_REQUEST", "Choose a current path.", 400);
   }
   const topicTrail = ancestorTopicTrail(journey, fromTurn.id);
   return {

@@ -19,6 +19,8 @@ type UsageViewComponent = (props: {
   error: string | null;
   onRefresh: () => void;
   onOpenJourneys: () => void;
+  byokConfigured: boolean;
+  onOpenSettings: () => void;
 }) => TestElement;
 
 type JourneysComponent = (props: {
@@ -49,8 +51,11 @@ type SettingsComponent = (props: {
   preferences: UserPreferences;
   catalog: typeof BOOTSTRAP_CATALOG;
   busy: boolean;
+  byokConfigured: boolean;
   onPreviewTextSize: (textSize: TextSize) => void;
   onSave: (next: UserPreferences) => Promise<void>;
+  onSaveApiKey: (apiKey: string) => void;
+  onClearApiKey: () => void;
 }) => TestElement;
 
 type KnowledgeCheckComponent = (props: {
@@ -342,12 +347,12 @@ function renderBookmarks(bookmarks: Bookmark[]) {
 }
 
 test("UsageView preserves loading and error accessibility states", () => {
-  const loading = UsageView({ usage: null, viewer, loading: true, error: null, onRefresh() {}, onOpenJourneys() {} });
+  const loading = UsageView({ usage: null, viewer, loading: true, error: null, onRefresh() {}, onOpenJourneys() {}, byokConfigured: false, onOpenSettings() {} });
   assert.equal(find(loading, (element) => element.props.role === "status").props.className, "usage-loading");
   assert.match(text(loading), /Reading your rolling limits…/);
 
   let refreshed = 0;
-  const failed = UsageView({ usage: null, viewer, loading: false, error: "Usage unavailable", onRefresh: () => { refreshed += 1; }, onOpenJourneys() {} });
+  const failed = UsageView({ usage: null, viewer, loading: false, error: "Usage unavailable", onRefresh: () => { refreshed += 1; }, onOpenJourneys() {}, byokConfigured: false, onOpenSettings() {} });
   assert.equal(find(failed, (element) => element.props.role === "alert").props.className, "usage-load-error");
   (buttonByText(failed, "Try again").props.onClick as () => void)();
   assert.equal(refreshed, 1);
@@ -355,7 +360,7 @@ test("UsageView preserves loading and error accessibility states", () => {
 
 test("UsageView preserves quota, journey capacity, spend, identity, and journeys behavior", () => {
   let openedJourneys = 0;
-  const root = UsageView({ usage, viewer, loading: false, error: null, onRefresh() {}, onOpenJourneys: () => { openedJourneys += 1; } });
+  const root = UsageView({ usage, viewer, loading: false, error: null, onRefresh() {}, onOpenJourneys: () => { openedJourneys += 1; }, byokConfigured: false, onOpenSettings() {} });
 
   assert.equal(find(root, (element) => element.type === "h1").props.id, "usage-title");
   assert.ok(elements(root).some((element) => element.props.className === "usage-primary quota-reached"));
@@ -555,8 +560,11 @@ function renderSettings(
     preferences: DEFAULT_PREFERENCES,
     catalog: BOOTSTRAP_CATALOG,
     busy: false,
+    byokConfigured: false,
     onPreviewTextSize: (textSize: TextSize) => previews.push(textSize),
     onSave: async (next: UserPreferences) => { saves.push(next); },
+    onSaveApiKey: () => {},
+    onClearApiKey: () => {},
     ...overrides,
   };
   const rerender = () => {
@@ -578,6 +586,38 @@ test("SettingsView preserves headings, identity messaging, actions, and busy sta
   assert.match(text(signedIn.root), /Synced to your ChatGPT identity/);
   assert.equal(find(signedIn.root, (element) => element.type === "a").props.href, "/signout-with-chatgpt?return_to=%2Fsettings");
   assert.equal(buttonByText(signedIn.root, "Saving…↘").props.disabled, true);
+});
+
+test("SettingsView keeps BYOK session-scoped and exposes explicit save and removal actions", () => {
+  const savedKeys: string[] = [];
+  let removed = 0;
+  const rendered = renderSettings(viewer, {
+    onSaveApiKey: (apiKey) => savedKeys.push(apiKey),
+    onClearApiKey: () => { removed += 1; },
+  });
+  const password = find(
+    rendered.root,
+    (element) => element.type === "input" && element.props.type === "password",
+  );
+  assert.equal(password.props.autoComplete, "off");
+  assert.match(text(rendered.root), /Guests receive up to \$0\.50/);
+  assert.match(text(rendered.root), /never saved to your account or database/);
+
+  (password.props.onChange as (event: { target: { value: string } }) => void)({
+    target: { value: "sk-test-settings-key-long-enough" },
+  });
+  let root = rendered.rerender();
+  (buttonByText(root, "Use my key").props.onClick as () => void)();
+  root = rendered.rerender();
+  assert.deepEqual(savedKeys, ["sk-test-settings-key-long-enough"]);
+  assert.match(text(root), /Key saved for this browser tab\./);
+
+  const connected = renderSettings(viewer, {
+    byokConfigured: true,
+    onClearApiKey: () => { removed += 1; },
+  });
+  (buttonByText(connected.root, "Remove").props.onClick as () => void)();
+  assert.equal(removed, 1);
 });
 
 test("SettingsView preserves preference drafts, preview payloads, immediate locale save, and submit payload", () => {

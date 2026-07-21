@@ -23,7 +23,7 @@ export function openAIEnabled(): boolean {
   return configured !== "0" && configured !== "false" && configured !== "off" && configured !== "disabled";
 }
 
-export function assertOpenAIAvailable(unavailableMessage?: string) {
+export function assertOpenAIAvailable(unavailableMessage?: string, apiKeyOverride?: string) {
   if (!openAIEnabled()) {
     throw new RepositoryError(
       "PROVIDER_UNAVAILABLE",
@@ -32,7 +32,7 @@ export function assertOpenAIAvailable(unavailableMessage?: string) {
       true,
     );
   }
-  if (!env.OPENAI_API_KEY?.trim()) {
+  if (!apiKeyOverride?.trim() && !env.OPENAI_API_KEY?.trim()) {
     throw new RepositoryError(
       "PROVIDER_UNAVAILABLE",
       unavailableMessage ?? "OpenAI is not configured on this deployment.",
@@ -45,10 +45,15 @@ export function assertOpenAIAvailable(unavailableMessage?: string) {
 /** The single server-only transport for every OpenAI Responses request. */
 export function requestOpenAI(
   body: object,
-  options: { signal?: AbortSignal; unavailableMessage?: string; idempotencyKey?: string } = {},
+  options: {
+    signal?: AbortSignal;
+    unavailableMessage?: string;
+    idempotencyKey?: string;
+    apiKey?: string;
+  } = {},
 ): Promise<Response> {
-  assertOpenAIAvailable(options.unavailableMessage);
-  const apiKey = env.OPENAI_API_KEY?.trim();
+  assertOpenAIAvailable(options.unavailableMessage, options.apiKey);
+  const apiKey = options.apiKey?.trim() || env.OPENAI_API_KEY?.trim();
   if (!apiKey) throw new Error("OpenAI availability changed during request preparation.");
   return fetch(RESPONSES_URL, {
     method: "POST",
@@ -69,10 +74,11 @@ export function retrieveOpenAIResponse(
     signal?: AbortSignal;
     unavailableMessage?: string;
     include?: readonly string[];
+    apiKey?: string;
   } = {},
 ): Promise<Response> {
-  assertOpenAIAvailable(options.unavailableMessage);
-  const apiKey = env.OPENAI_API_KEY?.trim();
+  assertOpenAIAvailable(options.unavailableMessage, options.apiKey);
+  const apiKey = options.apiKey?.trim() || env.OPENAI_API_KEY?.trim();
   if (!apiKey) throw new Error("OpenAI availability changed during response retrieval.");
   if (!/^resp_[A-Za-z0-9_-]+$/.test(responseId)) {
     throw new RepositoryError("BAD_REQUEST", "The stored provider response identifier is invalid.", 400);
@@ -90,10 +96,10 @@ export function retrieveOpenAIResponse(
 /** Cancels a stored background Responses API request. The operation is idempotent upstream. */
 export function cancelOpenAIResponse(
   responseId: string,
-  options: { signal?: AbortSignal; unavailableMessage?: string } = {},
+  options: { signal?: AbortSignal; unavailableMessage?: string; apiKey?: string } = {},
 ): Promise<Response> {
-  assertOpenAIAvailable(options.unavailableMessage);
-  const apiKey = env.OPENAI_API_KEY?.trim();
+  assertOpenAIAvailable(options.unavailableMessage, options.apiKey);
+  const apiKey = options.apiKey?.trim() || env.OPENAI_API_KEY?.trim();
   if (!apiKey) throw new Error("OpenAI availability changed during response cancellation.");
   if (!/^resp_[A-Za-z0-9_-]+$/.test(responseId)) {
     throw new RepositoryError("BAD_REQUEST", "The stored provider response identifier is invalid.", 400);

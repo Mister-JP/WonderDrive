@@ -1,0 +1,798 @@
+{
+  "title": "Encyclopedic wonders 1 of 3",
+  "recommendations": [
+    {
+      "id": "lyrebird-forest-of-sounds",
+      "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Mind"
+      ],
+      "question": "How can one bird convincingly become an entire forest of sounds?",
+      "teaser": "A male superb lyrebird can weave other birds, camera shutters, alarms, and construction noises into an elaborate display learned through listening and practice.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/a/ae/Superb_lyrbird_in_scrub.jpg",
+      "imageAlt": "Male superb lyrebird displaying its ornate tail feathers in a forest",
+      "sourceLabel": "Australian Museum",
+      "sourceUrl": "https://australian.museum/learn/animals/birds/superb-lyrebird/",
+      "size": "tall"
+    },
+    {
+      "id": "zhangye-rainbow-mountains",
+      "category": "Nature",
+      "dimensions": [
+        "Planet Earth",
+        "Matter",
+        "Time & History"
+      ],
+      "question": "How did a mountain range acquire stripes of rust, gold, and jade?",
+      "teaser": "Layers of differently colored sandstone were folded and tilted by tectonic forces, then carved open by millions of years of erosion.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Zhangye_National_Geopark_5.jpg/1920px-Zhangye_National_Geopark_5.jpg",
+      "imageAlt": "Multicolored folded ridges at Zhangye Danxia in China",
+      "sourceLabel": "UNESCO",
+      "sourceUrl": "https://whc.unesco.org/en/list/1335/",
+      "size": "wide"
+    },
+    {
+      "id": "helix-nebula-cometary-knots",
+      "category": "Space",
+      "dimensions": [
+        "Cosmos",
+        "Matter",
+        "Forces & Energy"
+      ],
+      "question": "Why does the Helix Nebula contain thousands of comet-shaped knots?",
+      "teaser": "Dense clumps resist a dying star's radiation while their exposed surfaces glow and stream away, producing heads and tails far larger than our Solar System.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/NGC7293_%282004%29.jpg/1920px-NGC7293_%282004%29.jpg",
+      "imageAlt": "Colorful eye-shaped Helix Nebula surrounded by blue and red gas",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Helix_Nebula",
+      "size": "wide"
+    },
+    {
+      "id": "bismuth-rainbow-staircases",
+      "category": "Science",
+      "dimensions": [
+        "Matter",
+        "Forces & Energy",
+        "Numbers & Logic"
+      ],
+      "question": "Why do bismuth crystals grow into rainbow staircases?",
+      "teaser": "Their edges often outpace their faces, producing hollow hopper crystals; an ultrathin oxide film then creates iridescent colors through light interference.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Bismuth_crystals_and_1cm3_cube.jpg/1920px-Bismuth_crystals_and_1cm3_cube.jpg",
+      "imageAlt": "Iridescent geometric bismuth hopper crystal with stepped edges",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Bismuth",
+      "size": "wide"
+    },
+    {
+      "id": "rubens-tube-flame-wave",
+      "category": "Science",
+      "dimensions": [
+        "Forces & Energy",
+        "Matter",
+        "Numbers & Logic"
+      ],
+      "question": "How can a row of flames reveal the shape of sound?",
+      "teaser": "A loudspeaker drives a standing pressure wave through gas in a perforated tube, making flame heights trace nodes and antinodes along the wave.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Rubens_Tube_fire.jpg/1920px-Rubens_Tube_fire.jpg",
+      "imageAlt": "Rubens tube displaying a sinusoidal row of orange flames",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Rubens'_tube",
+      "size": "wide"
+    },
+    {
+      "id": "penrose-tiling-never-repeats",
+      "category": "Science",
+      "dimensions": [
+        "Numbers & Logic",
+        "Matter",
+        "Art & Expression"
+      ],
+      "question": "How can a floor pattern continue forever without ever repeating?",
+      "teaser": "A small set of Penrose tiles can cover a plane with fivefold order but no translational period, creating structure at every scale without a repeating block.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Penrose_tiling_at_Oxford_Mathematical_Institute.jpg/1920px-Penrose_tiling_at_Oxford_Mathematical_Institute.jpg",
+      "imageAlt": "Colorful Penrose tiling with interlocking kites and darts",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Penrose_tiling",
+      "size": "wide"
+    },
+    {
+      "id": "retina-upside-down-world",
+      "category": "Science",
+      "dimensions": [
+        "Body",
+        "Mind",
+        "Forces & Energy"
+      ],
+      "question": "Why does the retina receive the world upside down—and hide a blind spot?",
+      "teaser": "The eye's lens inverts the image, while nerves leave through a point with no photoreceptors; the brain continuously interprets and fills this incomplete signal.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Fundus_photo_Retina_OD.jpg/1920px-Fundus_photo_Retina_OD.jpg",
+      "imageAlt": "Branching red blood vessels radiating across a golden human retina",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Retina",
+      "size": "wide"
+    },
+    {
+      "id": "ames-room-size-illusion",
+      "category": "Science",
+      "dimensions": [
+        "Mind",
+        "Numbers & Logic",
+        "Design & Technology"
+      ],
+      "question": "How can two equally tall people appear giant and tiny in the same room?",
+      "teaser": "A trapezoidal room is viewed through one fixed peephole, removing depth clues so the brain assumes an ordinary rectangle and misjudges each person's size.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/1/11/Ames_room_forced_perspective.jpg",
+      "imageAlt": "Two people appearing dramatically different in size inside an Ames room",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Ames_room",
+      "size": "wide"
+    },
+    {
+      "id": "vindolanda-birthday-invitation",
+      "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Language",
+        "Society"
+      ],
+      "question": "How did a Roman birthday invitation survive as ink on a wafer of wood?",
+      "teaser": "A thin tablet from Vindolanda preserves a personal invitation from Claudia Severa—one of the earliest surviving examples of writing by a woman in Latin.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Roman_writing_tablet_02.jpg/1920px-Roman_writing_tablet_02.jpg",
+      "imageAlt": "Two thin wooden Vindolanda writing tablets covered in dark handwritten Latin",
+      "sourceLabel": "British Museum",
+      "sourceUrl": "https://www.britishmuseum.org/collection/object/H_1986-1001-64",
+      "size": "wide"
+    },
+    {
+      "id": "yap-stone-money-memory",
+      "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Numbers & Logic",
+        "Time & History"
+      ],
+      "question": "How can money remain valuable when it is too large to move?",
+      "teaser": "On Yap, ownership of enormous rai stones could transfer through public agreement while the stone stayed in place; communal memory served as the ledger.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Rai_Stone_at_the_National_Museum_of_American_History%2C_7_February_2024.jpg/1920px-Rai_Stone_at_the_National_Museum_of_American_History%2C_7_February_2024.jpg",
+      "imageAlt": "Large circular rai stone with a central hole standing beside people on Yap",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Rai_stones",
+      "size": "wide"
+    },
+    {
+      "id": "rongorongo-wooden-glyphs",
+      "category": "Culture",
+      "dimensions": [
+        "Language",
+        "Time & History",
+        "Belief & Ideas"
+      ],
+      "question": "What do Easter Island's tiny lines of glyphs actually say?",
+      "teaser": "Only a few inscribed wooden objects survive, and no accepted decipherment exists; repeated signs may encode language, ritual memory, or another system entirely.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Rongorongo_R-a_Atua-Mata-Riri.jpg/1920px-Rongorongo_R-a_Atua-Mata-Riri.jpg",
+      "imageAlt": "Dark wooden rongorongo tablet covered with rows of tiny carved glyphs",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Rongorongo",
+      "size": "wide"
+    },
+    {
+      "id": "miyajima-torii-between-worlds",
+      "category": "Culture",
+      "dimensions": [
+        "Belief & Ideas",
+        "Design & Technology",
+        "Planet Earth"
+      ],
+      "question": "Why does a shrine gate stand in the sea and appear to float with the tide?",
+      "teaser": "Itsukushima's monumental torii marks an approach to sacred space; the island landscape, tidal water, and vermilion architecture form one changing ritual setting.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Itsukushima_Shrine_Torii_Gate_%2813890465459%29.jpg/1920px-Itsukushima_Shrine_Torii_Gate_%2813890465459%29.jpg",
+      "imageAlt": "Vermilion torii gate of Itsukushima Shrine standing in blue tidal water",
+      "sourceLabel": "UNESCO World Heritage Centre",
+      "sourceUrl": "https://whc.unesco.org/en/list/776/",
+      "size": "wide"
+    },
+    {
+      "id": "mughal-miniature-single-hair",
+      "category": "Art",
+      "dimensions": [
+        "Art & Expression",
+        "Time & History",
+        "Design & Technology"
+      ],
+      "question": "How could a painter fit a court, a garden, and individual eyelashes onto one page?",
+      "teaser": "Mughal workshop artists layered opaque watercolor with brushes tapered to extremely fine points, combining portrait observation, patterned surfaces, and jewel-like detail.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/1/16/Govardhan._Jahangir_Visiting_the_Ascetic_Jadrup._ca._1616-20%2C_Musee_Guimet%2C_Paris.jpg",
+      "imageAlt": "Highly detailed Mughal miniature crowded with figures plants textiles and architecture",
+      "sourceLabel": "The Metropolitan Museum of Art",
+      "sourceUrl": "https://www.metmuseum.org/toah/hd/mugh_2/hd_mugh_2.htm",
+      "size": "tall"
+    },
+    {
+      "id": "windcatcher-desert-airflow",
+      "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Forces & Energy",
+        "Planet Earth"
+      ],
+      "question": "How can a tower cool a house when there is no electricity?",
+      "teaser": "Windcatchers turn openings toward prevailing breezes or pressure differences, routing air through rooms and sometimes across water or cool underground surfaces.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Edificios_en_Yazd%2C_Ir%C3%A1n%2C_2016-09-21%2C_DD_17.jpg/1920px-Edificios_en_Yazd%2C_Ir%C3%A1n%2C_2016-09-21%2C_DD_17.jpg",
+      "imageAlt": "Tall traditional windcatchers rising above ochre roofs in Yazd Iran",
+      "sourceLabel": "UNESCO World Heritage Centre",
+      "sourceUrl": "https://whc.unesco.org/en/list/1544/",
+      "size": "wide"
+    },
+    {
+      "id": "bangladesh-floating-gardens",
+      "category": "Culture",
+      "dimensions": [
+        "Food & Agriculture",
+        "Design & Technology",
+        "Planet Earth"
+      ],
+      "question": "How do farmers grow vegetables when the fields stay underwater for months?",
+      "teaser": "In flood-prone Bangladesh, farmers build floating beds from water hyacinth and plant residues, raising crops without soil irrigation while the seasonal water remains high.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Traditional_floating_vegetable_garden_34.jpg/1920px-Traditional_floating_vegetable_garden_34.jpg",
+      "imageAlt": "Lush vegetable rows growing on long floating beds in flooded Bangladesh",
+      "sourceLabel": "FAO GIAHS",
+      "sourceUrl": "https://www.fao.org/giahs/giahs-around-the-world/bangladesh-floating-garden-agricultural-practices/en",
+      "size": "wide"
+    },
+    {
+      "id": "orchid-bee-perfume-library",
+      "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Mind"
+      ],
+      "question": "Why does a male orchid bee collect a personal library of perfumes?",
+      "teaser": "Male orchid bees gather volatile scents from flowers, fungi, and other surfaces, storing and remixing them in enlarged hind legs for courtship displays.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Orchid_Bee_hovering.jpg/1920px-Orchid_Bee_hovering.jpg",
+      "imageAlt": "Metallic green orchid bee visiting a brightly colored tropical flower",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Euglossini",
+      "size": "wide"
+    },
+    {
+      "id": "pamukkale-cotton-castle",
+      "category": "Nature",
+      "dimensions": [
+        "Planet Earth",
+        "Matter"
+      ],
+      "question": "Why does a Turkish mountainside look like a frozen white waterfall?",
+      "teaser": "Calcium-rich thermal water loses carbon dioxide as it flows, depositing bright travertine in terraces, pools, and petrified cascades.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Pamukkale%2C_Denizli_2026_68.jpg/1920px-Pamukkale%2C_Denizli_2026_68.jpg",
+      "imageAlt": "White travertine terraces filled with turquoise water at Pamukkale",
+      "sourceLabel": "UNESCO World Heritage Centre",
+      "sourceUrl": "https://whc.unesco.org/en/list/485/",
+      "size": "wide"
+    },
+    {
+      "id": "arp273-galactic-rose",
+      "category": "Space",
+      "dimensions": [
+        "Cosmos",
+        "Forces & Energy"
+      ],
+      "question": "How did two galaxies arrange themselves into a cosmic rose?",
+      "teaser": "The larger spiral was distorted by a close encounter with its companion, stretching one arm into a petal-like ring of brilliant young blue stars.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/UGC_1810_and_UGC_1813_in_Arp_273_%28captured_by_the_Hubble_Space_Telescope%29.jpg/1920px-UGC_1810_and_UGC_1813_in_Arp_273_%28captured_by_the_Hubble_Space_Telescope%29.jpg",
+      "imageAlt": "Two interacting spiral galaxies forming the shape of a rose",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Arp_273",
+      "size": "tall"
+    },
+    {
+      "id": "opal-trapped-rainbow",
+      "category": "Science",
+      "dimensions": [
+        "Matter",
+        "Forces & Energy",
+        "Numbers & Logic"
+      ],
+      "question": "How can a stone trap a rainbow that moves when you turn it?",
+      "teaser": "Orderly arrays of microscopic silica spheres diffract different wavelengths at different angles, creating opal's shifting play-of-color.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/1/14/Hydrophane_opal_%28precious_opal%29.jpg",
+      "imageAlt": "Precious opal flashing vivid blue green orange and red colors",
+      "sourceLabel": "Gemological Institute of America",
+      "sourceUrl": "https://www.gia.edu/opal",
+      "size": "wide"
+    },
+    {
+      "id": "superconductor-magnetic-levitation",
+      "category": "Science",
+      "dimensions": [
+        "Forces & Energy",
+        "Matter",
+        "Design & Technology"
+      ],
+      "question": "Why can a magnet hover above a frozen ceramic?",
+      "teaser": "Below a critical temperature, a superconductor expels much of an applied magnetic field; persistent currents and flux pinning can stabilize a magnet above its surface.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Levitation_superconductivity.JPG/1920px-Levitation_superconductivity.JPG",
+      "imageAlt": "Small magnet hovering above a disk-shaped superconductor in a cold white cloud",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Magnetic_levitation",
+      "size": "wide"
+    },
+    {
+      "id": "voronoi-natures-nearest-neighbor-map",
+      "category": "Science",
+      "dimensions": [
+        "Numbers & Logic",
+        "Living World",
+        "Art & Expression"
+      ],
+      "question": "Why do dragonfly wings, giraffe patches, and city maps share the same geometry?",
+      "teaser": "A Voronoi diagram divides space by nearest neighbor; similar partitions emerge when growing cells, territories, or cracks compete for surrounding room.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Euclidean_Voronoi_diagram.svg/1920px-Euclidean_Voronoi_diagram.svg.png",
+      "imageAlt": "Bright stained-glass-like Voronoi cells forming an organic pattern",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Voronoi_diagram",
+      "size": "wide"
+    },
+    {
+      "id": "cochlear-hair-cell-keyboard",
+      "category": "Science",
+      "dimensions": [
+        "Body",
+        "Mind",
+        "Forces & Energy"
+      ],
+      "question": "How can rows of microscopic hairs separate a chord into individual notes?",
+      "teaser": "Vibrations peak at different places along the cochlea; bending local hair-cell bundles converts that mechanical map into electrical signals for the brain.",
+      "imageUrl": "https://nigms.nih.gov/sites/nigms/files/image-and-video-gallery/1C_bottom_Ear_Hair_Cells.jpg",
+      "imageAlt": "Fluorescence micrograph of vivid magenta and blue sound-sensing hair cells inside the inner ear",
+      "sourceLabel": "NIH National Institute of General Medical Sciences",
+      "sourceUrl": "https://nigms.nih.gov/image-gallery/3618",
+      "size": "wide"
+    },
+    {
+      "id": "hollow-mask-follows-you",
+      "category": "Science",
+      "dimensions": [
+        "Mind",
+        "Body"
+      ],
+      "question": "Why does the hollow inside of a mask look like a face turning to follow you?",
+      "teaser": "The visual system's strong expectation that faces bulge outward can overpower stereoscopic and shading cues, reversing perceived depth even as you move.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e7/Bjorn_Borg_Hollow_Face-concave.jpg",
+      "imageAlt": "Concave white face mask producing the hollow-face illusion",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hollow-Face_illusion",
+      "size": "wide"
+    },
+    {
+      "id": "zhang-heng-dragon-seismoscope",
+      "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Design & Technology",
+        "Forces & Energy"
+      ],
+      "question": "Could an ancient bronze vessel reveal the direction of a distant earthquake?",
+      "teaser": "Later descriptions credit Zhang Heng with a device whose internal trigger dropped a ball from one of eight dragons, indicating the direction of ground motion.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Valladolid_-_Museo_Oriental_de_Valladolid_09.jpg/1920px-Valladolid_-_Museo_Oriental_de_Valladolid_09.jpg",
+      "imageAlt": "Bronze reconstruction of Zhang Heng's seismoscope with eight dragons",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Zhang_Heng",
+      "size": "tall"
+    },
+    {
+      "id": "palio-neighborhood-horse-race",
+      "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Time & History",
+        "Art & Expression"
+      ],
+      "question": "How can a ninety-second horse race organize a city's identity all year?",
+      "teaser": "Siena's contrade maintain flags, songs, rivalries, museums, and mutual support around a bareback race whose compressed spectacle rests on months of neighborhood ritual.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/68/Rehearsal_for_the_Palio._Contrade_Civetta_%28Little_Owl%29._Siena%2C_Italy.jpg",
+      "imageAlt": "Bareback Palio horses racing around a packed Piazza del Campo beneath colorful flags",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Palio_di_Siena",
+      "size": "wide"
+    },
+    {
+      "id": "nushu-womens-script",
+      "category": "Culture",
+      "dimensions": [
+        "Language",
+        "Society",
+        "Time & History"
+      ],
+      "question": "How did women create and sustain a script of their own?",
+      "teaser": "Nüshu was used by women in Jiangyong, China, to write local speech in slender characters on letters, cloth, fans, and autobiographical songs.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/N%C3%BC_shu.svg/1920px-N%C3%BC_shu.svg.png",
+      "imageAlt": "Elegant vertical rows of slender Nüshu characters",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/N%C3%BCshu",
+      "size": "tall"
+    },
+    {
+      "id": "tibetan-prayer-flags-mountain-wind",
+      "category": "Culture",
+      "dimensions": [
+        "Belief & Ideas",
+        "Language",
+        "Planet Earth"
+      ],
+      "question": "Why are prayers printed on cloth and given to the wind?",
+      "teaser": "Tibetan prayer flags carry auspicious texts and images; weathering is expected as wind moves through them and their presence joins landscape, memory, and practice.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Prayer_flags_in_Nepal.jpg/1920px-Prayer_flags_in_Nepal.jpg",
+      "imageAlt": "Lines of vivid Tibetan prayer flags streaming across a Himalayan mountain pass",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Tibetan_prayer_flag",
+      "size": "wide"
+    },
+    {
+      "id": "benin-bronze-lost-wax",
+      "category": "Art",
+      "dimensions": [
+        "Art & Expression",
+        "Matter",
+        "Time & History"
+      ],
+      "question": "How can a wax model vanish and return as a bronze story?",
+      "teaser": "Benin artists modeled detailed reliefs in wax, encased them in clay, melted the wax out, and poured metal into the resulting void using lost-wax casting.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Benin_brass_plaque_03_%28cropped%29.jpg/1920px-Benin_brass_plaque_03_%28cropped%29.jpg",
+      "imageAlt": "Benin bronze plaque with a richly modeled royal figure and attendants",
+      "sourceLabel": "The Metropolitan Museum of Art",
+      "sourceUrl": "https://www.metmuseum.org/toah/hd/benin/hd_benin.htm",
+      "size": "tall"
+    },
+    {
+      "id": "svalbard-seed-vault-frozen-library",
+      "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Food & Agriculture",
+        "Planet Earth"
+      ],
+      "question": "Why bury a library of seeds inside an Arctic mountain?",
+      "teaser": "The vault stores duplicate crop seeds from genebanks worldwide in cold, dry chambers, adding geological remoteness and permafrost as layers of backup.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Entrance_to_the_Seed_Vault_%28cropped%29.jpg/1920px-Entrance_to_the_Seed_Vault_%28cropped%29.jpg",
+      "imageAlt": "Illuminated concrete entrance of the Svalbard Global Seed Vault beneath a violet Arctic night sky",
+      "sourceLabel": "Crop Trust",
+      "sourceUrl": "https://www.croptrust.org/work/svalbard-global-seed-vault/",
+      "size": "wide"
+    },
+    {
+      "id": "lanzarote-volcanic-vineyards",
+      "category": "Culture",
+      "dimensions": [
+        "Food & Agriculture",
+        "Planet Earth",
+        "Design & Technology"
+      ],
+      "question": "Why does every grapevine on Lanzarote sit inside its own black crater?",
+      "teaser": "Farmers dig through moisture-trapping volcanic ash and build semicircular stone walls around vines, sheltering them from Atlantic winds in an arid lava landscape.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Lanzarote%27s_Lunar-Like_Landscape.jpg/1920px-Lanzarote%27s_Lunar-Like_Landscape.jpg",
+      "imageAlt": "Aerial view of green grapevines in black volcanic pits at La Geria",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/La_Geria",
+      "size": "wide"
+    },
+    {
+      "id": "decorator-crab-wears-garden",
+      "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Mind",
+        "Planet Earth"
+      ],
+      "question": "Why does this crab plant a living garden on its own shell?",
+      "teaser": "Decorator crabs fasten algae, sponges, and anemones to hooked hairs on their shells, creating camouflage that can keep growing with them.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Graceful_Decorator_Crab_%28Oregonia_gracilis%29.jpg/1920px-Graceful_Decorator_Crab_%28Oregonia_gracilis%29.jpg",
+      "imageAlt": "Decorator crab covered with colorful living sponges and algae",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Decorator_crab",
+      "size": "wide"
+    },
+    {
+      "id": "uyuni-sky-mirror",
+      "category": "Nature",
+      "dimensions": [
+        "Planet Earth",
+        "Matter",
+        "Numbers & Logic"
+      ],
+      "question": "How does the world's largest salt flat turn into a near-perfect mirror?",
+      "teaser": "A shallow sheet of calm seasonal water spreads across an exceptionally level salt crust, erasing the horizon and reflecting the sky from edge to edge.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Luz%2C_Nosotros_y_la_Oscuridad.jpg/1920px-Luz%2C_Nosotros_y_la_Oscuridad.jpg",
+      "imageAlt": "Salar de Uyuni reflecting clouds and blue sky in shallow water",
+      "sourceLabel": "NASA Earth Observatory",
+      "sourceUrl": "https://earthobservatory.nasa.gov/images/149886/salar-de-uyuni",
+      "size": "wide"
+    },
+    {
+      "id": "crab-nebula-pulsar-engine",
+      "category": "Space",
+      "dimensions": [
+        "Cosmos",
+        "Forces & Energy",
+        "Time & History"
+      ],
+      "question": "What keeps the Crab Nebula glowing nearly a thousand years after its star exploded?",
+      "teaser": "A city-sized neutron star spins 30 times each second, driving a magnetized wind that energizes the expanding filaments left by the supernova of 1054.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Crab_Nebula.jpg/1920px-Crab_Nebula.jpg",
+      "imageAlt": "Crab Nebula with luminous blue center and red filamentary shell",
+      "sourceLabel": "NASA Science",
+      "sourceUrl": "https://science.nasa.gov/universe/exoplanets-discovery-alert/crab-nebula/",
+      "size": "wide"
+    },
+    {
+      "id": "prince-ruperts-drop-armored-tear",
+      "category": "Science",
+      "dimensions": [
+        "Matter",
+        "Forces & Energy"
+      ],
+      "question": "Why can a glass teardrop survive a hammer blow but explode from a touch to its tail?",
+      "teaser": "Rapid cooling locks compression around the bulb and extreme tension inside; snapping the tail releases a fracture wave that races through the entire drop.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/7/76/Prince_Ruperts_drops.jpg",
+      "imageAlt": "Transparent Prince Rupert's glass drops with long curling tails",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Prince_Rupert's_drop",
+      "size": "wide"
+    },
+    {
+      "id": "sonoluminescent-star-in-jar",
+      "category": "Science",
+      "dimensions": [
+        "Forces & Energy",
+        "Matter"
+      ],
+      "question": "How can sound make a collapsing bubble flash like a tiny star?",
+      "teaser": "Powerful sound waves drive a bubble through repeated expansion and violent collapse, concentrating energy enough to produce ultrashort pulses of light.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/d/de/Glowing_Single_Sonoluminescence_Bubble.jpg",
+      "imageAlt": "Blue-white point of sonoluminescent light glowing inside a dark flask",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Sonoluminescence",
+      "size": "wide"
+    },
+    {
+      "id": "cicadas-prime-number-calendar",
+      "category": "Science",
+      "dimensions": [
+        "Numbers & Logic",
+        "Living World",
+        "Time & History"
+      ],
+      "question": "Why do periodical cicadas wait exactly 13 or 17 years?",
+      "teaser": "Prime-numbered life cycles may reduce repeated overlap with predators and other cicada broods, while synchronized emergence overwhelms the predators that remain.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Magicicada_septendecim_TPopp.jpg/1920px-Magicicada_septendecim_TPopp.jpg",
+      "imageAlt": "Mass of red-eyed periodical cicadas covering a tree trunk",
+      "sourceLabel": "Smithsonian National Museum of Natural History",
+      "sourceUrl": "https://naturalhistory.si.edu/education/teaching-resources/life-science/periodical-cicadas",
+      "size": "wide"
+    },
+    {
+      "id": "airway-cilia-mucus-escalator",
+      "category": "Science",
+      "dimensions": [
+        "Body",
+        "Living World",
+        "Forces & Energy"
+      ],
+      "question": "How does your airway run a microscopic conveyor belt all day?",
+      "teaser": "Mucus traps dust and microbes while thousands of motile cilia beat in coordinated waves, carrying the loaded layer toward the throat before it can settle deep in the lungs.",
+      "imageUrl": "https://nigms.nih.gov/sites/nigms/files/image-and-video-gallery/3_top_ZEISS_Mouse-Epithelial-Cells.jpg",
+      "imageAlt": "Colorized electron micrograph of airway cells crowned with vivid pink green purple and orange cilia",
+      "sourceLabel": "NIH National Institute of General Medical Sciences",
+      "sourceUrl": "https://nigms.nih.gov/image-gallery/3646",
+      "size": "tall"
+    },
+    {
+      "id": "checker-shadow-same-gray",
+      "category": "Science",
+      "dimensions": [
+        "Mind",
+        "Forces & Energy"
+      ],
+      "question": "Can two squares look black and white while being exactly the same gray?",
+      "teaser": "The brain discounts the cylinder's shadow and uses surrounding contrast to infer surface reflectance, so identical pixels are experienced as different shades.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Checker_shadow_illusion.svg/1920px-Checker_shadow_illusion.svg.png",
+      "imageAlt": "Checker-shadow illusion with squares A and B appearing different",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Checker_shadow_illusion",
+      "size": "wide"
+    },
+    {
+      "id": "tyrian-purple-sea-snails",
+      "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Matter",
+        "Society"
+      ],
+      "question": "Why did one purple robe require a mountain of sea snails?",
+      "teaser": "Ancient dyers processed secretions from murex snails into a rare colorfast purple, making the labor-intensive pigment a symbol of royal and imperial power.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Purple_Purpur_%28retouched%29.jpg/1920px-Purple_Purpur_%28retouched%29.jpg",
+      "imageAlt": "Purple-dyed textile beside spiny murex sea-snail shells",
+      "sourceLabel": "The Metropolitan Museum of Art",
+      "sourceUrl": "https://www.metmuseum.org/toah/hd/typu/hd_typu.htm",
+      "size": "wide"
+    },
+    {
+      "id": "saman-dance-single-body",
+      "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Art & Expression",
+        "Mind"
+      ],
+      "question": "How do rows of dancers become one impossibly fast-moving body?",
+      "teaser": "Saman performers sit shoulder to shoulder, singing while executing accelerating waves of claps, torso movements, and hand patterns with exact collective timing.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Tari_Saman.jpg/1920px-Tari_Saman.jpg",
+      "imageAlt": "Long row of Saman dancers performing synchronized hand movements",
+      "sourceLabel": "UNESCO",
+      "sourceUrl": "https://ich.unesco.org/en/RL/saman-dance-00509",
+      "size": "wide"
+    },
+    {
+      "id": "maya-codex-folding-universe",
+      "category": "Culture",
+      "dimensions": [
+        "Language",
+        "Cosmos",
+        "Belief & Ideas",
+        "Time & History"
+      ],
+      "question": "How could one folding book track gods, eclipses, and the rhythm of Venus?",
+      "teaser": "Surviving Maya screenfold codices combine hieroglyphic writing, calendrical numbers, and painted figures to organize ritual and astronomical knowledge.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/8/85/Dresden_Codex_p09.jpg",
+      "imageAlt": "Open Maya codex pages filled with colorful figures and hieroglyphs",
+      "sourceLabel": "World Digital Library",
+      "sourceUrl": "https://www.loc.gov/item/2021667919/",
+      "size": "wide"
+    },
+    {
+      "id": "toraja-tau-tau-cliff-balcony",
+      "category": "Culture",
+      "dimensions": [
+        "Belief & Ideas",
+        "Society",
+        "Art & Expression",
+        "Time & History"
+      ],
+      "question": "Why do carved ancestors watch from balconies cut into a cliff?",
+      "teaser": "In parts of Toraja, tau tau effigies represent deceased people and are placed near rock-cut graves within ceremonies that maintain family ties and social memory.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Tana_Toraja%2C_Tampangallo%2C_coffins_and_tau_taus_%286823243058%29.jpg/1920px-Tana_Toraja%2C_Tampangallo%2C_coffins_and_tau_taus_%286823243058%29.jpg",
+      "imageAlt": "Rows of carved Toraja tau tau figures standing on a cliff balcony",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Tau_tau",
+      "size": "wide"
+    },
+    {
+      "id": "maki-e-gold-dust-picture",
+      "category": "Art",
+      "dimensions": [
+        "Art & Expression",
+        "Matter",
+        "Design & Technology"
+      ],
+      "question": "How do artists paint with gold dust on black lacquer?",
+      "teaser": "In maki-e, metal powder is sprinkled onto wet lacquer, then sealed, polished, and sometimes built into relief until the image seems to glow from inside the surface.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Makie.jpg/1920px-Makie.jpg",
+      "imageAlt": "Black Japanese lacquer box decorated with luminous gold maki-e plants and birds",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Maki-e",
+      "size": "wide"
+    },
+    {
+      "id": "zadar-sea-organ-wave-music",
+      "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Forces & Energy",
+        "Art & Expression"
+      ],
+      "question": "How can the Adriatic Sea play a giant stone instrument?",
+      "teaser": "Waves push air through tuned pipes hidden beneath Zadar's marble steps, producing chords that change continuously with swell, direction, and the movement of boats.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Zadar-Sea-Organ.jpg/1920px-Zadar-Sea-Organ.jpg",
+      "imageAlt": "People sitting on the white steps of Zadar Sea Organ beside glowing blue water",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Sea_organ",
+      "size": "wide"
+    },
+    {
+      "id": "hani-rice-terrace-clouds",
+      "category": "Culture",
+      "dimensions": [
+        "Food & Agriculture",
+        "Planet Earth",
+        "Society"
+      ],
+      "question": "How can one mountainside circulate water through forest, villages, terraces, and rivers?",
+      "teaser": "Hani communities maintain a linked landscape where mountaintop forest captures water, channels distribute it through settlements and thousands of rice terraces, and runoff returns below.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Terrace_field_yunnan_china_denoised.jpg/1920px-Terrace_field_yunnan_china_denoised.jpg",
+      "imageAlt": "Mirror-bright Hani rice terraces cascading across mountains at sunrise",
+      "sourceLabel": "UNESCO World Heritage Centre",
+      "sourceUrl": "https://whc.unesco.org/en/list/1111/",
+      "size": "wide"
+    },
+    {
+      "id": "aye-aye-tapping-finger",
+      "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Body",
+        "Mind"
+      ],
+      "question": "How does an aye-aye use one impossibly thin finger to hear dinner inside wood?",
+      "teaser": "It taps branches, listens for hollow chambers, gnaws an opening, and fishes out grubs with an elongated middle finger—a primate version of a woodpecker's niche.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Wild_aye_aye.jpg/1920px-Wild_aye_aye.jpg",
+      "imageAlt": "Aye-aye showing its large ears and elongated middle finger",
+      "sourceLabel": "Duke Lemur Center",
+      "sourceUrl": "https://lemur.duke.edu/discover/meet-the-lemurs/aye-aye/",
+      "size": "tall"
+    },
+    {
+      "id": "richat-eye-of-sahara",
+      "category": "Nature",
+      "dimensions": [
+        "Planet Earth",
+        "Matter",
+        "Time & History"
+      ],
+      "question": "Why does the Sahara contain a 40-kilometer-wide blue-and-gold eye?",
+      "teaser": "The Richat Structure is an eroded geologic dome: concentric rock layers of different resistance now appear as rings visible even from orbit.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Richat_Structure_ISS030-E-12516.jpg/1920px-Richat_Structure_ISS030-E-12516.jpg",
+      "imageAlt": "Concentric rings of the Richat Structure photographed from space",
+      "sourceLabel": "NASA Earth Observatory",
+      "sourceUrl": "https://earthobservatory.nasa.gov/images/92071/richat-structure",
+      "size": "wide"
+    },
+    {
+      "id": "jupiter-red-spot-shrinking",
+      "category": "Space",
+      "dimensions": [
+        "Cosmos",
+        "Forces & Energy",
+        "Planet Earth"
+      ],
+      "question": "Why is Jupiter's Great Red Spot shrinking after centuries of storms?",
+      "teaser": "The anticyclone still towers over surrounding clouds, but observations show its width contracting while winds and interactions with smaller storms continually reshape it.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Jupiter_-_Great_Red_Spot_-_PJ7-60_61_62_-_Balanced_%2849803032983%29.png/1920px-Jupiter_-_Great_Red_Spot_-_PJ7-60_61_62_-_Balanced_%2849803032983%29.png",
+      "imageAlt": "Close view of Jupiter's Great Red Spot and swirling cloud bands",
+      "sourceLabel": "NASA Science",
+      "sourceUrl": "https://science.nasa.gov/jupiter/jupiter-facts/",
+      "size": "wide"
+    },
+    {
+      "id": "liquid-oxygen-magnetic",
+      "category": "Science",
+      "dimensions": [
+        "Matter",
+        "Forces & Energy"
+      ],
+      "question": "Why can pale-blue liquid oxygen hang between the poles of a magnet?",
+      "teaser": "Each oxygen molecule has unpaired electrons, making liquid oxygen strongly paramagnetic and visibly attracted into an intense magnetic field.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a0/Liquid_oxygen_in_a_beaker_%28cropped_and_retouched%29.jpg",
+      "imageAlt": "Pale blue liquid oxygen suspended between magnetic pole pieces",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Liquid_oxygen",
+      "size": "wide"
+    },
+    {
+      "id": "jacobs-ladder-climbing-arc",
+      "category": "Science",
+      "dimensions": [
+        "Forces & Energy",
+        "Matter",
+        "Design & Technology"
+      ],
+      "question": "Why does an electric arc climb upward between two metal rails?",
+      "teaser": "The arc heats and expands surrounding air, so buoyancy lifts the conductive plasma. Diverging rails stretch it until the gap becomes too wide; the arc breaks and a new one ignites below.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a3/Jacobsladder2.jpg",
+      "imageAlt": "Brilliant violet-white electric arc climbing between two diverging metal rods",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Electric_arc",
+      "size": "tall"
+    }
+  ]
+}

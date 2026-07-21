@@ -11,7 +11,8 @@ Only the latest commit on `main` is supported.
 ## Security boundaries
 
 - Audience input, retrieved pages, model output, and source URLs are untrusted data.
-- OpenAI keys, D1 access, identity headers, budget configuration, and provider response details remain server-side.
+- The deployment OpenAI key, D1 access, identity headers, budget configuration, and provider response details remain server-side.
+- Learner-supplied OpenAI keys are session-only: they remain in the current tab, travel only on provider-backed same-origin requests, are used in memory, and are never persisted or included in diagnostics.
 - API routes enforce identity, ownership, input validation, and idempotency before mutation.
 - Citations are accepted only when they map to normalized provider-returned sources.
 - Failed or incomplete research operations do not commit a ready turn.

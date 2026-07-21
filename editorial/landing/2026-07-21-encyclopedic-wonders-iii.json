@@ -1,0 +1,806 @@
+{
+  "title": "Encyclopedic wonders 3 of 3",
+  "recommendations": [
+    {
+      "id": "vai-script-dream-to-print",
+      "category": "Culture",
+      "dimensions": [
+        "Language",
+        "Society",
+        "Time & History"
+      ],
+      "question": "How did a newly invented script move from a dream to printed books?",
+      "teaser": "Momolu Duwalu Bukele and collaborators developed the Vai syllabary in nineteenth-century Liberia, representing spoken syllables with more than two hundred signs.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Vai_Syllabary_Chart.svg/1920px-Vai_Syllabary_Chart.svg.png",
+      "imageAlt": "Chart showing rows of intricate Vai syllabary characters",
+      "sourceLabel": "British Library",
+      "sourceUrl": "https://www.bl.uk/collection-items/the-vai-syllabary",
+      "size": "wide"
+    },
+    {
+      "id": "hiwatari-fire-walking",
+      "category": "Culture",
+      "dimensions": [
+        "Belief & Ideas",
+        "Society",
+        "Forces & Energy"
+      ],
+      "question": "How can walking across embers become a practice of purification?",
+      "teaser": "In Japanese Shugendō fire ceremonies, ritual specialists prepare and cross a bed of coals before other participants, combining chant, action, and disciplined attention.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Hiwatari-sai_2024_at_Takao-san_Yakuo-in.jpg/1920px-Hiwatari-sai_2024_at_Takao-san_Yakuo-in.jpg",
+      "imageAlt": "Japanese yamabushi practitioners walking across glowing embers during Hiwatari",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Firewalking",
+      "size": "wide"
+    },
+    {
+      "id": "gyotaku-fish-memory-art-print",
+      "category": "Art",
+      "dimensions": [
+        "Art & Expression",
+        "Living World",
+        "Matter"
+      ],
+      "question": "How can a real fish leave one final, nearly life-sized image?",
+      "teaser": "Gyotaku began as a way to record a catch: ink is applied to the fish, paper is pressed over its contours, and details such as the eye are finished by hand.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/be/Gyotakuart.jpg",
+      "imageAlt": "Detailed black gyotaku print of a fish on white paper",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Gyotaku",
+      "size": "wide"
+    },
+    {
+      "id": "shinkansen-kingfisher-nose",
+      "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Living World",
+        "Forces & Energy"
+      ],
+      "question": "What did a diving kingfisher teach engineers about high-speed trains?",
+      "teaser": "A long, tapered train nose inspired by a kingfisher's beak reduced pressure waves at tunnel exits while improving efficiency and noise performance.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/SHINKANSEN_SERIES_500_KYOTO_RAILWAYS_STATION_%2815781709383%29.jpg/1920px-SHINKANSEN_SERIES_500_KYOTO_RAILWAYS_STATION_%2815781709383%29.jpg",
+      "imageAlt": "Blue and white Shinkansen bullet train with a long kingfisher-like nose",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/500_Series_Shinkansen",
+      "size": "wide"
+    },
+    {
+      "id": "wasabi-running-water-terraces",
+      "category": "Culture",
+      "dimensions": [
+        "Food & Agriculture",
+        "Planet Earth",
+        "Design & Technology"
+      ],
+      "question": "Why is real wasabi grown in beds of cold running mountain water?",
+      "teaser": "Traditional sawa wasabi cultivation uses shaded gravel terraces supplied by clean, oxygen-rich spring water, creating a narrow environment that is difficult to reproduce at scale.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Wasabia_japonica_4.JPG/1920px-Wasabia_japonica_4.JPG",
+      "imageAlt": "Green wasabi plants growing in immaculate terraced stream beds in Japan",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Wasabi",
+      "size": "wide"
+    },
+    {
+      "id": "glasswing-butterfly-invisible-wings",
+      "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Matter",
+        "Forces & Energy"
+      ],
+      "question": "How can a butterfly wing become transparent without acting like a mirror?",
+      "teaser": "Sparse scales and nanoscale surface structures suppress reflections, allowing most visible light to pass through the glasswing butterfly's clear wing panels.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Greta_oto.jpg/1920px-Greta_oto.jpg",
+      "imageAlt": "Glasswing butterfly with transparent wings perched on a flower",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Greta_oto",
+      "size": "wide"
+    },
+    {
+      "id": "moeraki-boulder-concretions",
+      "category": "Nature",
+      "dimensions": [
+        "Planet Earth",
+        "Matter",
+        "Time & History"
+      ],
+      "question": "Why does a New Zealand beach look scattered with giant stone eggs?",
+      "teaser": "The Moeraki Boulders began as mineral cement growing around buried nuclei in seafloor mud, cracking internally before erosion freed them from the cliffs.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Moeraki_Boulders.jpg/1920px-Moeraki_Boulders.jpg",
+      "imageAlt": "Large round Moeraki Boulders on a beach at low tide",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Moeraki_Boulders",
+      "size": "wide"
+    },
+    {
+      "id": "hercules-a-black-hole-jets",
+      "category": "Space",
+      "dimensions": [
+        "Cosmos",
+        "Forces & Energy"
+      ],
+      "question": "How can a black hole draw jets a million light-years long?",
+      "teaser": "Matter falling toward the central black hole powers narrow particle beams that inflate enormous radio lobes far beyond the visible galaxy.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/A_Multi-Wavelength_View_of_Radio_Galaxy_Hercules_A.jpg/1920px-A_Multi-Wavelength_View_of_Radio_Galaxy_Hercules_A.jpg",
+      "imageAlt": "Galaxy Hercules A with vast pink radio jets extending into space",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hercules_A",
+      "size": "wide"
+    },
+    {
+      "id": "ice-spike-freezer-tower",
+      "category": "Science",
+      "dimensions": [
+        "Matter",
+        "Forces & Energy"
+      ],
+      "question": "Why does an ice cube sometimes grow a hollow tower straight upward?",
+      "teaser": "As a freezing surface closes around a small hole, expanding ice pushes water through it; the rim freezes layer by layer until the water supply stops.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Ice_spike_in_cube_tray_at_work.jpg/1920px-Ice_spike_in_cube_tray_at_work.jpg",
+      "imageAlt": "Slender hollow ice spike rising from the surface of an ice cube",
+      "sourceLabel": "Caltech",
+      "sourceUrl": "https://www.its.caltech.edu/~atomic/snowcrystals/icespikes/icespikes.htm",
+      "size": "tall"
+    },
+    {
+      "id": "diamagnetic-floating-graphite",
+      "category": "Science",
+      "dimensions": [
+        "Forces & Energy",
+        "Matter",
+        "Design & Technology"
+      ],
+      "question": "How can a wafer of graphite float above a grid of magnets?",
+      "teaser": "Pyrolytic graphite is strongly diamagnetic across one direction: induced magnetic moments oppose an applied field, creating enough repulsion for stable levitation above arranged magnets.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Pyrolytic_Carbon_Levitation_%284647754841%29.jpg/1920px-Pyrolytic_Carbon_Levitation_%284647754841%29.jpg",
+      "imageAlt": "Thin square of graphite levitating above a checkerboard of shiny magnets",
+      "sourceLabel": "University of Bristol",
+      "sourceUrl": "https://www.bristol.ac.uk/physics/research/materials/",
+      "size": "wide"
+    },
+    {
+      "id": "game-of-life-glider",
+      "category": "Science",
+      "dimensions": [
+        "Numbers & Logic",
+        "Design & Technology"
+      ],
+      "question": "How can five squares become something that seems to crawl across a grid?",
+      "teaser": "In Conway's cellular automaton, simple birth-and-death rules create a glider: a repeating configuration that shifts diagonally without any cell moving by itself.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Game_of_life_glider_gun.svg/1920px-Game_of_life_glider_gun.svg.png",
+      "imageAlt": "Cellular automaton grid showing a Game of Life glider gun producing moving patterns",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Conway's_Game_of_Life",
+      "size": "wide"
+    },
+    {
+      "id": "iris-unique-living-aperture",
+      "category": "Science",
+      "dimensions": [
+        "Body",
+        "Mind",
+        "Forces & Energy"
+      ],
+      "question": "Why is every iris both a living aperture and a nearly unique landscape?",
+      "teaser": "Two muscle systems adjust the pupil while crypts, furrows, pigment, and collagen create intricate patterns shaped by development and only partly by eye color genes.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/ce/Human_eye_close_up%2C_anterior_view.jpg",
+      "imageAlt": "Extreme close-up of a blue-green human iris surrounding a dark pupil",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Iris_(anatomy)",
+      "size": "wide"
+    },
+    {
+      "id": "stroop-word-color-conflict",
+      "category": "Science",
+      "dimensions": [
+        "Mind",
+        "Language"
+      ],
+      "question": "Why is it so hard to name the ink color of the word BLUE when it is printed in red?",
+      "teaser": "Reading is highly practiced and difficult to suppress, so a word's meaning competes with the task of reporting its ink color, slowing responses and increasing errors.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fc/Stroop_stimuli_example.png",
+      "imageAlt": "Bright color words printed in deliberately mismatched ink colors",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Stroop_effect",
+      "size": "wide"
+    },
+    {
+      "id": "damascus-steel-watered-pattern",
+      "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Matter",
+        "Design & Technology"
+      ],
+      "question": "Why did legendary sword blades carry patterns like flowing water?",
+      "teaser": "Historic crucible steels developed bands of different microstructures during forging and thermal cycling, producing a watered surface linked to their composition and processing.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Detail_of_Damascus_steel_hair-cutting_shears_from_Japanese_company_Mizutani.jpg/1920px-Detail_of_Damascus_steel_hair-cutting_shears_from_Japanese_company_Mizutani.jpg",
+      "imageAlt": "Close-up of a Damascus steel blade with rippling watered patterns",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Damascus_steel",
+      "size": "wide"
+    },
+    {
+      "id": "hajj-crowd-flow",
+      "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Belief & Ideas",
+        "Design & Technology"
+      ],
+      "question": "How does one sacred journey move millions of people through the same sequence of places?",
+      "teaser": "The Hajj combines shared rites with immense systems for timed transport, crowd routing, health, water, and communication across a dense pilgrimage landscape.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/The_Kaaba_during_Hajj.jpg/1920px-The_Kaaba_during_Hajj.jpg",
+      "imageAlt": "Aerial view of pilgrims circling the Kaaba in concentric white rings",
+      "sourceLabel": "Encyclopaedia Britannica",
+      "sourceUrl": "https://www.britannica.com/topic/hajj",
+      "size": "wide"
+    },
+    {
+      "id": "bayeux-tapestry-words-and-pictures",
+      "category": "Culture",
+      "dimensions": [
+        "Language",
+        "Art & Expression",
+        "Time & History"
+      ],
+      "question": "How does a seventy-meter embroidery tell history like a graphic novel?",
+      "teaser": "Sequential scenes, gestures, labels, ships, animals, and border imagery guide viewers through the Norman conquest while Latin captions anchor names and events.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/9/9c/Odo_bayeux_tapestry.png",
+      "imageAlt": "Bayeux Tapestry scene with embroidered horses soldiers ships and Latin text",
+      "sourceLabel": "Musée de la Tapisserie de Bayeux",
+      "sourceUrl": "https://www.bayeuxmuseum.com/en/the-bayeux-tapestry/",
+      "size": "wide"
+    },
+    {
+      "id": "timkat-embroidered-umbrellas",
+      "category": "Culture",
+      "dimensions": [
+        "Belief & Ideas",
+        "Society",
+        "Art & Expression"
+      ],
+      "question": "Why are sacred objects carried beneath embroidered umbrellas at Timkat?",
+      "teaser": "During Ethiopian Epiphany, wrapped tabots representing the Ark are escorted in brilliant processions to water, where communities renew baptismal memory through prayer and celebration.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Timkat_2020_priests_with_tabots.jpg/1920px-Timkat_2020_priests_with_tabots.jpg",
+      "imageAlt": "Timkat procession with clergy beneath brilliant embroidered ceremonial umbrellas",
+      "sourceLabel": "UNESCO",
+      "sourceUrl": "https://ich.unesco.org/en/RL/ethiopian-epiphany-01491",
+      "size": "wide"
+    },
+    {
+      "id": "petrykivka-impossible-brushstrokes",
+      "category": "Art",
+      "dimensions": [
+        "Art & Expression",
+        "Society",
+        "Living World"
+      ],
+      "question": "How can one brushstroke become a berry, a feather, or an entire flower?",
+      "teaser": "Petrykivka painters build exuberant plant forms from codified pressure-sensitive strokes, traditionally decorating homes and objects in Ukraine's Dnipro region.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/%D0%9F%D0%B5%D1%82%D1%80%D0%B8%D0%BA%D1%96%D0%B2%D1%81%D1%8C%D0%BA%D1%96%D0%B9_%D1%80%D0%BE%D0%B7%D0%BF%D0%B8%D1%81_10.jpg/1920px-%D0%9F%D0%B5%D1%82%D1%80%D0%B8%D0%BA%D1%96%D0%B2%D1%81%D1%8C%D0%BA%D1%96%D0%B9_%D1%80%D0%BE%D0%B7%D0%BF%D0%B8%D1%81_10.jpg",
+      "imageAlt": "Vivid Petrykivka painting filled with fantastical red blue and yellow flowers",
+      "sourceLabel": "UNESCO",
+      "sourceUrl": "https://ich.unesco.org/en/RL/petrykivka-decorative-painting-as-a-phenomenon-of-the-ukrainian-ornamental-folk-art-00893",
+      "size": "wide"
+    },
+    {
+      "id": "gando-school-breathing-roof",
+      "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Forces & Energy",
+        "Society"
+      ],
+      "question": "How can a school roof create its own cooling breeze?",
+      "teaser": "Francis Kéré's design separates a broad raised metal canopy from a perforated ceiling, letting hot air escape while deep overhangs shade compressed-earth classrooms.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Primary_School_Gando.jpg/1920px-Primary_School_Gando.jpg",
+      "imageAlt": "Gando Primary School with a broad floating roof and warm earthen walls",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Francis_K%C3%A9r%C3%A9",
+      "size": "wide"
+    },
+    {
+      "id": "seaweed-farm-ocean-grid",
+      "category": "Culture",
+      "dimensions": [
+        "Food & Agriculture",
+        "Planet Earth",
+        "Living World",
+        "Design & Technology"
+      ],
+      "question": "How do underwater farms grow food without soil, fertilizer, or fresh water?",
+      "teaser": "Seaweeds draw dissolved nutrients directly from seawater and grow along ropes or nets, creating vast geometric farms that can also provide habitat.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b0/Eucheuma_farming%2C_Philippines_%285211726476%29.jpg",
+      "imageAlt": "Aerial view of geometric seaweed-farm lines in clear turquoise water",
+      "sourceLabel": "FAO",
+      "sourceUrl": "https://www.fao.org/4/y3550e/y3550e04.htm",
+      "size": "wide"
+    },
+    {
+      "id": "pitohui-poison-feathers",
+      "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Matter"
+      ],
+      "question": "How did a songbird end up with poison in its skin and feathers?",
+      "teaser": "Hooded pitohuis acquire batrachotoxins from their diet, making them among the few known poisonous birds and warning predators with bold orange-and-black plumage.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Hooded_Pitohui_1.jpg/1920px-Hooded_Pitohui_1.jpg",
+      "imageAlt": "Orange and black hooded pitohui perched on a branch",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hooded_pitohui",
+      "size": "tall"
+    },
+    {
+      "id": "morning-glory-clouds-wavefront",
+      "category": "Nature",
+      "dimensions": [
+        "Planet Earth",
+        "Forces & Energy"
+      ],
+      "question": "How can a cloud roll across Australia like a thousand-kilometer wave?",
+      "teaser": "A rare combination of sea breezes and temperature inversions can create a traveling atmospheric bore, with air rising along one edge and sinking along the other.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Morning_glory_clouds.jpg",
+      "imageAlt": "Long tubular Morning Glory clouds stretching across the Australian sky",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Morning_Glory_cloud",
+      "size": "wide"
+    },
+    {
+      "id": "sombrero-galaxy-hidden-structure",
+      "category": "Space",
+      "dimensions": [
+        "Cosmos",
+        "Matter"
+      ],
+      "question": "What is hiding inside the Sombrero Galaxy's razor-thin brim?",
+      "teaser": "A dark dust lane circles an unusually large central bulge; infrared observations expose cooler dust and star formation that visible light partly conceals.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Sombrero_Galaxy_%28heic2506a%29.jpg/1920px-Sombrero_Galaxy_%28heic2506a%29.jpg",
+      "imageAlt": "Sombrero Galaxy with a bright central bulge and dark dust lane",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Sombrero_Galaxy",
+      "size": "wide"
+    },
+    {
+      "id": "chemical-garden-mineral-stems",
+      "category": "Science",
+      "dimensions": [
+        "Matter",
+        "Design & Technology",
+        "Living World"
+      ],
+      "question": "How can metal salts grow an underwater garden of glassy stems?",
+      "teaser": "A dissolving crystal forms a semipermeable precipitate membrane. Osmotic pressure ruptures it, and the escaping metal-rich solution reacts again, repeatedly building hollow mineral tubes.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Chemical_garden_-_UFCH_JH_%282020%29.jpg/1920px-Chemical_garden_-_UFCH_JH_%282020%29.jpg",
+      "imageAlt": "Brilliant blue orange and white mineral tubes branching upward through clear solution",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Chemical_garden",
+      "size": "tall"
+    },
+    {
+      "id": "etna-volcanic-vortex-ring",
+      "category": "Science",
+      "dimensions": [
+        "Forces & Energy",
+        "Planet Earth",
+        "Matter",
+        "Numbers & Logic"
+      ],
+      "question": "How can a volcano blow nearly perfect smoke rings?",
+      "teaser": "Under rare combinations of vent shape, emission speed, and calm air, volcanic gas rolls into a toroidal vortex that can remain coherent while rising above the crater.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/VortexRingEtna.jpg/1920px-VortexRingEtna.jpg",
+      "imageAlt": "Several pale volcanic vortex rings rising above the dark summit of Mount Etna",
+      "sourceLabel": "Smithsonian Global Volcanism Program",
+      "sourceUrl": "https://volcano.si.edu/showreport.cfm?wvar=GVP.WVAR20240403-211060",
+      "size": "wide"
+    },
+    {
+      "id": "borromean-rings-three-way-link",
+      "category": "Science",
+      "dimensions": [
+        "Numbers & Logic",
+        "Art & Expression",
+        "Society"
+      ],
+      "question": "How can three rings be inseparable when no two rings are linked?",
+      "teaser": "The Borromean arrangement is linked only as a whole: cut or remove any single ring and the remaining two fall apart, a vivid model of collective dependence.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/5/5a/Borromean_Rings_Illusion.png",
+      "imageAlt": "Three brightly colored Borromean rings interlocked symmetrically",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Borromean_rings",
+      "size": "wide"
+    },
+    {
+      "id": "purkinje-cell-dendritic-fan",
+      "category": "Science",
+      "dimensions": [
+        "Body",
+        "Mind",
+        "Numbers & Logic"
+      ],
+      "question": "Why does one brain cell grow a tree with hundreds of thousands of listening points?",
+      "teaser": "A Purkinje neuron's enormous, nearly flat dendritic arbor receives an extraordinary number of synaptic inputs, integrating them into the cerebellum's precise control of timing and movement.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f5/Cerebellum_PurkinjeCells.jpg",
+      "imageAlt": "Fluorescence micrograph of bright green Purkinje cells and red basket-cell fibers in the cerebellum",
+      "sourceLabel": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cerebellum_PurkinjeCells.jpg",
+      "size": "wide"
+    },
+    {
+      "id": "ebbinghaus-circles-context-size",
+      "category": "Science",
+      "dimensions": [
+        "Mind",
+        "Numbers & Logic"
+      ],
+      "question": "How can identical circles look different sizes because of their neighbors?",
+      "teaser": "A central circle surrounded by large circles is judged smaller than the same circle among small neighbors, exposing how context shapes perceived scale.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Mond-vergleich.svg/1920px-Mond-vergleich.svg.png",
+      "imageAlt": "Ebbinghaus illusion with two equal orange circles among different-sized neighbors",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Ebbinghaus_illusion",
+      "size": "wide"
+    },
+    {
+      "id": "marquis-yi-two-tone-bells",
+      "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Forces & Energy",
+        "Art & Expression",
+        "Design & Technology"
+      ],
+      "question": "How could one Bronze Age bell play two different notes?",
+      "teaser": "The almond-shaped cross-section of Marquis Yi's bells supports distinct vibration modes: striking the center or side produces two stable pitches, expanding the set's musical range.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/%E6%B9%96%E5%8C%97%E5%8D%9A%E7%89%A9%E9%A4%A8%E6%9B%BE%E4%BE%AF%E4%B9%99%E7%B7%A8%E9%90%98.jpg/1920px-%E6%B9%96%E5%8C%97%E5%8D%9A%E7%89%A9%E9%A4%A8%E6%9B%BE%E4%BE%AF%E4%B9%99%E7%B7%A8%E9%90%98.jpg",
+      "imageAlt": "Grand array of decorated bronze bells from the tomb of Marquis Yi of Zeng",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Bianzhong_of_Marquis_Yi_of_Zeng",
+      "size": "wide"
+    },
+    {
+      "id": "kazakh-eagle-partnership",
+      "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Living World",
+        "Time & History"
+      ],
+      "question": "How does a hunter build a working partnership with a golden eagle?",
+      "teaser": "Kazakh eagle hunters train and care for female golden eagles through repeated handling and shared hunts, within a wider tradition of horsemanship and seasonal community life.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Kazakh_hunter_with_eagle.jpg/1920px-Kazakh_hunter_with_eagle.jpg",
+      "imageAlt": "Kazakh eagle hunter on horseback holding a golden eagle in snowy mountains",
+      "sourceLabel": "UNESCO",
+      "sourceUrl": "https://ich.unesco.org/en/RL/falconry-a-living-human-heritage-01708",
+      "size": "wide"
+    },
+    {
+      "id": "braille-six-dot-universe",
+      "category": "Culture",
+      "dimensions": [
+        "Language",
+        "Body",
+        "Numbers & Logic",
+        "Design & Technology"
+      ],
+      "question": "How can six raised dots encode alphabets, music, mathematics, and code?",
+      "teaser": "Different subsets of a six-dot cell form 63 nonblank patterns; context and specialized notation extend those tactile combinations far beyond ordinary letters.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Reading_Braille.jpg/1920px-Reading_Braille.jpg",
+      "imageAlt": "Fingertips reading lines of sharply embossed Braille dots",
+      "sourceLabel": "Library of Congress",
+      "sourceUrl": "https://www.loc.gov/nls/who-we-are/history/",
+      "size": "wide"
+    },
+    {
+      "id": "lotus-lantern-sea-of-light",
+      "category": "Culture",
+      "dimensions": [
+        "Belief & Ideas",
+        "Society",
+        "Art & Expression",
+        "Forces & Energy"
+      ],
+      "question": "How can thousands of lanterns turn a city street into a lesson about awakening?",
+      "teaser": "Korea's Yeondeunghoe combines handmade lotus lanterns, processions, and communal celebration; light symbolizes wisdom and compassion within a living Buddhist tradition.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/KOCIS_Korea_YeonDeungHoe_20130511_05_%288733836165%29.jpg/1920px-KOCIS_Korea_YeonDeungHoe_20130511_05_%288733836165%29.jpg",
+      "imageAlt": "Night procession filled with thousands of glowing lotus-shaped lanterns",
+      "sourceLabel": "UNESCO",
+      "sourceUrl": "https://ich.unesco.org/en/RL/lantern-lighting-festival-in-the-republic-of-korea-00882",
+      "size": "wide"
+    },
+    {
+      "id": "wixarika-yarn-visions",
+      "category": "Art",
+      "dimensions": [
+        "Art & Expression",
+        "Belief & Ideas",
+        "Society"
+      ],
+      "question": "How can pressed yarn turn a remembered vision into a field of color?",
+      "teaser": "Wixárika artists arrange colored yarn in wax on boards, developing dense images of animals, plants, sacred places, and ceremonial experience without painted outlines.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/1/1b/Huichol_Trabajando.JPG",
+      "imageAlt": "Brilliantly colored Wixárika yarn painting with animals and geometric patterns",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Huichol_art",
+      "size": "wide"
+    },
+    {
+      "id": "magdeburg-water-bridge-river-crossing",
+      "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Forces & Energy",
+        "Planet Earth",
+        "Society"
+      ],
+      "question": "How can one river sail across another river?",
+      "teaser": "The bridge carries a navigable canal in a watertight trough above the Elbe, letting loaded barges cross overhead instead of descending through long detours and locks.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Magdeburg_Kanalbr%C3%BCcke_aerial_view_09.jpg/1920px-Magdeburg_Kanalbr%C3%BCcke_aerial_view_09.jpg",
+      "imageAlt": "Aerial view of boats crossing the blue Magdeburg canal bridge high above the Elbe",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Magdeburg_Water_Bridge",
+      "size": "wide"
+    },
+    {
+      "id": "glass-gem-corn-rainbow-kernels",
+      "category": "Culture",
+      "dimensions": [
+        "Food & Agriculture",
+        "Living World",
+        "Matter"
+      ],
+      "question": "Why can one ear of corn look like a box of glass jewels?",
+      "teaser": "Each kernel is a separate seed. Different pigment genes expressed in its outer layers combine and segregate from kernel to kernel, producing blues, reds, golds, purples, and pearly translucence on one cob.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Zea_mays_%27glass_gem%27_MHNT.BOT.2015.34.43.jpg/1920px-Zea_mays_%27glass_gem%27_MHNT.BOT.2015.34.43.jpg",
+      "imageAlt": "Macro view of a Glass Gem corn cob packed with translucent rainbow-colored kernels",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Flint_corn",
+      "size": "wide"
+    },
+    {
+      "id": "narwhal-tusk-sensory-organ",
+      "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Body",
+        "Planet Earth"
+      ],
+      "question": "Is a narwhal's tusk a weapon, a tooth, or a sense organ?",
+      "teaser": "The tusk is an elongated tooth threaded with millions of nerve endings; evidence suggests it can detect changes in seawater while also serving social roles.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/bc/%D0%9D%D0%B0%D1%80%D0%B2%D0%B0%D0%BB_%D0%B2_%D1%80%D0%BE%D1%81%D1%81%D0%B8%D0%B9%D1%81%D0%BA%D0%BE%D0%B9_%D0%90%D1%80%D0%BA%D1%82%D0%B8%D0%BA%D0%B5.jpg",
+      "imageAlt": "Narwhals surfacing in blue Arctic water with spiral tusks visible",
+      "sourceLabel": "Smithsonian Ocean",
+      "sourceUrl": "https://ocean.si.edu/ocean-life/marine-mammals/narwhals-unicorns-sea",
+      "size": "wide"
+    },
+    {
+      "id": "azerbaijan-mud-volcanoes",
+      "category": "Nature",
+      "dimensions": [
+        "Planet Earth",
+        "Matter",
+        "Forces & Energy"
+      ],
+      "question": "Why does Azerbaijan have landscapes where cold mud erupts like lava?",
+      "teaser": "Pressurized water and gas force fine sediment upward through faults, building cones that can ooze quietly or erupt with flames when methane ignites.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/7/74/Gobustan_State_Reserve_04.png",
+      "imageAlt": "Cluster of gray mud-volcano cones under a dramatic sky in Azerbaijan",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Mud_volcano",
+      "size": "wide"
+    },
+    {
+      "id": "westerlund2-stellar-fireworks",
+      "category": "Space",
+      "dimensions": [
+        "Cosmos",
+        "Forces & Energy",
+        "Matter"
+      ],
+      "question": "How can a cluster of young stars carve pillars and fireworks from a nebula?",
+      "teaser": "Ultraviolet radiation and stellar winds from massive newborn stars erode their birth cloud, compressing some ridges while blowing cavities through others.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/NASA_Unveils_Celestial_Fireworks_as_Official_Hubble_25th_Anniversary_Image.jpg/1920px-NASA_Unveils_Celestial_Fireworks_as_Official_Hubble_25th_Anniversary_Image.jpg",
+      "imageAlt": "Brilliant blue star cluster Westerlund 2 surrounded by red and gold gas",
+      "sourceLabel": "NASA Hubble",
+      "sourceUrl": "https://science.nasa.gov/missions/hubble/hubble-space-telescope-celebrates-25-years-of-unveiling-the-universe/",
+      "size": "wide"
+    },
+    {
+      "id": "belousov-zhabotinsky-spiral-waves",
+      "category": "Science",
+      "dimensions": [
+        "Matter",
+        "Time & History",
+        "Numbers & Logic",
+        "Forces & Energy"
+      ],
+      "question": "How can an unstirred liquid keep drawing new rings and spirals?",
+      "teaser": "Competing reaction steps repeatedly switch the mixture between chemical states. In a thin layer, diffusion couples nearby regions so moving color fronts curl into waves and rotating spirals.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/1/19/Patterns_in_the_Belousov%E2%80%93Zhabotinsky_reaction.jpg",
+      "imageAlt": "Concentric blue red and amber chemical waves spiraling across a shallow dish",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Belousov%E2%80%93Zhabotinsky_reaction",
+      "size": "wide"
+    },
+    {
+      "id": "circular-hydraulic-jump",
+      "category": "Science",
+      "dimensions": [
+        "Forces & Energy",
+        "Matter",
+        "Numbers & Logic"
+      ],
+      "question": "Why does water from a faucet draw a sharp circle on a flat sink?",
+      "teaser": "A thin, fast sheet of water suddenly thickens where its flow becomes subcritical, dissipating energy in a circular hydraulic jump.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f4/Hydraulic_jump_in_sink.jpg",
+      "imageAlt": "Circular hydraulic jump formed by water flowing across a flat surface",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hydraulic_jump",
+      "size": "wide"
+    },
+    {
+      "id": "sunflower-golden-angle-seeds",
+      "category": "Science",
+      "dimensions": [
+        "Numbers & Logic",
+        "Living World"
+      ],
+      "question": "Why do sunflower seeds form two families of perfect spirals?",
+      "teaser": "New florets appear near the golden angle from the previous one, distributing them efficiently; visible spiral counts often land on neighboring Fibonacci numbers.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d7/Sunflower_macro_wide.jpg",
+      "imageAlt": "Close-up of a sunflower center showing dense opposing seed spirals",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Phyllotaxis",
+      "size": "wide"
+    },
+    {
+      "id": "fingerprints-growth-stress",
+      "category": "Science",
+      "dimensions": [
+        "Body",
+        "Numbers & Logic",
+        "Time & History"
+      ],
+      "question": "Why do fingerprints form before birth yet never copy even between identical twins?",
+      "teaser": "As fetal skin layers grow at different rates, mechanical buckling produces ridges shaped by genes, timing, pressure, and tiny differences in the womb.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/6f/Fingerprint_-_Plain_Whorl.jpg",
+      "imageAlt": "Highly detailed black-and-white fingerprint whorls and branching ridges",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Fingerprint",
+      "size": "wide"
+    },
+    {
+      "id": "waterfall-motion-aftereffect",
+      "category": "Science",
+      "dimensions": [
+        "Mind",
+        "Body",
+        "Forces & Energy"
+      ],
+      "question": "Why does a still cliff appear to drift upward after you stare at a waterfall?",
+      "teaser": "Motion-sensitive neurons adapt during prolonged downward movement; when the scene stops, the unbalanced response of opposing detectors creates illusory upward motion.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Long-exposure_photography.JPG/1920px-Long-exposure_photography.JPG",
+      "imageAlt": "Long-exposure waterfall pouring between mossy cliffs",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Motion_aftereffect",
+      "size": "tall"
+    },
+    {
+      "id": "mechanical-turk-hidden-player",
+      "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Mind",
+        "Design & Technology"
+      ],
+      "question": "How did an eighteenth-century chess machine hide a human master?",
+      "teaser": "The celebrated automaton used sliding machinery, sightlines, magnets, and a concealed operator to preserve the illusion that a turbaned figure could think.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Racknitz_-_The_Turk_3.jpg/1920px-Racknitz_-_The_Turk_3.jpg",
+      "imageAlt": "Engraving of the Mechanical Turk chess automaton with cabinet doors open",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Mechanical_Turk",
+      "size": "wide"
+    },
+    {
+      "id": "songkran-shared-renewal",
+      "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Belief & Ideas",
+        "Time & History"
+      ],
+      "question": "How did a ritual sprinkling become a country-wide river of celebration?",
+      "teaser": "Songkran marks the traditional Thai New Year through family respect, temple observance, cleaning, and water as a symbol of purification and shared renewal.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Songkran_Day_%40_Chiangmai_Wall.jpg/1920px-Songkran_Day_%40_Chiangmai_Wall.jpg",
+      "imageAlt": "Joyful Songkran crowd throwing sparkling water in a Thai street",
+      "sourceLabel": "UNESCO",
+      "sourceUrl": "https://ich.unesco.org/en/RL/songkran-in-thailand-traditional-thai-new-year-festival-01719",
+      "size": "wide"
+    },
+    {
+      "id": "codex-mendoza-picture-place-names",
+      "category": "Culture",
+      "dimensions": [
+        "Language",
+        "Art & Expression",
+        "Society",
+        "Time & History"
+      ],
+      "question": "How can a cactus, a stone, and water spell the name of a city?",
+      "teaser": "Mexica scribes combined conventional pictures, phonetic clues, and place-name glyphs; the Codex Mendoza layers this visual writing with later Spanish annotation.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/CodexMendoza01.jpg/1920px-CodexMendoza01.jpg",
+      "imageAlt": "Colorful Codex Mendoza page with an eagle cactus canals and glyphs",
+      "sourceLabel": "Bodleian Libraries",
+      "sourceUrl": "https://digital.bodleian.ox.ac.uk/objects/2fea788e-2aa2-4f08-b6d9-648c00486220/",
+      "size": "wide"
+    },
+    {
+      "id": "moai-coral-eyes",
+      "category": "Culture",
+      "dimensions": [
+        "Belief & Ideas",
+        "Art & Expression",
+        "Time & History"
+      ],
+      "question": "Why were coral eyes added to stone ancestors only after they were raised?",
+      "teaser": "Some moai eye sockets once held white coral and dark pupils. Restored examples suggest the gaze completed an image tied to ancestral presence and community authority.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Ahu-Ko-Te-Riku-2014.jpg/1920px-Ahu-Ko-Te-Riku-2014.jpg",
+      "imageAlt": "Moai statue with reconstructed white coral eyes and dark pupils",
+      "sourceLabel": "British Museum",
+      "sourceUrl": "https://www.britishmuseum.org/collection/galleries/living-and-dying",
+      "size": "tall"
+    },
+    {
+      "id": "rose-window-stories-in-light",
+      "category": "Art",
+      "dimensions": [
+        "Art & Expression",
+        "Design & Technology",
+        "Forces & Energy",
+        "Belief & Ideas"
+      ],
+      "question": "How can a stone wall open into a wheel of colored stories?",
+      "teaser": "Gothic rose windows join radiating stone tracery with stained glass, distributing weight around a vast circular opening while sunlight animates layered imagery.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/5/55/00_1812_Stained_glass_windows_-_Notre-Dame_de_Strasbourg.jpg",
+      "imageAlt": "Radiant stained-glass rose window glowing in blue red and gold",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Rose_window",
+      "size": "wide"
+    },
+    {
+      "id": "velcro-burr-hooks",
+      "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Living World",
+        "Matter"
+      ],
+      "question": "How did a burr stuck to a dog's fur become a reusable fastener?",
+      "teaser": "Microscopy revealed tiny plant hooks catching hair and fabric loops; engineers translated that attachment strategy into paired hook-and-loop textile surfaces.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Velcro_Hooks.jpg/1920px-Velcro_Hooks.jpg",
+      "imageAlt": "Macro photograph of hooked burdock burrs beside hook-and-loop fastener fibers",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hook-and-loop_fastener",
+      "size": "wide"
+    },
+    {
+      "id": "maras-salt-staircase",
+      "category": "Culture",
+      "dimensions": [
+        "Food & Agriculture",
+        "Planet Earth",
+        "Society",
+        "Matter"
+      ],
+      "question": "How can one salty spring feed thousands of white terraces high in the Andes?",
+      "teaser": "A small mineral-rich stream is divided among shallow family-managed ponds; sun and dry mountain air evaporate the water, leaving layers of salt behind.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Salineras_de_Maras%2C_Maras%2C_Per%C3%BA%2C_2015-07-30%2C_DD_17.JPG/1920px-Salineras_de_Maras%2C_Maras%2C_Per%C3%BA%2C_2015-07-30%2C_DD_17.JPG",
+      "imageAlt": "Thousands of terraced salt ponds at Maras glowing white and amber",
+      "sourceLabel": "Wikipedia",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Maras,_Peru",
+      "size": "wide"
+    }
+  ]
+}

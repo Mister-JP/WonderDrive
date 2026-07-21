@@ -24,7 +24,7 @@ function RoutedExperienceFallback() {
         <small>Resolving a durable guest identity</small>
       </section>
       <footer className="app-footer">
-        <p><span aria-hidden="true">W/V3</span> One personality. One researched turn. Exactly two ways forward.</p>
+        <p><span aria-hidden="true">W/V3</span> One personality. One researched turn. Many ways forward.</p>
       </footer>
     </main>
   );

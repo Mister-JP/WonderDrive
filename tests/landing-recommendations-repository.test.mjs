@@ -9,6 +9,25 @@ import {
 function memoryD1(seed = {}) {
   const batches = [...(seed.batches ?? [])];
   const recommendations = [...(seed.recommendations ?? [])];
+  const dimensions = [...(seed.dimensions ?? [])];
+
+  function dimensionsFor(recommendation) {
+    const assigned = dimensions
+      .filter((item) => item.recommendation_id === recommendation.id)
+      .sort((left, right) => left.position - right.position)
+      .map((item) => item.dimension);
+    if (assigned.length) return assigned;
+    return [{
+      Nature: "Living World",
+      Science: "Forces & Energy",
+      History: "Time & History",
+      Culture: "Society",
+      Systems: "Design & Technology",
+      Space: "Cosmos",
+      Technology: "Design & Technology",
+      Art: "Art & Expression",
+    }[recommendation.category]];
+  }
 
   function prepare(sql) {
     let values = [];
@@ -20,10 +39,10 @@ function memoryD1(seed = {}) {
       async first() {
         if (sql.includes("COUNT(*) AS count")) {
           const publishedIds = new Set(batches.filter((batch) => batch.status === "published").map((batch) => batch.id));
-          const category = sql.includes("r.category = ?") ? values[0] : null;
+          const dimension = sql.includes("d.dimension = ?") ? values[0] : null;
           return {
             count: recommendations.filter((item) => publishedIds.has(item.batch_id)
-              && (!category || item.category === category)).length,
+              && (!dimension || dimensionsFor(item).includes(dimension))).length,
           };
         }
         return null;
@@ -33,12 +52,12 @@ function memoryD1(seed = {}) {
         const publishedBatches = new Map(
           batches.filter((batch) => batch.status === "published").map((batch) => [batch.id, batch]),
         );
-        const category = sql.includes("r.category = ?") ? values[0] : null;
-        const [limit, offset] = category ? values.slice(1) : values;
+        const dimension = sql.includes("d.dimension = ?") ? values[0] : null;
+        const [limit, offset] = dimension ? values.slice(1) : values;
         return {
           results: recommendations
             .filter((item) => publishedBatches.has(item.batch_id)
-              && (!category || item.category === category))
+              && (!dimension || dimensionsFor(item).includes(dimension)))
             .sort((left, right) => {
               const leftBatch = publishedBatches.get(left.batch_id);
               const rightBatch = publishedBatches.get(right.batch_id);
@@ -50,6 +69,7 @@ function memoryD1(seed = {}) {
             .slice(offset, offset + limit)
             .map((item) => ({
               ...item,
+              dimensions_json: JSON.stringify(dimensionsFor(item)),
               batch_title: publishedBatches.get(item.batch_id).title,
               published_at: publishedBatches.get(item.batch_id).published_at,
             })),
@@ -64,6 +84,8 @@ function memoryD1(seed = {}) {
             question: values[4], teaser: values[5], image_url: values[6], image_alt: values[7],
             source_label: values[8], source_url: values[9], size: values[10], created_at: values[11],
           });
+        } else if (sql.includes("INSERT INTO landing_recommendation_dimensions")) {
+          dimensions.push({ recommendation_id: values[0], dimension: values[1], position: values[2] });
         }
         return { success: true };
       },
@@ -121,7 +143,7 @@ test("published recommendations are paginated 20 at a time newest first", async 
   assert.deepEqual(second.items.map((item) => item.id), Array.from({ length: 15 }, (_, index) => `old-${index + 10}`));
 });
 
-test("category pages query the full published catalog before pagination", async () => {
+test("dimension pages query the full published catalog before pagination", async () => {
   const scienceRows = Array.from({ length: 22 }, (_, index) => row(`science-${index}`, "published", index));
   const historyRows = Array.from({ length: 7 }, (_, index) => ({
     ...row(`history-${index}`, "published", index + scienceRows.length),
@@ -132,18 +154,18 @@ test("category pages query the full published catalog before pagination", async 
     recommendations: [...scienceRows, ...historyRows],
   });
 
-  const history = await getLandingRecommendationPage(1, "History");
+  const history = await getLandingRecommendationPage(1, "Time & History");
   assert.equal(history.totalItems, 7);
   assert.equal(history.totalPages, 1);
   assert.deepEqual(history.items.map((item) => item.id), Array.from({ length: 7 }, (_, index) => `history-${index}`));
 
-  const scienceSecondPage = await getLandingRecommendationPage(2, "Science");
+  const scienceSecondPage = await getLandingRecommendationPage(2, "Forces & Energy");
   assert.equal(scienceSecondPage.totalItems, 22);
   assert.equal(scienceSecondPage.totalPages, 2);
   assert.deepEqual(scienceSecondPage.items.map((item) => item.id), ["science-20", "science-21"]);
 });
 
-test("unsupported recommendation categories are rejected", async () => {
+test("unsupported recommendation dimensions are rejected", async () => {
   env.DB = memoryD1();
   await assert.rejects(
     () => getLandingRecommendationPage(1, "Unknown"),
@@ -161,6 +183,7 @@ test("owner publishing prepends cards and shifts older cards across pages", asyn
     title: "New editorial run",
     recommendations: [{
       category: "Nature",
+      dimensions: ["Living World", "Mind"],
       question: "How does an octopus change its appearance?",
       teaser: "Several layers of specialized skin work together.",
       imageUrl: "https://example.com/octopus.jpg",
@@ -174,8 +197,37 @@ test("owner publishing prepends cards and shifts older cards across pages", asyn
   assert.equal(published.page, 1);
   assert.equal(published.totalPages, 2);
   assert.equal(published.items[0].question, "How does an octopus change its appearance?");
+  assert.deepEqual(published.items[0].dimensions, ["Living World", "Mind"]);
   assert.equal(published.items[1].id, "old-0");
   const older = await getLandingRecommendationPage(2);
   assert.equal(older.batchId, "older");
   assert.deepEqual(older.items.map((item) => item.id), ["old-19"]);
+});
+
+test("publishing rejects repeated or unknown dimensions", async () => {
+  env.DB = memoryD1();
+  const recommendation = {
+    category: "Nature",
+    question: "How does an octopus change its appearance?",
+    teaser: "Several layers of specialized skin work together.",
+    imageUrl: "https://example.com/octopus.jpg",
+    imageAlt: "An octopus changing color",
+    sourceLabel: "Example museum",
+    sourceUrl: "https://example.com/octopus",
+    size: "wide",
+  };
+  await assert.rejects(
+    () => publishLandingRecommendationBatch({
+      title: "Repeated lens",
+      recommendations: [{ ...recommendation, dimensions: ["Living World", "Living World"] }],
+    }),
+    (error) => error?.code === "BAD_REQUEST" && error?.status === 400,
+  );
+  await assert.rejects(
+    () => publishLandingRecommendationBatch({
+      title: "Unknown lens",
+      recommendations: [{ ...recommendation, dimensions: ["Unknown"] }],
+    }),
+    (error) => error?.code === "BAD_REQUEST" && error?.status === 400,
+  );
 });

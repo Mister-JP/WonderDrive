@@ -4,6 +4,11 @@
     {
       "id": "blue-dragon-upside-down",
       "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Body",
+        "Planet Earth"
+      ],
       "question": "Why does the blue dragon sea slug live upside down?",
       "teaser": "A gas-filled sac keeps this tiny hunter inverted at the ocean surface, where its blue back blends with the water and its pale underside faces the sky.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Glaucus_atlanticus_1.jpg?width=1280",
@@ -15,6 +20,9 @@
     {
       "id": "venus-flytrap-counting",
       "category": "Nature",
+      "dimensions": [
+        "Living World"
+      ],
       "question": "How does a Venus flytrap count before it eats?",
       "teaser": "Two quick touches close the trap, while further electrical signals confirm a struggling meal and progressively switch on digestion.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Venus_Flytrap_-_Dionaea_muscipula%2C_Green_Swamp%2C_Supply%2C_North_Carolina%2C_October_18%2C_2021_%2851693075042%29.jpg?width=1280",
@@ -26,6 +34,12 @@
     {
       "id": "tsingy-stone-forest",
       "category": "Nature",
+      "dimensions": [
+        "Living World",
+        "Planet Earth",
+        "Matter",
+        "Art & Expression"
+      ],
       "question": "How did rain carve Madagascar's forest of stone needles?",
       "teaser": "Water slowly dissolved and split a vast limestone plateau, sharpening it into a labyrinth of ridges, canyons, and pinnacles up to 100 metres high.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Grand_Tsingy_08.JPG?width=1280",
@@ -37,6 +51,10 @@
     {
       "id": "sea-ice-frost-flowers",
       "category": "Science",
+      "dimensions": [
+        "Matter",
+        "Planet Earth"
+      ],
       "question": "How can newborn sea ice bloom with crystal flowers?",
       "teaser": "In bitterly cold, still air, water vapour deposits onto tiny bumps in fresh ice and branches into featherlike crystals that can wick concentrated brine.",
       "imageUrl": "https://s3.amazonaws.com/s3-east-testmedia-noaa.woc.noaa.gov/dam/Photos/legacy/pl23_arct0790.jpg",
@@ -48,6 +66,10 @@
     {
       "id": "grand-prismatic-living-thermometer",
       "category": "Science",
+      "dimensions": [
+        "Living World",
+        "Planet Earth"
+      ],
       "question": "Can a rainbow hot spring work like a living thermometer?",
       "teaser": "Different heat-loving microbes thrive in different temperature bands, turning cooling runoff into rings of yellow, orange, brown, and green.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Aerial_image_of_Grand_Prismatic_Spring_%28view_from_the_south%29.jpg?width=1280",
@@ -59,6 +81,10 @@
     {
       "id": "leidenfrost-vapor-skating",
       "category": "Science",
+      "dimensions": [
+        "Forces & Energy",
+        "Matter"
+      ],
       "question": "Why does water skate across a pan that is far too hot?",
       "teaser": "The droplet's underside flashes into vapour, building an insulating cushion that lifts the liquid and lets it race across the surface.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Water_droplet_Leidenfrost_effect.JPG?width=1280",
@@ -70,6 +96,12 @@
     {
       "id": "lalibela-carved-downward",
       "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Belief & Ideas",
+        "Planet Earth",
+        "Art & Expression"
+      ],
       "question": "Why was an Ethiopian church carved downward into the earth?",
       "teaser": "At Lalibela, builders cut trenches into living rock, then shaped the block left behind into a church complete with windows, doors, and a cross-shaped roof.",
       "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Bete_Giyorgis-Lalibela_%281%29.jpg/1280px-Bete_Giyorgis-Lalibela_%281%29.jpg",
@@ -81,6 +113,10 @@
     {
       "id": "falkirk-rotating-boat-lift",
       "category": "Systems",
+      "dimensions": [
+        "Design & Technology",
+        "Forces & Energy"
+      ],
       "question": "How can a giant wheel lift boats using the energy of eight kettles?",
       "teaser": "The Falkirk Wheel keeps two water-filled gondolas balanced as they rotate in opposite directions, so moving 1,800 tonnes takes surprisingly little energy.",
       "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Falkirk_Wheel_%2855274731670%29.jpg/1280px-Falkirk_Wheel_%2855274731670%29.jpg",
@@ -92,6 +128,12 @@
     {
       "id": "petra-rain-engineering",
       "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Planet Earth",
+        "Matter",
+        "Forces & Energy"
+      ],
       "question": "How did Petra turn flash floods into a desert water supply?",
       "teaser": "Nabataean engineers linked diversion dams, rock-cut channels, tunnels, cisterns, and reservoirs to tame seasonal torrents and store their water.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Al_Khazneh_Petra_edit_2.jpg?width=1280",
@@ -103,6 +145,11 @@
     {
       "id": "uros-floating-reed-islands",
       "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Planet Earth",
+        "Design & Technology"
+      ],
       "question": "How do people build an island that must keep being renewed?",
       "teaser": "Uro communities layer buoyant totora roots and reeds into inhabited platforms, adding fresh material as the wet lower layers slowly decompose.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Floating_Islands_Puno.jpg?width=1280",
@@ -114,6 +161,11 @@
     {
       "id": "qeswachaka-annual-bridge",
       "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Time & History",
+        "Design & Technology"
+      ],
       "question": "Why is this Inca-style bridge rebuilt every single year?",
       "teaser": "Four Quechua communities twist local grass into immense ropes and renew the bridge together, preserving both a crossing and their social bonds.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Puente_Q%27eswachaka%2C_Quehue%2C_Cusco%2C_Per%C3%BA.jpg?width=1280",
@@ -125,6 +177,10 @@
     {
       "id": "kente-strips-to-prestige",
       "category": "Culture",
+      "dimensions": [
+        "Society",
+        "Art & Expression"
+      ],
       "question": "How can narrow woven strips become a monumental cloth?",
       "teaser": "Kente weavers build intricate color and motif blocks on a slim loom, then cut and stitch many bands edge-to-edge into a vast prestige wrapper.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Kente_patterns%2C_Tafi%2C_Volta_region.jpg?width=1280",
@@ -136,6 +192,10 @@
     {
       "id": "living-root-bridge",
       "category": "Systems",
+      "dimensions": [
+        "Design & Technology",
+        "Living World"
+      ],
       "question": "How can a bridge become stronger as it gets older?",
       "teaser": "Khasi and Jaintia communities guide living fig roots across streams; the roots thicken, interweave, and reinforce the crossing over generations.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Living_root_bridges_of_Nongriat_village_in_East_Khasi_Hills_district%2C_Meghalaya_JEG7387.jpg?width=1280",
@@ -147,6 +207,12 @@
     {
       "id": "ifugao-water-staircase",
       "category": "History",
+      "dimensions": [
+        "Time & History",
+        "Food & Agriculture",
+        "Planet Earth",
+        "Matter"
+      ],
       "question": "How does one mountain stream feed an entire staircase of farms?",
       "teaser": "Ifugao communities harvest forest water into shared canals and sluices, passing it from the highest pond field through thousands of sculpted terraces.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Batad_Rice_Terraces_%28aerial%29.jpg?width=1280",
@@ -158,6 +224,11 @@
     {
       "id": "atacama-fog-harvesting",
       "category": "Systems",
+      "dimensions": [
+        "Design & Technology",
+        "Planet Earth",
+        "Matter"
+      ],
       "question": "Can a net harvest drinking water from a cloud?",
       "teaser": "Coastal fog droplets strike fine mesh, merge, and drain into gutters—turning windblown cloud water into a passive supply for arid communities.",
       "imageUrl": "https://www.uc.cl/site/assets/files/11124/fog-catcher.jpg",
@@ -169,6 +240,11 @@
     {
       "id": "aerogel-catches-comets",
       "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Cosmos",
+        "Matter"
+      ],
       "question": "How can solid smoke catch dust from a speeding comet?",
       "teaser": "Aerogel is mostly empty space, so a particle can carve a long track while slowing gently enough to arrive intact for scientists to study.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Aerogel_hand.jpg?width=1280",
@@ -180,6 +256,11 @@
     {
       "id": "gecko-dry-adhesive",
       "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Body",
+        "Living World"
+      ],
       "question": "How can a gecko stick without glue, hooks, or suction?",
       "teaser": "Millions of branching toe hairs conform to microscopic surface contours, bringing molecules close enough for weak attractions to add up to a powerful grip.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Gecko_feet.jpg?width=1280",
@@ -191,6 +272,12 @@
     {
       "id": "fiber-optic-corner-light",
       "category": "Technology",
+      "dimensions": [
+        "Design & Technology",
+        "Matter",
+        "Forces & Energy",
+        "Art & Expression"
+      ],
       "question": "How can a glass thread carry light around a corner?",
       "teaser": "A lower-index cladding keeps light reflecting inside the fiber's core, guiding fast optical signals through bends instead of letting them escape.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Lamp_with_illuminated_optic_fibers.jpg?width=1280",
@@ -202,6 +289,11 @@
     {
       "id": "atkins-sun-printed-algae",
       "category": "Art",
+      "dimensions": [
+        "Art & Expression",
+        "Planet Earth",
+        "Cosmos"
+      ],
       "question": "How did sunlight turn seaweed into the first photographic book?",
       "teaser": "Anna Atkins placed algae directly on sensitized paper; sunlight colored the exposed sheet Prussian blue and left each specimen as a pale silhouette.",
       "imageUrl": "https://images.metmuseum.org/CRDImages/ph/original/DP-17302-149.jpg",
@@ -213,6 +305,10 @@
     {
       "id": "holbein-hidden-skull",
       "category": "Art",
+      "dimensions": [
+        "Art & Expression",
+        "Mind"
+      ],
       "question": "Why does Holbein's hidden skull appear only from the side?",
       "teaser": "The painter stretched a precisely drawn skull across a steep perspective, so its strange smear resolves only when viewed from an oblique angle.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Hans_Holbein_the_Younger_-_The_Ambassadors_-_Google_Art_Project.jpg?width=1280",
@@ -224,6 +320,10 @@
     {
       "id": "kintsugi-visible-repair",
       "category": "Art",
+      "dimensions": [
+        "Art & Expression",
+        "Matter"
+      ],
       "question": "Why turn a broken bowl's cracks into lines of gold?",
       "teaser": "Kintsugi joins ceramic fragments with lacquer and highlights the seams with metal powder, making repair an explicit chapter in the object's life.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Bowl%2C_19th_century_%28CH_18345219%29.jpg?width=1280",
@@ -235,6 +335,11 @@
     {
       "id": "saturn-polar-hexagon",
       "category": "Space",
+      "dimensions": [
+        "Cosmos",
+        "Planet Earth",
+        "Numbers & Logic"
+      ],
       "question": "Why does Saturn wear a six-sided storm around its pole?",
       "teaser": "A fast eastward jet behaves like a standing atmospheric wave; its meanders lock into six persistent corners around the north pole.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/PIA18274-Saturn-NorthPolarHexagon-Cassini-20140402.jpg?width=1280",
@@ -246,6 +351,11 @@
     {
       "id": "europa-chaos-ice-rafts",
       "category": "Space",
+      "dimensions": [
+        "Cosmos",
+        "Planet Earth",
+        "Matter"
+      ],
       "question": "Did Europa's ice crust break apart and refreeze like a jigsaw?",
       "teaser": "Galileo images show crustal plates shifted and rotated inside darker material, evidence that warm ice, slush, or water disrupted the surface below.",
       "imageUrl": "https://assets.science.nasa.gov/content/dam/science/missions/europa-clipper/images/p49434.jpg",
@@ -257,6 +367,10 @@
     {
       "id": "solar-magnetic-prominence",
       "category": "Space",
+      "dimensions": [
+        "Cosmos",
+        "Forces & Energy"
+      ],
       "question": "What holds a loop of star-stuff above the Sun?",
       "teaser": "Invisible magnetic fields suspend dense, charged plasma in immense arcs, then guide its motion as the structure shifts, erupts, or falls back.",
       "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/SDO_first_light.png?width=1280",

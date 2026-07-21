@@ -515,7 +515,7 @@ export function buildFixtureTurn(input: {
       {
         sequence: 4,
         kind: "synthesis",
-        label: "Composed the answer and validated exactly two distinct paths",
+        label: "Composed the answer and validated its continuation paths",
       },
     ],
   };

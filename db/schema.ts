@@ -118,6 +118,46 @@ export const landingRecommendations = sqliteTable(
   ],
 );
 
+export const landingRecommendationDimensions = sqliteTable(
+  "landing_recommendation_dimensions",
+  {
+    recommendationId: text("recommendation_id")
+      .notNull()
+      .references(() => landingRecommendations.id, { onDelete: "cascade" }),
+    dimension: text("dimension", {
+      enum: [
+        "Living World",
+        "Planet Earth",
+        "Cosmos",
+        "Matter",
+        "Forces & Energy",
+        "Numbers & Logic",
+        "Body",
+        "Mind",
+        "Time & History",
+        "Society",
+        "Language",
+        "Belief & Ideas",
+        "Art & Expression",
+        "Design & Technology",
+        "Food & Agriculture",
+      ],
+    }).notNull(),
+    position: integer("position").notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.recommendationId, table.dimension] }),
+    uniqueIndex("landing_recommendation_dimensions_position_unique").on(
+      table.recommendationId,
+      table.position,
+    ),
+    index("landing_recommendation_dimensions_filter_idx").on(
+      table.dimension,
+      table.recommendationId,
+    ),
+  ],
+);
+
 export const journeys = sqliteTable(
   "journeys",
   {
