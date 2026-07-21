@@ -20,9 +20,11 @@ export const jsxs = jsx;
 `);
 
 const icons = [
-  "ArrowLeft", "ArrowRight", "ArrowsClockwise", "BookmarkSimple", "CaretDown", "Check",
-  "CaretRight", "CornersOut", "Crosshair", "ListBullets", "MagnifyingGlass",
-  "MagicWand", "Minus", "Path", "PencilSimple", "Plus", "TreeStructure", "X",
+  "ArrowClockwise", "ArrowLeft", "ArrowRight", "ArrowUpRight", "ArrowsClockwise",
+  "BookmarkSimple", "CaretDown", "Check", "Clock", "CaretRight", "CornersOut",
+  "Crosshair", "DotsThree", "ListBullets", "MagnifyingGlass", "MagicWand", "Minus",
+  "Path", "PencilSimple", "Plus", "PushPinSimple", "SpinnerGap", "TreeStructure",
+  "WarningCircle", "X",
 ];
 const phosphorModule = moduleUrl(icons.map((name) => `export const ${name} = ${JSON.stringify(name)};`).join("\n"));
 

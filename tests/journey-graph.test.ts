@@ -6,6 +6,7 @@ import {
   desktopGraphLayout,
   findGraphNode,
   findGraphPath,
+  graphFitScale,
   mobileGraphLayout,
   visibleJourneyGraph,
   type JourneyGraphNode,
@@ -393,6 +394,13 @@ test("keeps deterministic desktop geometry for every density", () => {
       expected[density],
     );
   }
+});
+
+test("fits the complete desktop graph against both viewport dimensions", () => {
+  assert.equal(graphFitScale(1558, 610, 1300, 994), 582 / 994);
+  assert.equal(graphFitScale(900, 900, 1300, 560), 872 / 1300);
+  assert.equal(graphFitScale(1600, 900, 1300, 658), 1);
+  assert.equal(graphFitScale(0, 900, 1300, 658), 1);
 });
 
 test("keeps deterministic mobile geometry and displays at most two children per route row", () => {

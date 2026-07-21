@@ -244,6 +244,7 @@ export function CuriosityPediaExperience() {
   const [error, setError] = useState<string | null>(null);
   const [errorCode, setErrorCode] = useState<ApiFailure["error"]["code"] | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  const [readyToast, setReadyToast] = useState<{ journeyId: string; question: string } | null>(null);
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [liveResearch, setLiveResearch] = useState<LiveResearchState | null>(null);
   const [researchActivities, setResearchActivities] = useState<ResearchActivity[]>([]);
@@ -262,6 +263,7 @@ export function CuriosityPediaExperience() {
   const viewerRef = useRef(viewer);
   const preferencesRef = useRef(preferences);
   const liveResearchRef = useRef(liveResearch);
+  const researchActivitiesRef = useRef(researchActivities);
   const liveResearchAbortRef = useRef<AbortController | null>(null);
   const pendingResearchRef = useRef<LiveResearchRequest | null>(null);
   const takeoverRequestIdRef = useRef<string | null>(null);
@@ -270,6 +272,7 @@ export function CuriosityPediaExperience() {
   viewerRef.current = viewer;
   preferencesRef.current = preferences;
   liveResearchRef.current = liveResearch;
+  researchActivitiesRef.current = researchActivities;
   const returnTo = encodeURIComponent(`${pathname}${searchParams.size ? `?${searchParams.toString()}` : ""}`);
   const t = (key: string, values?: Record<string, string | number>) => translate(preferences.interfaceLocale, key, values);
 
@@ -279,6 +282,12 @@ export function CuriosityPediaExperience() {
       delete document.documentElement.dataset.textSize;
     };
   }, [preferences.textSize]);
+
+  useEffect(() => {
+    if (!readyToast) return;
+    const timer = window.setTimeout(() => setReadyToast(null), 10_000);
+    return () => window.clearTimeout(timer);
+  }, [readyToast]);
 
   useEffect(() => {
     const activeTheme = document.documentElement.dataset.theme === "dark" ? "dark" : "light";
@@ -402,8 +411,15 @@ export function CuriosityPediaExperience() {
     try {
       const activityT = (key: string) => translate(preferencesRef.current.interfaceLocale, key);
       const payload = await api<ResearchActivity[]>("/api/research/background");
+      const newlyReady = payload.data.find((activity) => activity.status === "ready"
+        && activity.journeyId
+        && researchActivitiesRef.current.some((previous) => previous.id === activity.id && previous.status === "researching"));
       setViewer(payload.viewer);
       setResearchActivities(payload.data);
+      researchActivitiesRef.current = payload.data;
+      if (newlyReady?.journeyId) {
+        setReadyToast({ journeyId: newlyReady.journeyId, question: newlyReady.question });
+      }
       if (payload.data.some((activity) => activity.status === "ready"
         && activity.journeyId
         && !journeysRef.current.some((journey) => journey.id === activity.journeyId))) {
@@ -939,6 +955,22 @@ export function CuriosityPediaExperience() {
         </div>
       </header>
 
+      {readyToast && (
+        <aside className="answer-ready-toast" role="status" aria-live="polite">
+          <button className="answer-ready-dismiss" type="button" aria-label={t("Dismiss")} onClick={() => setReadyToast(null)}>
+            <X aria-hidden="true" />
+          </button>
+          <span>{t("Research complete")}</span>
+          <strong>{t("Your answer is ready")}</strong>
+          <p>{readyToast.question}</p>
+          <button type="button" onClick={() => {
+            const journeyId = readyToast.journeyId;
+            setReadyToast(null);
+            void openJourney(journeyId, "journey");
+          }}>{t("Show answer")} <ArrowRight aria-hidden="true" /></button>
+        </aside>
+      )}
+
       {viewer?.mode === "chatgpt" && viewer.hasGuestUpgrade && (
         <div className="upgrade-banner" role="status">
           <span>{t("Your guest journeys are still separate.")}</span>
@@ -1010,6 +1042,7 @@ export function CuriosityPediaExperience() {
           activities={researchActivities}
           viewer={viewer}
           busy={mutation}
+          onShowAnswer={(id) => void openJourney(id, "journey")}
           onOpen={(id) => void openJourney(id, "map")}
           onDelete={(id) => void removeJourney(id)}
           onManage={(id, changes) => void manageJourney(id, changes)}
@@ -1392,15 +1425,28 @@ function StartStage({
                     <span>{encounter.category}</span>
                   </span>
                 ) : (
-                  /* Editorial images are remote, source-controlled URLs and retain their original delivery semantics. */
-                  /* eslint-disable-next-line @next/next/no-img-element */
-                  <img
-                    src={encounter.imageUrl}
-                    alt={encounter.imageAlt}
-                    loading={index > 7 ? "lazy" : "eager"}
-                    decoding="async"
-                    onError={() => setFailedEncounterIds((current) => current.includes(encounter.id) ? current : [...current, encounter.id])}
-                  />
+                  <>
+                    {/* A blurred copy fills the card without sacrificing the artwork's original composition. */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      className="discovery-card-image-backdrop"
+                      src={encounter.imageUrl}
+                      alt=""
+                      aria-hidden="true"
+                      loading={index > 7 ? "lazy" : "eager"}
+                      decoding="async"
+                    />
+                    {/* Editorial images are remote, source-controlled URLs and retain their original delivery semantics. */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      className="discovery-card-image-artwork"
+                      src={encounter.imageUrl}
+                      alt={encounter.imageAlt}
+                      loading={index > 7 ? "lazy" : "eager"}
+                      decoding="async"
+                      onError={() => setFailedEncounterIds((current) => current.includes(encounter.id) ? current : [...current, encounter.id])}
+                    />
+                  </>
                 )}
               </button>
               <div className="discovery-card-copy">
@@ -1572,6 +1618,12 @@ function JourneyBufferingStage({
             <small>{state.status === "running" ? workingLabel : state.status === "complete" ? "Arranging the final page" : state.error}</small>
           </div>
         </div>
+        {state.status === "running" && (
+          <aside className="knowledge-loading-expectation" role="note">
+            <strong>{t("This can take about 2–3 minutes")}</strong>
+            <span>{t("You can safely leave this page. We’ll keep researching in the background, and the finished answer will appear in {journeys}.", { journeys: t("Journeys") })}</span>
+          </aside>
+        )}
       </div>
 
       <figure className={`knowledge-loading-hero ${renderablePreview ? "has-preview" : "without-preview"}`}>

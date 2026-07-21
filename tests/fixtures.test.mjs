@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { MODELS } from "../lib/catalog.ts";
+import { DEFAULT_PREFERENCES, MODELS } from "../lib/catalog.ts";
 import { STARTING_QUESTION_MAX_LENGTH } from "../lib/contracts.ts";
 import { buildFixtureTurn } from "../lib/fixtures.ts";
 import { normalizeSeed } from "../lib/request.ts";
@@ -16,6 +16,10 @@ test("publishes only selectable live OpenAI research models", () => {
   assert.ok(MODELS.every((model) => model.provider === "OpenAI" && model.mode === "live"));
   assert.ok(MODELS.some((model) => model.id === "gpt-5.4-nano"));
   assert.ok(!MODELS.some((model) => model.id === "fixture-terra"));
+});
+
+test("uses GPT-5.4 nano as the shared default research model", () => {
+  assert.equal(DEFAULT_PREFERENCES.defaultModelId, "gpt-5.4-nano");
 });
 
 test("accepts long starting questions up to the shared 5,000 character boundary", () => {

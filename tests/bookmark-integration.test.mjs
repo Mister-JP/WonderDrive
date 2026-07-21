@@ -48,7 +48,7 @@ test("bookmark mutations use the standard same-origin failure envelope", async (
   });
 });
 
-test("guest upgrade transfers bookmarks and journeys in one ordered D1 batch", () => {
+test("guest upgrade transfers user content without duplicating starter examples", () => {
   const calls = [];
   const db = {
     prepare(sql) {
@@ -82,8 +82,9 @@ test("guest upgrade transfers bookmarks and journeys in one ordered D1 batch", (
   assert.match(normalizedSql(calls[2]), /^UPDATE journeys SET owner_identity_id = \?/);
   assert.equal(normalizedSql(calls[3]), "DELETE FROM bookmarks WHERE identity_id = ?");
   assert.match(normalizedSql(calls[5]), /^INSERT INTO identity_upgrades/);
-  assert.deepEqual(calls[1].bindings, ["identity-account", "identity-guest", "identity-guest"]);
-  assert.deepEqual(calls[2].bindings, ["identity-account", 500, "identity-guest"]);
+  assert.deepEqual(calls[1].bindings, ["identity-account", "identity-guest", "identity-guest", "starter:v1:%"]);
+  assert.deepEqual(calls[2].bindings, ["identity-account", 500, "identity-guest", "starter:v1:%"]);
+  assert.ok(calls.slice(0, 3).every((call) => normalizedSql(call).includes("fixture_key LIKE ?")));
 });
 
 test("authorized journey deletion removes its bookmarks in the same D1 batch", async () => {

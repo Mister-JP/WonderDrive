@@ -3,16 +3,16 @@ import type { SupportedLocale } from "../../lib/contracts";
 type Locale = Exclude<SupportedLocale, "en">;
 
 const messages: Record<Locale, Record<string, string>> = {
-  es: journeyMessages({ journeys: "Recorridos", yourJourneys: "Tus recorridos", newJourney: "Nuevo recorrido", showJourney: "Ver recorrido", capacity: "Capacidad de recorridos", firstExplored: "Primera pregunta", started: "Comenzó", renameLabel: "Renombrar etiqueta del recorrido", remove: "Quitar" }),
-  fr: journeyMessages({ journeys: "Parcours", yourJourneys: "Vos parcours", newJourney: "Nouveau parcours", showJourney: "Voir le parcours", capacity: "Capacité des parcours", firstExplored: "Première question", started: "Commencé", renameLabel: "Renommer l’étiquette du parcours", remove: "Supprimer" }),
-  de: journeyMessages({ journeys: "Journeys", yourJourneys: "Deine Journeys", newJourney: "Neue Journey", showJourney: "Journey anzeigen", capacity: "Journey-Kapazität", firstExplored: "Erste Frage", started: "Begonnen", renameLabel: "Journey-Label umbenennen", remove: "Entfernen" }),
-  pt: journeyMessages({ journeys: "Jornadas", yourJourneys: "Suas jornadas", newJourney: "Nova jornada", showJourney: "Mostrar jornada", capacity: "Capacidade de jornadas", firstExplored: "Primeira pergunta", started: "Iniciada", renameLabel: "Renomear rótulo da jornada", remove: "Remover" }),
-  hi: journeyMessages({ journeys: "यात्राएँ", yourJourneys: "आपकी यात्राएँ", newJourney: "नई यात्रा", showJourney: "यात्रा दिखाएँ", capacity: "यात्रा क्षमता", firstExplored: "पहला प्रश्न", started: "शुरू हुई", renameLabel: "यात्रा लेबल का नाम बदलें", remove: "हटाएँ" }),
-  bn: journeyMessages({ journeys: "যাত্রাসমূহ", yourJourneys: "আপনার যাত্রাসমূহ", newJourney: "নতুন যাত্রা", showJourney: "যাত্রা দেখুন", capacity: "যাত্রার ধারণক্ষমতা", firstExplored: "প্রথম প্রশ্ন", started: "শুরু", renameLabel: "যাত্রার লেবেল নাম বদলান", remove: "সরান" }),
-  ar: journeyMessages({ journeys: "الرحلات", yourJourneys: "رحلاتك", newJourney: "رحلة جديدة", showJourney: "عرض الرحلة", capacity: "سعة الرحلات", firstExplored: "السؤال الأول", started: "بدأت", renameLabel: "إعادة تسمية وسم الرحلة", remove: "إزالة" }),
-  "zh-CN": journeyMessages({ journeys: "旅程", yourJourneys: "你的旅程", newJourney: "新旅程", showJourney: "查看旅程", capacity: "旅程容量", firstExplored: "最初的问题", started: "开始于", renameLabel: "重命名旅程标签", remove: "移除" }),
-  ja: journeyMessages({ journeys: "ジャーニー", yourJourneys: "あなたのジャーニー", newJourney: "新しいジャーニー", showJourney: "ジャーニーを表示", capacity: "ジャーニー容量", firstExplored: "最初の質問", started: "開始", renameLabel: "ジャーニーラベルを変更", remove: "削除" }),
-  ko: journeyMessages({ journeys: "여정", yourJourneys: "나의 여정", newJourney: "새 여정", showJourney: "여정 보기", capacity: "여정 용량", firstExplored: "첫 질문", started: "시작", renameLabel: "여정 라벨 이름 바꾸기", remove: "삭제" }),
+  es: journeyMessages({ journeys: "Recorridos", yourJourneys: "Tus recorridos", newJourney: "Nuevo recorrido", showJourney: "Ver recorrido", showAnswer: "Ver respuesta", capacity: "Capacidad de recorridos", firstExplored: "Primera pregunta", started: "Comenzó", renameLabel: "Renombrar etiqueta del recorrido", remove: "Quitar" }),
+  fr: journeyMessages({ journeys: "Parcours", yourJourneys: "Vos parcours", newJourney: "Nouveau parcours", showJourney: "Voir le parcours", showAnswer: "Voir la réponse", capacity: "Capacité des parcours", firstExplored: "Première question", started: "Commencé", renameLabel: "Renommer l’étiquette du parcours", remove: "Supprimer" }),
+  de: journeyMessages({ journeys: "Journeys", yourJourneys: "Deine Journeys", newJourney: "Neue Journey", showJourney: "Journey anzeigen", showAnswer: "Antwort anzeigen", capacity: "Journey-Kapazität", firstExplored: "Erste Frage", started: "Begonnen", renameLabel: "Journey-Label umbenennen", remove: "Entfernen" }),
+  pt: journeyMessages({ journeys: "Jornadas", yourJourneys: "Suas jornadas", newJourney: "Nova jornada", showJourney: "Mostrar jornada", showAnswer: "Mostrar resposta", capacity: "Capacidade de jornadas", firstExplored: "Primeira pergunta", started: "Iniciada", renameLabel: "Renomear rótulo da jornada", remove: "Remover" }),
+  hi: journeyMessages({ journeys: "यात्राएँ", yourJourneys: "आपकी यात्राएँ", newJourney: "नई यात्रा", showJourney: "यात्रा दिखाएँ", showAnswer: "उत्तर दिखाएँ", capacity: "यात्रा क्षमता", firstExplored: "पहला प्रश्न", started: "शुरू हुई", renameLabel: "यात्रा लेबल का नाम बदलें", remove: "हटाएँ" }),
+  bn: journeyMessages({ journeys: "যাত্রাসমূহ", yourJourneys: "আপনার যাত্রাসমূহ", newJourney: "নতুন যাত্রা", showJourney: "যাত্রা দেখুন", showAnswer: "উত্তর দেখুন", capacity: "যাত্রার ধারণক্ষমতা", firstExplored: "প্রথম প্রশ্ন", started: "শুরু", renameLabel: "যাত্রার লেবেল নাম বদলান", remove: "সরান" }),
+  ar: journeyMessages({ journeys: "الرحلات", yourJourneys: "رحلاتك", newJourney: "رحلة جديدة", showJourney: "عرض الرحلة", showAnswer: "عرض الإجابة", capacity: "سعة الرحلات", firstExplored: "السؤال الأول", started: "بدأت", renameLabel: "إعادة تسمية وسم الرحلة", remove: "إزالة" }),
+  "zh-CN": journeyMessages({ journeys: "旅程", yourJourneys: "你的旅程", newJourney: "新旅程", showJourney: "查看旅程", showAnswer: "查看答案", capacity: "旅程容量", firstExplored: "最初的问题", started: "开始于", renameLabel: "重命名旅程标签", remove: "移除" }),
+  ja: journeyMessages({ journeys: "ジャーニー", yourJourneys: "あなたのジャーニー", newJourney: "新しいジャーニー", showJourney: "ジャーニーを表示", showAnswer: "回答を表示", capacity: "ジャーニー容量", firstExplored: "最初の質問", started: "開始", renameLabel: "ジャーニーラベルを変更", remove: "削除" }),
+  ko: journeyMessages({ journeys: "여정", yourJourneys: "나의 여정", newJourney: "새 여정", showJourney: "여정 보기", showAnswer: "답변 보기", capacity: "여정 용량", firstExplored: "첫 질문", started: "시작", renameLabel: "여정 라벨 이름 바꾸기", remove: "삭제" }),
 };
 
 Object.assign(messages.es, { Pinned: "Fijado"});
@@ -25,6 +25,10 @@ Object.assign(messages.ar, { Pinned: "مثبتة"});
 Object.assign(messages["zh-CN"], { Pinned: "已置顶"});
 Object.assign(messages.ja, { Pinned: "ピン留め"});
 Object.assign(messages.ko, { Pinned: "고정됨"});
+
+for (const locale of Object.keys(messages) as Locale[]) {
+  Object.assign(messages[locale], { "Sample journey": "Sample journey" });
+}
 
 const backgroundMessages: Record<Locale, Record<string, string>> = {
   es: { "Researching in the background. You can safely leave this page.": "Investigando en segundo plano. Puedes salir de esta página con seguridad.", "Researching {count}": "Investigando {count}", "In progress": "En curso", "Research activity": "Actividad de investigación", "Researching now": "Investigando ahora", "This research could not be completed.": "No se pudo completar esta investigación.", "Retry research": "Reintentar investigación" },
@@ -41,6 +45,40 @@ const backgroundMessages: Record<Locale, Record<string, string>> = {
 
 for (const locale of Object.keys(backgroundMessages) as Locale[]) {
   Object.assign(messages[locale], backgroundMessages[locale]);
+}
+
+const readyMessages: Record<Locale, Record<string, string>> = {
+  es: { "Research complete": "Investigación completada", "Your answer is ready": "Tu respuesta está lista" },
+  fr: { "Research complete": "Recherche terminée", "Your answer is ready": "Votre réponse est prête" },
+  de: { "Research complete": "Recherche abgeschlossen", "Your answer is ready": "Deine Antwort ist fertig" },
+  pt: { "Research complete": "Pesquisa concluída", "Your answer is ready": "Sua resposta está pronta" },
+  hi: { "Research complete": "शोध पूरा हुआ", "Your answer is ready": "आपका उत्तर तैयार है" },
+  bn: { "Research complete": "গবেষণা সম্পন্ন", "Your answer is ready": "আপনার উত্তর প্রস্তুত" },
+  ar: { "Research complete": "اكتمل البحث", "Your answer is ready": "إجابتك جاهزة" },
+  "zh-CN": { "Research complete": "研究完成", "Your answer is ready": "你的答案已准备好" },
+  ja: { "Research complete": "リサーチ完了", "Your answer is ready": "回答の準備ができました" },
+  ko: { "Research complete": "조사 완료", "Your answer is ready": "답변이 준비되었습니다" },
+};
+
+for (const locale of Object.keys(readyMessages) as Locale[]) {
+  Object.assign(messages[locale], readyMessages[locale]);
+}
+
+const archiveMessages: Record<Locale, Record<string, string>> = {
+  es: { "Journey archive": "Archivo de recorridos", "Your archive": "Tu archivo", "Search results": "Resultados de búsqueda" },
+  fr: { "Journey archive": "Archives des parcours", "Your archive": "Vos archives", "Search results": "Résultats de recherche" },
+  de: { "Journey archive": "Journey-Archiv", "Your archive": "Dein Archiv", "Search results": "Suchergebnisse" },
+  pt: { "Journey archive": "Arquivo de jornadas", "Your archive": "Seu arquivo", "Search results": "Resultados da pesquisa" },
+  hi: { "Journey archive": "यात्रा संग्रह", "Your archive": "आपका संग्रह", "Search results": "खोज परिणाम" },
+  bn: { "Journey archive": "যাত্রা আর্কাইভ", "Your archive": "আপনার আর্কাইভ", "Search results": "অনুসন্ধানের ফলাফল" },
+  ar: { "Journey archive": "أرشيف الرحلات", "Your archive": "أرشيفك", "Search results": "نتائج البحث" },
+  "zh-CN": { "Journey archive": "旅程存档", "Your archive": "你的存档", "Search results": "搜索结果" },
+  ja: { "Journey archive": "ジャーニーアーカイブ", "Your archive": "あなたのアーカイブ", "Search results": "検索結果" },
+  ko: { "Journey archive": "여정 보관함", "Your archive": "내 보관함", "Search results": "검색 결과" },
+};
+
+for (const locale of Object.keys(archiveMessages) as Locale[]) {
+  Object.assign(messages[locale], archiveMessages[locale]);
 }
 
 const progressMessages: Record<Locale, Record<string, string>> = {
@@ -99,6 +137,7 @@ function journeyMessages(words: {
   yourJourneys: string;
   newJourney: string;
   showJourney: string;
+  showAnswer: string;
   capacity: string;
   firstExplored: string;
   started: string;
@@ -111,6 +150,8 @@ function journeyMessages(words: {
     "New journey": words.newJourney,
     "Show Journey": words.showJourney,
     "Show journey: {question}": `${words.showJourney}: {question}`,
+    "Show answer": words.showAnswer,
+    "Show answer: {question}": `${words.showAnswer}: {question}`,
     "Journey capacity": words.capacity,
     "Journey capacity full": `${words.capacity} — full`,
     "First explored": words.firstExplored,

@@ -2,6 +2,8 @@ import { headers } from "next/headers";
 import { getChatGPTUser } from "../app/chatgpt-auth";
 import { getD1 } from "../db";
 import type { Viewer } from "./contracts";
+import { seedStarterContent } from "./starter-content";
+import { STARTER_FIXTURE_PREFIX } from "./starter-content-contract";
 import { journeyLimit } from "./usage-policy";
 
 const GUEST_COOKIE = "wd_guest";
@@ -41,7 +43,7 @@ export async function resolveViewer(): Promise<ViewerContext> {
 
     if (!identity) {
       const id = crypto.randomUUID();
-      await db
+      const created = await db
         .prepare(
           `INSERT OR IGNORE INTO identities
             (id, provider, provider_subject, email, full_name, profile_updated_at,
@@ -50,6 +52,9 @@ export async function resolveViewer(): Promise<ViewerContext> {
         )
         .bind(id, subject, email, fullName, now, now, now)
         .run();
+      if ((created.meta.changes ?? 0) > 0) {
+        await seedStarterContent(id, now);
+      }
       identity = await db
         .prepare(
           "SELECT id FROM identities WHERE provider = 'chatgpt' AND provider_subject = ? LIMIT 1",
@@ -128,6 +133,7 @@ export async function resolveViewer(): Promise<ViewerContext> {
     )
     .bind(identityId, subject, now + GUEST_MAX_AGE_SECONDS * 1000, now, now)
     .run();
+  await seedStarterContent(identityId, now);
 
   return {
     identityId,
@@ -169,9 +175,15 @@ export async function upgradeGuestJourneys(
   if (prior) return { transferred: prior.transferred_journey_count };
   const count = await db
     .prepare(
-      "SELECT COUNT(*) AS count FROM journeys WHERE owner_identity_id = ? AND deleted_at IS NULL",
+      `SELECT COUNT(*) AS count FROM journeys j
+       WHERE j.owner_identity_id = ? AND j.deleted_at IS NULL
+         AND NOT EXISTS (
+           SELECT 1 FROM turns t
+           WHERE t.journey_id = j.id AND t.parent_turn_id IS NULL
+             AND t.fixture_key LIKE ?
+         )`,
     )
-    .bind(viewer.pendingGuestIdentityId)
+    .bind(viewer.pendingGuestIdentityId, `${STARTER_FIXTURE_PREFIX}%`)
     .first<{ count: number }>();
   const transferred = count?.count ?? 0;
   const now = Date.now();
@@ -202,6 +214,12 @@ export function guestDataUpgradeStatements(
            AND journey_id IN (
              SELECT id FROM journeys
              WHERE owner_identity_id = ? AND deleted_at IS NULL
+               AND NOT EXISTS (
+                 SELECT 1 FROM turns starter_turn
+                 WHERE starter_turn.journey_id = journeys.id
+                   AND starter_turn.parent_turn_id IS NULL
+                   AND starter_turn.fixture_key LIKE ?
+               )
            )
            AND EXISTS (
              SELECT 1 FROM bookmarks account_bookmark
@@ -209,7 +227,7 @@ export function guestDataUpgradeStatements(
                AND account_bookmark.turn_id = bookmarks.turn_id
            )`,
       )
-      .bind(guestIdentityId, guestIdentityId, accountIdentityId),
+      .bind(guestIdentityId, guestIdentityId, `${STARTER_FIXTURE_PREFIX}%`, accountIdentityId),
     db
       .prepare(
         `UPDATE bookmarks
@@ -218,14 +236,27 @@ export function guestDataUpgradeStatements(
            AND journey_id IN (
              SELECT id FROM journeys
              WHERE owner_identity_id = ? AND deleted_at IS NULL
+               AND NOT EXISTS (
+                 SELECT 1 FROM turns starter_turn
+                 WHERE starter_turn.journey_id = journeys.id
+                   AND starter_turn.parent_turn_id IS NULL
+                   AND starter_turn.fixture_key LIKE ?
+               )
            )`,
       )
-      .bind(accountIdentityId, guestIdentityId, guestIdentityId),
+      .bind(accountIdentityId, guestIdentityId, guestIdentityId, `${STARTER_FIXTURE_PREFIX}%`),
     db
       .prepare(
-        "UPDATE journeys SET owner_identity_id = ?, updated_at = ? WHERE owner_identity_id = ? AND deleted_at IS NULL",
+        `UPDATE journeys SET owner_identity_id = ?, updated_at = ?
+         WHERE owner_identity_id = ? AND deleted_at IS NULL
+           AND NOT EXISTS (
+             SELECT 1 FROM turns starter_turn
+             WHERE starter_turn.journey_id = journeys.id
+               AND starter_turn.parent_turn_id IS NULL
+               AND starter_turn.fixture_key LIKE ?
+           )`,
       )
-      .bind(accountIdentityId, now, guestIdentityId),
+      .bind(accountIdentityId, now, guestIdentityId, `${STARTER_FIXTURE_PREFIX}%`),
     db
       .prepare("DELETE FROM bookmarks WHERE identity_id = ?")
       .bind(guestIdentityId),

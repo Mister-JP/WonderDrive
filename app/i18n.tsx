@@ -102,6 +102,23 @@ for (const locale of Object.keys(researchHandoffTranslations) as Array<Exclude<S
   Object.assign(translations[locale], researchHandoffTranslations[locale]);
 }
 
+const researchDurationTranslations: Record<Exclude<SupportedLocale, "en">, Record<string, string>> = {
+  es: { "This can take about 2–3 minutes": "Esto puede tardar unos 2–3 minutos", "You can safely leave this page. We’ll keep researching in the background, and the finished answer will appear in {journeys}.": "Puedes salir de esta página con tranquilidad. Seguiremos investigando en segundo plano y la respuesta terminada aparecerá en {journeys}." },
+  fr: { "This can take about 2–3 minutes": "Cela peut prendre environ 2 à 3 minutes", "You can safely leave this page. We’ll keep researching in the background, and the finished answer will appear in {journeys}.": "Vous pouvez quitter cette page sans risque. La recherche continuera en arrière-plan et la réponse terminée apparaîtra dans {journeys}." },
+  de: { "This can take about 2–3 minutes": "Dies kann etwa 2–3 Minuten dauern", "You can safely leave this page. We’ll keep researching in the background, and the finished answer will appear in {journeys}.": "Du kannst diese Seite sicher verlassen. Die Recherche läuft im Hintergrund weiter und die fertige Antwort erscheint unter {journeys}." },
+  pt: { "This can take about 2–3 minutes": "Isso pode levar cerca de 2–3 minutos", "You can safely leave this page. We’ll keep researching in the background, and the finished answer will appear in {journeys}.": "Você pode sair desta página com segurança. Continuaremos pesquisando em segundo plano, e a resposta final aparecerá em {journeys}." },
+  hi: { "This can take about 2–3 minutes": "इसमें लगभग 2–3 मिनट लग सकते हैं", "You can safely leave this page. We’ll keep researching in the background, and the finished answer will appear in {journeys}.": "आप इस पेज से सुरक्षित रूप से जा सकते हैं। शोध बैकग्राउंड में जारी रहेगा और पूरा उत्तर {journeys} में दिखाई देगा।" },
+  bn: { "This can take about 2–3 minutes": "এতে প্রায় ২–৩ মিনিট সময় লাগতে পারে", "You can safely leave this page. We’ll keep researching in the background, and the finished answer will appear in {journeys}.": "আপনি নিরাপদে এই পৃষ্ঠা ছেড়ে যেতে পারেন। গবেষণা পটভূমিতে চলতে থাকবে এবং সম্পূর্ণ উত্তরটি {journeys}-এ দেখা যাবে।" },
+  ar: { "This can take about 2–3 minutes": "قد يستغرق هذا نحو دقيقتين إلى 3 دقائق", "You can safely leave this page. We’ll keep researching in the background, and the finished answer will appear in {journeys}.": "يمكنك مغادرة هذه الصفحة بأمان. سيستمر البحث في الخلفية، وستظهر الإجابة المكتملة في {journeys}." },
+  "zh-CN": { "This can take about 2–3 minutes": "这可能需要大约 2–3 分钟", "You can safely leave this page. We’ll keep researching in the background, and the finished answer will appear in {journeys}.": "你可以放心离开此页面。研究会在后台继续进行，完成后的答案将显示在“{journeys}”中。" },
+  ja: { "This can take about 2–3 minutes": "完了まで約2〜3分かかることがあります", "You can safely leave this page. We’ll keep researching in the background, and the finished answer will appear in {journeys}.": "このページを離れても問題ありません。調査はバックグラウンドで続き、完成した回答は「{journeys}」に表示されます。" },
+  ko: { "This can take about 2–3 minutes": "약 2~3분 정도 걸릴 수 있습니다", "You can safely leave this page. We’ll keep researching in the background, and the finished answer will appear in {journeys}.": "이 페이지를 나가도 안전합니다. 조사는 백그라운드에서 계속되며, 완성된 답변은 {journeys}에 표시됩니다." },
+};
+
+for (const locale of Object.keys(researchDurationTranslations) as Array<Exclude<SupportedLocale, "en">>) {
+  Object.assign(translations[locale], researchDurationTranslations[locale]);
+}
+
 const realWorldRelevanceTranslations: Record<Exclude<SupportedLocale, "en">, string> = {
   es: "Relevancia en el mundo real",
   fr: "Pertinence dans le monde réel",

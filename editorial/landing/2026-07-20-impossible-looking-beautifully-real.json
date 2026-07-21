@@ -1,0 +1,269 @@
+{
+  "title": "Impossible-looking, beautifully real — July 20, 2026",
+  "recommendations": [
+    {
+      "id": "blue-dragon-upside-down",
+      "category": "Nature",
+      "question": "Why does the blue dragon sea slug live upside down?",
+      "teaser": "A gas-filled sac keeps this tiny hunter inverted at the ocean surface, where its blue back blends with the water and its pale underside faces the sky.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Glaucus_atlanticus_1.jpg?width=1280",
+      "imageAlt": "Two vivid blue dragon sea slugs with branching, wing-like cerata",
+      "sourceLabel": "Australian Museum",
+      "sourceUrl": "https://australian.museum/learn/animals/plankton/holoplankton/",
+      "size": "wide"
+    },
+    {
+      "id": "venus-flytrap-counting",
+      "category": "Nature",
+      "question": "How does a Venus flytrap count before it eats?",
+      "teaser": "Two quick touches close the trap, while further electrical signals confirm a struggling meal and progressively switch on digestion.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Venus_Flytrap_-_Dionaea_muscipula%2C_Green_Swamp%2C_Supply%2C_North_Carolina%2C_October_18%2C_2021_%2851693075042%29.jpg?width=1280",
+      "imageAlt": "A cluster of open red and green Venus flytraps in a North Carolina wetland",
+      "sourceLabel": "Smithsonian Magazine",
+      "sourceUrl": "https://www.smithsonianmag.com/smart-news/venus-flytraps-know-how-count-180958017/",
+      "size": "standard"
+    },
+    {
+      "id": "tsingy-stone-forest",
+      "category": "Nature",
+      "question": "How did rain carve Madagascar's forest of stone needles?",
+      "teaser": "Water slowly dissolved and split a vast limestone plateau, sharpening it into a labyrinth of ridges, canyons, and pinnacles up to 100 metres high.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Grand_Tsingy_08.JPG?width=1280",
+      "imageAlt": "Jagged gray limestone needles rising above green forest in the Grand Tsingy",
+      "sourceLabel": "UNESCO World Heritage Centre",
+      "sourceUrl": "https://whc.unesco.org/en/list/494",
+      "size": "wide"
+    },
+    {
+      "id": "sea-ice-frost-flowers",
+      "category": "Science",
+      "question": "How can newborn sea ice bloom with crystal flowers?",
+      "teaser": "In bitterly cold, still air, water vapour deposits onto tiny bumps in fresh ice and branches into featherlike crystals that can wick concentrated brine.",
+      "imageUrl": "https://s3.amazonaws.com/s3-east-testmedia-noaa.woc.noaa.gov/dam/Photos/legacy/pl23_arct0790.jpg",
+      "imageAlt": "Feathery white frost flowers edging a turquoise crack in newly formed Beaufort Sea ice beside a researcher's hand",
+      "sourceLabel": "NOAA Photo Library",
+      "sourceUrl": "https://www.noaa.gov/noaa-collections/photo-library/arct0790jpg",
+      "size": "wide"
+    },
+    {
+      "id": "grand-prismatic-living-thermometer",
+      "category": "Science",
+      "question": "Can a rainbow hot spring work like a living thermometer?",
+      "teaser": "Different heat-loving microbes thrive in different temperature bands, turning cooling runoff into rings of yellow, orange, brown, and green.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Aerial_image_of_Grand_Prismatic_Spring_%28view_from_the_south%29.jpg?width=1280",
+      "imageAlt": "Aerial view of Grand Prismatic Spring with a blue center and radiating orange microbial mats",
+      "sourceLabel": "Yellowstone National Park",
+      "sourceUrl": "https://www.nps.gov/places/000/grand-prismatic-spring.htm",
+      "size": "wide"
+    },
+    {
+      "id": "leidenfrost-vapor-skating",
+      "category": "Science",
+      "question": "Why does water skate across a pan that is far too hot?",
+      "teaser": "The droplet's underside flashes into vapour, building an insulating cushion that lifts the liquid and lets it race across the surface.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Water_droplet_Leidenfrost_effect.JPG?width=1280",
+      "imageAlt": "A rounded water droplet hovering above a very hot metal surface",
+      "sourceLabel": "APS Physics",
+      "sourceUrl": "https://physics.aps.org/articles/v14/s107",
+      "size": "standard"
+    },
+    {
+      "id": "lalibela-carved-downward",
+      "category": "History",
+      "question": "Why was an Ethiopian church carved downward into the earth?",
+      "teaser": "At Lalibela, builders cut trenches into living rock, then shaped the block left behind into a church complete with windows, doors, and a cross-shaped roof.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Bete_Giyorgis-Lalibela_%281%29.jpg/1280px-Bete_Giyorgis-Lalibela_%281%29.jpg",
+      "imageAlt": "The cross-shaped roof of Bete Giyorgis church sunk into a deep rock-cut courtyard at Lalibela",
+      "sourceLabel": "UNESCO World Heritage Centre",
+      "sourceUrl": "https://whc.unesco.org/en/list/18/",
+      "size": "wide"
+    },
+    {
+      "id": "falkirk-rotating-boat-lift",
+      "category": "Systems",
+      "question": "How can a giant wheel lift boats using the energy of eight kettles?",
+      "teaser": "The Falkirk Wheel keeps two water-filled gondolas balanced as they rotate in opposite directions, so moving 1,800 tonnes takes surprisingly little energy.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Falkirk_Wheel_%2855274731670%29.jpg/1280px-Falkirk_Wheel_%2855274731670%29.jpg",
+      "imageAlt": "Aerial view of the circular Falkirk Wheel boat lift connecting two canals through green parkland",
+      "sourceLabel": "Scottish Canals",
+      "sourceUrl": "https://www.scottishcanals.co.uk/visit/canals/visit-the-forth-clyde-canal/attractions/the-falkirk-wheel",
+      "size": "wide"
+    },
+    {
+      "id": "petra-rain-engineering",
+      "category": "History",
+      "question": "How did Petra turn flash floods into a desert water supply?",
+      "teaser": "Nabataean engineers linked diversion dams, rock-cut channels, tunnels, cisterns, and reservoirs to tame seasonal torrents and store their water.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Al_Khazneh_Petra_edit_2.jpg?width=1280",
+      "imageAlt": "Petra's rose-colored Treasury framed by the narrow sandstone walls of the Siq",
+      "sourceLabel": "UNESCO World Heritage Centre",
+      "sourceUrl": "https://whc.unesco.org/en/list/326/",
+      "size": "tall"
+    },
+    {
+      "id": "uros-floating-reed-islands",
+      "category": "Culture",
+      "question": "How do people build an island that must keep being renewed?",
+      "teaser": "Uro communities layer buoyant totora roots and reeds into inhabited platforms, adding fresh material as the wet lower layers slowly decompose.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Floating_Islands_Puno.jpg?width=1280",
+      "imageAlt": "Golden totora reed houses and boats on a floating Uros island in Lake Titicaca",
+      "sourceLabel": "Peru Ministry of Culture",
+      "sourceUrl": "https://bdpi.cultura.gob.pe/pueblos/uro",
+      "size": "wide"
+    },
+    {
+      "id": "qeswachaka-annual-bridge",
+      "category": "Culture",
+      "question": "Why is this Inca-style bridge rebuilt every single year?",
+      "teaser": "Four Quechua communities twist local grass into immense ropes and renew the bridge together, preserving both a crossing and their social bonds.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Puente_Q%27eswachaka%2C_Quehue%2C_Cusco%2C_Per%C3%BA.jpg?width=1280",
+      "imageAlt": "The handwoven Q'eswachaka grass-rope bridge stretched across a deep Andean gorge",
+      "sourceLabel": "UNESCO Intangible Heritage",
+      "sourceUrl": "https://ich.unesco.org/en/RL/knowledge-skills-and-rituals-related-to-the-annual-renewal-of-the-q-eswachaka-bridge-00594",
+      "size": "wide"
+    },
+    {
+      "id": "kente-strips-to-prestige",
+      "category": "Culture",
+      "question": "How can narrow woven strips become a monumental cloth?",
+      "teaser": "Kente weavers build intricate color and motif blocks on a slim loom, then cut and stitch many bands edge-to-edge into a vast prestige wrapper.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Kente_patterns%2C_Tafi%2C_Volta_region.jpg?width=1280",
+      "imageAlt": "A row of vividly colored kente strips with varied geometric patterns",
+      "sourceLabel": "The Metropolitan Museum of Art",
+      "sourceUrl": "https://www.metmuseum.org/art/collection/search/85576",
+      "size": "standard"
+    },
+    {
+      "id": "living-root-bridge",
+      "category": "Systems",
+      "question": "How can a bridge become stronger as it gets older?",
+      "teaser": "Khasi and Jaintia communities guide living fig roots across streams; the roots thicken, interweave, and reinforce the crossing over generations.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Living_root_bridges_of_Nongriat_village_in_East_Khasi_Hills_district%2C_Meghalaya_JEG7387.jpg?width=1280",
+      "imageAlt": "Two levels of living fig-root bridges spanning a lush stream in Meghalaya",
+      "sourceLabel": "UNESCO World Heritage Centre",
+      "sourceUrl": "https://whc.unesco.org/en/tentativelists/6606/",
+      "size": "tall"
+    },
+    {
+      "id": "ifugao-water-staircase",
+      "category": "History",
+      "question": "How does one mountain stream feed an entire staircase of farms?",
+      "teaser": "Ifugao communities harvest forest water into shared canals and sluices, passing it from the highest pond field through thousands of sculpted terraces.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Batad_Rice_Terraces_%28aerial%29.jpg?width=1280",
+      "imageAlt": "Aerial view of bright green Batad rice terraces folding around a mountain village",
+      "sourceLabel": "UNESCO World Heritage Centre",
+      "sourceUrl": "https://whc.unesco.org/en/list/722",
+      "size": "wide"
+    },
+    {
+      "id": "atacama-fog-harvesting",
+      "category": "Systems",
+      "question": "Can a net harvest drinking water from a cloud?",
+      "teaser": "Coastal fog droplets strike fine mesh, merge, and drain into gutters—turning windblown cloud water into a passive supply for arid communities.",
+      "imageUrl": "https://www.uc.cl/site/assets/files/11124/fog-catcher.jpg",
+      "imageAlt": "Tall mesh fog catchers standing in the pale, rocky Atacama Desert",
+      "sourceLabel": "Pontificia Universidad Católica de Chile",
+      "sourceUrl": "https://www.uc.cl/en/news/centro-uc-desierto-de-atacama/",
+      "size": "wide"
+    },
+    {
+      "id": "aerogel-catches-comets",
+      "category": "Technology",
+      "question": "How can solid smoke catch dust from a speeding comet?",
+      "teaser": "Aerogel is mostly empty space, so a particle can carve a long track while slowing gently enough to arrive intact for scientists to study.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Aerogel_hand.jpg?width=1280",
+      "imageAlt": "A translucent blue block of aerogel appearing almost weightless above a person's hand",
+      "sourceLabel": "NASA Spinoff",
+      "sourceUrl": "https://spinoff.nasa.gov/node/10529",
+      "size": "standard"
+    },
+    {
+      "id": "gecko-dry-adhesive",
+      "category": "Technology",
+      "question": "How can a gecko stick without glue, hooks, or suction?",
+      "teaser": "Millions of branching toe hairs conform to microscopic surface contours, bringing molecules close enough for weak attractions to add up to a powerful grip.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Gecko_feet.jpg?width=1280",
+      "imageAlt": "Extreme close-up of the ribbed, fan-shaped pads beneath a gecko's toes",
+      "sourceLabel": "National Institute of Standards and Technology",
+      "sourceUrl": "https://www.nist.gov/news-events/news/2022/07/gecko-feet-are-coated-ultra-thin-layer-lipids-help-them-stay-sticky",
+      "size": "tall"
+    },
+    {
+      "id": "fiber-optic-corner-light",
+      "category": "Technology",
+      "question": "How can a glass thread carry light around a corner?",
+      "teaser": "A lower-index cladding keeps light reflecting inside the fiber's core, guiding fast optical signals through bends instead of letting them escape.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Lamp_with_illuminated_optic_fibers.jpg?width=1280",
+      "imageAlt": "Curved optical fibers glowing violet from a luminous glass sphere",
+      "sourceLabel": "NASA Lessons Learned",
+      "sourceUrl": "https://llis.nasa.gov/lesson/881",
+      "size": "wide"
+    },
+    {
+      "id": "atkins-sun-printed-algae",
+      "category": "Art",
+      "question": "How did sunlight turn seaweed into the first photographic book?",
+      "teaser": "Anna Atkins placed algae directly on sensitized paper; sunlight colored the exposed sheet Prussian blue and left each specimen as a pale silhouette.",
+      "imageUrl": "https://images.metmuseum.org/CRDImages/ph/original/DP-17302-149.jpg",
+      "imageAlt": "Anna Atkins's deep blue cyanotype showing the delicate branching silhouette of Bangia algae",
+      "sourceLabel": "The Metropolitan Museum of Art",
+      "sourceUrl": "https://www.metmuseum.org/art/collection/search/291642",
+      "size": "tall"
+    },
+    {
+      "id": "holbein-hidden-skull",
+      "category": "Art",
+      "question": "Why does Holbein's hidden skull appear only from the side?",
+      "teaser": "The painter stretched a precisely drawn skull across a steep perspective, so its strange smear resolves only when viewed from an oblique angle.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Hans_Holbein_the_Younger_-_The_Ambassadors_-_Google_Art_Project.jpg?width=1280",
+      "imageAlt": "Holbein's richly detailed Ambassadors portrait with a long distorted skull across the foreground",
+      "sourceLabel": "The National Gallery, London",
+      "sourceUrl": "https://www.nationalgallery.org.uk/paintings/hans-holbein-the-younger-the-ambassadors",
+      "size": "wide"
+    },
+    {
+      "id": "kintsugi-visible-repair",
+      "category": "Art",
+      "question": "Why turn a broken bowl's cracks into lines of gold?",
+      "teaser": "Kintsugi joins ceramic fragments with lacquer and highlights the seams with metal powder, making repair an explicit chapter in the object's life.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Bowl%2C_19th_century_%28CH_18345219%29.jpg?width=1280",
+      "imageAlt": "A pale porcelain bowl crossed by branching gold kintsugi repair lines",
+      "sourceLabel": "Smithsonian Institution",
+      "sourceUrl": "https://www.si.edu/collections/snapshot/beauty-broken-objects",
+      "size": "standard"
+    },
+    {
+      "id": "saturn-polar-hexagon",
+      "category": "Space",
+      "question": "Why does Saturn wear a six-sided storm around its pole?",
+      "teaser": "A fast eastward jet behaves like a standing atmospheric wave; its meanders lock into six persistent corners around the north pole.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/PIA18274-Saturn-NorthPolarHexagon-Cassini-20140402.jpg?width=1280",
+      "imageAlt": "Cassini's turquoise and gold view of Saturn's enormous north-polar hexagon",
+      "sourceLabel": "NASA Cassini",
+      "sourceUrl": "https://science.nasa.gov/missions/cassini/cassini-images-bizarre-hexagon-on-saturn/",
+      "size": "wide"
+    },
+    {
+      "id": "europa-chaos-ice-rafts",
+      "category": "Space",
+      "question": "Did Europa's ice crust break apart and refreeze like a jigsaw?",
+      "teaser": "Galileo images show crustal plates shifted and rotated inside darker material, evidence that warm ice, slush, or water disrupted the surface below.",
+      "imageUrl": "https://assets.science.nasa.gov/content/dam/science/missions/europa-clipper/images/p49434.jpg",
+      "imageAlt": "Enhanced-color view of Europa's fractured ice crust broken into blue-white rafts among rusty disrupted terrain",
+      "sourceLabel": "NASA Europa Clipper",
+      "sourceUrl": "https://science.nasa.gov/missions/europa-clipper/europa-clipper-resources/ice-rafting-on-europa/",
+      "size": "wide"
+    },
+    {
+      "id": "solar-magnetic-prominence",
+      "category": "Space",
+      "question": "What holds a loop of star-stuff above the Sun?",
+      "teaser": "Invisible magnetic fields suspend dense, charged plasma in immense arcs, then guide its motion as the structure shifts, erupts, or falls back.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/SDO_first_light.png?width=1280",
+      "imageAlt": "A huge orange-red solar prominence looping away from the Sun against black space",
+      "sourceLabel": "NASA Solar Dynamics Observatory",
+      "sourceUrl": "https://science.nasa.gov/earth/earth-observatory/prominence-from-the-solar-dynamics-observatory-43717/",
+      "size": "wide"
+    }
+  ]
+}

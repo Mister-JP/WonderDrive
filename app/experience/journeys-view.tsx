@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { ArrowUpRight } from "@phosphor-icons/react";
 import type { JourneySummary, ResearchActivity, TurnMedia, Viewer } from "../../lib/contracts";
+import { STARTER_TITLE_PREFIX } from "../../lib/starter-content-contract";
 import { useI18n } from "../i18n";
 
 export function JourneysView({
@@ -9,6 +11,7 @@ export function JourneysView({
   activities,
   viewer,
   busy,
+  onShowAnswer,
   onOpen,
   onDelete,
   onManage,
@@ -21,6 +24,7 @@ export function JourneysView({
   activities: ResearchActivity[];
   viewer: Viewer | null;
   busy: string | null;
+  onShowAnswer: (id: string) => void;
   onOpen: (id: string) => void;
   onDelete: (id: string) => void;
   onManage: (id: string, changes: { title?: string; pinned?: boolean; hidden?: boolean }) => void;
@@ -54,7 +58,12 @@ export function JourneysView({
           <p className="journeys-intro">{t("Each journey follows the path from your first question through every question you explored afterward.")}</p>
         </div>
         <div>
-          <p>{t("{count} of {limit} journeys", { count: journeys.length, limit: viewer?.journeyLimit ?? "—" })}</p>
+          <p
+            className="journeys-count"
+            aria-label={t("{count} of {limit} journeys", { count: journeys.length, limit: viewer?.journeyLimit ?? "—" })}
+          >
+            {t("{count} of {limit} journeys", { count: journeys.length, limit: viewer?.journeyLimit ?? "—" })}
+          </p>
           <button type="button" className="compact-action" onClick={onNew}>{t("New journey")}</button>
         </div>
       </header>
@@ -157,25 +166,38 @@ export function JourneysView({
           <div className="journeys-grid">
             {visibleJourneys.map((journey) => {
               const customLabel = journey.title !== generatedTitle(journey.seed) ? journey.title : null;
+              const isExample = journey.title.startsWith(STARTER_TITLE_PREFIX);
               return (
                 <article key={journey.id} className="journey-card">
                   <JourneyCardImage media={journey.leadMedia} question={journey.seed} />
                   <div className="journey-card-body">
                     <div className="journey-card-state">
+                      {isExample && <span>{t("Sample journey")}</span>}
                       {journey.pinned && <span>{t("Pinned")}</span>}
                     </div>
                     <p className="journey-card-kicker">{t("First explored")}</p>
                     <h2>{journey.seed}</h2>
                     <p className="journey-started"><span>{t("Started")}</span> <time dateTime={new Date(journey.createdAt).toISOString()}>{formatter.format(journey.createdAt)}</time></p>
-                    <button
-                      type="button"
-                      className="show-journey"
-                      disabled={busy !== null}
-                      aria-label={t("Show journey: {question}", { question: journey.seed })}
-                      onClick={() => onOpen(journey.id)}
-                    >
-                      {t("Show Journey")} <span aria-hidden="true">↗</span>
-                    </button>
+                      <div className="journey-card-actions">
+                        <button
+                          type="button"
+                          className="show-answer"
+                          disabled={busy !== null}
+                          aria-label={t("Show answer: {question}", { question: journey.seed })}
+                          onClick={() => onShowAnswer(journey.id)}
+                        >
+                          {t("Show answer")} <ArrowUpRight weight="bold" aria-hidden="true" />
+                        </button>
+                        <button
+                          type="button"
+                          className="show-journey"
+                          disabled={busy !== null}
+                          aria-label={t("Show journey: {question}", { question: journey.seed })}
+                          onClick={() => onOpen(journey.id)}
+                        >
+                          {t("Show Journey")} <ArrowUpRight weight="bold" aria-hidden="true" />
+                        </button>
+                      </div>
 
                     <details className="journey-manage">
                       <summary>{t("Manage journey")}</summary>

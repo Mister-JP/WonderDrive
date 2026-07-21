@@ -49,6 +49,19 @@ export type GraphLayout = {
   mobile: boolean;
 };
 
+export function graphFitScale(
+  viewportWidth: number,
+  viewportHeight: number,
+  graphWidth: number,
+  graphHeight: number,
+  inset = 28,
+): number {
+  if (viewportWidth <= 0 || viewportHeight <= 0 || graphWidth <= 0 || graphHeight <= 0) return 1;
+  const availableWidth = Math.max(1, viewportWidth - inset);
+  const availableHeight = Math.max(1, viewportHeight - inset);
+  return Math.min(1, availableWidth / graphWidth, availableHeight / graphHeight);
+}
+
 export function buildJourneyGraph(journey: JourneyDetail): JourneyGraphNode {
   const turnById = new Map(journey.turns.map((turn) => [turn.id, turn]));
   const childTurns = new Map<string, JourneyTurn[]>();

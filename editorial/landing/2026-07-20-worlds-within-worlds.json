@@ -1,0 +1,269 @@
+{
+  "title": "Worlds within worlds — July 20, 2026",
+  "recommendations": [
+    {
+      "id": "rainbow-eucalyptus-bark-clock",
+      "category": "Nature",
+      "question": "Why does a rainbow eucalyptus look as if its bark were painted?",
+      "teaser": "Fresh green bark is revealed in strips, then changes through blue, purple, orange, and red as each exposed layer ages.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Rainbow_Eucalyptus_Maui.jpg/1920px-Rainbow_Eucalyptus_Maui.jpg",
+      "imageAlt": "Close view of a rainbow eucalyptus trunk streaked green, blue, orange, and deep red",
+      "sourceLabel": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rainbow_Eucalyptus_Maui.jpg",
+      "size": "wide"
+    },
+    {
+      "id": "nacreous-clouds-after-sunset",
+      "category": "Science",
+      "question": "Why can a polar cloud shine after sunset—and still harm ozone?",
+      "teaser": "Exceptionally high stratospheric clouds catch late sunlight and diffract it into color, while their icy particles host reactions that activate ozone-destroying chlorine.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Nacreous_clouds_Antarctica.jpg/1920px-Nacreous_clouds_Antarctica.jpg",
+      "imageAlt": "Pearlescent pink, green, and gold stratospheric clouds glowing above a dark Antarctic ridge",
+      "sourceLabel": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nacreous_clouds_Antarctica.jpg",
+      "size": "standard"
+    },
+    {
+      "id": "nebra-sky-disc-portable-cosmos",
+      "category": "History",
+      "question": "Is this bronze disc the oldest portable map of the night sky?",
+      "teaser": "Its gold Sun or full Moon, crescent, stars, and horizon arcs made Bronze Age celestial knowledge into an object that could be carried and consulted.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/1600_Himmelsscheibe_von_Nebra_sky_disk_anagoria.jpg/1920px-1600_Himmelsscheibe_von_Nebra_sky_disk_anagoria.jpg",
+      "imageAlt": "Green-patinated Nebra Sky Disc inlaid with a gold circle, crescent, stars, and curved arcs",
+      "sourceLabel": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:1600_Himmelsscheibe_von_Nebra_sky_disk_anagoria.jpg",
+      "size": "compact"
+    },
+    {
+      "id": "dorodango-mud-mirror",
+      "category": "Culture",
+      "question": "How can handfuls of mud become mirror-bright spheres without firing?",
+      "teaser": "Hikaru dorodango makers slowly dry a mud core, add ever-finer soil, and polish its clay-rich shell until it reflects light.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Color_Dorodango_%E2%91%A1.jpg/1920px-Color_Dorodango_%E2%91%A1.jpg",
+      "imageAlt": "Six glossy dorodango spheres in coral, blue, green, violet, and earth tones arranged in a case",
+      "sourceLabel": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Color_Dorodango_%E2%91%A1.jpg",
+      "size": "standard"
+    },
+    {
+      "id": "qanat-desert-dotted-line",
+      "category": "Systems",
+      "question": "Why do lines of holes march across the Iranian desert?",
+      "teaser": "Each shaft reaches a gently sloping qanat tunnel, giving workers air and access while groundwater travels for kilometres using gravity alone.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/3/32/Ir%C3%A1n%2C_a%C3%A9reas_%282000%29_07.jpg",
+      "imageAlt": "Aerial view of an Iranian desert crossed by long dotted lines of qanat access shafts",
+      "sourceLabel": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ir%C3%A1n,_a%C3%A9reas_(2000)_07.jpg",
+      "size": "wide"
+    },
+    {
+      "id": "reiner-gamma-magnetic-sunscreen",
+      "category": "Space",
+      "question": "Why does the Moon have a bright swirl with no matching mountain or crater?",
+      "teaser": "Local magnetic fields appear to redirect the solar wind, slowing the space weathering that darkens nearby soil, though the fields' origin is still debated.",
+      "imageUrl": "https://assets.science.nasa.gov/content/dam/science/psd/lunar-science/2023/08/reiner_gamma-1.jpg/jcr:content/renditions/cq5dam.web.1280.1280.jpeg",
+      "imageAlt": "Orbital view of the pale looping Reiner Gamma swirl against the Moon's dark surface",
+      "sourceLabel": "NASA Science",
+      "sourceUrl": "https://science.nasa.gov/resource/lunar-swirl-reiner-gamma/",
+      "size": "tall"
+    },
+    {
+      "id": "odeillo-sunlight-furnace",
+      "category": "Technology",
+      "question": "How can a wall of mirrors melt metal using only sunlight?",
+      "teaser": "Tracking mirrors send sunlight onto Odeillo's giant curved reflector, which concentrates that energy into an intensely hot focal point for research.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Four_solaire_001.jpg/1920px-Four_solaire_001.jpg",
+      "imageAlt": "Panoramic view of the immense mirrored facade of the Odeillo solar furnace in the Pyrenees",
+      "sourceLabel": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Four_solaire_001.jpg",
+      "size": "wide"
+    },
+    {
+      "id": "isfahan-muqarnas-light-honeycomb",
+      "category": "Art",
+      "question": "How does a ceiling dissolve into a three-dimensional honeycomb?",
+      "teaser": "Muqarnas builders repeat and stack small niche-like cells, turning a structural transition into a shifting geometry of light and shadow.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Moqarnas_Ceiling_in_Jameh_Mosque_of_Isfahan.jpg/1920px-Moqarnas_Ceiling_in_Jameh_Mosque_of_Isfahan.jpg",
+      "imageAlt": "Symmetrical muqarnas ceiling at the Jameh Mosque of Isfahan forming a many-layered geometric vault",
+      "sourceLabel": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Moqarnas_Ceiling_in_Jameh_Mosque_of_Isfahan.jpg",
+      "size": "tall"
+    },
+    {
+      "id": "leafy-seadragon-false-leaves",
+      "category": "Nature",
+      "question": "Why does a fish grow leaves it cannot swim with?",
+      "teaser": "A leafy seadragon's extravagant lobes are camouflage rather than fins; nearly transparent fins do the swimming while the body drifts like seaweed.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Leafy_Seadragon_Phycodurus_eques_2500px-WBalanced.jpg/1920px-Leafy_Seadragon_Phycodurus_eques_2500px-WBalanced.jpg",
+      "imageAlt": "Golden leafy seadragon with long seaweed-like lobes floating above a reef",
+      "sourceLabel": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Leafy_Seadragon_Phycodurus_eques_2500px-WBalanced.jpg",
+      "size": "tall"
+    },
+    {
+      "id": "bubble-chamber-invisible-tracks",
+      "category": "Science",
+      "question": "How can invisible particles draw their own tracks?",
+      "teaser": "Charged particles crossing a superheated liquid seed tiny trails of bubbles; the paths' curves and forks reveal momentum, charge, collisions, and decay.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Bubble_chamber_event._Decay_of_neutral_lambda%2C_anti-lambda_hyperons._Photograph_circa_July_1959._Bubble_Chamber-772A_-_DPLA_-_5141859e360581251906c073668c70de.jpg/1920px-thumbnail.jpg",
+      "imageAlt": "Black bubble chamber photograph crossed by bright curving and branching particle tracks",
+      "sourceLabel": "Wikimedia Commons / Lawrence Berkeley National Laboratory",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bubble_chamber_event._Decay_of_neutral_lambda,_anti-lambda_hyperons._Photograph_circa_July_1959._Bubble_Chamber-772A_-_DPLA_-_5141859e360581251906c073668c70de.jpg",
+      "size": "standard"
+    },
+    {
+      "id": "han-jade-burial-suit",
+      "category": "History",
+      "question": "Why would a Han prince be buried in a suit sewn from thousands of jade tiles?",
+      "teaser": "The costly shroud made rank visible even in death and reflected beliefs that jade could protect the body and spirit from decay and harm.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Western_Han_Jade_Burial_Suit_with_Gold_Wire_and_4248_Jade_Pieces_%2810091345254%29.jpg/1920px-Western_Han_Jade_Burial_Suit_with_Gold_Wire_and_4248_Jade_Pieces_%2810091345254%29.jpg",
+      "imageAlt": "Western Han burial suit shaped from thousands of rectangular jade plaques joined with gold wire",
+      "sourceLabel": "Wikimedia Commons / Xuzhou Museum",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Western_Han_Jade_Burial_Suit_with_Gold_Wire_and_4248_Jade_Pieces_(10091345254).jpg",
+      "size": "wide"
+    },
+    {
+      "id": "sand-mandala-impermanence",
+      "category": "Culture",
+      "question": "Why spend days making a sand mandala only to sweep it away?",
+      "teaser": "In Tibetan Buddhist practice, dismantling the finished design is part of the work: a deliberate lesson that even extraordinary beauty is impermanent.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Buddhist_Monks_performing_traditional_Sand_mandala_made_from_coloured_sand.jpg/1920px-Buddhist_Monks_performing_traditional_Sand_mandala_made_from_coloured_sand.jpg",
+      "imageAlt": "Buddhist monks carefully adding colored sand to an intricate square mandala",
+      "sourceLabel": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Buddhist_Monks_performing_traditional_Sand_mandala_made_from_coloured_sand.jpg",
+      "size": "standard"
+    },
+    {
+      "id": "ladakh-ice-stupa-spring-water",
+      "category": "Systems",
+      "question": "How can a mountain of ice irrigate fields after winter ends?",
+      "teaser": "Winter stream water freezes into steep cones that store it above ground, then melt when Ladakh's spring crops need water most.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/0/0e/Ice-Stupaa.jpg",
+      "imageAlt": "Two tall white ice stupas beside their builders in a dry mountain valley in Ladakh",
+      "sourceLabel": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ice-Stupaa.jpg",
+      "size": "standard"
+    },
+    {
+      "id": "enceladus-ocean-geysers",
+      "category": "Space",
+      "question": "Why is Saturn's icy moon spraying an ocean into space?",
+      "teaser": "Tidal flexing supplies heat while long south-polar fractures open pathways from Enceladus's subsurface sea to plumes of water vapor and ice.",
+      "imageUrl": "https://science.nasa.gov/wp-content/uploads/2024/02/pia11688.jpg",
+      "imageAlt": "Sunlit geyser plumes rising from the curved, shadowed edge of Saturn's moon Enceladus",
+      "sourceLabel": "NASA Science / Cassini",
+      "sourceUrl": "https://science.nasa.gov/image-detail/pia11688-3/",
+      "size": "wide"
+    },
+    {
+      "id": "apollo-core-rope-software",
+      "category": "Technology",
+      "question": "How did Apollo's software become something people could literally weave?",
+      "teaser": "Programs were encoded as wires threaded through or around magnetic cores, creating compact, rugged read-only memory for the guidance computer.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Apollo_guidiance_computer_ferrit_core_memory.jpg/1920px-Apollo_guidiance_computer_ferrit_core_memory.jpg",
+      "imageAlt": "Close view of an Apollo Guidance Computer memory module woven with dense colored wires and magnetic cores",
+      "sourceLabel": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Apollo_guidiance_computer_ferrit_core_memory.jpg",
+      "size": "standard"
+    },
+    {
+      "id": "terracotta-soft-veil",
+      "category": "Art",
+      "question": "How can hard terracotta look softer than folded cloth?",
+      "teaser": "The sculptor keeps the body's contours legible beneath an impossibly thin-looking veil, using ridges, undercuts, and polished transitions to make clay behave like fabric.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Giuseppe_Sanmartino_%28circle_of%29_-_Veiled_Christ.jpg/1920px-Giuseppe_Sanmartino_%28circle_of%29_-_Veiled_Christ.jpg",
+      "imageAlt": "Close side view of a terracotta Veiled Christ sculpture with the face and torso visible beneath deeply folded drapery",
+      "sourceLabel": "Wikimedia Commons / LACMA",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Giuseppe_Sanmartino_(circle_of)_-_Veiled_Christ.jpg",
+      "size": "tall"
+    },
+    {
+      "id": "corpse-flower-heat-and-scent",
+      "category": "Nature",
+      "question": "Why does this giant bloom heat itself and smell like decay?",
+      "teaser": "A corpse flower warms its towering inflorescence so its carrion-like odor travels farther, summoning the beetles and flies that carry its pollen.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Corpse_flower_%2871198%29a.jpg/1920px-Corpse_flower_%2871198%29a.jpg",
+      "imageAlt": "A towering corpse flower open in a glasshouse with a burgundy ruffled spathe and tall yellow spadix",
+      "sourceLabel": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Corpse_flower_(71198)a.jpg",
+      "size": "tall"
+    },
+    {
+      "id": "hair-ice-fungal-sculptor",
+      "category": "Science",
+      "question": "How can dead wood grow hair-thin threads of ice?",
+      "teaser": "Water is pushed through pores and freezes strand by strand, while a winter-active fungus helps stop the crystals from merging into an ordinary crust.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Hair_ice.jpg",
+      "imageAlt": "A fallen branch covered in a dense silky plume of extremely fine white hair ice",
+      "sourceLabel": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hair_ice.jpg",
+      "size": "compact"
+    },
+    {
+      "id": "oseberg-clinker-hull",
+      "category": "History",
+      "question": "How did overlapping planks make a Viking ship both light and strong?",
+      "teaser": "In a clinker-built hull, thin oak planks overlap and fasten into a flexible shell that shares loads while using less timber than a massive frame.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Osebergskipet_2016.jpg/1920px-Osebergskipet_2016.jpg",
+      "imageAlt": "The preserved dark oak Oseberg Viking ship displayed in a bright arched museum gallery",
+      "sourceLabel": "Wikimedia Commons / Museum of the Viking Age",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Osebergskipet_2016.jpg",
+      "size": "wide"
+    },
+    {
+      "id": "wayang-sculpture-and-shadow",
+      "category": "Culture",
+      "question": "How can one puppet perform as both sculpture and shadow?",
+      "teaser": "Wayang kulit makers cut and paint articulated leather figures whose pierced details become lace-like light and silhouette when a dalang moves them behind a screen.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Pertunjukan_Wayang_Kulit.jpg/1920px-Pertunjukan_Wayang_Kulit.jpg",
+      "imageAlt": "A wayang kulit puppeteer silhouetted behind richly colored perforated leather shadow puppets",
+      "sourceLabel": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pertunjukan_Wayang_Kulit.jpg",
+      "size": "wide"
+    },
+    {
+      "id": "chand-baori-changing-waterline",
+      "category": "Systems",
+      "question": "Why does a well need thousands of perfectly repeated steps?",
+      "teaser": "Chand Baori's descending stair geometry kept water reachable as the monsoon waterline rose and fell, while its deep shaded stone offered a cooler refuge.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Chand_Baori%2C_stepwell.jpg/1920px-Chand_Baori%2C_stepwell.jpg",
+      "imageAlt": "The deep geometric tiers of narrow stone steps descending into Chand Baori stepwell in Rajasthan",
+      "sourceLabel": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chand_Baori,_stepwell.jpg",
+      "size": "tall"
+    },
+    {
+      "id": "v838-mon-light-echo",
+      "category": "Space",
+      "question": "How can a star's flash appear to expand faster than light?",
+      "teaser": "A light echo sweeps across pre-existing dust; changing geometry lets the illuminated pattern seem superluminal even though no matter or information breaks light speed.",
+      "imageUrl": "https://science.nasa.gov/wp-content/uploads/2024/05/hubble-v838-mon-stsci-01evt8dg2dzd93hgrxvjx4y42g.jpg",
+      "imageAlt": "Hubble view of the red star V838 Monocerotis surrounded by curling amber and blue layers of illuminated dust",
+      "sourceLabel": "NASA / ESA / Hubble",
+      "sourceUrl": "https://science.nasa.gov/image-detail/hubble-v838-mon-stsci-01evt8dg2dzd93hgrxvjx4y42g/",
+      "size": "standard"
+    },
+    {
+      "id": "acoustic-levitation-standing-wave",
+      "category": "Technology",
+      "question": "How can sound hold a droplet still in midair?",
+      "teaser": "Opposing ultrasound waves form stable pressure nodes where acoustic forces can balance gravity and suspend tiny samples without a container.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f8/October_19%2C_2012-_Acoustic_Levitation_for_Medicine_%288125198677%29.jpg",
+      "imageAlt": "Several tiny liquid droplets suspended in midair beside a syringe needle during an acoustic levitation experiment",
+      "sourceLabel": "Wikimedia Commons / Argonne National Laboratory",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:October_19,_2012-_Acoustic_Levitation_for_Medicine_(8125198677).jpg",
+      "size": "wide"
+    },
+    {
+      "id": "nested-puzzle-ball",
+      "category": "Art",
+      "question": "How can seven freely turning balls be carved from one solid piece?",
+      "teaser": "Craftspeople cut concentric shells through the same openings, releasing and finishing each inner sphere before turning to the layer around it.",
+      "imageUrl": "https://images.metmuseum.org/CRDImages/as/web-large/44_116_O1.jpg",
+      "imageAlt": "Intricately pierced nineteenth-century Chinese ball containing seven nested movable spheres",
+      "sourceLabel": "The Metropolitan Museum of Art",
+      "sourceUrl": "https://www.metmuseum.org/art/collection/search/41950",
+      "size": "compact"
+    }
+  ]
+}

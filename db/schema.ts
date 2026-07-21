@@ -43,7 +43,7 @@ export const preferences = sqliteTable("preferences", {
     .references(() => identities.id),
   interfaceLocale: text("interface_locale").notNull().default("en"),
   defaultOutputLocale: text("default_output_locale").notNull().default("en"),
-  defaultModelId: text("default_model_id").notNull().default("gpt-5.6-luna"),
+  defaultModelId: text("default_model_id").notNull().default("gpt-5.4-nano"),
   answerDensity: text("answer_density", {
     enum: ["brief", "balanced", "rich"],
   })

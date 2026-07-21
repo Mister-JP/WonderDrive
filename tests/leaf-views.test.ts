@@ -26,6 +26,7 @@ type JourneysComponent = (props: {
   activities: ResearchActivity[];
   viewer: Viewer | null;
   busy: string | null;
+  onShowAnswer: (id: string) => void;
   onOpen: (id: string) => void;
   onDelete: (id: string) => void;
   onManage: (id: string, changes: { title?: string; pinned?: boolean; hidden?: boolean }) => void;
@@ -279,6 +280,7 @@ function journeySummary(
 
 function renderJourneys(journeys: JourneySummary[], overrides: Partial<Parameters<JourneysComponent>[0]> = {}) {
   const opened: string[] = [];
+  const openedAnswers: string[] = [];
   const deleted: string[] = [];
   const managed: Array<[string, { title?: string; pinned?: boolean; hidden?: boolean }]> = [];
   const cancelled: string[] = [];
@@ -289,6 +291,7 @@ function renderJourneys(journeys: JourneySummary[], overrides: Partial<Parameter
     activities: [],
     viewer,
     busy: null,
+    onShowAnswer: (id: string) => openedAnswers.push(id),
     onOpen: (id: string) => opened.push(id),
     onDelete: (id: string) => deleted.push(id),
     onManage: (id: string, changes: { title?: string; pinned?: boolean; hidden?: boolean }) => managed.push([id, changes]),
@@ -302,7 +305,7 @@ function renderJourneys(journeys: JourneySummary[], overrides: Partial<Parameter
     hooks.reset();
     return JourneysView(props);
   };
-  return { props, opened, deleted, managed, cancelled, dismissed, get newCount() { return newCount; }, rerender, root: rerender() };
+  return { props, opened, openedAnswers, deleted, managed, cancelled, dismissed, get newCount() { return newCount; }, rerender, root: rerender() };
 }
 
 function bookmark(id: string, changes: Partial<Bookmark> = {}): Bookmark {
@@ -388,10 +391,13 @@ test("JourneysView prioritizes the first question, creation time, and simple fil
     journeySummary("hidden", { title: "Hidden trail", hidden: true, updatedAt: 300 }),
   ];
   const rendered = renderJourneys(journeys);
+  const cardQuestions = (root: TestElement) => elements(root)
+    .filter((element) => element.type === "article" && element.props.className === "journey-card")
+    .map((card) => text(find(card, (element) => element.type === "h2")));
 
   assert.equal(find(rendered.root, (element) => element.type === "h1").props.id, "journeys-title");
-  assert.deepEqual(elements(rendered.root).filter((element) => element.type === "h2").map(text), ["How do whales navigate?", "Why do fireflies glow?", "Seed hidden"]);
-  assert.match(text(rendered.root), /3 of 12 journeys/);
+  assert.deepEqual(cardQuestions(rendered.root), ["How do whales navigate?", "Why do fireflies glow?", "Seed hidden"]);
+  assert.equal(find(rendered.root, (element) => element.props.className === "journeys-count").props["aria-label"], "3 of 12 journeys");
   assert.match(text(rendered.root), /2024/);
   assert.doesNotMatch(text(rendered.root), /2030/);
   assert.doesNotMatch(text(rendered.root), /Turns|Sources|Open|unclassified journey/);
@@ -403,11 +409,11 @@ test("JourneysView prioritizes the first question, creation time, and simple fil
   const search = find(rendered.root, (element) => element.type === "input" && element.props.placeholder === "First question or journey label");
   (search.props.onChange as (event: { target: { value: string } }) => void)({ target: { value: "Alpha" } });
   let root = rendered.rerender();
-  assert.deepEqual(elements(root).filter((element) => element.type === "h2").map(text), ["Why do fireflies glow?"]);
+  assert.deepEqual(cardQuestions(root), ["Why do fireflies glow?"]);
 
   (find(root, (element) => element.type === "input" && element.props.placeholder === "First question or journey label").props.onChange as (event: { target: { value: string } }) => void)({ target: { value: "" } });
   root = rendered.rerender();
-  assert.deepEqual(elements(root).filter((element) => element.type === "h2").map(text), ["How do whales navigate?", "Why do fireflies glow?", "Seed hidden"]);
+  assert.deepEqual(cardQuestions(root), ["How do whales navigate?", "Why do fireflies glow?", "Seed hidden"]);
 
   const empty = renderJourneys([]);
   (find(empty.root, (element) => element.type === "button" && text(element).includes("Start a journey")).props.onClick as () => void)();
@@ -418,6 +424,7 @@ test("JourneysView keeps only useful journey management controls", () => {
   const rendered = renderJourneys([journeySummary("alpha")]);
   Object.defineProperty(globalThis, "window", { value: { prompt: () => "Renamed trail" }, configurable: true });
 
+  (buttonByText(rendered.root, "Show answer").props.onClick as () => void)();
   (find(rendered.root, (element) => element.type === "button" && text(element).trim().startsWith("Show Journey")).props.onClick as () => void)();
   (buttonByText(rendered.root, "Remove journey").props.onClick as () => void)();
   const root = rendered.rerender();
@@ -427,6 +434,7 @@ test("JourneysView keeps only useful journey management controls", () => {
   (buttonByText(root, "New journey").props.onClick as () => void)();
 
   assert.deepEqual(rendered.opened, ["alpha"]);
+  assert.deepEqual(rendered.openedAnswers, ["alpha"]);
   assert.deepEqual(rendered.deleted, ["alpha"]);
   assert.deepEqual(rendered.managed, [
     ["alpha", { title: "Renamed trail" }],

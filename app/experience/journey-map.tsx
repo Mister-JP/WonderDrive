@@ -29,6 +29,7 @@ import {
   desktopGraphLayout,
   findGraphNode,
   findGraphPath,
+  graphFitScale,
   mobileGraphLayout,
   CURIOSITY_OPTION_PREFIX,
   openQuestionsForTurn,
@@ -183,10 +184,15 @@ export function JourneyMap({
   const fitGraph = useCallback(() => {
     const viewport = viewportRef.current;
     if (!viewport || isMobile) return;
-    const nextScale = Math.max(.48, Math.min(1, (viewport.clientWidth - 28) / layout.width));
+    const nextScale = graphFitScale(
+      viewport.clientWidth,
+      viewport.clientHeight,
+      layout.width,
+      layout.height,
+    );
     setScale(nextScale);
     requestAnimationFrame(() => {
-      viewport.scrollTo({ left: 0, top: Math.max(0, (layout.height * nextScale - viewport.clientHeight) / 2), behavior: "smooth" });
+      viewport.scrollTo({ left: 0, top: 0, behavior: "smooth" });
     });
   }, [isMobile, layout.height, layout.width]);
 
@@ -505,7 +511,7 @@ export function JourneyMap({
               )}
               {!isMobile && (
                 <div className="journey-zoom-controls" aria-label={t("Graph zoom controls")}>
-                  <button type="button" aria-label={t("Zoom out")} onClick={() => setScale((current) => Math.max(.48, current - .1))}><Minus aria-hidden="true" /></button>
+                  <button type="button" aria-label={t("Zoom out")} onClick={() => setScale((current) => current <= .05 ? current : Math.max(.05, current - .1))}><Minus aria-hidden="true" /></button>
                   <button type="button" onClick={fitGraph}><CornersOut aria-hidden="true" /> {t("Fit all")}</button>
                   <button type="button" aria-label={t("Zoom in")} onClick={() => setScale((current) => Math.min(1.35, current + .1))}><Plus aria-hidden="true" /></button>
                   <output aria-label={t("Current zoom")}>{Math.round(scale * 100)}%</output>

@@ -14,7 +14,7 @@ export const PROMPT_VERSION = "wonder-research-turn@4.1.0";
 export const DEFAULT_PREFERENCES: UserPreferences = {
   interfaceLocale: "en",
   defaultOutputLocale: "en",
-  defaultModelId: "gpt-5.6-luna",
+  defaultModelId: "gpt-5.4-nano",
   answerDensity: "balanced",
   textSize: "m",
   reduceMotion: false,

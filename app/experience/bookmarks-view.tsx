@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { ArrowRight, BookmarkSimple, MagnifyingGlass, X } from "@phosphor-icons/react";
 import { PERFORMERS } from "../../lib/catalog";
 import type { Bookmark, PerformerId, TurnMedia } from "../../lib/contracts";
+import { STARTER_TITLE_PREFIX } from "../../lib/starter-content-contract";
 import { useI18n } from "../i18n";
 
 export function BookmarksView({
@@ -82,10 +83,11 @@ export function BookmarksView({
               <div>
                 {group.items.map((item) => {
                   const persona = PERFORMERS.find((entry) => entry.id === item.performerId)!;
+                  const isExample = item.journeyTitle.startsWith(STARTER_TITLE_PREFIX);
                   return (
                     <article className="bookmark-row question" key={item.id}>
                       <BookmarkCardImage media={item.leadMedia} accent={persona.accent} question={item.question} />
-                      <div className="bookmark-copy"><p><span>Question</span>{item.journeyTitle} · {item.topicLabel}</p><h3>{item.question}</h3><small>{formatter.format(item.bookmarkedAt)} · {item.sourceCount} sources · with {persona.name}</small></div>
+                      <div className="bookmark-copy"><p><span>{isExample ? "Sample bookmark" : "Question"}</span>{item.journeyTitle} · {item.topicLabel}</p><h3>{item.question}</h3><small>{formatter.format(item.bookmarkedAt)} · {item.sourceCount} sources · with {persona.name}</small></div>
                       <div className="bookmark-row-actions">
                         {confirmRemove === item.turnId ? (
                           <span className="bookmark-remove-confirm" role="group" aria-label="Confirm bookmark removal">
