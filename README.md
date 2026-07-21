@@ -8,13 +8,57 @@ CuriosityPedia turns one question into a persistent, source-backed map of discov
 
 [Open CuriosityPedia](https://curiositypedia.jigs.chatgpt.site) · [Read the product principles](docs/curiosity-learning-north-star.md) · [Explore the architecture](docs/architecture.md)
 
+## Inspiration
+
+I am a deeply visual learner, and I loved encyclopedias as a kid. Words can feel intimidating to me, and I often struggle to understand an idea when it is presented only as a wall of text. Give me an image, though, and I can spend ages observing it, noticing tiny details, and following the questions those details inspire.
+
+That way of learning has made today's chatbots frustrating for me. They rarely act as great visual explainers: they do not proactively find the remarkable images already available on the internet and use them to make an idea easier to understand. For about three years, I kept expecting someone to build a chatbot capable of truly visual communication. I never found the product I was waiting for.
+
+This hackathon gave me the opportunity to show how learning and information discovery could feel instead: visual, inviting, playful, and exciting. CuriosityPedia is the product I wanted to use myself.
+
 ## What it does
 
-- Builds branching research journeys with citations and durable history.
-- Lets people revisit, search, map, bookmark, snapshot, export, and continue their learning.
-- Supports guest sessions and ChatGPT-authenticated identities with small app-funded allowances and optional session-only BYOK.
-- Uses background research status, usage controls, and failure-safe persistence for long-running provider work.
-- Serves an editor-managed discovery catalog for approachable starting questions.
+CuriosityPedia creates a beautiful, source-backed visual encyclopedia about anything a person wants to learn. Each exploration combines a researched explanation with 8–12 carefully selected images and an image-inspired question for every visual.
+
+After exploring the encyclopedia, the learner can answer those questions, choose any one that sparks their curiosity, and generate a new encyclopedia about that topic. Every choice becomes another branch in a persistent journey map, so learners can see the rabbit holes they followed and return to any earlier discovery.
+
+People can also revisit, search, bookmark, snapshot, export, and continue their learning journeys. Guest sessions, ChatGPT-authenticated identities, app-funded allowances, and optional session-only bring-your-own-key support make the experience accessible while keeping provider usage controlled.
+
+## How we built it
+
+I began in Codex with **GPT-5.6 Sol at medium reasoning**, using it as a product and design collaborator while I worked through the concept, user experience, and interface. I then used Codex's image-generation capabilities to explore and refine the visual direction of the application.
+
+From there, I spent most of the week coding—or “Codexing”—and deploying the website iteratively. OpenAI Sites powered the deployment workflow, while the OpenAI Responses API became the brain of the application: researching each topic, searching for useful images, producing structured visual explanations, and creating the questions that lead learners into their next rabbit hole.
+
+The application itself is built with TypeScript, React, Vinext, Cloudflare D1, and Drizzle ORM. Codex helped throughout the process with product brainstorming, UI exploration, implementation, debugging, testing, architecture, and deployment.
+
+## Challenges we ran into
+
+**TL;DR: time management and token management.**
+
+Design was a major challenge. Image generation in Codex is powerful, but the output is not always easy to control, and maintaining consistency across several application screens required a great deal of iteration.
+
+Model selection also had a significant effect on the build. I started with GPT-5.6 Sol, which helped me make fast progress. As I approached my quota limit, I moved some work to GPT-5.6 Terra. The change forced me deeper into the implementation details and sometimes made obvious visual or product issues easier to miss. It taught me that model capability can matter as much as model cost when time is limited.
+
+The other major challenge was protecting the product vision. It is surprisingly difficult to build educational software that is neither a conventional chatbot nor a social-media feed. Both patterns are so general—and so familiar—that it is easy to fall back into them. My north star was simple: make something I would genuinely love to use.
+
+## Accomplishments that we're proud of
+
+I am proud that the finished product is close to what I imagined. More importantly, I built something of this scope by myself in one week. That gives me immense joy and confidence in what a solo creator can make with the right tools.
+
+## What we learned
+
+Understanding model capabilities is essential. Cost matters, but capability matters too: a cheaper model is not economical if it cannot reliably do the work that a frontier model can.
+
+I also learned how important it is to plan well because pivots are expensive in both time and tokens. A pivot does not necessarily mean the planning failed; sometimes you cannot know what you want until you build and use it. Some ideas sound wonderful in your head but fall flat in the product, while simpler ideas are often overlooked merely because they do not sound exciting enough at first.
+
+## What's next for CuriosityPedia
+
+I believe CuriosityPedia can become a wonderful way for children—and curious people of any age—to encounter new ideas through the eyes of great photographers, illustrators, scientists, historians, and institutions.
+
+Today, the experience is produced by two primary agents. In the future, I want to build an agentic editorial staff that can research, fact-check, curate visuals, shape learning journeys, and continually improve the catalog. My goal is for CuriosityPedia to become a one-stop place for anyone who wants to learn about the beautiful world we live in.
+
+For now, I have avoided the most expensive frontier models in the live API because I cannot yet afford that level of experimentation at scale. As newer and more capable models become accessible, I plan to improve the research quality, visual curation, and interface—especially for visual learners like me.
 
 ## Stack
 

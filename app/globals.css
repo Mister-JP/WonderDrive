@@ -1980,6 +1980,16 @@ html[data-theme="dark"] .knowledge-atlas-stage-arrows button {
 @keyframes knowledge-run-arrive { from { opacity: .4; transform: translateX(4%); } to { opacity: 1; transform: translateX(0); } }
 
 /* Stored knowledge verification */
+.knowledge-check-quiz,
+.knowledge-check-results,
+.knowledge-check-complete {
+  /* These views are intentionally paper-white in both app themes. Keep their
+     ink and highlight tokens local so dark mode cannot produce white-on-cream
+     text or white-on-white navigation controls. */
+  --ink: #13241e;
+  --acid: #dfff58;
+  --paper-light: #fffdf7;
+}
 .knowledge-check-quiz { background: #f7f3e9; color: var(--ink); display: grid; grid-template-columns: minmax(0, 1.04fr) minmax(0, .96fr); height: 100%; min-height: 0; overflow: hidden; padding-inline: clamp(44px, 5vw, 78px); position: relative; width: 100%; }
 .knowledge-check-question-pane { display: grid; grid-template-rows: auto auto minmax(0, 1fr); min-height: 0; overflow: hidden; padding: clamp(20px, 3vh, 38px) clamp(24px, 3vw, 48px) clamp(20px, 3vh, 38px) 0; }
 .knowledge-check-progress { align-items: baseline; border-bottom: 1px solid var(--ink); display: flex; justify-content: space-between; padding-bottom: 9px; }
