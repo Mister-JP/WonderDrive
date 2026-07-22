@@ -1,4 +1,3 @@
-import { waitUntil } from "cloudflare:workers";
 import { mutation } from "../../../../../lib/api";
 import { cancelBackgroundResearch, dismissFailedBackgroundResearch } from "../../../../../lib/background-research";
 import { providerAuthFromRequest } from "../../../../../lib/provider-auth";
@@ -15,7 +14,6 @@ export function DELETE(
       return dismissFailedBackgroundResearch(viewer, requestId);
     }
     return cancelBackgroundResearch(viewer, requestId, {
-      defer: waitUntil,
       providerAuth: providerAuthFromRequest(request),
     });
   });

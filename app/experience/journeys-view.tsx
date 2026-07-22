@@ -82,7 +82,15 @@ export function JourneysView({
             <h2 id="research-activity-title">{t("Research activity")}</h2>
           </div>
           <div className="journeys-grid">
-            {unfinished.map((activity) => (
+            {unfinished.map((activity) => {
+              const stages = [
+                ["researching", t("1 · Research dossier")],
+                ["composing", t("2 · Compose answer")],
+                ["validating", t("Check evidence")],
+                ["saving", t("Save journey")],
+              ] as const;
+              const currentStage = Math.max(0, stages.findIndex(([phase]) => phase === activity.phase));
+              return (
               <article key={activity.id} className={`journey-card research-activity-card ${activity.status}`}>
                 <p className="journey-card-kicker">
                   {activity.status === "researching" ? t("Researching now") : t("Research stopped")}
@@ -90,12 +98,31 @@ export function JourneysView({
                 <h2>{activity.question}</h2>
                 {activity.status === "researching" ? (
                   <>
-                    <p className="research-activity-copy">
-                      <span className="research-activity-pulse" aria-hidden="true" />
-                      {activity.phase === "finalizing"
-                        ? t("Checking citations and finding images")
-                        : t("Searching sources and writing the answer")}
-                    </p>
+                    <ol className="research-stage-track" aria-label={t("Research stages") }>
+                      {stages.map(([phase, label], position) => (
+                        <li
+                          key={phase}
+                          className={position < currentStage ? "complete" : position === currentStage ? "active" : "waiting"}
+                          aria-current={position === currentStage ? "step" : undefined}
+                        >
+                          <span className="research-stage-marker" aria-hidden="true">
+                            {position < currentStage ? "✓" : String(position + 1).padStart(2, "0")}
+                          </span>
+                          <div>
+                            <strong>{label.replace(/^\d+\s*·\s*/, "")}</strong>
+                            {position === currentStage && (
+                              <small>
+                                <span className="research-activity-pulse" aria-hidden="true" />
+                                {t(activity.progressMessage ?? "Step 1 of 2 · Searching sources and building the evidence dossier")}
+                              </small>
+                            )}
+                            {position === currentStage && activity.maxAttempts > 1 && (
+                              <em>{t("This stage: attempt {attempt} of {max}", { attempt: activity.attempt, max: activity.maxAttempts })}</em>
+                            )}
+                          </div>
+                        </li>
+                      ))}
+                    </ol>
                     {activity.timeoutAt && (
                       <p className="research-timeout">
                         {t("Automatic timeout at {time}", { time: formatter.format(activity.timeoutAt) })}
@@ -128,7 +155,22 @@ export function JourneysView({
                   </>
                 ) : (
                   <>
-                    <p className="research-activity-copy">{activity.error ?? t("This research could not be completed.")}</p>
+                    {activity.failure ? (
+                      <section className="research-provider-failure" aria-label={activity.failure.title}>
+                        <p>{activity.failure.source === "openai" ? "OpenAI API" : "CuriosityPedia"}</p>
+                        <h3>{activity.failure.title}</h3>
+                        <span>{activity.failure.message}</span>
+                        <span>{activity.failure.recommendation}</span>
+                        <div>
+                          {activity.failure.actionUrl && activity.failure.actionLabel && (
+                            <a href={activity.failure.actionUrl} target="_blank" rel="noreferrer">{activity.failure.actionLabel} ↗</a>
+                          )}
+                          {activity.failure.allowKeyChange && <a href="/settings">Use another API key</a>}
+                        </div>
+                      </section>
+                    ) : (
+                      <p className="research-activity-copy">{activity.error ?? t("This research could not be completed.")}</p>
+                    )}
                     <div className="research-failed-actions">
                       <button
                         type="button"
@@ -156,7 +198,8 @@ export function JourneysView({
                   </>
                 )}
               </article>
-            ))}
+              );
+            })}
           </div>
         </section>
       )}

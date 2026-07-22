@@ -456,15 +456,24 @@ test("JourneysView confirms before stopping active background research", () => {
     question: "Why do fireflies flash?",
     performerId: "sage",
     status: "researching",
-    phase: "finalizing",
+    phase: "composing",
+    progressMessage: "Step 2 of 2 · Writing the visual session",
+    attempt: 1,
+    maxAttempts: 2,
+    progressUpdatedAt: Date.now(),
     journeyId: null,
     error: null,
+    errorCode: null,
+    failure: null,
     createdAt: Date.now(),
     startedAt: Date.now(),
     timeoutAt: Date.now() + 60_000,
     completedAt: null,
   };
   const rendered = renderJourneys([], { activities: [activity] });
+  assert.match(text(rendered.root), /Research dossier/);
+  assert.match(text(rendered.root), /Compose answer/);
+  assert.match(text(rendered.root), /attempt 1 of 2/);
 
   (find(rendered.root, (element) => element.type === "button" && element.props["aria-label"] === "Stop research").props.onClick as () => void)();
   const confirmation = rendered.rerender();
@@ -481,14 +490,32 @@ test("JourneysView confirms before dismissing failed background research", () =>
     performerId: "sage",
     status: "failed",
     phase: null,
+    progressMessage: null,
+    attempt: 1,
+    maxAttempts: 1,
+    progressUpdatedAt: Date.now(),
     journeyId: null,
-    error: "Provider allowance exceeded.",
+    error: "OpenAI stopped this research because the API project reached its token rate limit.",
+    errorCode: "OPENAI_RATE_LIMIT",
+    failure: {
+      source: "openai",
+      category: "rate_limit",
+      title: "OpenAI rate limit reached",
+      message: "OpenAI stopped this research because the API project reached its token rate limit.",
+      recommendation: "Wait briefly and retry. A new key from the same OpenAI project normally shares the same limit.",
+      actionLabel: "Review OpenAI limits",
+      actionUrl: "https://platform.openai.com/settings/organization/limits",
+      allowKeyChange: true,
+    },
     createdAt: Date.now(),
     startedAt: Date.now(),
     timeoutAt: null,
     completedAt: Date.now(),
   };
   const rendered = renderJourneys([], { activities: [activity] });
+  assert.match(text(rendered.root), /OpenAI rate limit reached/);
+  assert.match(text(rendered.root), /same OpenAI project normally shares the same limit/);
+  assert.ok(find(rendered.root, (element) => element.type === "a" && text(element).includes("Review OpenAI limits")));
 
   (find(rendered.root, (element) => element.type === "button" && text(element).trim().startsWith("Remove failed research")).props.onClick as () => void)();
   const confirmation = rendered.rerender();

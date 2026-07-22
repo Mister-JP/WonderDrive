@@ -271,6 +271,7 @@ export function CuriosityPediaExperience() {
   const preferencesRef = useRef(preferences);
   const liveResearchRef = useRef(liveResearch);
   const researchActivitiesRef = useRef(researchActivities);
+  const activeBackgroundRunnersRef = useRef(new Set<string>());
   const liveResearchAbortRef = useRef<AbortController | null>(null);
   const pendingResearchRef = useRef<LiveResearchRequest | null>(null);
   const takeoverRequestIdRef = useRef<string | null>(null);
@@ -456,10 +457,14 @@ export function CuriosityPediaExperience() {
       if (current?.status === "running" && matching?.status === "researching") {
         setLiveResearch((state) => state && {
           ...state,
-          phase: matching.phase === "finalizing" ? "composition" : "research",
-          message: matching.phase === "finalizing"
-            ? "Step 2 of 2 · Composing the visual session"
-            : "Step 1 of 2 · Building the evidence dossier",
+          phase: matching.phase === "researching"
+            ? "research"
+            : matching.phase === "composing"
+              ? "composition"
+              : matching.phase === "saving" ? "saving" : "validation",
+          message: matching.progressMessage ?? "Step 1 of 2 · Building the evidence dossier",
+          retryAttempt: matching.attempt > 1 ? matching.attempt : 0,
+          maxRetries: matching.maxAttempts,
         });
       }
       if (current?.status === "running" && matching?.status === "ready" && matching.journeyId) {
@@ -477,6 +482,7 @@ export function CuriosityPediaExperience() {
           ...state,
           status: "error",
           error: matching.error ?? activityT("Research stopped"),
+          failure: matching.failure,
           message: activityT("Research stopped"),
         });
       }
@@ -486,6 +492,18 @@ export function CuriosityPediaExperience() {
     }
   }, [presentJourney]);
 
+  const ensureBackgroundRunner = useCallback((requestId: string) => {
+    if (activeBackgroundRunnersRef.current.has(requestId)) return;
+    activeBackgroundRunnersRef.current.add(requestId);
+    void api<ResearchActivity>(`/api/research/background/${requestId}/run`, { method: "POST" })
+      .catch((cause) => {
+        // The durable checkpoint remains in D1. Polling or a later tab visit can
+        // start a fresh runner without repeating completed research.
+        console.error("Background research runner disconnected", cause);
+      })
+      .finally(() => activeBackgroundRunnersRef.current.delete(requestId));
+  }, []);
+
   useEffect(() => {
     // Establish the identity cookie before reading identity-scoped background work.
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -493,6 +511,11 @@ export function CuriosityPediaExperience() {
   }, [refreshResearchActivities, refreshSession]);
 
   const researchingCount = researchActivities.filter((activity) => activity.status === "researching").length;
+  useEffect(() => {
+    researchActivities
+      .filter((activity) => activity.status === "researching")
+      .forEach((activity) => ensureBackgroundRunner(activity.id));
+  }, [ensureBackgroundRunner, researchActivities]);
   useEffect(() => {
     if (!researchingCount) return;
     const interval = window.setInterval(() => void refreshResearchActivities(), 5_000);
@@ -593,7 +616,7 @@ export function CuriosityPediaExperience() {
       setLiveResearch({
         question: config.seed,
         performerId: config.performerId,
-        message: t("Researching in the background. You can safely leave this page."),
+        message: t("Research started. Keep this tab open; every completed stage is saved."),
         events: [],
         phase: "research",
         status: "running",
@@ -618,7 +641,7 @@ export function CuriosityPediaExperience() {
       setLiveResearch((current) => current && {
         ...current,
         diagnosticId: started.data.id,
-        message: t("Researching in the background. You can safely leave this page."),
+        message: t("Research started. Keep this tab open; every completed stage is saved."),
       });
     }, (message) => {
       setLiveResearch((current) =>
@@ -643,7 +666,7 @@ export function CuriosityPediaExperience() {
       setLiveResearch({
         question: seed.question,
         performerId: activeJourney.performerId,
-        message: t("Researching in the background. You can safely leave this page."),
+        message: t("Research started. Keep this tab open; every completed stage is saved."),
         events: [],
         phase: "research",
         status: "running",
@@ -678,7 +701,7 @@ export function CuriosityPediaExperience() {
       setLiveResearch((current) => current && {
         ...current,
         diagnosticId: started.data.id,
-        message: t("Researching in the background. You can safely leave this page."),
+        message: t("Research started. Keep this tab open; every completed stage is saved."),
       });
     }, (message) => {
       setLiveResearch((current) => current
@@ -705,7 +728,7 @@ export function CuriosityPediaExperience() {
         setLiveResearch({
           question: selected.question,
           performerId: activeJourney.performerId,
-          message: t("Researching in the background. You can safely leave this page."),
+          message: t("Research started. Keep this tab open; every completed stage is saved."),
           events: [],
           phase: "research",
           status: "running",
@@ -739,7 +762,7 @@ export function CuriosityPediaExperience() {
         setLiveResearch((current) => current && {
           ...current,
           diagnosticId: started.data.id,
-          message: t("Researching in the background. You can safely leave this page."),
+          message: t("Research started. Keep this tab open; every completed stage is saved."),
         });
         return;
       }
@@ -1674,44 +1697,51 @@ function JourneyBufferingStage({
   const workingLabel = state.retryAttempt > 0
     ? t("Retrying {attempt} of {max}", { attempt: state.retryAttempt, max: state.maxRetries })
     : activity.at(-1)?.label ?? state.message;
-  const compositionStarted = state.status === "complete"
-    || state.phase === "composition"
-    || state.phase === "validation"
-    || state.events.some((event) => event.phase === "composition" || event.phase === "validation");
-  const researchPhaseState = compositionStarted || state.status === "complete" ? "complete" : "active";
-  const compositionPhaseState = state.status === "complete"
-    ? "complete"
-    : compositionStarted ? "active" : "waiting";
+  const stages = [
+    ["research", t("1 · Research dossier")],
+    ["composition", t("2 · Compose answer")],
+    ["validation", t("Check evidence")],
+    ["saving", t("Save journey")],
+  ] as const;
+  const currentStage = state.status === "complete"
+    ? stages.length
+    : Math.max(0, stages.findIndex(([phase]) => phase === (state.phase ?? "research")));
 
   return (
     <section className="knowledge-loading" aria-labelledby="buffering-title" aria-busy={state.status === "running"}>
       <div className="knowledge-loading-intro">
         <p className="knowledge-session-kicker"><span /> Knowledge Session · {performer.name}</p>
-        <h1 id="buffering-title">{state.question}</h1>
-        <p>{preview?.teaser ?? "A source-backed visual explanation is being assembled around your question."}</p>
-        <div className={`knowledge-loading-current ${state.status}`} role="status" aria-live="polite">
-          <CelestialMark variant="status" state={state.status} />
-          <div>
-            <strong>{state.status === "complete" ? "The session is ready" : state.status === "error" ? stoppedLabel : "Building your visual story"}</strong>
-            <small>{state.status === "running" ? workingLabel : state.status === "complete" ? "Arranging the final page" : state.error}</small>
-          </div>
-        </div>
-        <div className="knowledge-loading-phases" aria-label="Two-step generation progress">
-          <div className={researchPhaseState}>
-            <span>01</span>
-            <p><strong>Research dossier</strong><small>{researchPhaseState === "complete" ? "Evidence package complete" : "Finding and checking evidence"}</small></p>
-          </div>
-          <i aria-hidden="true" />
-          <div className={compositionPhaseState}>
-            <span>02</span>
-            <p><strong>Visual session</strong><small>{compositionPhaseState === "complete" ? "Page and image questions complete" : compositionPhaseState === "active" ? "Composing from the dossier" : "Waiting for the dossier"}</small></p>
-          </div>
-        </div>
         {state.status === "running" && (
           <aside className="knowledge-loading-expectation" role="note">
             <strong>{t("This can take about 2–3 minutes")}</strong>
-            <span>{t("You can safely leave this page. We’ll keep researching in the background, and the finished answer will appear in {journeys}.", { journeys: t("Journeys") })}</span>
+            <span>{t("You can move around the app while this tab stays open. Every completed stage is saved, so if the tab disconnects we resume from the latest checkpoint when you return.")}</span>
           </aside>
+        )}
+        <h1 id="buffering-title">{state.question}</h1>
+        <p>{preview?.teaser ?? "A source-backed visual explanation is being assembled around your question."}</p>
+        <ol className="knowledge-loading-stages" aria-label={t("Research stages")}>
+          {stages.map(([phase, label], position) => (
+            <li
+              key={phase}
+              className={position < currentStage ? "complete" : position === currentStage ? "active" : "waiting"}
+              aria-current={position === currentStage ? "step" : undefined}
+            >
+              <span aria-hidden="true">{position < currentStage ? "✓" : String(position + 1).padStart(2, "0")}</span>
+              <div>
+                <strong>{label.replace(/^\d+\s*·\s*/, "")}</strong>
+                {position === currentStage && <small>{workingLabel}</small>}
+              </div>
+            </li>
+          ))}
+        </ol>
+        {state.status !== "running" && (
+          <div className={`knowledge-loading-current ${state.status}`} role="status" aria-live="polite">
+            <CelestialMark variant="status" state={state.status} />
+            <div>
+              <strong>{state.status === "complete" ? "The session is ready" : stoppedLabel}</strong>
+              <small>{state.status === "complete" ? "Arranging the final page" : state.error}</small>
+            </div>
+          </div>
         )}
       </div>
 
@@ -1749,9 +1779,24 @@ function JourneyBufferingStage({
 
       {state.status === "error" && (
         <div className="knowledge-loading-recovery" role="alert">
-          <p><strong>{capacityError ? t("Your journeys need space.") : usageError ? "The current usage window is full." : "This attempt stopped safely."}</strong> {state.error}</p>
+          {state.failure ? (
+            <div className="knowledge-provider-failure">
+              <span>{state.failure.source === "openai" ? "OpenAI API" : "CuriosityPedia"}</span>
+              <h2>{state.failure.title}</h2>
+              <p>{state.failure.message}</p>
+              <p>{state.failure.recommendation}</p>
+              <div>
+                {state.failure.actionUrl && state.failure.actionLabel && (
+                  <a href={state.failure.actionUrl} target="_blank" rel="noreferrer">{state.failure.actionLabel} ↗</a>
+                )}
+                {state.failure.allowKeyChange && <a href="/settings">Use another API key</a>}
+              </div>
+            </div>
+          ) : (
+            <p><strong>{capacityError ? t("Your journeys need space.") : usageError ? "The current usage window is full." : "This attempt stopped safely."}</strong> {state.error}</p>
+          )}
           {state.diagnosticId && <small>Diagnostic {formatDiagnosticId(state.diagnosticId)}</small>}
-          <div>
+          <div className="knowledge-recovery-actions">
             {onTakeOver && <button type="button" onClick={onTakeOver}>{t("Use this tab")}</button>}
             <button type="button" onClick={onBack}>{capacityError ? t("Manage saved journeys") : usageError ? t("View usage") : t("Return safely")}</button>
           </div>

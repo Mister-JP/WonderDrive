@@ -388,11 +388,17 @@ export const researchRequests = sqliteTable(
       .notNull()
       .default("reserved"),
     providerResponseId: text("provider_response_id"),
+    researchCheckpointJson: text("research_checkpoint_json"),
     costReservationId: text("cost_reservation_id"),
     resultJourneyId: text("result_journey_id").references(() => journeys.id),
     resultTurnId: text("result_turn_id").references(() => turns.id),
     errorCode: text("error_code"),
     errorMessage: text("error_message"),
+    progressPhase: text("progress_phase"),
+    progressMessage: text("progress_message"),
+    progressAttempt: integer("progress_attempt").notNull().default(1),
+    progressMaxAttempts: integer("progress_max_attempts").notNull().default(1),
+    progressUpdatedAt: integer("progress_updated_at", { mode: "timestamp_ms" }),
     inputTokens: integer("input_tokens").notNull().default(0),
     cachedInputTokens: integer("cached_input_tokens").notNull().default(0),
     outputTokens: integer("output_tokens").notNull().default(0),
@@ -567,7 +573,7 @@ export const providerCostReservations = sqliteTable(
       ],
     }).notNull(),
     status: text("status", {
-      enum: ["reserved", "settled", "uncertain", "released"],
+      enum: ["reserved", "settled", "uncertain", "released", "absorbed"],
     })
       .notNull()
       .default("reserved"),
@@ -579,6 +585,7 @@ export const providerCostReservations = sqliteTable(
     windowStartedAt: integer("window_started_at", { mode: "timestamp_ms" }).notNull(),
     settledAt: integer("settled_at", { mode: "timestamp_ms" }),
     releasedAt: integer("released_at", { mode: "timestamp_ms" }),
+    absorbedAt: integer("absorbed_at", { mode: "timestamp_ms" }),
     createdAt,
   },
   (table) => [

@@ -9,6 +9,7 @@ import type {
   LiveResearchStreamEvent,
   PerformerId,
   ResearchEvent,
+  ResearchFailure,
 } from "../lib/contracts";
 import { openAIKeyRequestHeaders } from "./byok-client";
 
@@ -17,7 +18,7 @@ export type LiveResearchState = {
   performerId: PerformerId;
   message: string;
   events: ResearchEvent[];
-  phase?: "research" | "composition" | "validation";
+  phase?: "research" | "composition" | "validation" | "saving";
   status: "running" | "complete" | "error";
   result: JourneyDetail | null;
   error: string | null;
@@ -25,6 +26,7 @@ export type LiveResearchState = {
   diagnosticId: string | null;
   retryAttempt: number;
   maxRetries: number;
+  failure?: ResearchFailure | null;
 };
 
 class ApiRequestError extends Error {

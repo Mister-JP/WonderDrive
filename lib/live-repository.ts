@@ -30,6 +30,7 @@ import {
   liveResearchLimit,
   ROLLING_USAGE_WINDOW_MS,
 } from "./usage-policy";
+import { absorbFailedResearchCosts } from "./provider-cost-control";
 
 const PRESETS: ResearchPreset[] = ["spark", "standard", "deep"];
 export const LIVE_RESEARCH_LEASE_MS = 45_000;
@@ -413,8 +414,7 @@ export async function markLiveResearchFailed(
        SET status = 'failed', error_code = ?, error_message = ?,
            completed_at = CAST(unixepoch() * 1000 AS INTEGER)
        WHERE id = ? AND identity_id = ? AND status IN ('reserved', 'researching')
-         AND lease_token = ?
-         AND lease_expires_at > CAST(unixepoch() * 1000 AS INTEGER)`,
+         AND lease_token = ?`,
     )
     .bind(
       repositoryError?.code ?? "INTERNAL_ERROR",
@@ -424,6 +424,7 @@ export async function markLiveResearchFailed(
       prepared.leaseToken,
     )
     .run();
+  await absorbFailedResearchCosts(viewer.identityId, prepared.requestId);
 }
 
 export async function assertLiveResearchLease(

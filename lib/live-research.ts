@@ -267,6 +267,7 @@ export async function finalizeLiveResearchResponse(
     allowSupplemental?: boolean;
     maxVisualCurationAttempts?: number;
     providerAuth?: ProviderAuth;
+    onProgress?: (phase: "composing" | "validating", message: string, attempt: number, maxAttempts: number) => Promise<void>;
   } = {},
 ): Promise<LiveTurnDraft> {
   const events = context.events ?? [];
@@ -320,14 +321,13 @@ export async function finalizeLiveResearchResponse(
       externalSignal,
       assertProviderAttempt,
       context.providerAuth,
-      (attempt) => addActivity(
-        "synthesis",
-        attempt === 1
+      async (attempt) => {
+        const message = attempt === 1
           ? "Step 2 of 2 · Writing the answer and one question per image"
-          : "Step 2 of 2 · Rechecking the page composition",
-        null,
-        "composition",
-      ),
+          : "Step 2 of 2 · Retrying the page composition without repeating research";
+        addActivity("synthesis", message, null, "composition");
+        await context.onProgress?.("composing", message, attempt, 2);
+      },
     );
     supplementalResponses.push(composition.response);
     modelTurn = parseModelTurn(
@@ -431,6 +431,12 @@ export async function finalizeLiveResearchResponse(
       }
     }
   }
+  await context.onProgress?.(
+    "validating",
+    "Checking citations, images, and the final page structure",
+    1,
+    1,
+  );
   let draft;
   try {
     draft = validateAndMapTurn(
@@ -622,14 +628,14 @@ async function runTurnCompositionWithRetries(
   externalSignal: AbortSignal | undefined,
   assertProviderAttempt: () => Promise<void>,
   providerAuth: ProviderAuth | undefined,
-  onAttempt: (attempt: number) => void,
+  onAttempt: (attempt: number) => Promise<void>,
 ): Promise<{ outputText: string; response: OpenAIResponse }> {
   const performer = PERFORMERS.find((candidate) => candidate.id === prepared.performerId)!;
   const limits = OPENAI_PROMPT_LIMITS.turnComposition;
   let lastError: unknown;
   for (let attempt = 1; attempt <= 2; attempt += 1) {
     await assertProviderAttempt();
-    onAttempt(attempt);
+    await onAttempt(attempt);
     try {
       const streamed = await runProviderStream({
         requestBody: {

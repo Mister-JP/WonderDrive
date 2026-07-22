@@ -13,6 +13,9 @@ export type ProviderImage = {
 
 export type OpenAIResponse = {
   id?: unknown;
+  status?: unknown;
+  error?: unknown;
+  incomplete_details?: unknown;
   output?: unknown;
   usage?: {
     input_tokens?: unknown;

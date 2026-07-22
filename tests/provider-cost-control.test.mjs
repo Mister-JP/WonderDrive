@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { env } from "cloudflare:workers";
 import {
+  absorbFailedResearchCosts,
   markProviderCostUncertain,
   providerCostControlTestHooks,
   reserveProviderCost,
@@ -84,6 +85,45 @@ test("settles known cost and keeps ambiguous outcomes at the full hold", async (
     assert.match(writes[1].sql, /status = 'uncertain'/);
     assert.ok(!writes[1].sql.includes("settled_microusd = 0"));
   } finally {
+    delete env.DB;
+  }
+});
+
+test("absorbs failed research spend without removing it from the project budget", async () => {
+  const writes = [];
+  env.DB = {
+    prepare(sql) {
+      let values = [];
+      return {
+        bind(...input) { values = input; return this; },
+        async run() { writes.push({ sql, values }); return { success: true, meta: { changes: 1 } }; },
+      };
+    },
+  };
+  try {
+    await absorbFailedResearchCosts("identity-failed", "request-failed");
+    assert.match(writes[0].sql, /status = 'absorbed'/);
+    assert.match(writes[0].sql, /research_requests\.status = 'failed'/);
+    assert.deepEqual(writes[0].values.slice(1), [
+      "identity-failed",
+      "request-failed",
+      "identity-failed",
+    ]);
+
+    env.OPENAI_API_KEY = "test-key";
+    await reserveProviderCost({
+      callKey: "absorbed:project-budget",
+      identityId: "identity-failed",
+      viewerMode: "guest",
+      modelId: "gpt-5.4-nano",
+      operation: "live_research",
+      requestBody: { model: "gpt-5.4-nano", max_output_tokens: 100 },
+    });
+    assert.match(writes[1].sql, /WHEN status = 'absorbed'/);
+    const identityBudget = writes[1].sql.slice(writes[1].sql.indexOf("AND COALESCE"));
+    assert.doesNotMatch(identityBudget, /status = 'absorbed'/);
+  } finally {
+    delete env.OPENAI_API_KEY;
     delete env.DB;
   }
 });

@@ -432,13 +432,30 @@ export type ResearchActivity = {
   question: string;
   performerId: PerformerId;
   status: "researching" | "ready" | "failed";
-  phase: "researching" | "finalizing" | null;
+  phase: "researching" | "composing" | "validating" | "saving" | null;
+  progressMessage: string | null;
+  attempt: number;
+  maxAttempts: number;
+  progressUpdatedAt: number | null;
   journeyId: string | null;
   error: string | null;
+  errorCode: string | null;
+  failure: ResearchFailure | null;
   createdAt: number;
   startedAt: number | null;
   timeoutAt: number | null;
   completedAt: number | null;
+};
+
+export type ResearchFailure = {
+  source: "openai" | "curiositypedia";
+  category: "rate_limit" | "quota" | "authentication" | "access" | "timeout" | "validation" | "provider";
+  title: string;
+  message: string;
+  recommendation: string;
+  actionLabel: string | null;
+  actionUrl: string | null;
+  allowKeyChange: boolean;
 };
 
 export type ApiSuccess<T> = { data: T; viewer: Viewer };

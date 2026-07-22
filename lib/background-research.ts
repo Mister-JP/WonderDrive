@@ -1,5 +1,5 @@
 import { getD1 } from "../db";
-import type { LiveResearchRequest, ResearchActivity } from "./contracts";
+import type { LiveResearchRequest, ResearchActivity, ResearchFailure } from "./contracts";
 import { RepositoryError } from "./errors";
 import {
   assertLiveResearchLease,
@@ -19,6 +19,7 @@ import {
   retrieveOpenAIResponse,
 } from "./openai";
 import {
+  absorbFailedResearchCosts,
   releaseProviderCost,
   reserveProviderCost,
 } from "./provider-cost-control";
@@ -36,16 +37,23 @@ export const BACKGROUND_RESEARCH_TIMEOUT_MS = 10 * 60 * 1_000;
 const PROVIDER_STATUS_TIMEOUT_MS = 10_000;
 const PROVIDER_CANCEL_TIMEOUT_MS = 10_000;
 const MAX_START_ATTEMPTS = 5;
+const RUNNER_POLL_INTERVAL_MS = 3_000;
 
 type BackgroundRow = {
   id: string;
   request_json: string;
   status: "reserved" | "researching" | "committed" | "failed";
   provider_response_id: string | null;
+  research_checkpoint_json: string | null;
   cost_reservation_id: string | null;
   result_journey_id: string | null;
   error_code: string | null;
   error_message: string | null;
+  progress_phase: "researching" | "composing" | "validating" | "saving" | null;
+  progress_message: string | null;
+  progress_attempt: number;
+  progress_max_attempts: number;
+  progress_updated_at: number | null;
   completed_at: number | null;
   started_at: number | null;
   lease_token: string | null;
@@ -55,7 +63,6 @@ type BackgroundRow = {
 
 type BackgroundListOptions = {
   reconcile?: boolean;
-  defer?: (work: Promise<unknown>) => void;
   providerAuth?: ProviderAuth;
 };
 
@@ -100,13 +107,17 @@ export async function startBackgroundResearch(
     await getD1().prepare(
       `UPDATE research_requests
        SET status = 'researching', provider_response_id = ?, cost_reservation_id = ?,
-           request_json = ?, started_at = ?, error_code = NULL, error_message = NULL
+           request_json = ?, started_at = ?, error_code = NULL, error_message = NULL,
+           progress_phase = 'researching',
+           progress_message = 'Step 1 of 2 · OpenAI is searching sources and building the evidence dossier',
+           progress_attempt = 1, progress_max_attempts = 1, progress_updated_at = ?
        WHERE id = ? AND identity_id = ? AND execution_mode = 'background'
          AND status = 'reserved'`,
     ).bind(
       responseId,
       reservationId,
       JSON.stringify({ ...prepared, providerFunding: providerAuth.funding }),
+      Date.now(),
       Date.now(),
       prepared.requestId,
       viewer.identityId,
@@ -121,9 +132,43 @@ export async function startBackgroundResearch(
   }
 }
 
+/**
+ * Owns the long-lived HTTP request for one background job. Status polling never
+ * performs work; it only reads the checkpoints this runner writes to D1.
+ */
+export async function runBackgroundResearch(
+  viewer: ViewerContext,
+  requestId: string,
+  providerAuth: ProviderAuth = APPLICATION_PROVIDER_AUTH,
+  signal?: AbortSignal,
+): Promise<ResearchActivity> {
+  while (!signal?.aborted) {
+    await expireBackgroundResearch(viewer);
+    const row = await backgroundRow(viewer, requestId);
+    if (!row) throw new RepositoryError("NOT_FOUND", "Research request not found.", 404);
+    if (row.status === "committed" || row.status === "failed") return activityFromRow(row);
+    const rowAuth = providerAuthForRow(row, providerAuth);
+    if (!rowAuth) {
+      throw new RepositoryError(
+        "PROVIDER_UNAVAILABLE",
+        "Reconnect the OpenAI API key used to start this research before resuming it.",
+        409,
+      );
+    }
+    if (row.provider_response_id) await reconcileRow(viewer, row, rowAuth);
+    const updated = await backgroundRow(viewer, requestId);
+    if (!updated) throw new RepositoryError("NOT_FOUND", "Research request not found.", 404);
+    if (updated.status === "committed" || updated.status === "failed") return activityFromRow(updated);
+    await abortableDelay(RUNNER_POLL_INTERVAL_MS, signal);
+  }
+  const row = await backgroundRow(viewer, requestId);
+  if (!row) throw new RepositoryError("NOT_FOUND", "Research request not found.", 404);
+  return activityFromRow(row);
+}
+
 export async function listBackgroundResearch(
   viewer: ViewerContext,
-  { reconcile = true, defer, providerAuth = APPLICATION_PROVIDER_AUTH }: BackgroundListOptions = {},
+  { reconcile = true, providerAuth = APPLICATION_PROVIDER_AUTH }: BackgroundListOptions = {},
 ): Promise<ResearchActivity[]> {
   await expireBackgroundResearch(viewer);
   let rows = await backgroundRows(viewer);
@@ -142,12 +187,8 @@ export async function listBackgroundResearch(
         }
       }
     });
-    if (defer) {
-      defer(work);
-    } else {
-      await work;
-      rows = await backgroundRows(viewer);
-    }
+    await work;
+    rows = await backgroundRows(viewer);
   }
   return rows.map(activityFromRow);
 }
@@ -155,7 +196,7 @@ export async function listBackgroundResearch(
 export async function cancelBackgroundResearch(
   viewer: ViewerContext,
   requestId: string,
-  { defer, providerAuth = APPLICATION_PROVIDER_AUTH }: Pick<BackgroundListOptions, "defer" | "providerAuth"> = {},
+  { providerAuth = APPLICATION_PROVIDER_AUTH }: Pick<BackgroundListOptions, "providerAuth"> = {},
 ): Promise<ResearchActivity> {
   const row = await backgroundRow(viewer, requestId);
   if (!row) throw new RepositoryError("NOT_FOUND", "Research request not found.", 404);
@@ -177,12 +218,12 @@ export async function cancelBackgroundResearch(
        WHERE id = ? AND identity_id = ? AND execution_mode = 'background'
          AND status IN ('reserved', 'researching')`,
     ).bind(Date.now(), requestId, viewer.identityId).run();
+    await absorbFailedResearchCosts(viewer.identityId, requestId);
 
     const cleanup = cancelProviderWork(viewer, row, rowAuth).catch((error) => {
       console.error("Unable to cancel the background provider response", error);
     });
-    if (defer) defer(cleanup);
-    else await cleanup;
+    await cleanup;
   }
 
   const cancelled = await backgroundRow(viewer, requestId);
@@ -301,6 +342,11 @@ async function submitWithRetries(body: object, idempotencyKey: string, providerA
 }
 
 async function reconcileRow(viewer: ViewerContext, row: BackgroundRow, providerAuth: ProviderAuth) {
+  const preparedBase = parsePrepared(row.request_json);
+  let payload: OpenAIResponse;
+  if (row.research_checkpoint_json) {
+    payload = JSON.parse(row.research_checkpoint_json) as OpenAIResponse;
+  } else {
   const controller = new AbortController();
   const timeout = setTimeout(
     () => controller.abort("CuriosityPedia background status timeout"),
@@ -329,15 +375,26 @@ async function reconcileRow(viewer: ViewerContext, row: BackgroundRow, providerA
     }
     return;
   }
-  const payload = await response.json() as OpenAIResponse;
+  payload = await response.json() as OpenAIResponse;
   const payloadRecord: unknown = payload;
   const status = isRecord(payloadRecord) && typeof payloadRecord.status === "string"
     ? payloadRecord.status
     : "";
-  if (status === "queued" || status === "in_progress") return;
-  const preparedBase = parsePrepared(row.request_json);
-
+  if (status === "queued" || status === "in_progress") {
+    await updateProgress(
+      viewer,
+      row.id,
+      "researching",
+      status === "queued"
+        ? "Step 1 of 2 · OpenAI has queued the evidence search"
+        : "Step 1 of 2 · Searching sources and assembling the evidence dossier",
+      1,
+        1,
+    );
+    return;
+  }
   if (status !== "completed") {
+    const providerFailure = classifyProviderFailure(payload, preparedBase.providerFunding === "user");
     await recordOpenAIUsage({
       identityId: viewer.identityId,
       researchRequestId: row.id,
@@ -350,24 +407,26 @@ async function reconcileRow(viewer: ViewerContext, row: BackgroundRow, providerA
       providerRequestId: row.provider_response_id,
       latencyMs: Date.now() - row.created_at,
     });
-    await failBackgroundRow(
-      viewer,
-      row.id,
-      new RepositoryError("PROVIDER_ERROR", "Background research did not complete. Please retry it.", 502, true),
-    );
+    await failBackgroundProviderRow(viewer, row.id, providerFailure.code, providerFailure.message);
     return;
+  }
   }
 
   const leaseToken = crypto.randomUUID();
   const claimed = await getD1().prepare(
     `UPDATE research_requests
-     SET lease_token = ?, lease_expires_at = ?
+     SET lease_token = ?, lease_expires_at = ?, research_checkpoint_json = ?,
+         progress_phase = 'composing',
+         progress_message = 'Step 1 complete · Evidence dossier saved; starting Prompt 2',
+         progress_attempt = 1, progress_max_attempts = 2, progress_updated_at = ?
      WHERE id = ? AND identity_id = ? AND execution_mode = 'background'
        AND status = 'researching'
        AND (lease_expires_at IS NULL OR lease_expires_at <= ?)`,
   ).bind(
     leaseToken,
     Date.now() + FINALIZATION_LEASE_MS,
+    JSON.stringify(payload),
+    Date.now(),
     row.id,
     viewer.identityId,
     Date.now(),
@@ -408,7 +467,19 @@ async function reconcileRow(viewer: ViewerContext, row: BackgroundRow, providerA
         () => {},
         finalizationController.signal,
         () => assertLiveResearchLease(viewer, prepared),
-        { maxVisualCurationAttempts: 1, providerAuth },
+        {
+          maxVisualCurationAttempts: 1,
+          providerAuth,
+          onProgress: (phase, message, attempt, maxAttempts) => updateProgress(
+            viewer,
+            row.id,
+            phase,
+            message,
+            attempt,
+            maxAttempts,
+            leaseToken,
+          ),
+        },
       ),
       new Promise<never>((_, reject) => {
         const rejectWhenAborted = () => reject(new RepositoryError(
@@ -420,6 +491,7 @@ async function reconcileRow(viewer: ViewerContext, row: BackgroundRow, providerA
         finalizationController.signal.addEventListener("abort", rejectWhenAborted, { once: true });
       }),
     ]);
+    await updateProgress(viewer, row.id, "saving", "Saving the completed journey", 1, 1, leaseToken);
     await commitLiveResearch(viewer, prepared, draft);
   } catch (error) {
     await markBackgroundFinalizationFailed(viewer, prepared, error);
@@ -449,6 +521,7 @@ async function expireBackgroundResearch(viewer: ViewerContext) {
          AND (provider_response_id IS NULL OR lease_token IS NULL OR lease_expires_at IS NULL OR lease_expires_at <= ?)`,
     ).bind(now, viewer.identityId, now - BACKGROUND_RESEARCH_TIMEOUT_MS, now),
   ]);
+  await absorbFailedResearchCosts(viewer.identityId);
 }
 
 async function markBackgroundFinalizationFailed(
@@ -471,6 +544,7 @@ async function markBackgroundFinalizationFailed(
     viewer.identityId,
     prepared.leaseToken,
   ).run();
+  await absorbFailedResearchCosts(viewer.identityId, prepared.requestId);
 }
 
 async function cancelProviderWork(viewer: ViewerContext, row: BackgroundRow, providerAuth: ProviderAuth) {
@@ -544,13 +618,31 @@ async function failBackgroundRow(viewer: ViewerContext, requestId: string, error
     requestId,
     viewer.identityId,
   ).run();
+  await absorbFailedResearchCosts(viewer.identityId, requestId);
+}
+
+async function failBackgroundProviderRow(
+  viewer: ViewerContext,
+  requestId: string,
+  errorCode: string,
+  errorMessage: string,
+) {
+  await getD1().prepare(
+    `UPDATE research_requests
+     SET status = 'failed', error_code = ?, error_message = ?, completed_at = ?,
+         lease_token = NULL, lease_expires_at = NULL
+     WHERE id = ? AND identity_id = ? AND execution_mode = 'background'
+       AND status = 'researching'`,
+  ).bind(errorCode, errorMessage.slice(0, 500), Date.now(), requestId, viewer.identityId).run();
+  await absorbFailedResearchCosts(viewer.identityId, requestId);
 }
 
 async function backgroundRows(viewer: ViewerContext) {
   const result = await getD1().prepare(
-    `SELECT id, request_json, status, provider_response_id, cost_reservation_id,
+    `SELECT id, request_json, status, provider_response_id, research_checkpoint_json, cost_reservation_id,
             result_journey_id, error_code, error_message, completed_at, started_at,
-            lease_token, lease_expires_at, created_at
+            progress_phase, progress_message, progress_attempt, progress_max_attempts,
+            progress_updated_at, lease_token, lease_expires_at, created_at
      FROM research_requests
      WHERE identity_id = ? AND execution_mode = 'background'
        AND NOT (status = 'failed' AND COALESCE(error_code, '') IN ('RETRIED', 'DISMISSED'))
@@ -561,9 +653,10 @@ async function backgroundRows(viewer: ViewerContext) {
 
 async function backgroundRow(viewer: ViewerContext, requestId: string) {
   return getD1().prepare(
-    `SELECT id, request_json, status, provider_response_id, cost_reservation_id,
+    `SELECT id, request_json, status, provider_response_id, research_checkpoint_json, cost_reservation_id,
             result_journey_id, error_code, error_message, completed_at, started_at,
-            lease_token, lease_expires_at, created_at
+            progress_phase, progress_message, progress_attempt, progress_max_attempts,
+            progress_updated_at, lease_token, lease_expires_at, created_at
      FROM research_requests
      WHERE id = ? AND identity_id = ? AND execution_mode = 'background' LIMIT 1`,
   ).bind(requestId, viewer.identityId).first<BackgroundRow>();
@@ -602,9 +695,15 @@ function activityFromRow(row: BackgroundRow): ResearchActivity {
     question: prepared.question,
     performerId: prepared.performerId,
     status: row.status === "committed" ? "ready" : row.status === "failed" ? "failed" : "researching",
-    phase: row.status === "researching" ? (row.lease_token ? "finalizing" : "researching") : null,
+    phase: row.status === "researching" ? (row.progress_phase ?? (row.lease_token ? "composing" : "researching")) : null,
+    progressMessage: row.progress_message,
+    attempt: row.progress_attempt ?? 1,
+    maxAttempts: row.progress_max_attempts ?? 1,
+    progressUpdatedAt: row.progress_updated_at,
     journeyId: row.result_journey_id ?? prepared.journeyId ?? null,
     error: row.error_message,
+    errorCode: row.error_code,
+    failure: failureFromRow(row, prepared.providerFunding === "user"),
     createdAt: row.created_at,
     startedAt: row.started_at,
     timeoutAt: row.status === "reserved" || row.status === "researching"
@@ -614,4 +713,158 @@ function activityFromRow(row: BackgroundRow): ResearchActivity {
       : null,
     completedAt: row.completed_at,
   };
+}
+
+function classifyProviderFailure(payload: OpenAIResponse, usesOwnKey: boolean) {
+  const error = isRecord(payload.error) ? payload.error : null;
+  const code = error && typeof error.code === "string" ? error.code : "";
+  const rawMessage = error && typeof error.message === "string" ? error.message : "";
+  if (code === "rate_limit_exceeded") {
+    const limit = numberFromProviderMessage(rawMessage, /Limit\s+([\d,]+)/i);
+    const used = numberFromProviderMessage(rawMessage, /Used\s+([\d,]+)/i);
+    const requested = numberFromProviderMessage(rawMessage, /Requested\s+([\d,]+)/i);
+    const retrySeconds = numberFromProviderMessage(rawMessage, /try again in\s+([\d.]+)s/i);
+    const capacity = limit && used && requested
+      ? ` The project limit is ${limit.toLocaleString()} tokens per minute; ${used.toLocaleString()} were already in use and this step requested ${requested.toLocaleString()} more.`
+      : "";
+    const retry = retrySeconds ? ` OpenAI suggested retrying after about ${Math.ceil(retrySeconds)} seconds.` : "";
+    return {
+      code: "OPENAI_RATE_LIMIT",
+      message: `OpenAI stopped this research because the API project reached its token rate limit.${capacity}${retry}`,
+    };
+  }
+  if (code === "insufficient_quota") {
+    return {
+      code: "OPENAI_QUOTA_EXHAUSTED",
+      message: "OpenAI stopped this research because the API project has no available credits or reached its spending limit.",
+    };
+  }
+  if (["invalid_api_key", "authentication_error"].includes(code)) {
+    return {
+      code: "OPENAI_AUTHENTICATION",
+      message: "OpenAI rejected the API key used for this research.",
+    };
+  }
+  if (["model_not_found", "permission_denied", "forbidden"].includes(code)) {
+    return {
+      code: "OPENAI_ACCESS",
+      message: "OpenAI rejected this research because the API project does not have access to the selected model or operation.",
+    };
+  }
+  return {
+    code: "OPENAI_PROVIDER_FAILED",
+    message: usesOwnKey
+      ? "OpenAI ended this research before completing the evidence dossier. Your API key remains private; retry or review the key's OpenAI project."
+      : "OpenAI ended this research before completing the evidence dossier. Please retry it.",
+  };
+}
+
+function numberFromProviderMessage(message: string, pattern: RegExp) {
+  const match = message.match(pattern)?.[1];
+  if (!match) return null;
+  const value = Number(match.replaceAll(",", ""));
+  return Number.isFinite(value) ? value : null;
+}
+
+function failureFromRow(
+  row: BackgroundRow,
+  usesOwnKey: boolean,
+): ResearchFailure | null {
+  const message = row.error_message ?? "This research could not be completed.";
+  switch (row.error_code) {
+    case "OPENAI_RATE_LIMIT":
+      return {
+        source: "openai",
+        category: "rate_limit",
+        title: "OpenAI rate limit reached",
+        message,
+        recommendation: usesOwnKey
+          ? "Wait briefly and retry. A new key from the same OpenAI project normally shares the same limit; use another key only if it belongs to a project with separate capacity."
+          : "Wait briefly and retry. CuriosityPedia will not count this failed research against your allowance.",
+        actionLabel: "Review OpenAI limits",
+        actionUrl: "https://platform.openai.com/settings/organization/limits",
+        allowKeyChange: usesOwnKey,
+      };
+    case "OPENAI_QUOTA_EXHAUSTED":
+      return {
+        source: "openai",
+        category: "quota",
+        title: "OpenAI API quota unavailable",
+        message,
+        recommendation: "Review the API project's credits and spending limit, or use a key from a project with available API capacity.",
+        actionLabel: "Review OpenAI billing",
+        actionUrl: "https://platform.openai.com/settings/organization/billing",
+        allowKeyChange: usesOwnKey,
+      };
+    case "OPENAI_AUTHENTICATION":
+      return {
+        source: "openai",
+        category: "authentication",
+        title: "OpenAI rejected the API key",
+        message,
+        recommendation: "Remove the current key and connect a valid OpenAI project API key.",
+        actionLabel: "Manage OpenAI API keys",
+        actionUrl: "https://platform.openai.com/api-keys",
+        allowKeyChange: usesOwnKey,
+      };
+    case "OPENAI_ACCESS":
+      return {
+        source: "openai",
+        category: "access",
+        title: "OpenAI project access required",
+        message,
+        recommendation: "Check the selected model and the permissions of the project associated with this API key.",
+        actionLabel: "Open OpenAI Platform",
+        actionUrl: "https://platform.openai.com/settings/organization/projects",
+        allowKeyChange: usesOwnKey,
+      };
+    case "OPENAI_PROVIDER_FAILED":
+    case "PROVIDER_ERROR":
+      return {
+        source: "openai",
+        category: "provider",
+        title: "OpenAI did not complete the research",
+        message,
+        recommendation: "Retry the research. If it repeats, review the API project status or connect a different eligible project key.",
+        actionLabel: "Open OpenAI Platform",
+        actionUrl: "https://platform.openai.com/",
+        allowKeyChange: usesOwnKey,
+      };
+    default:
+      return null;
+  }
+}
+
+async function updateProgress(
+  viewer: ViewerContext,
+  requestId: string,
+  phase: NonNullable<ResearchActivity["phase"]>,
+  message: string,
+  attempt: number,
+  maxAttempts: number,
+  leaseToken?: string,
+) {
+  const leaseClause = leaseToken ? " AND lease_token = ?" : "";
+  const statement = getD1().prepare(
+    `UPDATE research_requests
+     SET progress_phase = ?, progress_message = ?, progress_attempt = ?,
+         progress_max_attempts = ?, progress_updated_at = ?
+     WHERE id = ? AND identity_id = ? AND execution_mode = 'background'
+       AND status = 'researching'${leaseClause}`,
+  );
+  const values: unknown[] = [phase, message.slice(0, 500), attempt, maxAttempts, Date.now(), requestId, viewer.identityId];
+  if (leaseToken) values.push(leaseToken);
+  await statement.bind(...values).run();
+}
+
+function abortableDelay(milliseconds: number, signal?: AbortSignal) {
+  if (!signal) return new Promise<void>((resolve) => setTimeout(resolve, milliseconds));
+  if (signal.aborted) return Promise.resolve();
+  return new Promise<void>((resolve) => {
+    const timeout = setTimeout(resolve, milliseconds);
+    signal.addEventListener("abort", () => {
+      clearTimeout(timeout);
+      resolve();
+    }, { once: true });
+  });
 }

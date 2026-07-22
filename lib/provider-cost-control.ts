@@ -75,6 +75,7 @@ export async function reserveProviderCost(
          COALESCE((
            SELECT SUM(CASE
              WHEN status = 'settled' THEN COALESCE(settled_microusd, reserved_microusd)
+             WHEN status = 'absorbed' THEN COALESCE(settled_microusd, reserved_microusd)
              WHEN status IN ('reserved', 'uncertain') THEN reserved_microusd
              ELSE 0 END)
            FROM provider_cost_reservations
@@ -165,6 +166,37 @@ export async function releaseProviderCost(reservationId: string) {
        WHERE id = ? AND status = 'reserved'`,
     )
     .bind(Date.now(), reservationId)
+    .run();
+}
+
+/**
+ * Keeps failed provider work in the project budget without charging it to the
+ * learner's rolling allowance.
+ */
+export async function absorbFailedResearchCosts(
+  identityId: string,
+  researchRequestId?: string,
+) {
+  const requestPredicate = researchRequestId ? "AND research_request_id = ?" : "";
+  const bindings = researchRequestId
+    ? [Date.now(), identityId, researchRequestId, identityId]
+    : [Date.now(), identityId, identityId];
+  await getD1()
+    .prepare(
+      `UPDATE provider_cost_reservations
+       SET status = 'absorbed',
+           settled_microusd = COALESCE(settled_microusd, reserved_microusd),
+           absorbed_at = ?
+       WHERE identity_id = ? ${requestPredicate}
+         AND status IN ('reserved', 'uncertain', 'settled')
+         AND EXISTS (
+           SELECT 1 FROM research_requests
+           WHERE research_requests.id = provider_cost_reservations.research_request_id
+             AND research_requests.identity_id = ?
+             AND research_requests.status = 'failed'
+         )`,
+    )
+    .bind(...bindings)
     .run();
 }
 

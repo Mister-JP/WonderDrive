@@ -328,6 +328,47 @@ test("a stale worker cannot overwrite the winner's terminal takeover reason", as
   }
 });
 
+test("an expired failed attempt releases its run slot and user-funded hold", async () => {
+  const database = migratedDatabase();
+  const prepared = preparedRequest({ requestId: "request-expired-failure" });
+  insertResearchRequest(database, prepared);
+  database.prepare(
+    "UPDATE research_requests SET lease_expires_at = 1 WHERE id = ?",
+  ).run(prepared.requestId);
+  database.prepare(
+    `INSERT INTO provider_cost_reservations
+      (id, call_key, identity_id, research_request_id, model_id, operation, status,
+       reserved_microusd, price_effective_at, envelope_json, window_started_at)
+     VALUES ('cost-expired-failure', 'call-expired-failure', ?, ?, 'gpt-5.6-luna',
+       'live_research', 'reserved', 125000, '2026-07-14', '{}', ?)`,
+  ).run(viewer.identityId, prepared.requestId, Date.now());
+  env.DB = new SQLiteD1(database);
+  try {
+    await markLiveResearchFailed(viewer, prepared, new Error("late provider failure"));
+    assert.deepEqual(
+      { ...database.prepare(
+        "SELECT status, error_code FROM research_requests WHERE id = ?",
+      ).get(prepared.requestId) },
+      { status: "failed", error_code: "INTERNAL_ERROR" },
+    );
+    assert.deepEqual(
+      { ...database.prepare(
+        "SELECT status, settled_microusd FROM provider_cost_reservations WHERE id = 'cost-expired-failure'",
+      ).get() },
+      { status: "absorbed", settled_microusd: 125000 },
+    );
+    assert.equal(
+      database.prepare(
+        `SELECT COUNT(*) AS count FROM research_requests
+         WHERE identity_id = ? AND status IN ('reserved', 'researching', 'committed')`,
+      ).get(viewer.identityId).count,
+      0,
+    );
+  } finally {
+    delete env.DB;
+  }
+});
+
 test("an expired request becomes terminal and ordinary acquisition recovers with a new key", async () => {
   const database = migratedDatabase();
   const expired = preparedRequest({ requestId: "request-expired", idempotencyKey: "key-expired" });

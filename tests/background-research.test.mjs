@@ -156,6 +156,15 @@ test("background research expires to a retryable terminal status after ten minut
   }
 });
 
+test("status polling is database-only and work is owned by the long-running runner route", () => {
+  const statusRoute = readFileSync("app/api/research/background/route.ts", "utf8");
+  const runnerRoute = readFileSync("app/api/research/background/[requestId]/run/route.ts", "utf8");
+  assert.match(statusRoute, /reconcile: false/);
+  assert.doesNotMatch(statusRoute, /waitUntil/);
+  assert.match(runnerRoute, /runBackgroundResearch/);
+  assert.match(runnerRoute, /request\.signal/);
+});
+
 test("an active phase-two finalization lease survives the phase-one watchdog", async () => {
   const database = migratedDatabase();
   const requestId = "request-active-composition";
@@ -172,7 +181,7 @@ test("an active phase-two finalization lease survives the phase-one watchdog", a
     const activities = await listBackgroundResearch(viewer, { reconcile: false });
     const activity = activities.find(({ id }) => id === requestId);
     assert.equal(activity.status, "researching");
-    assert.equal(activity.phase, "finalizing");
+    assert.equal(activity.phase, "composing");
     assert.equal(activity.timeoutAt, leaseExpiresAt);
   } finally {
     delete env.DB;
@@ -258,6 +267,52 @@ test("background activity includes an in-progress child turn and its parent jour
     assert.equal(activity.question, request.question);
     assert.equal(activity.journeyId, request.journeyId);
   } finally {
+    delete env.DB;
+  }
+});
+
+test("an asynchronous OpenAI rate limit is preserved as a transparent sanitized failure", async (context) => {
+  const database = migratedDatabase();
+  const requestId = "request-provider-rate-limit";
+  insertBackground(database, {
+    requestId,
+    providerResponseId: "resp_rate_limited_background",
+    leaseToken: null,
+    leaseExpiresAt: null,
+  });
+  const request = prepared(requestId);
+  database.prepare("UPDATE research_requests SET request_json = ? WHERE id = ?").run(
+    JSON.stringify({ ...request, providerFunding: "user" }),
+    requestId,
+  );
+  const originalFetch = globalThis.fetch;
+  context.after(() => { globalThis.fetch = originalFetch; });
+  globalThis.fetch = async () => Response.json({
+    id: "resp_rate_limited_background",
+    status: "failed",
+    error: {
+      code: "rate_limit_exceeded",
+      message: "Rate limit reached in organization org-secret on tokens per min: Limit 200,000, Used 173,398, Requested 46,022. Please try again in 5.826s.",
+    },
+    output: [],
+  });
+  env.OPENAI_API_KEY = "test-key";
+  env.DB = new SQLiteD1(database);
+  try {
+    const activities = await listBackgroundResearch(viewer, {
+      providerAuth: { apiKey: "test-key", funding: "user" },
+    });
+    const activity = activities.find(({ id }) => id === requestId);
+    assert.equal(activity.status, "failed");
+    assert.equal(activity.errorCode, "OPENAI_RATE_LIMIT");
+    assert.equal(activity.failure.source, "openai");
+    assert.equal(activity.failure.category, "rate_limit");
+    assert.equal(activity.failure.allowKeyChange, true);
+    assert.match(activity.error, /200,000 tokens per minute/);
+    assert.match(activity.error, /about 6 seconds/);
+    assert.doesNotMatch(activity.error, /org-secret/);
+  } finally {
+    delete env.OPENAI_API_KEY;
     delete env.DB;
   }
 });
