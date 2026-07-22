@@ -1,77 +1,121 @@
-# CuriosityPedia product principles
+# CuriosityPedia product north star
 
-This document captures the current product intent. It is deliberately compact: implemented behavior belongs in code and tests, while technical boundaries belong in [architecture.md](architecture.md).
+This document captures the product idea CuriosityPedia is trying to protect. Implemented behavior belongs in code and tests, while technical boundaries belong in [architecture.md](architecture.md).
+
+## The idea
+
+CuriosityPedia is a visual encyclopedia for people who learn by observing.
+
+Most AI products begin with a blank chat box and answer with words. CuriosityPedia begins with curiosity and answers with a visual story: a researched explanation shaped around remarkable, useful images that already exist across the internet. It should help someone notice what they might otherwise miss, understand an unfamiliar idea without facing a wall of text, and discover the next question hiding inside what they just saw.
+
+The product is especially valuable for visual learners and children, but it is for anyone who wants learning to feel less like consuming information and more like exploring the world.
 
 ## Product promise
 
-CuriosityPedia helps someone stay with a question long enough for it to become genuinely interesting. It turns an initial question into a researched, source-backed journey, reveals a varied set of meaningful ways forward after every completed turn, and preserves the resulting map for later exploration.
+Give CuriosityPedia a question and it creates a beautiful, source-backed visual encyclopedia. A typical exploration contains 8–12 carefully curated images, each with a distinct editorial purpose, a concise explanation of what to notice, and one question that opens another direction of discovery.
 
-The experience should feel guided without being restrictive, playful without becoming careless with evidence, and visually expressive without getting in the way of reading.
+After looking through the encyclopedia, the learner can answer the image-inspired questions and choose any one of them to explore more deeply. That choice creates another encyclopedia and another branch in a persistent journey map. Over time, the map becomes a personal record of the rabbit holes the learner followed.
+
+The experience should feel:
+
+- visual before textual;
+- inviting rather than intimidating;
+- editorially composed rather than mechanically generated;
+- playful without becoming careless with evidence; and
+- self-directed without feeling like an empty chat interface.
 
 ## Core loop
 
-1. Start from a question or choose an editorial discovery card.
-2. Select a research personality and answer depth.
-3. Read one complete, cited research turn.
-4. Inspect its sources, save it, or view its place in the journey map.
-5. Look across the open questions revealed by the turn and choose any direction worth exploring.
-6. Return later through Journeys or Bookmarks and continue from any useful point.
+1. Begin with a question or choose an image-rich discovery card.
+2. Let CuriosityPedia research the subject and curate a strong visual set.
+3. Move through a visual encyclopedia that explains what each image reveals and why it matters.
+4. Answer one curiosity question inspired by each image.
+5. Choose the question that creates the strongest desire to know more.
+6. Generate a new visual encyclopedia from that question.
+7. Revisit the journey map to see, retrace, and continue the resulting rabbit holes.
 
-Open questions should be understandable to a curious beginner, grounded in the visible turn, specific enough to suggest a real investigation, and meaningfully varied across mechanisms, consequences, comparisons, scales, histories, places, disciplines, and unresolved boundaries. A turn should expand the learner's map rather than restate the question it just answered.
+Every loop should leave the learner with a clearer mental model and more meaningful curiosity than they started with.
 
 ## Experience map
 
 ### Discovery
 
-The landing page is a dense, image-rich catalog rather than a marketing page. It should offer broad subject variety, clear source attribution, approachable questions, and an immediate path to asking something original. Editorial recommendations are permanent, reviewed records; the interface fetches one page at a time.
+The landing page is an image-rich cabinet of curiosities, not a marketing page or a generic prompt gallery. It should expose a wide range of subjects through striking visuals and approachable questions. A visitor should be able to follow an existing spark or ask something entirely their own.
 
-### Research turn
+Editorial recommendations must have a real subject, trustworthy provenance, a strong visual hook, and a question a curious beginner can understand immediately.
 
-A turn is the durable unit of learning. A ready turn contains the answer, evidence, source relationships, media, provider usage, and current follow-up options. Incomplete or failed provider work must never appear as a completed answer.
+### Visual encyclopedia
 
-Long-running research may continue in the background. The interface should make its state legible, allow safe retries where supported, and avoid replacing a previously useful page with a transient polling failure.
+An encyclopedia is the durable unit of learning. It combines researched context, normalized sources, 8–12 factual images, visual commentary, image questions, and the relationships between them.
 
-### Knowledge check
+The sequence should feel composed as a whole. Images should play different roles—orientation, mechanism, scale, comparison, context, evidence, history, or a surprising detail—rather than repeat the same subject from slightly different angles. Written explanation should make each visual more legible, not compete with it.
 
-Knowledge checks should reinforce attention and understanding, not manufacture engagement. Questions must be answerable from the material just presented. Feedback should explain the evidence behind the result, and failure should remain recoverable.
+Long-running research may continue in the background. The interface should make its progress understandable, preserve useful completed work, and offer safe recovery when provider work fails.
+
+### Image questions
+
+Every image should inspire exactly one clear question. The question should arise naturally from something visible, connect to the explanation, and point toward a real topic worth investigating. Across an encyclopedia, questions should vary in subject and direction so the learner is offered genuinely different rabbit holes.
+
+Answering should reinforce careful observation and understanding without feeling like a school test. Options should be meaningful and plausible, feedback should explain the answer without judgment, and an incorrect choice should never block the learner from continuing.
+
+Most importantly, a question is not the end of a lesson. It is a doorway. After answering, the learner can select that same question as the seed of a new encyclopedia.
 
 ### Journey map
 
-The map is a navigable record of how the learner arrived at the current topic. It should preserve branches and alternate paths, reveal unanswered frontiers, and let someone resume without reconstructing their history from memory.
+The journey map is a visual record of curiosity. It shows how one question led to another, preserves branches that were not taken, and lets the learner resume from any earlier point without reconstructing the path from memory.
+
+The map should celebrate depth and connection, not completion, streaks, scores, or time spent. There is no required order and no final node.
 
 ### Personal library
 
-Journeys are complete explorations. Bookmarks are individual saved turns. These concepts stay separate so pinning a journey never silently changes the bookmark collection. Search, labels, hiding, snapshots, export, and removal are supporting controls rather than the primary experience.
+Journeys are complete explorations; bookmarks are individual saved encyclopedias. Search, labels, snapshots, export, hiding, and removal help people return to useful discoveries, but they remain supporting tools rather than the center of the experience.
 
 ### Preferences and usage
 
-Language, answer density, research model, text size, and reduced motion are user-controlled. Usage limits should be visible before they become surprising, explain rolling windows honestly, and distinguish provider spending from product capacity.
+Language, explanation depth, research model, text size, and reduced motion are user-controlled. Usage limits should be visible before they become surprising, describe rolling windows honestly, and distinguish provider spending from product capacity.
+
+## Editorial principles
+
+- Start with the most visually revealing way to understand the subject.
+- Search broadly, then curate ruthlessly; eight excellent images are better than twelve weak ones.
+- Use photography, diagrams, maps, specimens, archival material, and primary-source imagery according to what best explains the idea.
+- Give every image a distinct teaching purpose and a concrete detail worth noticing.
+- Prefer images as evidence, explanation, or orientation—never as decoration.
+- Use plain language and explain unfamiliar terms before building on them.
+- Connect visible details to mechanisms, scale, history, materials, ecology, culture, or other illuminating contexts.
+- Preserve uncertainty when evidence is incomplete, contested, or changing.
+- Favor primary sources, responsible institutions, and clear provenance.
+- Avoid generic stock imagery, near-duplicates, watermarks, invented visual details, vague prompts, and walls of text.
 
 ## Product invariants
 
-- Every ready answer is source-backed.
+- Every completed encyclopedia is source-backed.
+- Every selected image comes from a real provider result and retains its source relationship.
+- A typical completed encyclopedia contains 8–12 distinct, useful visuals.
+- Every image has one canonical curiosity question reused consistently in the encyclopedia, answer flow, result, journey map, and child exploration.
+- Citations reference only normalized sources returned by the provider.
+- Incomplete or failed research never masquerades as a completed encyclopedia.
+- Older completed encyclopedias remain readable as the product evolves.
+- Ownership is checked before private data is read or changed.
 - Provider credentials, identity headers, administrative keys, and raw provider details remain server-side.
-- Ownership is checked before private data is read or mutated.
-- Mutating requests are idempotent where retries are expected.
-- A completed visual turn exposes its distinct image-linked curiosity questions as open paths in the journey map.
-- Citations may reference only normalized sources returned by the provider.
-- Older ready turns remain readable as the product evolves.
-- Reduced motion and keyboard access do not remove functionality.
-- Guest data is clearly described as belonging to the current guest identity; signed-in data follows the authenticated identity.
+- Expected retries are idempotent and do not duplicate durable work.
+- Keyboard access and reduced-motion settings preserve the complete learning flow.
+- Guest and signed-in data ownership is explained honestly.
 
-## Content principles
+## What CuriosityPedia is not
 
-- Prefer concrete wonder, hidden mechanisms, vivid cause and effect, and useful comparison.
-- Explain unfamiliar terms before building on them.
-- Use images as evidence or orientation, not decoration.
-- Keep uncertainty explicit when a source or subject is unresolved.
-- Favor primary sources and responsible institutions for editorial discovery material.
-- Avoid vague prompts, generic stock imagery, manipulative streak mechanics, and quiz-like recall detached from the answer.
+CuriosityPedia is not a general-purpose chatbot, a search-results wrapper, a social feed, a course-management system, or a gamified quiz product. It does not optimize for endless passive scrolling, compulsory progress, engagement streaks, or replacing expert judgment.
 
-## Non-goals
+It is also not an AI image gallery. The goal is not to decorate generated prose or display attractive pictures. The goal is to use excellent, trustworthy visuals to make ideas understandable and to turn careful observation into further curiosity.
 
-CuriosityPedia is not a general-purpose chatbot, a search-results wrapper, a course-management system, or a social feed. It does not promise exhaustive coverage, automatic truth, a single canonical learning order, or a replacement for expert judgment.
+## Future direction
+
+Today, a small number of agents perform the research and visual composition. The longer-term vision is an agentic editorial staff with distinct responsibilities for research, fact-checking, image curation, visual sequencing, question writing, accessibility, and quality control.
+
+Better models should make the editorial judgment stronger, not make the product more complicated. CuriosityPedia should remain a focused place where anyone can explore the beautiful world we live in through images, explanations, and questions.
 
 ## Decision test
 
-A proposed change belongs in the product when it makes a sourced answer easier to begin, understand, trust, remember, or continue without weakening the invariants above. If it primarily adds chrome, duplicates another concept, hides uncertainty, or turns curiosity into an obligation, it should be left out.
+A proposed change belongs in CuriosityPedia when it helps someone begin with wonder, understand through seeing, notice an important detail, trust the evidence, or follow a meaningful new question.
+
+If it pushes the experience toward a generic chatbot, a text-heavy article, a social feed, a conventional test, or engagement for its own sake, it moves the product away from its north star.

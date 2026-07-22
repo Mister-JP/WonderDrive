@@ -483,7 +483,7 @@ legend > span { align-items: center; border: 1px solid var(--ink); border-radius
 .discovery-card:nth-child(4n + 2) { --card-accent: var(--acid); }
 .discovery-card:nth-child(4n + 3) { --card-accent: var(--coral); }
 .discovery-card:nth-child(4n + 4) { --card-accent: var(--lavender); }
-.discovery-card:hover { box-shadow: 0 5px 0 var(--card-accent), 0 19px 38px var(--shadow); transform: translateY(-5px); z-index: 1; }
+.discovery-card:hover { box-shadow: 0 5px 0 var(--card-accent), 0 19px 38px var(--shadow); transform: scale(1.012); z-index: 1; }
 .discovery-card-image { aspect-ratio: 4 / 3; background: #0b1730; border: 0; border-bottom: 5px solid var(--card-accent); display: block; isolation: isolate; overflow: hidden; padding: 0; position: relative; width: 100%; }
 .discovery-card-image img { display: block; height: 100%; inset: 0; position: absolute; width: 100%; }
 .discovery-card-image-backdrop { filter: blur(24px) brightness(.68) saturate(1.45); object-fit: cover; opacity: .9; transform: scale(1.16); transition: filter 300ms ease, transform 450ms cubic-bezier(.2,.8,.2,1); }

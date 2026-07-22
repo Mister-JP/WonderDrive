@@ -9,7 +9,7 @@ import type {
 } from "./contracts";
 import { OPENAI_PROMPT_LIMITS } from "./research-config";
 
-export const PROMPT_VERSION = "wonder-research-turn@4.1.2";
+export const PROMPT_VERSION = "wonder-research-turn@4.1.3";
 
 export const DEFAULT_PREFERENCES: UserPreferences = {
   interfaceLocale: "en",

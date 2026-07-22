@@ -724,13 +724,20 @@ async function runVisualCuration(
 ): Promise<{ visualNotes: ModelVisualNote[]; response: OpenAIResponse }> {
   const limits = OPENAI_PROMPT_LIMITS.visualCuration;
   const startedAt = Date.now();
+  const currentlyAccepted = validateMediaGallery(
+    existingImages,
+    normalizeGeneratedProse(modelTurn.topicLabel),
+    modelTurn.visualNotes,
+    prepared.outputLocale,
+  ).length;
+  const additionalTarget = Math.max(0, 12 - currentlyAccepted);
   const streamed = await runProviderStream({
     requestBody: {
       model: prepared.modelId,
       instructions: [
         `CuriosityPedia prompt ${PROMPT_VERSION}. Act only as a visual editor for an encyclopedia-grade knowledge session.`,
         "VISUAL QUALITY GATE",
-        "Search an oversized pool of at least 20 plausible images before selecting 8–12.",
+        "Images are the required primary output of this pass. Do not stop after finding the first few usable results. Search an oversized pool of at least 30 plausible images before selecting the additions.",
         "Judge the actual visible image or thumbnail—not merely its caption, filename, source reputation, or topical relevance. Keep an image only if it is visually compelling at the intended display size and the important subject is immediately legible.",
         "Silently reject any candidate that:",
         "- is low-resolution, blurry, badly compressed, watermarked, poorly cropped, or visibly dated web graphics;",
@@ -741,8 +748,8 @@ async function runVisualCuration(
         "- requires the commentary to explain what the reader cannot actually see;",
         "- fails to render or does not expose a usable direct image asset.",
         "Prefer images with strong composition, clear subjects, rich visible detail, trustworthy provenance, and an exact feature worth pausing to inspect. Visual excellence is an acceptance requirement, not a preference.",
-        "Issue at least six focused image searches, not one broad query. Search separately for an orientation hero, the phenomenon, mechanism or process, scale, comparison, physical context, an illuminating object or detail, and primary-source or institutional evidence when available.",
-        "Return 8–12 distinct factual images. Prefer high-resolution, legible, aesthetically strong photography, diagrams, maps, specimens, archival records, and institutional media. Never fill the quota with weak, decorative, near-duplicate, watermarked, or merely topical images; change the query until you have eight strong candidates.",
+        "Issue at least eight focused image searches, not one broad query. Search separately for an orientation hero, the phenomenon, mechanism, process, scale, comparison, physical context, an illuminating object or detail, historical evidence, and primary-source or institutional evidence when available.",
+        "Keep changing queries until you have supplied enough distinct new images to bring the complete session to 12, or until the tool budget is exhausted. Prefer high-resolution, legible photography, diagrams, maps, specimens, archival records, and institutional media. Never invent an image or URL.",
         "Every visual note must correspond to an image result actually returned during this call. Copy its source website URL exactly into sourcePageUrl. Do not invent URLs or describe details that are not visible in the image result and caption.",
         "Give one image the anchor role so it can serve as the dominant hero. Give every other image a distinct editorial job. Avoid any source URLs listed as already accepted.",
         `Write titles and commentary in ${localeName(prepared.outputLocale)} (${prepared.outputLocale}). Commentary must be one natural 45–85 word paragraph that says what is visible, what to notice, and why it changes or sharpens the reader's mental model.`,
@@ -759,6 +766,9 @@ async function runVisualCuration(
         question: prepared.question,
         topicLabel: modelTurn.topicLabel,
         answer: modelTurn.answerBlocks.slice(0, 5).map((block) => block.text),
+        currentlyAcceptedImages: currentlyAccepted,
+        additionalImagesTarget: additionalTarget,
+        finalImagesTarget: 12,
         alreadyAcceptedSourcePageUrls: existingImages.map((image) => image.sourcePageUrl).slice(0, 12),
       }),
       tools: [{

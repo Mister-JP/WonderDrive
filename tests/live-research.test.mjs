@@ -81,6 +81,20 @@ test("splits active generation into a research dossier and an option-free compos
   assert.match(composerInstructions, /Do not generate the retired pair/);
 });
 
+test("makes the 12-image target explicit without making short galleries fail validation", () => {
+  const body = liveResearchRequestBody(preparedResearch({ imagePreference: "prefer" }));
+  const researchInput = JSON.parse(body.input);
+  assert.match(body.instructions, /at least eight distinct, focused image searches/i);
+  assert.match(body.instructions, /at least 30 plausible image results/i);
+  assert.match(body.instructions, /work toward 12 source-backed candidates/i);
+  assert.match(researchInput.imageResearch, /Do not stop after finding only a few usable images/i);
+
+  const composerInstructions = buildCompositionInstructions(PERFORMERS[0], "en", "prefer");
+  assert.match(composerInstructions, /Select 12 evidence-grade images whenever 12 valid candidates are supplied/i);
+  assert.match(composerInstructions, /Do not voluntarily return fewer than eight/i);
+  assert.equal(turnCompositionSchemaForDensity("balanced").properties.visualNotes.minItems, undefined);
+});
+
 test("projects image questions into legacy option rows without asking the model for global paths", () => {
   const projected = JSON.parse(addLegacyOptionProjection(JSON.stringify({
     topicLabel: "root systems",
