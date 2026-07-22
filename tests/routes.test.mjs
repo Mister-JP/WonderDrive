@@ -7,6 +7,10 @@ import {
   parseCuriosityPediaRoute,
   staticRoutePath,
 } from "../app/routes.ts";
+import { buildPaginationItems } from "../lib/pagination.ts";
+
+const paginationLabels = (page, totalPages) => buildPaginationItems(page, totalPages)
+  .map((item) => item.kind === "page" ? item.page : "…");
 
 test("parses stable product routes", () => {
   assert.deepEqual(parseCuriosityPediaRoute("/"), { name: "start" });
@@ -45,6 +49,13 @@ test("rejects paths outside the product route contract", () => {
   assert.equal(staticRoutePath("journeys"), "/journeys");
   assert.equal(staticRoutePath("bookmarks"), "/bookmarks");
   assert.equal(staticRoutePath("about"), "/about");
+});
+
+test("keeps recommendation pagination bounded around the current page", () => {
+  assert.deepEqual(paginationLabels(11, 22), [1, "…", 10, 11, 12, "…", 22]);
+  assert.deepEqual(paginationLabels(1, 22), [1, 2, "…", 22]);
+  assert.deepEqual(paginationLabels(22, 22), [1, "…", 21, 22]);
+  assert.deepEqual(paginationLabels(3, 7), [1, 2, 3, 4, 5, 6, 7]);
 });
 
 test("orchestration exposes Journeys navigation and opens cards on the map", async () => {

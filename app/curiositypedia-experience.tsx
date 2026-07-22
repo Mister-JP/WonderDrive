@@ -68,6 +68,7 @@ import type {
 } from "../lib/contracts";
 import { localeDirection } from "../lib/i18n";
 import { canonicalImageQuestion, questionBearingMedia } from "../lib/knowledge-check-contracts";
+import { buildPaginationItems } from "../lib/pagination";
 import {
   api,
   diagnosticIdFrom,
@@ -1586,18 +1587,22 @@ function StartStage({
               ← Page Up
             </button>
             <div className="discovery-page-numbers">
-              {Array.from({ length: recommendationPage.totalPages }, (_, index) => index + 1).map((page) => (
-                <button
-                  key={page}
-                  className={page === recommendationPage.page ? "active" : ""}
-                  type="button"
-                  aria-label={`Open recommendation page ${page}`}
-                  aria-current={page === recommendationPage.page ? "page" : undefined}
-                  disabled={catalogLoading || page === recommendationPage.page}
-                  onClick={() => void loadRecommendationPage(page, dimension)}
-                >
-                  {page}
-                </button>
+              {buildPaginationItems(recommendationPage.page, recommendationPage.totalPages).map((item) => (
+                item.kind === "ellipsis"
+                  ? <span key={item.key} className="discovery-page-gap" aria-hidden="true">…</span>
+                  : (
+                    <button
+                      key={item.page}
+                      className={item.page === recommendationPage.page ? "active" : ""}
+                      type="button"
+                      aria-label={`Open recommendation page ${item.page}`}
+                      aria-current={item.page === recommendationPage.page ? "page" : undefined}
+                      disabled={catalogLoading || item.page === recommendationPage.page}
+                      onClick={() => void loadRecommendationPage(item.page, dimension)}
+                    >
+                      {item.page}
+                    </button>
+                  )
               ))}
             </div>
             <button

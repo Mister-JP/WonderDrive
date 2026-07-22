@@ -524,6 +524,7 @@ legend > span { align-items: center; border: 1px solid var(--ink); border-radius
 .discovery-pagination button:disabled { opacity: .34; }
 .discovery-page-numbers { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
 .discovery-page-numbers button { min-height: 34px; min-width: 34px; padding-inline: 9px; }
+.discovery-page-gap { align-self: center; min-width: 20px; text-align: center; }
 .discovery-page-numbers button.active { background: var(--acid); border-color: var(--ink); color: var(--accent-ink); opacity: 1; }
 
 html[data-theme="dark"] :is(.share-discovery-shell, .share-card-brand, .editorial-share-action) { background: var(--surface-solid); color: var(--ink); }
